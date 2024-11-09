@@ -9,12 +9,9 @@ const { saveCurrentUrl } = require('../middleware');
 
 const OpenAI = require("openai").default;
 const FLIGHTLABS_API_KEY = process.env.FLIGHTLABS_API_KEY_ENV;
-//'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYzZiNzQ0YjI2M2RhYWQ0NzU0YTcwMzYwZGMwN2FlZTU5NGE3NzFkMWM3NjViNmMzMTViNjgwODZhY2UxZDU2ZGZhNTFiMDgxYTAwN2VhYjUiLCJpYXQiOjE3Mjk0MzY0NjksIm5iZiI6MTcyOTQzNjQ2OSwiZXhwIjoxNzYwOTcyNDY5LCJzdWIiOiIyMzM2NiIsInNjb3BlcyI6W119.sXRAyhgpIruFjUPbRacCDlAzzUi44V2HbqMeRQ5mWl3erGJdSK5jPahBVr-xXTBz0-HO1hErRuNFLK-cfMW3FQ';
 
 const openai = new OpenAI({
     apiKey: process.env.openaiKey
-    //'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',
-    // Use environment variables for API keys in production
 });
 
 // Middleware to map airport names to IATA codes
