@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee38"
+  },
+  "country": "United States",
+  "regulations": "Some regulations for the United States"
+},
+{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee39"
+  },
+  "country": "Canada",
+  "regulations": "Some regulations for Canada"
+},
+{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee3a"
+  },
+  "country": "Mexico",
+  "regulations": "Some regulations for Mexico"
+},
+{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee3b"
+  },
+  "country": "Germany",
+  "regulations": "Some regulations for Germany"
+},
+{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee3c"
+  },
+  "country": "France",
+  "regulations": "Some regulations for France"
+},
+{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee3d"
+  },
+  "country": "United Kingdom",
+  "regulations": "Some regulations for the United Kingdom"
+},
+{
+  "_id": {
+    "$oid": "66ea00932f25021fd4b7ee3e"
+  },
+  "country": "Australia",
+  "regulations": "Some regulations for Australia"
+}]

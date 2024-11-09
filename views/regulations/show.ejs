@@ -1,0 +1,176 @@
+<% layout('layouts/boilerplate') %>
+
+
+<div class="container mt-5">
+   
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+           
+
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                
+                
+                <div class="card-body">
+                    <h3 class="text-center text-secondary mb-4">
+                        Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>
+                    </h3>
+
+                    <!-- Display the regulations -->
+                    <% regulations.forEach(regulation => { %>
+              
+                        
+                        
+        
+            
+                            
+                                <div class="card-body text-center">
+                                    <div class="mb-2">
+                                    <% if (regulations[0].petType.type === "Cat") { %>
+                                        <img class="align-self-center" src="/images/Cat3.png" width="300" height="300" alt="Description of image">
+                                    <% } else if (regulations[0].petType.type === "Dog") { %>
+                                        <img class="align-self-center" src="/images/Dog3.png" width="400" height="400" alt="Description of image">
+                                    <% } else if (regulations[0].petType.type === "Other") { %>
+                                        <img class="align-self-center" src="/images/Bird2.png" width="400" height="400" alt="Description of image">
+                                    <% } %>
+                                </div>
+                                   
+                                  <h4 class="card-text">You're looking to travel to <%= regulations[0].destinationCountry.country %>, with your precious little <%= regulations[0].petType.type %>!</h4>
+                                  <p> Below is the necessary information needed to take your friend.  Please click each topic to see what is needed for travel. Save this informaiton to your profile. </p>
+                                  <p>Make sure to check airline requirements as they can be different than the countries requirements.</p>
+                                </div>
+                                <div id="alert-container" class="mt-4"></div>
+                                <div id="response-message"></div>
+                                <form class="saveCountryForm d-flex justify-content-end ms-auto">
+                                    <input type="hidden" name="regulationId" value="<%= regulation._id %>">
+                                    <input type="hidden" name="originCountry" value="<%= regulation.originCountry._id %>">
+                                    <input type="hidden" name="destinationCountry" value="<%= regulation.destinationCountry._id %>">
+                                    <input type="hidden" name="petType" value="<%= regulation.petType._id %>">
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="fas fa-heart"></i> Save
+                                    </button>
+                                </form>
+                                
+                            <div class="card-body">
+                                <div class=" justify-content-between">
+                                    <div class="accordion" id="accordionExample">
+                                       
+                                    
+                                        <div class="accordion-item">
+                                            <% if (regulations[0].petType.type  !== "Other") { %>
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    <strong>Vaccination Requirements:</strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <%- regulation.vaccinations %>
+                                                </div>
+                                            </div>
+
+                                            <% } %>
+                                        </div>
+                            
+                                        <div class="accordion-item">
+                                            <% if (regulations[0].petType.type  !== "Other") { %>
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                   <strong> Certification Requirements:</strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <%- regulation.certifications %>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                        </div>
+                            
+                                        <div class="accordion-item">
+                                            <% if (regulations[0].petType.type  !== "Other") { %>
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                  <Strong> Microchip Requirements: </Strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <%- regulation.microchip %>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <% if (regulations[0].petType.type  !== "Other") { %>
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                               <Strong> Assistance Pets </Strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <%- regulation.assistancePet %>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                   <strong> More Information: </strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <%- regulation.description %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% if (regulation.destinationCountry.country === "United States") { %>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                                   <Strong> State Requirments:</Strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <%- regulation.stateTerritoryRequirements  %>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                   <Strong> Links: </Strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <a href="<%= regulation.link %>" target="_blank"><%= regulation.link %></a>
+                                                </div>
+                                            </div>
+                                        
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="/regulations/newSearch" class="btn btn-secondary">Back To Search</a>
+                        <a href="/" class="btn btn-secondary">Back To Home</a>
+                        <a href="/regulations/searchFlights" class="btn btn-primary">Search Flights for Pets</a>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Footer Links -->
+           
+        </div>
+    </div>
+</div>

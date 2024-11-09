@@ -1,0 +1,53 @@
+{
+  
+  "link": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-united-states-mexico",
+  "description": "As of December 16, 2019, a health certificate is no longer required for dogs and cats entering Mexico. Upon arrival, SENASICA will inspect pets for signs of illness, parasites, and wounds. If ectoparasites or ticks are detected, additional measures, including potential laboratory testing, will be required, and the pet may be held at the inspection office until cleared.",
+  "vaccinations": "Proof of rabies vaccination is required at least 28 days prior to entry into Mexico. Mexico accepts a 1 - 3-year rabies vaccination for dogs entering from the U.S. or Canada.",
+  "certifications": "A health certificate isn't required for service dogs and non-service dogs. A dog must show proof it has been treated for internal and external parasites within the last 6 months.",
+  "microchip": "Mexico does not require dogs (including service dogs) to be microchipped, but it is strongly recommended.",
+  "assistancePet": "Service dogs must meet the same requirements as non-service dogs, including proof of rabies vaccination, treatment for internal and external parasites within the last 6 months, and a health certificate.",
+  "petType": { "$oid": "66ec7005736f22bf6acdabe6" },
+  "originCountry": { "$oid": "66ec7005736f22bf6acdabeb" },
+  "destinationCountry": { "$oid": "66ec7005736f22bf6acdabec" }
+}
+{
+  "link": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-united-states-mexico",
+  "description": "As of December 16, 2019, a health certificate is no longer required for dogs entering Mexico. Upon arrival, SENASICA will inspect dogs for signs of illness, parasites, and wounds. If ectoparasites or ticks are detected, additional measures, including potential laboratory testing, will be required, and the dog may be held at the inspection office until cleared.",
+  "vaccinations": "Proof of rabies vaccination is required at least 28 days prior to entry into Mexico. Mexico accepts a 1 - 3-year rabies vaccination for dogs entering from Canada.",
+  "certifications": "A health certificate isn't required for service dogs and non-service dogs. A dog must show proof it has been treated for internal and external parasites within the last 6 months.",
+  "microchip": "Mexico does not require dogs (including service dogs) to be microchipped, but it is strongly recommended.",
+  "assistancePet": "Service dogs must meet the same requirements as non-service dogs, including proof of rabies vaccination, treatment for internal and external parasites within the last 6 months, and a health certificate.",
+  "petType": { "$oid": "66ec7005736f22bf6acdabe6" },
+  "originCountry": { "$oid": "66ec7005736f22bf6acdabed" },
+  "destinationCountry": { "$oid": "66ec7005736f22bf6acdabec" }
+}
+
+{
+  
+  "link": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-united-states-mexico",
+  "description": "As of December 16, 2019, a health certificate is no longer required for cats entering Mexico. Upon arrival, SENASICA will inspect cats for signs of illness, parasites, and wounds. If ectoparasites or ticks are detected, additional measures, including potential laboratory testing, will be required, and the cat may be held at the inspection office until cleared.",
+  "vaccinations": "Proof of rabies vaccination is required at least 28 days prior to entry into Mexico. Mexico accepts a 1 - 3-year rabies vaccination for cats entering from the U.S. or Canada.",
+  "certifications": "A health certificate isnt required for cats entering Mexico. A cat must show proof it has been treated for internal and external parasites within the last 6 months.",
+  "microchip": "Mexico does not require cats to be microchipped, but it is strongly recommended.",
+  "assistancePet": "Not applicable for cats.",
+  "petType": { "$oid": "66ec7005736f22bf6acdabe5" },
+  "originCountry": { "$oid": "66ec7005736f22bf6acdabeb" },
+  "destinationCountry": { "$oid": "66ec7005736f22bf6acdabec" }
+}
+
+{
+  "link": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-united-states-mexico",
+  "description": "As of December 16, 2019, a health certificate is no longer required for cats entering Mexico. Upon arrival, SENASICA will inspect cats for signs of illness, parasites, and wounds. If ectoparasites or ticks are detected, additional measures, including potential laboratory testing, will be required, and the cat may be held at the inspection office until cleared.",
+  "vaccinations": "Proof of rabies vaccination is required at least 28 days prior to entry into Mexico. Mexico accepts a 1 - 3-year rabies vaccination for cats entering from Canada.",
+  "certifications": "A health certificate isnt required for cats entering Mexico. A cat must show proof it has been treated for internal and external parasites within the last 6 months.",
+  "microchip": "Mexico does not require cats to be microchipped, but it is strongly recommended.",
+  "assistancePet": "Not applicable for cats.",
+  "petType": { "$oid": "66ec7005736f22bf6acdabe5" },
+  "originCountry": { "$oid": "66ec7005736f22bf6acdabed" },
+  "destinationCountry": { "$oid": "66ec7005736f22bf6acdabec" }
+}
+
+
+
+
+

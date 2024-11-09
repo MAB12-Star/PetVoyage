@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-5 border-secondary rounded">
+                <img
+                    src="/images/PetVoyageLogo.png"
+                    class="img-fluid rounded-top d-block mx-auto"
+                    alt="PetVoyage Logo"
+                    width="400"
+    height="400"
+            
+                />
+                
+                <!-- <h1 class="text-center text-primary mb-4">Welcome</h1> -->
+                <p class="lead text-center">
+                    Your ultimate free resource for exploring pet regulations across countries and airlines. 
+                    With PetVoyage, you can effortlessly prepare for your travels with your furry friends, ensuring 
+                    you have all the necessary information and documentation ready for a smooth journey!
+                </p>
+
+                <div class="text-center mt-4 d-flex justify-content-center gap-4">
+                    <a href="/regulations/newSearch" class="btn btn-secondary btn-lg" data-bs-toggle="tooltip" title="Start Here!">
+                        Search Country Regulations
+                    </a>
+                    <a href="/regulations/searchFlights" class="btn btn-secondary btn-lg" data-bs-toggle="tooltip" title="Search for Airline Regulations">
+                        Search Flight Regulations
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize tooltip
+    $(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+</script>

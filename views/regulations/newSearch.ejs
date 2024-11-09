@@ -1,0 +1,54 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <div class="card shadow-lg p-4 border-secondary rounded">
+                <h3 class="text-center text-secondary mb-4">Select Country and Animal Type</h3>
+                <img class="align-self-center" src="/images/CandP1.png" width="400" height="250" alt="Description of image">
+                <form class="validated-form" action="/regulations/submitCountry" method="POST">
+                    <!-- Dropdown for selecting origin country -->
+                    <div class="form-group mt-3">
+                        <label for="originCountry">Select Current Country</label>
+                        <select name="originCountry" id="originCountry" class="form-control" required>
+                            <option value="">Choose your home country:</option>
+                            <% countries.forEach(country => { %>
+                                <option value="<%= country._id %>"><%= country.country %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                
+                    <!-- Dropdown for selecting destination country -->
+                    <div class="form-group mt-3">
+                        <label for="destinationCountry">Select Destination Country</label>
+                        <select name="destinationCountry" id="destinationCountry" class="form-control" required>
+                            <option value="">Choose a destination country:</option>
+                            <% countries.forEach(country => { %>
+                                <option value="<%= country._id %>"><%= country.country %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                
+                    <!-- Dropdown for selecting pet type -->
+                    <div class="form-group mt-3">
+                        <label for="petType">Select Animal Type</label>
+                        <select name="petType" id="petType" class="form-control" required>
+                            <option value="">Choose an animal type</option>
+                            <% petTypes.forEach(petType => { %>
+                                <option value="<%= petType._id %>"><%= petType.type %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                
+                    <div class="text-center">
+                        <button class="btn btn-secondary mt-4">Submit</button>
+                    </div>
+                </form>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+

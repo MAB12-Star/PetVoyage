@@ -1,0 +1,82 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <!-- Centered Header Section -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h3 class="text-center text-primary mb-4">Welcome to Your Dashboard</h3>
+            <h5 class="text-center mb-4">Hello, <%= user.displayName %>!</h5>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Saved Country and Airline Regulations Section -->
+    <div class="row mt-5">
+        <!-- Saved Country Regulations -->
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 border-primary rounded">
+                <h5 class="text-primary">Here are your saved country regulations:</h5>
+
+                <% if (user.savedRegulations.length > 0) { %>
+                    <ul class="list-group mt-4">
+                        <% user.savedRegulations.forEach(regulation => { %>
+                            <li class="list-group-item mb-3 shadow-sm border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div>
+                                             <!-- Form to delete the saved regulation -->
+                                    <form class="mb-auto" action="/favorites/<%= regulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i> DELETE
+                                        </button>
+                                    </form>
+                                        <strong>Description:</strong> <%- regulation.description%><br>
+                                        <strong>Link:</strong> <a href="<%= regulation.link %>" target="_blank" class="text-decoration-none">View Regulation</a>
+                                    </div>
+                                   
+                                </div>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-muted">You have not saved any regulations yet.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Saved Airline Regulations -->
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 border-primary rounded">
+                <h5 class="text-primary">Here are your saved airline regulations:</h5>
+        
+                <% if (user.savedFlightRegulations.length > 0) { %>
+                    <ul class="list-group mt-4">
+                        <% user.savedFlightRegulations.forEach(airlineRegulation => { %>
+                            <li class="list-group-item mb-3 shadow-sm border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Airline Code:</strong> <%= airlineRegulation.airlineCode %><br>
+                                        <strong>Link:</strong> <a href="<%= airlineRegulation.petPolicyURL %>" target="_blank" class="text-decoration-none">View Airline Regulation</a>
+                                    </div>
+                                    <!-- Form to delete the saved regulation -->
+                                    <form action="/favorites/deleteFlight/<%= airlineRegulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i> DELETE
+                                        </button>
+                                    </form>
+                                    
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-muted">You have not saved any airline regulations yet.</p>
+                <% } %>
+            </div>
+        </div>
+        
+
+<!-- Include Font Awesome CDN for the icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

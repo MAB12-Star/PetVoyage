@@ -1,0 +1,22 @@
+[
+  {
+    "airlineCode": "AA",
+    "petPolicyURL": "https://www.aa.com/pet-policy"
+  },
+  {
+    "airlineCode": "DL",
+    "petPolicyURL": "https://www.delta.com/pet-policy"
+  },
+  {
+    "airlineCode": "UA",
+    "petPolicyURL": "https://www.united.com/pet-policy"
+  },
+  {
+    "airlineCode": "SW",
+    "petPolicyURL": "https://www.southwest.com/pet-policy"
+  },
+  {
+    "airlineCode": "BA",
+    "petPolicyURL": "https://www.britishairways.com/pet-policy"
+  }
+]

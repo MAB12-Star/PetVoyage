@@ -1,0 +1,168 @@
+[{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d3a"
+  },
+  "airlineCode": "AM",
+  "petPolicyURL": "https://www.aeromexico.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d3b"
+  },
+  "airlineCode": "DL",
+  "petPolicyURL": "https://www.delta.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d3c"
+  },
+  "airlineCode": "KE",
+  "petPolicyURL": "https://www.koreanair.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d3d"
+  },
+  "airlineCode": "KL",
+  "petPolicyURL": "https://www.klm.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d3e"
+  },
+  "airlineCode": "VS",
+  "petPolicyURL": "https://www.virginatlantic.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d3f"
+  },
+  "airlineCode": "PP",
+  "petPolicyURL": "https://www.jetaviation.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d40"
+  },
+  "airlineCode": "AC",
+  "petPolicyURL": "https://www.aircanada.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d41"
+  },
+  "airlineCode": "F9",
+  "petPolicyURL": "https://www.flyfrontier.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d42"
+  },
+  "airlineCode": "UA",
+  "petPolicyURL": "https://www.united.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d43"
+  },
+  "airlineCode": "WN",
+  "petPolicyURL": "https://www.southwest.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d44"
+  },
+  "airlineCode": "AA",
+  "petPolicyURL": "https://www.aa.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d45"
+  },
+  "airlineCode": "BA",
+  "petPolicyURL": "https://www.britishairways.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d46"
+  },
+  "airlineCode": "JL",
+  "petPolicyURL": "https://www.jal.co.jp/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d47"
+  },
+  "airlineCode": "QR",
+  "petPolicyURL": "https://www.qatarairways.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d48"
+  },
+  "airlineCode": "VB",
+  "petPolicyURL": "https://www.vivaaerobus.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d49"
+  },
+  "airlineCode": "Y4",
+  "petPolicyURL": "https://www.volaris.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d4a"
+  },
+  "airlineCode": "AS",
+  "petPolicyURL": "https://www.alaskaair.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d4b"
+  },
+  "airlineCode": "HA",
+  "petPolicyURL": "https://www.hawaiianairlines.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d4c"
+  },
+  "airlineCode": "QF",
+  "petPolicyURL": "https://www.qantas.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d4d"
+  },
+  "airlineCode": "5D",
+  "petPolicyURL": "https://www.aeromexicoconnect.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d4e"
+  },
+  "airlineCode": "AF",
+  "petPolicyURL": "https://www.airfrance.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d4f"
+  },
+  "airlineCode": "AZ",
+  "petPolicyURL": "https://www.alitalia.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d50"
+  },
+  "airlineCode": "IB",
+  "petPolicyURL": "https://www.iberia.com/pet-policy"
+},
+{
+  "_id": {
+    "$oid": "67204bb9a16cf21aeae25d51"
+  },
+  "airlineCode": "LA",
+  "petPolicyURL": "https://www.latam.com/pet-policy"
+}]

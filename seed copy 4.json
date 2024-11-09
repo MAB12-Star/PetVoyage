@@ -1,0 +1,35 @@
+
+{ 
+  "link": "https://www.aphis.usda.gov/pet-travel/another-country-to-us-import",
+  "description": "See link below",
+  "vaccinations": "See link below",
+  "certifications": "See link below",
+  "microchip": "See link below",
+  "assistancePet": "See link below",
+  "petType": { "$oid": "66ec7005736f22bf6acdabe7" },
+  "originCountry": { "$oid": "66ec7005736f22bf6acdabec" },
+  "destinationCountry": { "$oid": "66ec7005736f22bf6acdabeb" },
+  "stateTerritoryRequirements": "Domestic movement requirements are set by the receiving State or Territory. Visit the <a href=\"https://www.nasda.org/about-nasda/state-agriculture-departments/\" target=\"_blank\" rel=\"noopener noreferrer\">National Association of State Departments of Agriculture</a> to find your destination's agriculture department and check its website for requirements. Additional resources are available through the <a href=\"https://usaha.org/saho/\" target=\"_blank\" rel=\"noopener noreferrer\">U.S. Animal Health Association</a>."
+}
+
+{
+  "link": "https://www.aphis.usda.gov/pet-travel/another-country-to-us-import",
+  "description": "See link below",
+  "vaccinations": "See link below",
+  "certifications": "See link below",
+  "microchip": "See link below",
+  "assistancePet": "See link below",
+  "petType": { "$oid": "66ec7005736f22bf6acdabe7" },
+  "originCountry": { "$oid": "66ec7005736f22bf6acdabed" },
+  "destinationCountry": { "$oid": "66ec7005736f22bf6acdabeb" },
+  "stateTerritoryRequirements": "Domestic movement requirements are set by the receiving State or Territory. Visit the <a href=\"https://www.nasda.org/about-nasda/state-agriculture-departments/\" target=\"_blank\" rel=\"noopener noreferrer\">National Association of State Departments of Agriculture</a> to find your destination's agriculture department and check its website for requirements. Additional resources are available through the <a href=\"https://usaha.org/saho/\" target=\"_blank\" rel=\"noopener noreferrer\">U.S. Animal Health Association</a>."
+}
+
+
+
+
+
+
+
+
+

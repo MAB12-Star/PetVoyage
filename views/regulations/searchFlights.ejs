@@ -1,0 +1,241 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4 border-primary rounded">
+                <h3 class="text-center text-primary mb-4">Search for Flights</h3>
+
+                <form class="validated-form" action="/flights/searchFlights" method="POST">
+                    <!-- Display user's current location -->
+                    <div class="form-group mb-3">
+                        <label for="currentLocation">Your Current Location</label>
+                        <input type="text" id="currentLocation" class="form-control" placeholder="Detecting your location... If you are flying from another city please type it">
+                    </div>
+
+                    <!-- Map Container -->
+                    <div id="map" class="border mt-3" style="height: 400px; width: 100%;"></div>
+
+                    <!-- Dropdown for selecting nearby airports -->
+                    <div class="form-group mt-4">
+                        <label for="airport">Select Airport Near You</label>
+                        <select name="airport" id="airport" class="form-control" required>
+                            <option value="">Choose an airport</option>
+                        </select>
+                    </div>
+
+                    <!-- Search box for destination -->
+                    <div class="form-group mt-4">
+                        <label for="destination">Enter Destination</label>
+                        <input type="text" name="destination" id="destination" class="form-control" placeholder="Enter destination city/airport" required>
+                    </div>
+
+                    <!-- Dropdown for selecting destination airports -->
+                    <div class="form-group mt-4">
+                        <label for="destinationLocation">Choose Destination Airport</label>
+                        <select id="destinationLocation" class="form-control" required>
+                            <option value="">Select an airport...</option>
+                        </select>
+                    </div>
+
+                    <!-- Hidden input fields for lat, lng, and selected airports -->
+                    <input type="hidden" id="currentLat" name="currentLat" value="">
+                    <input type="hidden" id="currentLng" name="currentLng" value="">
+                    <input type="hidden" id="selectedAirport" name="selectedAirport" value="">
+                    <input type="hidden" id="selectedAirportLat" name="selectedAirportLat" value="">
+                    <input type="hidden" id="selectedAirportLng" name="selectedAirportLng" value="">
+                    <input type="hidden" id="selectedDestinationAirport" name="selectedDestinationAirport" value="">
+                    <input type="hidden" id="selectedDestinationLat" name="selectedDestinationLat" value="">
+                    <input type="hidden" id="selectedDestinationLng" name="selectedDestinationLng" value="">
+
+                    <div class="text-center">
+                        <button class="btn btn-primary mt-4">Search Flights</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Google Maps Script with API Key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
+
+<script>
+let map;
+let marker;
+
+// Initialize the map and get user's current location
+navigator.geolocation.getCurrentPosition(function (position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+
+    // Set current location in input field (editable)
+    const currentLocationInput = document.getElementById('currentLocation');
+    //currentLocationInput.value = `Lat: ${lat}, Lng: ${lng}`;
+
+    // Save current location in hidden inputs
+    document.getElementById('currentLat').value = lat; // Save latitude
+    document.getElementById('currentLng').value = lng; // Save longitude
+
+    // Initialize Google Map
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: lat, lng: lng },
+        zoom: 12
+    });
+
+    // Create a marker at the current location
+    marker = new google.maps.Marker({
+        position: { lat: lat, lng: lng },
+        map: map,
+        title: 'You are here!'
+    });
+
+    // Fetch nearby airports based on the current location
+    fetchNearbyAirports(lat, lng);
+
+    // Set up autocomplete for the current location input
+    const autocomplete = new google.maps.places.Autocomplete(currentLocationInput, {
+        types: ['geocode'], // For geographic locations
+    });
+
+    // Add event listener for when the user selects a place
+    autocomplete.addListener('place_changed', function () {
+        const place = autocomplete.getPlace();
+        if (place.geometry && place.geometry.location) {
+            const selectedLat = place.geometry.location.lat(); // Get selected latitude
+            const selectedLng = place.geometry.location.lng(); // Get selected longitude
+
+           // console.log(`Selected location: Lat: ${selectedLat}, Lng: ${selectedLng}`);
+
+            // Update hidden input fields for new selected location
+            document.getElementById('currentLat').value = selectedLat; // Update latitude
+            document.getElementById('currentLng').value = selectedLng; // Update longitude
+
+            // Optionally, you can update the map to center on the new location
+            map.setCenter({ lat: selectedLat, lng: selectedLng });
+
+            // Fetch nearby airports based on the newly selected location
+            fetchNearbyAirports(selectedLat, selectedLng);
+        }
+    });
+
+    // Function to fetch nearby airports
+    function fetchNearbyAirports(lat, lng) {
+        const service = new google.maps.places.PlacesService(map);
+        const request = {
+            location: new google.maps.LatLng(lat, lng),
+            radius: '50000', // 50 km radius
+            type: ['airport']
+        };
+
+        // Clear existing options in the airport dropdown
+        const airportDropdown = document.getElementById('airport');
+        airportDropdown.innerHTML = ''; // Clear previous results
+
+        service.nearbySearch(request, function (results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                results.forEach(function (place) {
+                    const option = document.createElement('option');
+                    option.value = place.place_id; // Save place_id for details request
+                    option.text = place.name;
+                    airportDropdown.appendChild(option);
+                });
+
+                // Fetch the airport code using place details API
+                airportDropdown.addEventListener('change', function () {
+                    const placeId = this.value;
+                    if (placeId) {
+                        getAirportCode(placeId, 'selectedAirportLat', 'selectedAirportLng');
+                        document.getElementById('selectedAirport').value = this.options[this.selectedIndex].text;
+                    }
+                });
+            }
+        });
+    }
+});
+
+
+    // Function to get airport code (IATA) using Google Places Details API
+    function getAirportCode(placeId, latField, lngField) {
+        const service = new google.maps.places.PlacesService(map);
+        const request = {
+            placeId: placeId,
+            fields: ['name', 'geometry'] // Fetch name and geometry (lat/lng)
+        };
+
+        service.getDetails(request, function (place, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                const airportName = place.name;
+                const lat = place.geometry.location.lat(); // Get latitude
+                const lng = place.geometry.location.lng(); // Get longitude
+                
+                console.log(`Airport: ${airportName}, Lat: ${lat}, Lng: ${lng}`);
+
+                // Save lat/long in hidden input fields
+                document.getElementById(latField).value = lat;
+                document.getElementById(lngField).value = lng;
+
+                // Optionally place a marker on the airport
+                const airportMarker = new google.maps.Marker({
+                    position: { lat: lat, lng: lng },
+                    map: map,
+                    title: airportName
+                });
+            }
+        });
+    }
+
+    // Fetch nearby airports based on the destination
+    const searchInput = document.querySelector('input[id="destination"]');
+    document.addEventListener('DOMContentLoaded', function () {
+        const autocomplete = new google.maps.places.Autocomplete(searchInput, {
+            types: ['geocode'], // For geographic locations
+        });
+
+        autocomplete.addListener('place_changed', function () {
+            const place = autocomplete.getPlace();
+            if (place.geometry && place.geometry.location) {
+                const lat = place.geometry.location.lat(); // Get latitude
+                const lng = place.geometry.location.lng(); // Get longitude
+
+                //console.log(`Selected location: Lat: ${lat}, Lng: ${lng}`);
+                fetchNearbyAirports(lat, lng);
+            }
+        });
+    });
+
+    function fetchNearbyAirports(lat, lng) {
+        const service = new google.maps.places.PlacesService(map);
+        const request = {
+            location: new google.maps.LatLng(lat, lng),
+            radius: '50000', // 50 km radius
+            type: ['airport'] // Search for airports
+        };
+
+        service.nearbySearch(request, function (results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                const airportDropdown = document.getElementById('destinationLocation');
+                airportDropdown.innerHTML = '<option value="">Choose an airport</option>';
+
+                results.forEach(function (place) {
+                    const option = document.createElement('option');
+                    option.value = place.place_id;
+                    option.text = place.name;
+                    airportDropdown.appendChild(option);
+                });
+
+                airportDropdown.addEventListener('change', function () {
+                    const placeId = this.value;
+                    if (placeId) {
+                        getAirportCode(placeId, 'selectedDestinationLat', 'selectedDestinationLng');
+                        document.getElementById('selectedDestinationAirport').value = this.options[this.selectedIndex].text;
+                        setTimeout(function () {
+                          //  console.log('Selected Destination Latitude:', document.getElementById('selectedDestinationLat').value);
+                          //  console.log('Selected Destination Longitude:', document.getElementById('selectedDestinationLng').value);
+                        }, 500); // 500ms delay to ensure values are fetched and set
+                    }
+                });
+            }
+        });
+    }
+</script>

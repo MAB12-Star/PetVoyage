@@ -1,0 +1,10 @@
+{
+    "originCountry": { "$oid": "66ec7005736f22bf6acdabec" }, 
+    "destinationCountry": { "$oid": "66ec7005736f22bf6acdabed" }, 
+    "petType": { "$oid": "66ec7005736f22bf6acdabe5" }, 
+    "description": "Pet cats do NOT require any health certificate. Rabies vaccination certificate - issued by a licensed veterinarian, proving vaccination within 3 years of importation into Canada. Kittens under 3 months of age exempt from rabies vaccination. Date of vaccination and the type of vaccine must be on the vaccination certificate.",
+    "vaccinations": "Rabies Vacination is requried",
+    "microchip":"Not required",
+    "certifications": "Health cerificate not needed, however check airline requirements",
+    "link": "https://www.canada.ca/en/services/animal-health"
+}

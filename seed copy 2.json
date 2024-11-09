@@ -1,0 +1,62 @@
+{
+    "originCountry": { "$oid": "66ec7005736f22bf6acdabec" },
+    "destinationCountry": { "$oid": "66ec7005736f22bf6acdabed" },
+    "petType": { "$oid": "66ec7005736f22bf6acdabe6" },
+    "vaccinations": "<h2>Pet Dog - Less than 3 Months</h2> 
+      <ul> 
+        <li>No rabies vaccination is required if the dog is less than 3 months old.</li> 
+      </ul> 
+      <h2>Personal Pet Dog - 3 to 8 Months</h2> 
+      <ul> 
+        <li>A valid rabies vaccination certificate is required.</li> 
+        <li>The dog must have been at least 3 months of age at the time of vaccination.</li> 
+      </ul> 
+      <h2>Personal Pet Dog - 8 Months or Older</h2> 
+      <ul> 
+        <li>A valid rabies vaccination certificate is required.</li> 
+        <li>The rabies vaccination certificate must include:</li> 
+        <ul> 
+          <li>Written in English or French, or with an official translation.</li> 
+          <li>Issued and signed by a licensed veterinarian.</li> 
+          <li>Identifies the dog (age, breed, sex, color/markings, weight, and microchip/tattoo number, if applicable).</li> 
+          <li>Indicates the date of rabies vaccination and the trade name of the vaccine.</li> 
+          <li>Specifies the period of validity (typically 1 year unless otherwise specified by the veterinarian).</li> 
+        </ul> 
+      </ul> 
+      <p>The European Union pet passport is an acceptable alternative to the rabies vaccination certificate, as long as it includes all required elements.</p>",
+    "certifications": "<h2>Pet Dog - Less than 3 Months</h2> 
+      <ul> 
+        <li>No health certification is required if the dog is less than 3 months old.</li> 
+      </ul> 
+      <h2>Personal Pet Dog - 3 to 8 Months</h2> 
+      <ul> 
+        <li>A health certificate may be substituted for a rabies vaccination certificate under specific circumstances, such as medical exemptions.</li> 
+        <li>The health certificate must include the following:</li> 
+        <ul> 
+          <li>Be written in English or French.</li> 
+          <li>Be issued on clinic letterhead and signed by a licensed veterinarian.</li> 
+          <li>Identify the animal (age, breed, sex, color/markings, weight, and microchip/tattoo number if applicable).</li> 
+          <li>State that the dog has been in Mexico since birth or for at least 6 months preceding entry into Canada.</li> 
+        </ul> 
+      </ul>",
+    "description": "<h2>Personal Pet Dog - Less than 3 Months</h2> 
+      <p>When you arrive in Canada with a personal pet dog under 3 months of age, the dog must appear healthy and meet humane transportation requirements.</p> 
+      <h2>Personal Pet Dog - 3 to 8 Months</h2> 
+      <p>When you arrive in Canada with a personal pet dog aged 3 to 8 months, you will need a valid rabies vaccination certificate, or a health certificate, and the dog must appear healthy and meet humane transportation requirements.</p> 
+      <h2>Personal Pet Dog - 8 Months or Older</h2> 
+      <p>When you arrive in Canada with a personal pet dog aged 8 months or older, you will need a valid rabies vaccination certificate, and the dog must appear healthy and meet humane transportation requirements.</p>",
+    "microchip": "Not required for personal pet dogs entering Canada from Mexico unless they fall under the commercial category (such as dogs for breeding, sale, or show). Commercial dogs under 8 months of age must be identified with an electronic microchip.",
+    "assistancePet": "<h2>Assistance Dogs</h2> 
+      <p>Assistance dogs are exempt from the rabies vaccination requirements, provided that they meet the following conditions:</p> 
+      <ul> 
+        <li>The dog is accompanied by its designated handler (the person to whom the dog is assigned).</li> 
+        <li>Documentation is presented to prove that the dog is trained and certified by an organization accredited by <a href=\"https://assistancedogsinternational.org/\" target=\"_blank\">Assistance Dogs International</a> or the <a href=\"https://www.igdf.org.uk/\" target=\"_blank\">International Guide Dog Federation</a>.</li> 
+        <li>The dog appears healthy and meets humane transportation requirements.</li> 
+      </ul> 
+      <p>All required original documentation must be available for inspection at the port of entry, and a hard copy is strongly recommended.</p>",
+    "humaneTransport": "<h2>Humane Transportation Requirements</h2> 
+      <p>Canada has strict regulations to ensure the humane transport of animals, including dogs. The dog must be transported in a manner that prevents injury, harm, or suffering during the journey.</p> 
+      <p><a href=\"https://inspection.canada.ca/humane-transport\" target=\"_blank\">Learn more about Canada’s humane transport requirements here.</a></p>",
+    "link": "https://inspection.canada.ca/en/importing-food-plants-animals/pets"
+  }
+  
