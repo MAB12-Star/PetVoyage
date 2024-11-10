@@ -11,7 +11,7 @@ passport.use(new GoogleStrategy({
     //"923014366335-e9hatqrk3fu2mh5079tdsfca0kqn2558.apps.googleusercontent.com",
     clientSecret: process.env.passportClientSecret,
     //"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",
-    callbackURL: "http://localhost:3000/google/callback",
+    callbackURL: "http://www.petvoyage.ai/google/callback",
     passReqToCallback: true,
 }, async function (request, accessToken, refreshToken, profile, done) {
     try {
