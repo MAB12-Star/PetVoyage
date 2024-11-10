@@ -5,21 +5,20 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const ExpressError = require('./utils/ExpressError')
+const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
-const flash = require ('connect-flash');
+const flash = require('connect-flash');
 const passport = require('passport');
 
-
-const regulations = require('./routes/regulations')
+const regulations = require('./routes/regulations');
 const flightRoutes = require('./routes/flights');
 const auth = require('./routes/auth');
 const favoritesRoutes = require('./routes/favorites');
 
 const MongoStore = require('connect-mongo');
 
-
-mongoose.connect('mongodb://localhost:27017/PetVoyage', {});
+// MongoDB connection using MONGO_URI from .env
+mongoose.connect(process.env.mongoKey, {});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -37,21 +36,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
-
+// Session configuration using the MongoDB URI from .env
 const sessionConfig = {
-    secret:"FuckMyLife",
+    secret: process.env.SESSION_SECRET || 'defaultSecret', // Use SESSION_SECRET from .env or fallback to 'defaultSecret'
     resave: false,
-    saveUninitialized: false, // Explicitly set this
+    saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/PetVoyage',
-        touchAfter: 24 * 3600 // lazy update after a day
+        mongoUrl: process.env.mongoKey, // Use the MongoDB URI for session store
+        touchAfter: 24 * 3600 // Lazy update after a day
     }),
     cookie: {
-        httpOnly:true,
-        expires: Date.now() + 1000 * 60 *60 *24 *7,
-        maxAge: 1000 * 60 *60 *24 *7,
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     }
-}
+};
 
 app.use(session(sessionConfig));
 app.use(flash());
@@ -66,30 +65,19 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
-
+// Use routes
 app.use('/', auth);
 app.use('/auth', auth);
-app.use('/regulations',regulations)
+app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
 app.use('/favorites', favoritesRoutes);
-
-app.use('/auth', require('./routes/auth')); 
-const User = require('./models/user'); // Adjust the path if necessary
-
-// Save the return URL in the session
 
 app.get('/dashboard', async (req, res) => {
     if (req.isAuthenticated()) {
         try {
-            // Populate savedRegulations and savedFlightRegulations
             const user = await User.findById(req.user._id)
                 .populate('savedRegulations')
-                .populate('savedFlightRegulations'); // Populate airline regulations
-
-            //console.log('Populated user with regulations:', user.savedRegulations);
-          //  console.log('Populated user with flight regulations:', user.savedFlightRegulations);
+                .populate('savedFlightRegulations');
             
             res.render('dashboard', { user });
         } catch (error) {
@@ -103,28 +91,19 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
-
-
-
-
-
 app.get('/', (req, res) => {
     res.render('index');
 });
-// Render the form for selecting country and pet type
 
-app.all('*', (req, res, next) =>{
-    next (new ExpressError ('Page Not Found', 404) )
-}
-)
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404));
+});
 
-app.use((err,req, res, next)=> {
-    const {statusCode=500} = err;
-    if(!err.message) err.message = 'Something is fucked up'
-    res.status(statusCode).render('error',{err});
-
-})
-
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Something went wrong';
+    res.status(statusCode).render('error', { err });
+});
 
 app.listen(3000, () => {
     console.log('Serving on port 3000');
