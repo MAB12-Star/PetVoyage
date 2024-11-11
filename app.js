@@ -17,6 +17,8 @@ const favoritesRoutes = require('./routes/favorites');
 
 const MongoStore = require('connect-mongo');
 
+const User = require('./models/User'); // Ensure correct path and case
+
 // MongoDB connection using MONGO_URI from .env
 mongoose.connect(process.env.mongoKey, {});
 
