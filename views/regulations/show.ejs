@@ -23,17 +23,18 @@
         
             
                             
-                                <div class="card-body text-center">
-                                    <div class="mb-2">
-                                    <% if (regulations[0].petType.type === "Cat") { %>
-                                        <img class="align-self-center" src="/images/Cat3.png" width="300" height="300" alt="Description of image">
-                                    <% } else if (regulations[0].petType.type === "Dog") { %>
-                                        <img class="align-self-center" src="/images/Dog3.png" width="400" height="400" alt="Description of image">
-                                    <% } else if (regulations[0].petType.type === "Other") { %>
-                                        <img class="align-self-center" src="/images/Bird2.png" width="400" height="400" alt="Description of image">
-                                    <% } %>
-                                </div>
-                                   
+                        <div class="card-body text-center">
+                            <div class="mb-2">
+                                <% if (regulations[0].petType.type === "Cat") { %>
+                                    <img class="align-self-center img-fluid" src="/images/Cat3.png" alt="Description of image">
+                                <% } else if (regulations[0].petType.type === "Dog") { %>
+                                    <img class="align-self-center img-fluid" src="/images/Dog3.png" alt="Description of image">
+                                <% } else if (regulations[0].petType.type === "Other") { %>
+                                    <img class="align-self-center img-fluid" src="/images/Bird2.png" alt="Description of image">
+                                <% } %>
+                            </div>
+                        </div>
+                        
                                   <h4 class="card-text">You're looking to travel to <%= regulations[0].destinationCountry.country %>, with your precious little <%= regulations[0].petType.type %>!</h4>
                                   <p> Below is the necessary information needed to take your friend.  Please click each topic to see what is needed for travel. Save this informaiton to your profile. </p>
                                   <p>Make sure to check airline requirements as they can be different than the countries requirements.</p>
@@ -157,15 +158,23 @@
                             </div>
                                   
                                 </div>
-                            </div>
-                        </div>
+                            
+                        
                     <% }) %>
-                    <div class="d-flex justify-content-between mt-3">
-                        <a href="/regulations/newSearch" class="btn btn-secondary">Back To Search</a>
-                        <a href="/" class="btn btn-secondary">Back To Home</a>
-                        <a href="/regulations/searchFlights" class="btn btn-primary">Search Flights for Pets</a>
+                    <div class="d-flex justify-content-center mt-3 gap-3">
+                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/newSearch'">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/'">
+                            <i class="bi bi-house-door"></i> Home
+                        </button>
+                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/searchFlights'">
+                            <i class="bi bi-search"></i> Search Pet Flights
+                        </button>
                     </div>
-                </div>
+                    
+                    
+                    
                 
             </div>
 
