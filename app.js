@@ -61,7 +61,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user; // Current user if authenticated
+    res.locals.currentUser = req.user || null; // Set to null if user is not authenticated
     res.locals.success = req.flash('success'); // Success message
     res.locals.error = req.flash('error'); // Error message
     next();
