@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const User = require('./models/User'); 
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -16,8 +17,7 @@ const auth = require('./routes/auth');
 const favoritesRoutes = require('./routes/favorites');
 
 const MongoStore = require('connect-mongo');
-
-const User = require('./models/User'); // Ensure correct path and case
+// Ensure correct path and case
 
 // MongoDB connection using MONGO_URI from .env
 mongoose.connect(process.env.mongoKey, {});
