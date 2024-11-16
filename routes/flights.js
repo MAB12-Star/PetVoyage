@@ -88,13 +88,15 @@ router.post('/searchFlights',saveCurrentUrl, mapAirportToIATA, async (req, res) 
              airlines.forEach(airline => {
                  petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
              });
+
+             const flightTypeMap = flightData.flightTypeMap || {};
  
              // Log to confirm what is being passed to the EJS template
            //  console.log('Constructed Pet Policy Map:', petPolicyMap);
             res.render('regulations/showFlights', {
                 flights: flightData.airlineCodes,
                 airlineNamesMap: flightData.airlineNamesMap,
-                flightTypeMap: flightData.flightTypeMap,
+                flightTypeMap,
                 petPolicyMap
             });
             return;
