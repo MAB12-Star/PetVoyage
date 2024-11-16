@@ -4,39 +4,52 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <% if (flights && flights.length > 0) { %>
+                <% 
+                    // Remove duplicates by converting to a Set
+                    let totalAirlines = new Set(flights.filter(airline => airline)).size; 
+                %>
                 <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
                     <div class="card-body">
                         <h3 class="text-center text-primary mb-4">Available Airlines</h3>
+                        <p class="text-center text-secondary">Total Airlines: <strong id="totalAirlines"><%= totalAirlines %></strong></p>
                         
+                        <!-- Filter Buttons -->
+                        <div class="text-center mb-4">
+                            <button class="btn btn-primary" onclick="filterFlights('all')">Show All</button>
+                            <button class="btn btn-success" onclick="filterFlights('direct')">Direct Flights</button>
+                            <button class="btn btn-warning" onclick="filterFlights('indirect')">Indirect Flights</button>
+                        </div>
+
                         <% let displayedAirlines = new Set(); %> <!-- Set to track unique airlines -->
                         
                         <% flights.forEach(airline => { %>
                             <% if (airline && !displayedAirlines.has(airline)) { %>
-                                <div class="card mb-3 border-secondary shadow-sm">
-                                  
+                                <% let flightType = flightTypeMap[airline] || 'unknown'; %>
+                                <div class="card mb-3 border-secondary shadow-sm flight-card" data-type="<%= flightType %>" data-airline="<%= airline %>">
                                     <div class="card-header bg-light">
-                                        <strong>Airline Name: </strong><%= airlineNamesMap[airline] || 'Unknown Airline' %><br>
-                                        <strong>Airline Code: </strong><%= airline %><br>
-                                     
-                                    </div>
-                                    <div id="alert-container" class="mt-4"></div>
-                                    <div class="card-body">
-
-                                        <% if (petPolicyMap[airline]) { %>
-                                            <strong>Pet Policy: </strong><a href="<%= petPolicyMap[airline] %>" target="_blank">View Pet Policy</a>
-                                        <% } else { %>
-                                            <strong>Pet Policy: </strong>Not available
-                                        <% } %>
-                                        <!-- Add the airline to the Set to prevent duplicates -->
-                                        <% displayedAirlines.add(airline); %>
-                                        
-                                        <!-- Favorite Button for All Airlines -->
                                         <form class="saveFlightForm" data-airline="<%= airline %>">
                                             <input type="hidden" name="airlineCode" value="<%= airline %>">
                                             <button type="submit" class="btn btn-outline-danger float-end">
                                                 <i class="fas fa-heart"></i> Save
                                             </button>
                                         </form>
+                                        <strong>Airline Name: </strong><%= airlineNamesMap[airline] || 'Unknown Airline' %><br>
+                                        <p><strong>Flight Type:</strong> <%= flightType %></p>
+                                        
+                                        <% if (petPolicyMap[airline]) { %>
+                                            <strong>Pet Policy: </strong>
+                                            <a href="<%= petPolicyMap[airline] %>" target="_blank" rel="noopener noreferrer">
+                                                <%= petPolicyMap[airline] %>
+                                            </a>
+                                        <% } else { %>
+                                            <strong>Pet Policy: </strong>Not available
+                                        <% } %>
+                                        
+                                    
+                                        <!-- Add the airline to the Set to prevent duplicates -->
+                                        <% displayedAirlines.add(airline); %>
+                                        
+                                        <!-- Favorite Button for All Airlines -->
                                         
                                     </div>
                                 </div>
@@ -51,4 +64,25 @@
     </div>
 </div>
 
+<!-- Add JavaScript for Filtering -->
+<script>
+    function filterFlights(filterType) {
+        const cards = document.querySelectorAll('.flight-card');
+        let visibleAirlines = new Set();
 
+        cards.forEach(card => {
+            const type = card.getAttribute('data-type');
+            const airline = card.getAttribute('data-airline');
+            if (filterType === 'all' || type === filterType) {
+                card.style.display = 'block';
+                visibleAirlines.add(airline);
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Update the total airlines count dynamically
+        const totalAirlinesElement = document.getElementById('totalAirlines');
+        totalAirlinesElement.textContent = visibleAirlines.size;
+    }
+</script>
