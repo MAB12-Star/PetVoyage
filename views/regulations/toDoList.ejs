@@ -1,38 +1,43 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="container mt-5">
-    <h1 class="text-center text-primary mb-4">Checklist for Pet Travel</h1>
+    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Checklist for Pet Travel</strong></h1>
     <% Object.keys(toDoList).forEach(section => { %>
-        <div class="card mb-3 shadow-sm">
+        <div class="card mb-4">
             <div class="card-header bg-secondary text-white">
-                <h4><%= section %></h4>
+                <strong><%= section %></strong>
             </div>
-            <div class="card-body">
+            <ul class="list-group list-group-flush">
                 <% Object.keys(toDoList[section]).forEach(task => { %>
-                    <div class="form-check">
-                        <input
-                            class="form-check-input task-checkbox"
-                            type="checkbox"
-                            data-section="<%= section %>"
-                            data-task="<%= task %>"
-                            <%= toDoList[section][task] ? 'checked' : '' %>
-                        >
-                        <label class="form-check-label">
-                            <%= task %>
-                        </label>
-                    </div>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><%= task %></span>
+                        <% if (isAuthenticated) { %>
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input" 
+                                data-section="<%= section %>" 
+                                data-task="<%= task %>" 
+                                <%= toDoList[section][task] ? 'checked' : '' %> 
+                            >
+                        <% } %>
+                    </li>
                 <% }) %>
-            </div>
+            </ul>
         </div>
     <% }) %>
+    <% if (!isAuthenticated) { %>
+        <div class="alert alert-info text-center mt-4">
+            <strong>Note:</strong> Log in to mark tasks as completed and save your progress.
+        </div>
+    <% } %>
 </div>
 
 <script>
-    document.querySelectorAll('.task-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const section = this.dataset.section;
-            const task = this.dataset.task;
-            const completed = this.checked;
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const section = e.target.dataset.section;
+            const task = e.target.dataset.task;
+            const completed = e.target.checked;
 
             fetch('/toDoList/update', {
                 method: 'POST',
@@ -43,16 +48,11 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    console.log('Task updated successfully');
-                } else {
-                    alert('Error updating task');
+                if (!data.success) {
+                    alert('Failed to save progress. Please try again.');
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating task');
-            });
+            .catch(err => console.error('Error updating task:', err));
         });
     });
 </script>
