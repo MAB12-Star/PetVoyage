@@ -15,6 +15,7 @@ const regulations = require('./routes/regulations');
 const flightRoutes = require('./routes/flights');
 const auth = require('./routes/auth');
 const favoritesRoutes = require('./routes/favorites');
+const aboutUs = require('./routes/aboutUs');
 
 const MongoStore = require('connect-mongo');
 // Ensure correct path and case
@@ -73,6 +74,9 @@ app.use('/auth', auth);
 app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
 app.use('/favorites', favoritesRoutes);
+app.use('/aboutUs', aboutUs);
+
+
 
 app.get('/dashboard', async (req, res) => {
     if (req.isAuthenticated()) {
