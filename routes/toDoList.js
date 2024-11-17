@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// Full checklist visible to all users
+// Default checklist structure
 const defaultChecklist = {
     "Research your destination country's pet import requirements": {
         "Is an import permit required?": false,
         "Is a microchip required?": false,
         "What vaccinations are required and when should they be administered?": false,
-        "Is there a Blood Titer Test (RNATT) test required?": false,
+        "Is a Blood Titer Test (RNATT) test required?": false,
         "Is an internal and internal parasite requirement?": false,
         "Is there a need to make quarantine arrangements?": false,
         "Must my pet arrive as manifest cargo?": false,
@@ -59,22 +59,20 @@ const defaultChecklist = {
 
 // GET To-Do List Page
 router.get('/', async (req, res) => {
-    let toDoList = defaultChecklist; // Default checklist for all users
+    let toDoList = defaultChecklist;
 
-    // If the user is authenticated, fetch their personal to-do list
     if (req.isAuthenticated()) {
         try {
             const user = await User.findById(req.user._id);
             if (user && user.toDoList) {
-                toDoList = { ...defaultChecklist, ...user.toDoList };
+                toDoList = user.toDoList;
             }
         } catch (error) {
             console.error('Error fetching user to-do list:', error);
         }
     }
 
-    // Render the to-do list page
-    res.render('regulations/toDoList', { toDoList, isAuthenticated: req.isAuthenticated() });
+    res.render('regulations/toDoList', { toDoList });
 });
 
 // POST route to update the to-do list
@@ -91,14 +89,13 @@ router.post('/update', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Update the specific task
-        if (user.toDoList[section] && user.toDoList[section].hasOwnProperty(task)) {
-            user.toDoList[section][task] = completed;
-        } else {
-            user.toDoList[section] = { ...(user.toDoList[section] || {}), [task]: completed };
+        if (!user.toDoList[section]) {
+            user.toDoList[section] = {};
         }
 
+        user.toDoList[section][task] = completed === 'true';
         await user.save();
+
         res.status(200).json({ success: true, message: 'Task updated successfully' });
     } catch (error) {
         console.error('Error updating to-do list:', error);
