@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
             <h3 class="text-center text-secondary-emphasis mb-4">Welcome to Your Dashboard</h3>
-            <h5 class="text-center mb-4">Hello, <%= user.displayName %>!</h5>
-            <p><strong>Email:</strong> <%= user.email %></p>
+            <h5 class="text-center text-secondary mb-4">Hello, <%= user.displayName %>!</h5>
+            <p cl><strong>Email:</strong> <%= user.email %></p>
             <hr>
         </div>
     </div>
@@ -16,7 +16,7 @@
         <!-- Saved Country Regulations -->
         <div class="col-md-6">
             <div class="card shadow-lg p-4 border-primary rounded">
-                <h5 class="text-secondary-emphasis">Here are your saved country regulations:</h5>
+                <h5 class="text-secondary-emphasis"><strong>Here are your saved country regulations:</strong></h5>
 
                 <% if (user.savedRegulations.length > 0) { %>
                     <ul class="list-group mt-4">
@@ -49,7 +49,7 @@
         <!-- Saved Airline Regulations -->
         <div class="col-md-6">
             <div class="card shadow-lg p-4 border-primary rounded">
-                <h5 class="text-secondary-emphasis">Here are your saved airline regulations:</h5>
+                <h5 class="text-secondary-emphasis"><strong>Here are your saved airline regulations:</strong></h5>
         
                 <% if (user.savedFlightRegulations.length > 0) { %>
                     <ul class="list-group mt-4">
