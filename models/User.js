@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-Schema = mongoose.Schema; // Don't forget to define the Schema
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
     googleId: {
@@ -17,20 +17,23 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     savedRegulations: [
-        { type: Schema.Types.ObjectId, 
-           ref: 'Regulation' 
-        }
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Regulation',
+        },
     ],
     savedFlightRegulations: [
-        { type: Schema.Types.ObjectId, 
-           ref: 'Airline' 
-        }
-    ], // Array to store saved regulations
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Airline',
+        },
+    ],
+    toDoList: {
+        type: Map, // A Map to store task descriptions and their completion status
+        of: Boolean, // Values are `true` for completed, `false` for not completed
+        default: {}, // Initialize as an empty object
+    },
 });
-
-
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
-
-

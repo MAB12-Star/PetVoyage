@@ -16,6 +16,9 @@ const flightRoutes = require('./routes/flights');
 const auth = require('./routes/auth');
 const favoritesRoutes = require('./routes/favorites');
 const aboutUs = require('./routes/aboutUs');
+const toDoListRoutes = require('./routes/toDoList');
+
+
 
 const MongoStore = require('connect-mongo');
 // Ensure correct path and case
@@ -75,6 +78,13 @@ app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
 app.use('/favorites', favoritesRoutes);
 app.use('/aboutUs', aboutUs);
+
+console.log('To-Do List route registered');
+app.use('/toDoList', toDoListRoutes);
+
+
+
+
 
 
 
