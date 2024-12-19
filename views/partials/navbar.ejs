@@ -1,50 +1,92 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">PetVoyage</a>
+        <a class="navbar-brand" href="/">PetVoyage</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Left side links -->
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/aboutus">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/regulations/newSearch">Search Country</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/regulations/searchFlights">Search Flights</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Favorites <i class="fas fa-heart"></i></a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/aboutus">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="/regulations/newSearch">Search Country</a></li>
+                <li class="nav-item"><a class="nav-link" href="/regulations/searchFlights">Search Flights</a></li>
+                <li class="nav-item"><a class="nav-link" href="/dashboard">Favorites <i class="fas fa-heart"></i></a></li>
             </ul>
+
+            <!-- Search Bar -->
+            <form class="d-flex mx-auto position-relative" role="search">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link">Search</a></li>
+                </ul>
+                <input class="form-control me-2" type="text" id="airlineSearch" placeholder="Pet Airline Regulations..." autocomplete="off">
+                <ul class="dropdown-menu" id="airlineDropdown" style="position: absolute; width: 100%; display: none;"></ul>
+            </form>
 
             <!-- Right side authentication links -->
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/contactUs">Contact Us</a></li>
                 <% if (!currentUser) { %>
-                    <li class="nav-item">
-                        <a id="loginLink" class="nav-link" href="/login">Login</a>
-                    </li>
+                    <li class="nav-item"><a id="loginLink" class="nav-link" href="/login">Login</a></li>
                 <% } else { %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">Profile</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Profile</a></li>
                 <% } %>
             </ul>
         </div>
     </div>
 </nav>
 
-
-
-
-
-
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("airlineSearch");
+        const dropdownMenu = document.getElementById("airlineDropdown");
+        let airlines = [];
+    
+        // Fetch airline names and IDs from the server
+        async function fetchAirlines() {
+            try {
+                const response = await fetch("/airlines"); // Backend API returns [{ _id, name }]
+                airlines = await response.json();
+            } catch (error) {
+                console.error("Error fetching airline names:", error);
+            }
+        }
+    
+        // Filter and display airlines in the dropdown
+        function filterAirlines(query) {
+            dropdownMenu.innerHTML = ""; // Clear previous results
+    
+            const filtered = query
+                ? airlines.filter(airline => airline.name.toLowerCase().includes(query.toLowerCase()))
+                : airlines; // Show all if query is empty
+    
+            filtered.forEach(airline => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("dropdown-item");
+                listItem.textContent = airline.name;
+    
+                // On click, navigate to flight details page
+                listItem.addEventListener("click", () => {
+                    window.location.href = `/flights/${encodeURIComponent(airline._id)}`;
+                });
+    
+                dropdownMenu.appendChild(listItem);
+            });
+    
+            dropdownMenu.style.display = filtered.length > 0 ? "block" : "none";
+        }
+    
+        // Event listeners
+        searchInput.addEventListener("input", (e) => filterAirlines(e.target.value));
+        searchInput.addEventListener("click", () => filterAirlines("")); // Show all on click
+        document.addEventListener("click", (e) => {
+            if (!dropdownMenu.contains(e.target) && !searchInput.contains(e.target)) {
+                dropdownMenu.style.display = "none";
+            }
+        });
+    
+        fetchAirlines();
+    });
+    </script>
+    

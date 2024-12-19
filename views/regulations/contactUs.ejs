@@ -1,0 +1,96 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Contact Us Form Section (2/3 height on larger screens) -->
+        <div class="col-md-8 col-sm-12 contact-form-container">
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-body">
+                    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Consultations Available!</strong></h1>
+                    <div class="consultation-form">
+                        <h2 class="text-center">Contact Us</h2>
+                        <form id="contact-form" action="/contact-us" method="POST">
+                            <div class="form-group">
+                                <label for="contact_name">Your Name</label>
+                                <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_email">Your Email</label>
+                                <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_message">Your Message</label>
+                                <textarea class="form-control" id="contact_message" name="contact_message" rows="4" placeholder="Write your message here..." required></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ask Pet AI Form Section (1/3 height on larger screens) -->
+        <div class="col-md-4 col-sm-12 ask-ai-container">
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-body">
+                    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Ask Pet AI Your Question!</strong></h1>
+                    <form id="ask-question-form" action="/contactUs/ask-question" method="POST">
+                        <div class="form-group">
+                            <label for="user_question">Your Question</label>
+                            <input type="text" class="form-control" id="user_question" name="user_question" placeholder="Ask about pet regulations..." required>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Ask Question</button>
+                        </div>
+                    </form>
+
+                    <!-- Success Message After Form Submission -->
+                    <div id="success-message" class="alert alert-success" style="display:none;">
+                        <h4>Success!</h4>
+                        <p>Your question has been submitted. Pet AI will respond shortly!</p>
+                    </div>
+
+                    <% if (answer) { %>
+                        <div class="answer-container mt-5">
+                            <h3>Answer from Pet AI:</h3>
+                            <div class="answer">
+                                <div class="scrollable-answer">
+                                    <p><%= answer %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+    (function(){
+        emailjs.init("UHaN3VH7ImUFuXgUm"); // Replace with your Public Key
+    })();
+
+    // Contact form submission with EmailJS
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        emailjs.sendForm('service_c5kaa3h', 'template_bag17hw', this) // Replace with your Service ID and Template ID
+            .then(function() {
+                console.log('SUCCESS!');
+                document.getElementById('contact-form').style.display = 'none'; // Hide the form
+                document.getElementById('success-message').style.display = 'block'; // Show the success message
+            }, function(error) {
+                console.log('FAILED...', error);
+                alert('Failed to send your message. Please try again later.');
+            });
+    });
+</script>
+
+<!-- Styles -->
+<style>
+
+</style>

@@ -2,78 +2,44 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// Full checklist visible to all users
+// Default checklist structure
 const defaultChecklist = {
-    "Research your destination country's pet import requirements": {
-        "Is an import permit required?": false,
-        "Is a microchip required?": false,
-        "What vaccinations are required and when should they be administered?": false,
-        "Is there a Blood Titer Test (RNATT) test required?": false,
-        "Is an internal and internal parasite requirement?": false,
-        "Is there a need to make quarantine arrangements?": false,
-        "Must my pet arrive as manifest cargo?": false,
-    },
-    "Get your pet's crate or carrier and start working on acclimation": {
-        "Pet carrier must have waterproof bottom, adequate ventilation and be secure.": false,
-        "Pet crate for larger cats and dogs must meet IATA requirements.": false,
-        "Put lots of familiar things in the crate or carrier including something with your scent.": false,
-        "Encourage your pet to rest and nap in its carrier.": false,
-        "Leave the door open so your pet can go in and out of the crate or carrier.": false,
-        "Take them for drives or walks to someplace fun in their crate or carrier.": false,
-        "Spend time praising your pet for loving their crate or carrier.": false,
-    },
-    "Schedule a visit to see your veterinarian": {
-        "Check for health.": false,
-        "Have your pet microchipped with a 15-digit ISO 11784/11785 microchip.": false,
-        "Verify rabies vaccination expiration.": false,
-        "Discuss any titer test or other testing that must be done.": false,
-    },
-    "Check airline or roadway routes": {
-        "Check for road construction or traffic issues if traveling on the ground.": false,
-        "If flying, avoid airports that are more challenging to transit (e.g., London, Taiwan).": false,
-        "Keep layovers to 2 hours if possible.": false,
-        "Do not change airlines—changing planes is okay.": false,
-    },
-    "Research pet-friendly hotels and services": {
-        "Find a pet-friendly hotel and verify pet policies before booking online.": false,
-        "Find an animal hospital nearby in case of emergencies.": false,
-        "Find pet-friendly parks and restaurants nearby.": false,
-    },
-    "Get your pet's supplies": {
-        "Leash and collar.": false,
-        "Name tag with your phone number.": false,
-        "Picture of you and your pet in case of separation.": false,
-        "Bottled water and a portable water dish.": false,
-        "Supply of sealed pet food and treats.": false,
-        "Brush and shampoo.": false,
-        "Toys, including a special chew bone for the trip.": false,
-        "Medication and emergency items (e.g., eye drops, tweezers).": false,
-        "Pet harness for the car.": false,
-        "Old sheets for covering furniture in hotels.": false,
-        "Plastic bags for cleanup.": false,
-    },
-    "Schedule a trip to the groomer": {
-        "A clean pet is a comfortable pet.": false,
-    },
+    "To-Do": [
+        "Research your destination country's pet import requirements",
+        "Get your pet's crate or carrier and start working on acclimation",
+        "Schedule a visit to see your veterinarian",
+        "Check airline or roadway routes",
+        "Research pet-friendly hotels and services",
+        "Get your pet's supplies",
+        "Schedule a trip to the groomer",
+    ],
+    "In Progress": [],
+    "Completed": [],
 };
 
 // GET To-Do List Page
 router.get('/', async (req, res) => {
     let toDoList = defaultChecklist; // Default checklist for all users
 
-    // If the user is authenticated, fetch their personal to-do list
     if (req.isAuthenticated()) {
         try {
             const user = await User.findById(req.user._id);
             if (user && user.toDoList) {
-                toDoList = { ...defaultChecklist, ...user.toDoList };
+                console.log('User toDoList from DB:', user.toDoList);  // Log user's current toDoList
+                toDoList = {
+                    "To-Do": user.toDoList.get("To-Do") || defaultChecklist["To-Do"],
+                    "In Progress": user.toDoList.get("In Progress") || [],
+                    "Completed": user.toDoList.get("Completed") || [],
+                };
+            } else {
+                console.log('No user data found or no toDoList in DB');  // Log if no data found
             }
         } catch (error) {
             console.error('Error fetching user to-do list:', error);
         }
     }
 
-    // Render the to-do list page
+    console.log('Rendering toDoList:', toDoList);  // Log the toDoList being rendered
     res.render('regulations/toDoList', { toDoList, isAuthenticated: req.isAuthenticated() });
 });
 
@@ -83,7 +49,15 @@ router.post('/update', async (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { section, task, completed } = req.body;
+    const { task, fromSection, toSection } = req.body;
+
+    // Log the incoming data to verify it's correct
+    console.log('Received task update:', { task, fromSection, toSection });
+
+    // Check if task or sections are undefined
+    if (!task || !fromSection || !toSection) {
+        return res.status(400).json({ error: 'Invalid data received' });
+    }
 
     try {
         const user = await User.findById(req.user._id);
@@ -91,19 +65,33 @@ router.post('/update', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Update the specific task
-        if (user.toDoList[section] && user.toDoList[section].hasOwnProperty(task)) {
-            user.toDoList[section][task] = completed;
-        } else {
-            user.toDoList[section] = { ...(user.toDoList[section] || {}), [task]: completed };
+        // Ensure the sections are present in the Map
+        if (!user.toDoList.get(fromSection)) {
+            user.toDoList.set(fromSection, []);
+        }
+        if (!user.toDoList.get(toSection)) {
+            user.toDoList.set(toSection, []);
         }
 
-        await user.save();
+        // Log current toDoList before updating
+        console.log('Before updating toDoList:', user.toDoList);
+
+        // Remove task from the previous section and add it to the new section
+        user.toDoList.get(fromSection).pull(task);  // `pull` is used to remove an item
+        user.toDoList.get(toSection).push(task);    // `push` is used to add the item to the new section
+
+        // Log after updating
+        console.log('After updating toDoList:', user.toDoList);
+
+        await user.save();  // Save the updated list to the database
+        console.log('User toDoList saved to DB:', user.toDoList);  // Log after saving
+
         res.status(200).json({ success: true, message: 'Task updated successfully' });
     } catch (error) {
         console.error('Error updating to-do list:', error);
         res.status(500).json({ error: 'Failed to update task' });
     }
 });
+
 
 module.exports = router;

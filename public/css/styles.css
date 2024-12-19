@@ -1,0 +1,140 @@
+/* Default styling for images */
+.dynamic-image {
+    max-height: 300px;
+    margin: 10px;
+    object-fit: cover;
+}
+
+/* Hide the images designed for small screens by default */
+.dynamic-image-mobile {
+    display: none;
+}
+
+/* Flex row for large screens */
+.image-row {
+    display: flex;
+    gap: 15px;
+}
+
+/* Responsive styling for iPhone or tablet */
+@media (max-width: 768px) {
+    /* Show individual images between paragraphs */
+    .dynamic-image {
+        display: none; /* Hide the row of images */
+    }
+
+    .dynamic-image-mobile {
+        display: block;
+        max-width: 80%;
+        margin: 15px auto; /* Center the images */
+    }
+
+
+}
+
+    /* Contact Us and Ask Pet AI Form Containers */
+    .contact-form-container, .ask-ai-container {
+        margin-top: 30px;
+    }
+
+    .consultation-form {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .consultation-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .answer-container {
+        background-color: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .answer-container h3 {
+        color: #28a745;
+    }
+
+    .answer-container p {
+        font-size: 1.1rem;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .contact-form-container, .ask-ai-container {
+            margin-top: 20px;
+        }
+
+        /* Stack the forms vertically on mobile */
+        .contact-form-container, .ask-ai-container {
+            width: 100%; /* Make both forms take full width */
+        }
+
+        .contact-form-container {
+            margin-bottom: 20px;
+        }
+    }
+
+    /* Larger screens (2/3 height for Contact Us and 1/3 for Ask Pet AI) */
+    @media (min-width: 768px) {
+        .contact-form-container {
+            height: 66vh;  /* 2/3 screen height */
+        }
+
+        .ask-ai-container {
+            height: 33vh;  /* 1/3 screen height */
+        }
+
+        /* Ensure the form content is vertically centered */
+        .consultation-form, .answer-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+    }
+
+    /* Style the scrollable answer box */
+.scrollable-answer {
+    max-height: 300px; /* Set a fixed height for the scrollable box */
+    overflow-y: auto;  /* Enable vertical scrolling when content exceeds the box height */
+    padding: 10px;
+    border: 1px solid #ccc; /* Optional: add a border to the text box */
+    background-color: #f9f9f9; /* Optional: set a light background color */
+    border-radius: 8px;  /* Optional: round the corners */
+}
+
+/* Optional: Style the content inside the scrollable box */
+.scrollable-answer p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+#airlineDropdown {
+    position: absolute;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+
+

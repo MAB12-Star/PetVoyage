@@ -1,0 +1,150 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-body">
+                    <!-- Contact Form for Contacting You -->
+                    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Consultations Available!</strong></h1>
+                    <p class="lead text-center">See below to contact us and ask Pet AI a question!</p>
+
+                    <div class="consultation-form-container">
+                        <h2 class="text-center">Contact Us</h2>
+                        <form id="contact-form" action="/contact-us" method="POST">
+                            <div class="form-group">
+                                <label for="contact_name">Your Name</label>
+                                <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_email">Your Email</label>
+                                <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_message">Your Message</label>
+                                <textarea class="form-control" id="contact_message" name="contact_message" rows="4" placeholder="Write your message here..." required></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Success message after the contact form submission -->
+                    <div id="success-message" class="alert alert-success" style="display:none;">
+                        <h4>Success!</h4>
+                        <p>Your message has been sent. We’ll get back to you soon!</p>
+                    </div>
+
+                    <!-- Ask Pet AI Question Form -->
+                    <h2 class="text-center mt-5">Ask Pet AI Your Question!</h2>
+                   c
+
+                    <!-- Display the Answer from Pet AI -->
+                    <% if (answer) { %>
+                        <div class="answer-container mt-5">
+                            <h3>Answer from Pet AI:</h3>
+                            <div class="answer">
+                                <p><%= answer %></p>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EmailJS Script -->
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+    (function(){
+        emailjs.init("UHaN3VH7ImUFuXgUm"); // Replace with your Public Key
+    })();
+
+    // Contact form submission with EmailJS
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        emailjs.sendForm('service_c5kaa3h', 'template_bag17hw', this) // Replace with your Service ID and Template ID
+            .then(function() {
+                console.log('SUCCESS!');
+                document.getElementById('contact-form').style.display = 'none'; // Hide the form
+                document.getElementById('success-message').style.display = 'block'; // Show the success message
+            }, function(error) {
+                console.log('FAILED...', error);
+                alert('Failed to send your message. Please try again later.');
+            });
+    });
+</script>
+
+<!-- Styles -->
+<style>
+    .consultation-form-container {
+        margin-top: 30px;
+    }
+
+    .consultation-form {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .consultation-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .consultation-form h2 {
+        font-size: 1.5rem;
+        color: #007bff;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .dynamic-image-mobile {
+        display: none;
+    }
+
+    @media screen and (max-width: 768px) {
+        .dynamic-image {
+            display: none;
+        }
+
+        .dynamic-image-mobile {
+            display: block;
+        }
+    }
+
+    #success-message {
+        display: none;
+        margin-top: 20px;
+    }
+
+    #success-message h4 {
+        color: #28a745;
+    }
+
+    .answer-container {
+        background-color: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .answer-container h3 {
+        color: #28a745;
+    }
+
+    .answer-container p {
+        font-size: 1.1rem;
+    }
+</style>

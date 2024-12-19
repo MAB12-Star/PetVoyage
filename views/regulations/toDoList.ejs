@@ -1,58 +1,104 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="container mt-5">
-    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Checklist for Pet Travel</strong></h1>
-    <% Object.keys(toDoList).forEach(section => { %>
-        <div class="card mb-4">
-            <div class="card-header bg-secondary text-white">
-                <strong><%= section %></strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                <% Object.keys(toDoList[section]).forEach(task => { %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><%= task %></span>
-                        <% if (isAuthenticated) { %>
-                            <input 
-                                type="checkbox" 
-                                class="form-check-input" 
-                                data-section="<%= section %>" 
-                                data-task="<%= task %>" 
-                                <%= toDoList[section][task] ? 'checked' : '' %> 
-                            >
-                        <% } %>
+    <div class="row">
+        <!-- To-Do Section -->
+        <div class="col-md-4">
+            <h3 class="text-primary">To-Do</h3>
+            <ul id="todo" class="task-list border p-3 rounded">
+                <% (toDoList["To-Do"] || []).forEach(task => { %>
+                    <li class="task-item border-bottom py-2" draggable="true" data-task="<%= task %>" data-section="To-Do">
+                        <%= task %>
                     </li>
                 <% }) %>
             </ul>
         </div>
-    <% }) %>
-    <% if (!isAuthenticated) { %>
-        <div class="alert alert-info text-center mt-4">
-            <strong>Note:</strong> Log in to mark tasks as completed and save your progress.
+
+        <!-- In Progress Section -->
+        <div class="col-md-4">
+            <h3 class="text-warning">In Progress</h3>
+            <ul id="in-progress" class="task-list border p-3 rounded">
+                <% (toDoList["In Progress"] || []).forEach(task => { %>
+                    <li class="task-item border-bottom py-2" draggable="true" data-task="<%= task %>" data-section="In Progress">
+                        <%= task %>
+                    </li>
+                <% }) %>
+            </ul>
         </div>
-    <% } %>
+
+        <!-- Completed Section -->
+        <div class="col-md-4">
+            <h3 class="text-success">Completed</h3>
+            <ul id="completed" class="task-list border p-3 rounded">
+                <% (toDoList["Completed"] || []).forEach(task => { %>
+                    <li class="task-item border-bottom py-2" draggable="true" data-task="<%= task %>" data-section="Completed">
+                        <%= task %>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <script>
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            const section = e.target.dataset.section;
-            const task = e.target.dataset.task;
-            const completed = e.target.checked;
+    // Drag-and-drop functionality
+    document.querySelectorAll('.task-list').forEach(list => {
+        list.addEventListener('dragover', (e) => e.preventDefault());
 
-            fetch('/toDoList/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ section, task, completed }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    alert('Failed to save progress. Please try again.');
+        list.addEventListener('drop', async (e) => {
+            e.preventDefault();
+
+            // Get the transferred data (the task object)
+            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+            const task = data.task;
+            const fromSection = data.section;
+            const toSection = e.currentTarget.id;
+
+            // Log to ensure values are being transferred correctly
+            console.log('Dropped task:', task);
+            console.log('From Section:', fromSection);
+            console.log('To Section:', toSection);
+
+            // Find the target list and move the task element there
+            const targetList = document.getElementById(toSection);
+            if (targetList) {
+                const taskElement = document.querySelector(`[data-task="${task}"]`);
+                if (taskElement) targetList.appendChild(taskElement);
+            }
+
+            if (isAuthenticated) {
+                try {
+                    // Send the updated task data to the server
+                    const response = await fetch('/toDoList/update', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ task, fromSection, toSection }),
+                    });
+
+                    if (!response.ok) {
+                        alert('Failed to update task on the server.');
+                    }
+                } catch (error) {
+                    console.error('Error during task update:', error);
+                    alert('An error occurred while saving your progress.');
                 }
-            })
-            .catch(err => console.error('Error updating task:', err));
+            } else {
+                alert('Please log in to save your progress.');
+            }
+        });
+    });
+
+    // Dragstart: Set the task data when an item is dragged
+    document.querySelectorAll('.task-item').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            const taskData = {
+                task: e.target.dataset.task,  // Get the task name
+                section: e.target.dataset.section,  // Get the section name
+            };
+            console.log('Dragging task data:', taskData);  // Log the task data
+            e.dataTransfer.setData('text/plain', JSON.stringify(taskData));
         });
     });
 </script>
+
+

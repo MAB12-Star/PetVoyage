@@ -4,20 +4,22 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const router = express.Router();
 
+// Determine the callback URL dynamically based on the environment
+const callbackURL = process.env.NODE_ENV === 'production'
+    ? "http://www.petvoyage.ai/google/callback"
+    : "http://localhost:3000/google/callback";
 
 // Configure Google Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.passportClientId,
-    //"923014366335-e9hatqrk3fu2mh5079tdsfca0kqn2558.apps.googleusercontent.com",
     clientSecret: process.env.passportClientSecret,
-    //"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",
-    callbackURL: "http://www.petvoyage.ai/google/callback",
+    callbackURL: callbackURL,
     passReqToCallback: true,
 }, async function (request, accessToken, refreshToken, profile, done) {
     try {
         let user = await User.findOne({ googleId: profile.id });
         if (user) {
-            console.log('User Found:', user);  // Fixed syntax for console.log
+            console.log('User Found:', user);
             user.displayName = profile.displayName;
             user.email = profile.emails[0].value;
             await user.save();
@@ -31,9 +33,9 @@ passport.use(new GoogleStrategy({
             await user.save();
         }
 
-        return done(null, user);  // Corrected 'err' to 'user' in the callback
+        return done(null, user);
     } catch (err) {
-        console.error("Error during authentication:", err);  // Fixed syntax
+        console.error("Error during authentication:", err);
         return done(err, null);
     }
 }));
@@ -50,50 +52,36 @@ passport.deserializeUser((id, done) => {
 
 // Route to initiate Google authentication
 router.get('/google', (req, res, next) => {
-    // Save the current URL to session before starting Google authentication
     req.session.currentPage = req.headers.referer || req.originalUrl;
     console.log('Saving URL to session:', req.session.currentPage);
 
-    // Explicitly save the session to persist `currentPage` before authentication
     req.session.save((err) => {
         if (err) {
             console.error('Error saving session before Google auth:', err);
-            return res.redirect('/'); // Redirect to home or show an error page if saving fails
+            return res.redirect('/');
         }
 
-        // Proceed to authenticate with Google after ensuring session is saved
         passport.authenticate('google', {
             scope: ['profile', 'email']
         })(req, res, next);
     });
 });
 
-
-
 // Callback route for Google to redirect to after authentication
-router.get('/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/' }), 
+router.get('/google/callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
         console.log('User authenticated successfully:', req.user);
-        console.log("Session after auth:", req.session);
-        console.log("Value of `req.session.currentPage`:", req.session.currentPage);
 
-        // Use the saved URL from the session, fallback to dashboard if not found
         const redirectUrl = req.session.currentPage || '/dashboard';
-        delete req.session.currentPage; // Clean up after redirect to avoid reusing it
+        delete req.session.currentPage;
 
-        console.log('Redirecting to:', redirectUrl); // Log the redirect URL for debugging
+        console.log('Redirecting to:', redirectUrl);
         res.redirect(redirectUrl);
     }
 );
 
-
-
-
-
-
-
-// Route to Log Out
+// Route to log out
 router.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) { return next(err); }
@@ -103,9 +91,8 @@ router.get('/logout', (req, res, next) => {
 
 // Route to render the login page
 router.get('/login', (req, res) => {
-
-console.log(req.session.currentPage)
-    res.render('login');  // Corrected 'sender' to 'render'
+    console.log(req.session.currentPage);
+    res.render('login');
 });
 
 module.exports = router;

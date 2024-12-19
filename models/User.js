@@ -29,9 +29,13 @@ const userSchema = new mongoose.Schema({
         },
     ],
     toDoList: {
-        type: Map, // A Map to store task descriptions and their completion status
-        of: Boolean, // Values are `true` for completed, `false` for not completed
-        default: {}, // Initialize as an empty object
+        type: Map,
+        of: [String],  // Change from Array to Array of Strings
+        default: {
+            "To-Do": [],
+            "In Progress": [],
+            "Completed": [],
+        },
     },
 });
 

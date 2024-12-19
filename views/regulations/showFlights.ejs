@@ -21,10 +21,10 @@
                         </div>
 
                         <% let displayedAirlines = new Set(); %> <!-- Set to track unique airlines -->
-                        
-                        <% flights.forEach(airline => { %>
+                        <% flights.forEach(airline => { %> <!-- `airline` is the airline code here -->
                             <% if (airline && !displayedAirlines.has(airline)) { %>
                                 <% let flightType = flightTypeMap[airline] || 'unknown'; %>
+                                <% let airlineId = airlineIdMap[airline]; %> <!-- Use `airline` instead of `airlineCode` -->
                                 <div class="card mb-3 border-secondary shadow-sm flight-card" data-type="<%= flightType %>" data-airline="<%= airline %>">
                                     <div class="card-header bg-light">
                                         <form class="saveFlightForm" data-airline="<%= airline %>">
@@ -33,7 +33,12 @@
                                                 <i class="fas fa-heart"></i> Save
                                             </button>
                                         </form>
-                                        <strong>Airline Name: </strong><%= airlineNamesMap[airline] || 'Unknown Airline' %><br>
+                                        <strong>Airline Name: </strong>
+                                        <a href="/flights/<%= airlineId %>" class="text-primary"> <!-- Changed `airlines` to `flights` -->
+                                            <%= airlineNamesMap[airline] || 'Unknown Airline' %>
+                                        </a>
+                                        
+                                        <br>
                                         <p><strong>Flight Type:</strong> <%= flightType %></p>
                                         
                                         <% if (petPolicyMap[airline]) { %>
@@ -45,16 +50,14 @@
                                             <strong>Pet Policy: </strong>Not available
                                         <% } %>
                                         
-                                    
                                         <!-- Add the airline to the Set to prevent duplicates -->
                                         <% displayedAirlines.add(airline); %>
-                                        
-                                        <!-- Favorite Button for All Airlines -->
-                                        
                                     </div>
                                 </div>
                             <% } %> <!-- End if unique airline check -->
                         <% }) %> <!-- End of flights loop -->
+                        
+                        
                     </div>
                 </div>
             <% } else { %>

@@ -16,7 +16,14 @@ const flightRoutes = require('./routes/flights');
 const auth = require('./routes/auth');
 const favoritesRoutes = require('./routes/favorites');
 const aboutUs = require('./routes/aboutUs');
+const contactUs = require('./routes/contactUs');
+const tips = require('./routes/tips');
 const toDoListRoutes = require('./routes/toDoList');
+const reviewsRoutes = require('./routes/reviews');
+const airlineRoutes = require('./routes/airlines');
+
+
+
 
 
 
@@ -75,14 +82,19 @@ app.use((req, res, next) => {
 app.use('/', auth);
 app.use('/auth', auth);
 app.use('/regulations', regulations);
-app.use('/flights', flightRoutes);
+app.use('/flights', flightRoutes); // General flight-related routes
 app.use('/favorites', favoritesRoutes);
 app.use('/aboutUs', aboutUs);
+app.use('/contactUs', contactUs);
+app.use('/tips', tips);
+
+app.use('/', airlineRoutes);
 
 console.log('To-Do List route registered');
 app.use('/toDoList', toDoListRoutes);
 
-
+// Mount review routes under flights
+app.use('/flights', reviewsRoutes); // Ensure reviewsRoutes is properly imported
 
 
 
