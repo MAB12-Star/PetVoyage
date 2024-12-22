@@ -5,9 +5,8 @@ const User = require('../models/User');
 const router = express.Router();
 
 // Determine the callback URL dynamically based on the environment
-const callbackURL = process.env.NODE_ENV === 'production'
-    ? "http://www.petvoyage.ai/google/callback"
-    : "http://localhost:3000/google/callback";
+const callbackURL = "http://www.petvoyage.ai/google/callback"
+
 
 // Configure Google Strategy
 passport.use(new GoogleStrategy({
