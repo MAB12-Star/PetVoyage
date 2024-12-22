@@ -15,13 +15,25 @@
             </ul>
 
             <!-- Search Bar -->
-            <form class="d-flex mx-auto position-relative" role="search">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link">Search</a></li>
-                </ul>
-                <input class="form-control me-2" type="text" id="airlineSearch" placeholder="Pet Airline Regulations..." autocomplete="off">
-                <ul class="dropdown-menu" id="airlineDropdown" style="position: absolute; width: 100%; display: none;"></ul>
-            </form>
+            <div class="d-flex flex-column flex-lg-row align-items-center w-50 ms-auto position-relative">
+                <form class="d-flex w-100 my-2 my-lg-0" role="search">
+                    <ul class="navbar-nav me-2">
+                        <li class="nav-item"><a class="nav-link">Search</a></li>
+                    </ul>
+                    <input
+                        class="form-control me-2"
+                        type="text"
+                        id="airlineSearch"
+                        placeholder="Search Airline Regulations..."
+                        autocomplete="off"
+                    >
+                    <ul
+                        class="dropdown-menu"
+                        id="airlineDropdown"
+                        style="position: absolute; display: none; z-index: 1050; left: 0; right: 0;"
+                    ></ul>
+                </form>
+            </div>
 
             <!-- Right side authentication links -->
             <ul class="navbar-nav ms-auto">
@@ -42,41 +54,49 @@
         const searchInput = document.getElementById("airlineSearch");
         const dropdownMenu = document.getElementById("airlineDropdown");
         let airlines = [];
-    
+
         // Fetch airline names and IDs from the server
         async function fetchAirlines() {
             try {
                 const response = await fetch("/airlines"); // Backend API returns [{ _id, name }]
                 airlines = await response.json();
+
+                // Sort airlines alphabetically
+                airlines.sort((a, b) => a.name.localeCompare(b.name));
             } catch (error) {
                 console.error("Error fetching airline names:", error);
             }
         }
-    
+
+        // Adjust dropdown width to match the search input
+        const adjustDropdownWidth = () => {
+            dropdownMenu.style.width = `${searchInput.offsetWidth}px`;
+        };
+
         // Filter and display airlines in the dropdown
         function filterAirlines(query) {
             dropdownMenu.innerHTML = ""; // Clear previous results
-    
+
             const filtered = query
                 ? airlines.filter(airline => airline.name.toLowerCase().includes(query.toLowerCase()))
                 : airlines; // Show all if query is empty
-    
+
             filtered.forEach(airline => {
                 const listItem = document.createElement("li");
                 listItem.classList.add("dropdown-item");
                 listItem.textContent = airline.name;
-    
+
                 // On click, navigate to flight details page
                 listItem.addEventListener("click", () => {
                     window.location.href = `/flights/${encodeURIComponent(airline._id)}`;
                 });
-    
+
                 dropdownMenu.appendChild(listItem);
             });
-    
+
             dropdownMenu.style.display = filtered.length > 0 ? "block" : "none";
         }
-    
+
         // Event listeners
         searchInput.addEventListener("input", (e) => filterAirlines(e.target.value));
         searchInput.addEventListener("click", () => filterAirlines("")); // Show all on click
@@ -85,8 +105,11 @@
                 dropdownMenu.style.display = "none";
             }
         });
-    
+
+        // Adjust dropdown width on load and window resize
+        adjustDropdownWidth();
+        window.addEventListener("resize", adjustDropdownWidth);
+
         fetchAirlines();
     });
-    </script>
-    
+</script>

@@ -1,25 +1,26 @@
-// models/Airline.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./review');
+
 // Define the schema for storing airline data
 const airlineSchema = new mongoose.Schema({
     airlineCode: { type: String, required: true, unique: true }, // IATA code of the airline
-    petPolicyURL: { type: String, required: false },
-    airlineURL:{type:String},
-    name: { type: String, required: true },
-    body:{type: String},
+    petPolicyURL: { type: String, required: false },             // URL to the airline's pet policy page
+    airlineURL: { type: String },                                // Main airline website
+    name: { type: String, required: true },                      // Airline name
+    body: { type: String },                                      // Placeholder body text
     reviews: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Review'
+            ref: 'Review'                                        // Reference to reviews
         }
     ],
-    author: 
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },            // URL to the airline's pet policy page
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'                                              // Reference to author
+    },
+    PetPolicySummary: { type: String, default: "" },             // Summary of the pet policy
+    ImprovedPetPolicySummary: { type: String, default: "" }      // Improved/HTML formatted pet policy summary
 });
 
 module.exports = mongoose.model('Airline', airlineSchema);

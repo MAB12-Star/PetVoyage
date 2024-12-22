@@ -19,9 +19,9 @@ router.get('/flights/:id', async (req, res) => {
         const airline = await Airline.findById(flightId).populate('reviews').exec();
 
         if (airline) {
-            res.render('airlinePage', {
+            res.render('regulations/showAirline', {
                 airline,
-                petPolicySummary: airline.petPolicySummary || 'No pet policy summary available.',
+                ImprovedPetPolicySummary: airline.ImprovedPetPolicySummary || 'No pet policy summary available.',
             });
         } else {
             res.status(404).send("Airline not found.");
@@ -31,6 +31,7 @@ router.get('/flights/:id', async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
 
 
 module.exports = router;

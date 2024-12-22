@@ -4,83 +4,88 @@
     <div class="row">
         <!-- To-Do Section -->
         <div class="col-md-4">
-            <h3 class="text-primary">To-Do</h3>
-            <ul id="todo" class="task-list border p-3 rounded">
-                <% (toDoList["To-Do"] || []).forEach(task => { %>
-                    <li class="task-item border-bottom py-2" draggable="true" data-task="<%= task %>" data-section="To-Do">
-                        <%= task %>
-                    </li>
-                <% }) %>
-            </ul>
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                <h3 class="text-primary">To-Do</h3>
+                <ul id="todo" class="task-list border p-3 rounded">
+                    <% (toDoList["To-Do"] || []).forEach(task => { %>
+                        <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="To-Do">
+                            <%= task %>
+                        </div>
+                    <% }) %>
+                </ul>
+            </div>
         </div>
 
         <!-- In Progress Section -->
         <div class="col-md-4">
-            <h3 class="text-warning">In Progress</h3>
-            <ul id="in-progress" class="task-list border p-3 rounded">
-                <% (toDoList["In Progress"] || []).forEach(task => { %>
-                    <li class="task-item border-bottom py-2" draggable="true" data-task="<%= task %>" data-section="In Progress">
-                        <%= task %>
-                    </li>
-                <% }) %>
-            </ul>
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                <h3 class="text-warning">In Progress</h3>
+                <ul id="in-progress" class="task-list border p-3 rounded">
+                    <% (toDoList["in-progress"] || []).forEach(task => { %>
+                        <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="in-progress">
+                            <%= task %>
+                        </div>
+                    <% }) %>
+                </ul>
+            </div>
         </div>
 
         <!-- Completed Section -->
         <div class="col-md-4">
-            <h3 class="text-success">Completed</h3>
-            <ul id="completed" class="task-list border p-3 rounded">
-                <% (toDoList["Completed"] || []).forEach(task => { %>
-                    <li class="task-item border-bottom py-2" draggable="true" data-task="<%= task %>" data-section="Completed">
-                        <%= task %>
-                    </li>
-                <% }) %>
-            </ul>
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                <h3 class="text-success">Completed</h3>
+                <ul id="completed" class="task-list border p-3 rounded">
+                    <% (toDoList["completed"] || []).forEach(task => { %>
+                        <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="completed">
+                            <%= task %>
+                        </div>
+                    <% }) %>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 
+<div id="auth-status" data-authenticated="<%= isAuthenticated %>"></div>
+
+
 <script>
-    // Drag-and-drop functionality
+    const isAuthenticated = document.getElementById('auth-status').dataset.authenticated === 'true';
+    console.log('isAuthenticated at script start:', isAuthenticated);
+
     document.querySelectorAll('.task-list').forEach(list => {
         list.addEventListener('dragover', (e) => e.preventDefault());
 
         list.addEventListener('drop', async (e) => {
             e.preventDefault();
 
-            // Get the transferred data (the task object)
             const data = JSON.parse(e.dataTransfer.getData('text/plain'));
             const task = data.task;
             const fromSection = data.section;
             const toSection = e.currentTarget.id;
 
-            // Log to ensure values are being transferred correctly
-            console.log('Dropped task:', task);
-            console.log('From Section:', fromSection);
-            console.log('To Section:', toSection);
+            console.log('Dropped Task:', task, 'From Section:', fromSection, 'To Section:', toSection);
 
-            // Find the target list and move the task element there
-            const targetList = document.getElementById(toSection);
-            if (targetList) {
-                const taskElement = document.querySelector(`[data-task="${task}"]`);
-                if (taskElement) targetList.appendChild(taskElement);
+            if (!task || !fromSection || !toSection) {
+                return alert('Invalid drag-and-drop data.');
             }
 
             if (isAuthenticated) {
                 try {
-                    // Send the updated task data to the server
                     const response = await fetch('/toDoList/update', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ task, fromSection, toSection }),
                     });
 
-                    if (!response.ok) {
-                        alert('Failed to update task on the server.');
+                    if (response.ok) {
+                        const updatedToDoList = await response.json();
+                        updateToDoLists(updatedToDoList);
+                    } else {
+                        console.error('Failed to update task on server.');
                     }
                 } catch (error) {
-                    console.error('Error during task update:', error);
-                    alert('An error occurred while saving your progress.');
+                    console.error('Error during drop:', error);
                 }
             } else {
                 alert('Please log in to save your progress.');
@@ -88,17 +93,46 @@
         });
     });
 
-    // Dragstart: Set the task data when an item is dragged
+    // Add shadow effect when dragging a task
     document.querySelectorAll('.task-item').forEach(item => {
         item.addEventListener('dragstart', (e) => {
             const taskData = {
-                task: e.target.dataset.task,  // Get the task name
-                section: e.target.dataset.section,  // Get the section name
+                task: e.target.dataset.task,
+                section: e.target.dataset.section,
             };
-            console.log('Dragging task data:', taskData);  // Log the task data
             e.dataTransfer.setData('text/plain', JSON.stringify(taskData));
+
+            // Add shadow effect
+            e.target.classList.add('dragging');
+        });
+
+        item.addEventListener('dragend', (e) => {
+            // Remove shadow effect
+            e.target.classList.remove('dragging');
         });
     });
+
+    function updateToDoLists(toDoList) {
+        const sections = { "To-Do": "todo", "in-progress": "in-progress", "completed": "completed" };
+        for (const [section, id] of Object.entries(sections)) {
+            const list = document.getElementById(id);
+            list.innerHTML = '';
+            (toDoList[section] || []).forEach(task => {
+                const item = document.createElement('div');
+                item.className = 'card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item';
+                item.draggable = true;
+                item.dataset.task = task;
+                item.dataset.section = section;
+                item.textContent = task;
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', JSON.stringify({ task, section }));
+                    e.target.classList.add('dragging');
+                });
+                item.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+                list.appendChild(item);
+            });
+        }
+    }
 </script>
-
-

@@ -32,9 +32,15 @@ const userSchema = new mongoose.Schema({
         type: Map,
         of: [String],  // Change from Array to Array of Strings
         default: {
-            "To-Do": [],
-            "In Progress": [],
-            "Completed": [],
+            "To-Do": [ "Research your destination country's pet import requirements",
+                "Get your pet's crate or carrier and start working on acclimation",
+                "Schedule a visit to see your veterinarian",
+                "Check airline or roadway routes",
+                "Research pet-friendly hotels and services",
+                "Get your pet's supplies",
+                "Schedule a trip to the groomer",],
+            "in-progress": [],
+            "completed": [],
         },
     },
 });

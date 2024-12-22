@@ -13,8 +13,8 @@ const defaultChecklist = {
         "Get your pet's supplies",
         "Schedule a trip to the groomer",
     ],
-    "In Progress": [],
-    "Completed": [],
+    "in-progress": [],
+    "completed": [],
 };
 
 // GET To-Do List Page
@@ -25,21 +25,21 @@ router.get('/', async (req, res) => {
         try {
             const user = await User.findById(req.user._id);
             if (user && user.toDoList) {
-                console.log('User toDoList from DB:', user.toDoList);  // Log user's current toDoList
+                console.log('User toDoList from DB:', user.toDoList);
                 toDoList = {
-                    "To-Do": user.toDoList.get("To-Do") || defaultChecklist["To-Do"],
-                    "In Progress": user.toDoList.get("In Progress") || [],
-                    "Completed": user.toDoList.get("Completed") || [],
+                    "To-Do": user.toDoList.get("To-Do") || [],
+                    "in-progress": user.toDoList.get("in-progress") || [],
+                    "completed": user.toDoList.get("completed") || [],
                 };
             } else {
-                console.log('No user data found or no toDoList in DB');  // Log if no data found
+                console.log('No user data found or no toDoList in DB');
             }
         } catch (error) {
             console.error('Error fetching user to-do list:', error);
         }
     }
 
-    console.log('Rendering toDoList:', toDoList);  // Log the toDoList being rendered
+    console.log('Rendering toDoList:', toDoList);
     res.render('regulations/toDoList', { toDoList, isAuthenticated: req.isAuthenticated() });
 });
 
@@ -51,10 +51,8 @@ router.post('/update', async (req, res) => {
 
     const { task, fromSection, toSection } = req.body;
 
-    // Log the incoming data to verify it's correct
     console.log('Received task update:', { task, fromSection, toSection });
 
-    // Check if task or sections are undefined
     if (!task || !fromSection || !toSection) {
         return res.status(400).json({ error: 'Invalid data received' });
     }
@@ -65,33 +63,29 @@ router.post('/update', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Ensure the sections are present in the Map
-        if (!user.toDoList.get(fromSection)) {
-            user.toDoList.set(fromSection, []);
+        if (!user.toDoList.has(fromSection)) user.toDoList.set(fromSection, []);
+        if (!user.toDoList.has(toSection)) user.toDoList.set(toSection, []);
+
+        const fromTasks = user.toDoList.get(fromSection);
+        const toTasks = user.toDoList.get(toSection);
+
+        const taskIndex = fromTasks.indexOf(task);
+        if (taskIndex > -1) {
+            fromTasks.splice(taskIndex, 1);
+            toTasks.push(task);
         }
-        if (!user.toDoList.get(toSection)) {
-            user.toDoList.set(toSection, []);
-        }
 
-        // Log current toDoList before updating
-        console.log('Before updating toDoList:', user.toDoList);
+        user.toDoList.set(fromSection, fromTasks);
+        user.toDoList.set(toSection, toTasks);
 
-        // Remove task from the previous section and add it to the new section
-        user.toDoList.get(fromSection).pull(task);  // `pull` is used to remove an item
-        user.toDoList.get(toSection).push(task);    // `push` is used to add the item to the new section
+        await user.save();
 
-        // Log after updating
-        console.log('After updating toDoList:', user.toDoList);
-
-        await user.save();  // Save the updated list to the database
-        console.log('User toDoList saved to DB:', user.toDoList);  // Log after saving
-
-        res.status(200).json({ success: true, message: 'Task updated successfully' });
+        console.log('Updated ToDoList:', user.toDoList);
+        res.status(200).json(Object.fromEntries(user.toDoList)); // Convert Map to JSON object
     } catch (error) {
-        console.error('Error updating to-do list:', error);
+        console.error('Error updating task:', error);
         res.status(500).json({ error: 'Failed to update task' });
     }
 });
-
 
 module.exports = router;

@@ -48,6 +48,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
+app.use(express.json()); // Enable JSON parsing for POST requests
+
 
 // Session configuration using the MongoDB URI from .env
 const sessionConfig = {
@@ -78,6 +80,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    console.log('Session ID:', req.sessionID);
+    console.log('User in session:', req.user);
+    console.log('Authenticated:', req.isAuthenticated());
+    next();
+});
+
+
 // Use routes
 app.use('/', auth);
 app.use('/auth', auth);
@@ -92,7 +102,10 @@ app.use('/', airlineRoutes);
 
 console.log('To-Do List route registered');
 app.use('/toDoList', toDoListRoutes);
-
+app.use((req, res, next) => {
+    res.locals.user = req.user; // Assuming you use Passport.js for authentication
+    next();
+});
 // Mount review routes under flights
 app.use('/flights', reviewsRoutes); // Ensure reviewsRoutes is properly imported
 
