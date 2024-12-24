@@ -21,16 +21,18 @@
                 <li class="nav-item"><a class="nav-link" href="/aboutus">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="/regulations/newSearch">Search Country</a></li>
                 <li class="nav-item"><a class="nav-link" href="/regulations/searchFlights">Search Flights</a></li>
-                <li class="nav-item"><a class="nav-link" href="/dashboard">Favorites <i class="fas fa-heart"></i></a></li>
+                
+                
             </ul>
 
         </div>
 
             <!-- Search Bar -->
             <div class="searchField d-flex flex-column flex-lg-row align-items-center w-50 ms-auto position-relative">
+                
                 <form class="d-flex w-100 my-2 my-lg-0" role="search">
                     <ul class="navbar-nav me-2">
-                        <li class="nav-item"><a class="nav-link">Search</a></li>
+                        <li class="nav-item"><a class="nav-link"><i class="fas fa-search"></i></a></li>
                     </ul>
                     <input
                         class="form-control me-2"
@@ -49,7 +51,8 @@
 
          
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a id="loginLink" class="nav-link" href="/contactUs"> <i class="fas fa-envelope"></i><span class="login-text"> Contact Us</span></a></li>
+                <div class="icon-text-container">
+                <li class="nav-item"><a id="loginLink" class="nav-link" href="/contactUs"> <i class="fas fa-envelope"></i><span class="login-text"> Contact</span></a></li>
                 <% if (!currentUser) { %>
                     <li class="nav-item">
                         <a id="loginLink" class="nav-link" href="/login">
@@ -57,13 +60,40 @@
                         
                         </a>
                     </li>
-                    
-                <% } else { %>
-                    <div id="iconContainer" class="d-flex"></div>
-                    <li class="nav-item"><a class="nav-link" href="/dashboard">Profile</a></li>
-                    <li class="nav-item"><a id="loginLink" class="nav-link" href="/logout"><i class="fas fa-sign-in-alt"></i><span class="login-text"> Logout</span></a></li>
                 </div>
-                <% } %>
+                    <% } else { %>
+                        <!-- User is logged in -->
+                        <div id="iconContainer" class="d-flex align-items-center">
+                            <!-- User Icon with First Name -->
+                            <a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="login-text"><%= currentUser.displayName %></span>
+                            </a>
+                    
+                            <!-- Dropdown Menu -->
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="/dashboard">
+                                        <i class="fas fa-user"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/dashboard">
+                                        <i class="fas fa-heart"></i> Favorites
+                                    </a>
+
+                                <li><a class="dropdown-item" href="/toDoList" >
+                                    <i class="fas fa-tasks"></i> To-Do List
+                                </a></li>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/logout">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    <% } %>
             </ul>
             </div>
         </div>

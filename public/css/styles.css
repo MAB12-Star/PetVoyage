@@ -16,37 +16,6 @@
     gap: 15px;
 }
 
-
-/* Responsive styling for iPhone or tablet */
-@media (max-width: 768px) {
-    /* Show individual images between paragraphs */
-    .dynamic-image {
-        display: none; /* Hide the row of images */
-    }
-
-    .dynamic-image-mobile {
-        display: block;
-        max-width: 80%;
-        margin: 15px auto; /* Center the images */
-    }
-
-@media (max-width: 576px) {
-    .col-md-6 {
-        margin-bottom: 1.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .filter-buttons {
-        flex: 1 1 100%; /* Buttons take full width in smaller screens */
-        max-width: none; /* Remove max width */
-        margin: 0.25rem; /* Maintain space around each button */
-    }
-}
-  
-
-}
-
     /* Contact Us and Ask Pet AI Form Containers */
     .contact-form-container, .ask-ai-container {
         margin-top: 30px;
@@ -102,10 +71,16 @@
         .contact-form-container {
             margin-bottom: 20px;
         }
-    }
+            /* Show individual images between paragraphs */
+        .dynamic-image {
+            display: none; /* Hide the row of images */
+        }
 
-    /* Larger screens (2/3 height for Contact Us and 1/3 for Ask Pet AI) */
-    @media (min-width: 768px) {
+        .dynamic-image-mobile {
+            display: block;
+            max-width: 80%;
+            margin: 15px auto; /* Center the images */
+        }
         .contact-form-container {
             height: 66vh;  /* 2/3 screen height */
         }
@@ -122,6 +97,7 @@
             height: 100%;
         }
     }
+
 
     /* Style the scrollable answer box */
 .scrollable-answer {
@@ -181,6 +157,12 @@
     margin-right: 10rem; /* Adjust as needed */
 }
 
+
+.icon-text-container{
+    display: flex; /* Use Flexbox for horizontal alignment */
+align-items: center; /* Align items vertically */
+gap: 1rem; /* Add space between icons */
+}
 /* Mobile-specific adjustments */
 @media (max-width: 576px) {
     .navbar-toggler {
@@ -194,6 +176,14 @@
     #loginLink .login-text {
         display: none; /* Hide the "Login" text */
     }
+    .login-text {
+        display: none; /* Hide t
+
+    .icon-text-container{
+        display: flex; /* Use Flexbox for horizontal alignment */
+    align-items: center; /* Align items vertically */
+    gap: 1rem; /* Add space between icons */
+    }
 
     #iconContainer {
         display: flex;
@@ -201,6 +191,15 @@
         align-items: center;
         gap: 1rem;
     }
+    .col-md-6 {
+        margin-bottom: 1.5rem;
+    }
+    .filter-buttons {
+        flex: 1 1 100%; /* Buttons take full width in smaller screens */
+        max-width: none; /* Remove max width */
+        margin: 0.25rem; /* Maintain space around each button */
+    }
+    
 }
 
 
