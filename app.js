@@ -136,6 +136,11 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/', (req, res) => {
+    res.render('index', { answer: null });
+});
+
+
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
 });

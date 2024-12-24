@@ -1,75 +1,69 @@
 <% layout('layouts/boilerplate') %>
 
 <link rel="stylesheet" href="/styleSheets/stars.css">
-
-<div class="container">
-    <div class="row">
-        <!-- Airline Information -->
-        <div class="col-md-6 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%= airline.airlineCode %> - <%= airline.name || 'Unknown Airline' %>
-                    </h5>
-                    <a href="<%= airline.petPolicyURL %>" target="_blank" class="btn btn-info">View Pet Policy</a>
-
-                    <div class="mt-3">
-                    
-                        <p><%- airline.ImprovedPetPolicySummary || 'No pet policy summary available.' %></p>
-                    </div>
+<div class="row">
+    <div class="col-6">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <%= airline.airlineCode %> - <%= airline.name || 'Unknown Airline' %>
+                    <!-- Use `airline` instead of `airlineCode` -->
+                </h5>
+                <a href="<%= airline.petPolicyURL %>" target="_blank" class="btn btn-info">View Pet Policy</a>
+                
+                <!-- Display the pet policy summary here -->
+                <div class="mt-3">
+                    <h6>Pet Policy Summary:</h6>
+                    <p><%= petPolicySummary || 'No pet policy summary available.' %></p>
+               
                 </div>
             </div>
         </div>
-
-        <!-- Reviews Section -->
-        <div class="col-md-6 mb-3">
-            <div class="card">
-                <div class="card-body">
-            <% if (currentUser) { %>
-                <form class="mb-3 validated-form" action="/flights/<%= airline._id %>/reviews" method="POST" novalidate>
-                    <h2>Leave A Review</h2>
-                    <fieldset class="starability-basic">
-                        <input type="radio" id="rate1" name="review[rating]" value="1" required />
-                        <label for="rate1">1 star</label>
-                        <input type="radio" id="rate2" name="review[rating]" value="2" />
-                        <label for="rate2">2 stars</label>
-                        <input type="radio" id="rate3" name="review[rating]" value="3" />
-                        <label for="rate3">3 stars</label>
-                        <input type="radio" id="rate4" name="review[rating]" value="4" />
-                        <label for="rate4">4 stars</label>
-                        <input type="radio" id="rate5" name="review[rating]" value="5" />
-                        <label for="rate5">5 stars</label>
-                    </fieldset>
-                    <textarea class="form-control" name="review[body]" placeholder="Write your review here..." required></textarea>
-                    <button class="btn btn-success mt-2">Submit Review</button>
-                </form>
-            <% } %>
-
-            <h2>Reviews</h2>
-            <% if (airline.reviews.length > 0) { %>
-                <% airline.reviews.forEach(review => { %>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <% if (review.author) { %>
-                                <p><strong><%= review.author.displayName %>:</strong> <%= review.body %></p>
-                            <% } else { %>
-                                <p><strong>Anonymous:</strong> <%= review.body %></p>
-                            <% } %>
-                            <p class="text-muted">Rating: <%= review.rating %> stars</p>
-                            <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
-                                <form action="/flights/<%= airline._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            <% } %>
-                        </div>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <p>No reviews yet. Be the first to leave a review!</p>
-            <% } %>
-        </div>
     </div>
 </div>
-</div>
-</div>
 
+    <div class="col-6">
+        <% if (currentUser) { %>
+            <form class="mb-3 validated-form" action="/flights/<%= airline._id %>/reviews" method="POST" novalidate>
+                <h2>Leave A Review</h2>
+                <fieldset class="starability-basic">
+                    <input type="radio" id="rate1" name="review[rating]" value="1" required />
+                    <label for="rate1">1 star</label>
+                    <input type="radio" id="rate2" name="review[rating]" value="2" />
+                    <label for="rate2">2 stars</label>
+                    <input type="radio" id="rate3" name="review[rating]" value="3" />
+                    <label for="rate3">3 stars</label>
+                    <input type="radio" id="rate4" name="review[rating]" value="4" />
+                    <label for="rate4">4 stars</label>
+                    <input type="radio" id="rate5" name="review[rating]" value="5" />
+                    <label for="rate5">5 stars</label>
+                </fieldset>
+                <textarea class="form-control" name="review[body]" placeholder="Write your review here..." required></textarea>
+                <button class="btn btn-success mt-2">Submit Review</button>
+            </form>
+        <% } %>
+
+        <h2>Reviews</h2>
+        <% if (airline.reviews.length > 0) { %>
+            <% airline.reviews.forEach(review => { %>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <% if (review.author) { %>
+                            <p><strong><%= review.author.displayName %>:</strong> <%= review.body %></p>
+                        <% } else { %>
+                            <p><strong>Anonymous:</strong> <%= review.body %></p>
+                        <% } %>
+                        <p class="text-muted">Rating: <%= review.rating %> stars</p>
+                        <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
+                            <form action="/flights/<%= airline._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No reviews yet. Be the first to leave a review!</p>
+        <% } %>
+    </div>
+</div>

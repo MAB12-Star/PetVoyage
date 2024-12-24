@@ -15,9 +15,9 @@
                         
                         <!-- Filter Buttons -->
                         <div class="text-center mb-4">
-                            <button class="btn btn-primary" onclick="filterFlights('all')">Show All</button>
-                            <button class="btn btn-success" onclick="filterFlights('direct')">Direct Flights</button>
-                            <button class="btn btn-warning" onclick="filterFlights('indirect')">Indirect Flights</button>
+                            <button class="filter-buttons btn btn-primary" onclick="filterFlights('all')">Show All</button>
+                            <button class="filter-buttons btn btn-success" onclick="filterFlights('direct')">Direct Flights</button>
+                            <button class="filter-buttons btn btn-warning" onclick="filterFlights('indirect')">Indirect Flights</button>
                         </div>
 
                         <% let displayedAirlines = new Set(); %> <!-- Set to track unique airlines -->

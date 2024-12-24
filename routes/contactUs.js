@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
     res.render('regulations/contactUs', { answer: null });  // Initially pass null for the answer
 });
 
+
 // Route to handle the form submission and fetch answers
 router.post('/ask-question', async (req, res) => {
     const { user_question } = req.body;  // Get the user question from the form submission

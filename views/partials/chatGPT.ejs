@@ -1,0 +1,33 @@
+<div class="col-md-4 col-sm-12 ask-ai-container">
+    <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h1 class="text-center text-secondary-emphasis mb-4"><strong>Ask Pet AI Your Question!</strong></h1>
+            <form id="ask-question-form" action="/contactUs/ask-question" method="POST">
+                <div class="form-group">
+                    <label for="user_question">Your Question</label>
+                    <input type="text" class="form-control" id="user_question" name="user_question" placeholder="Ask about pet regulations..." required>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Ask Question</button>
+                </div>
+            </form>
+
+            <!-- Success Message After Form Submission -->
+            <div id="success-message" class="alert alert-success" style="display:none;">
+                <h4>Success!</h4>
+                <p>Your question has been submitted. Pet AI will respond shortly!</p>
+            </div>
+
+            <% if (answer) { %>
+                <div class="answer-container mt-5">
+                    <h3>Answer from Pet AI:</h3>
+                    <div class="answer">
+                        <div class="scrollable-answer">
+                            <p><%= answer %></p>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

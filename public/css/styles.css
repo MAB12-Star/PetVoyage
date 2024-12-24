@@ -16,6 +16,7 @@
     gap: 15px;
 }
 
+
 /* Responsive styling for iPhone or tablet */
 @media (max-width: 768px) {
     /* Show individual images between paragraphs */
@@ -29,6 +30,20 @@
         margin: 15px auto; /* Center the images */
     }
 
+@media (max-width: 576px) {
+    .col-md-6 {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .filter-buttons {
+        flex: 1 1 100%; /* Buttons take full width in smaller screens */
+        max-width: none; /* Remove max width */
+        margin: 0.25rem; /* Maintain space around each button */
+    }
+}
+  
 
 }
 
@@ -125,6 +140,7 @@
     color: #333;
 }
 
+
 #airlineDropdown {
     position: absolute;
     z-index: 1000;
@@ -154,6 +170,44 @@
     transform: scale(1.05); /* Slightly enlarge the box */
     opacity: 0.9;
 }
+
+/* Fix for navbar alignment */
+.collapse.navbar-collapse {
+    justify-content: space-between; /* Distribute items with space between them */
+    align-items: center; /* Vertically center items */
+}
+.logo {
+ /* Corrected font property */
+    margin-right: 10rem; /* Adjust as needed */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 576px) {
+    .navbar-toggler {
+        margin-left: 0; /* Align toggler to the left */
+    }
+
+    .logo {
+        margin-right: auto; /* Reset margin for smaller screens */
+    }
+
+    #loginLink .login-text {
+        display: none; /* Hide the "Login" text */
+    }
+
+    #iconContainer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+
+
+
+
+
 
 
 
