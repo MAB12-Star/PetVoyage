@@ -163,6 +163,10 @@
 align-items: center; /* Align items vertically */
 gap: 1rem; /* Add space between icons */
 }
+
+.full-screen-dropdown {
+    width: auto; /* Normal dropdown width */
+}
 /* Mobile-specific adjustments */
 @media (max-width: 576px) {
     .navbar-toggler {
@@ -198,6 +202,23 @@ gap: 1rem; /* Add space between icons */
         flex: 1 1 100%; /* Buttons take full width in smaller screens */
         max-width: none; /* Remove max width */
         margin: 0.25rem; /* Maintain space around each button */
+    }
+    .full-screen-dropdown {
+        position: fixed; /* Fix the dropdown to the viewport */
+        top: 0;
+        left: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        background-color: #fff; /* Optional: Set background color */
+        z-index: 1050; /* Ensure it’s above other elements */
+        overflow-y: auto; /* Allow scrolling if content overflows */
+        padding: 1rem; /* Add padding for better spacing */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
+    }
+
+    .full-screen-dropdown .dropdown-item {
+        font-size: 1.2rem; /* Optional: Increase font size for easier tapping */
+        padding: 1rem; /* Optional: Add padding for larger touch targets */
     }
     
 }
