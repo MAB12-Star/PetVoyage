@@ -57,6 +57,27 @@
         font-size: 1.1rem;
     }
 
+    /* Ensure dropdown stays at the top */
+.navbar .dropdown-menu {
+    position: absolute !important; /* Override default Bootstrap behavior */
+    top: 100%; /* Align it directly below the parent link */
+    left: auto; /* Ensure proper horizontal alignment */
+    right: 0; /* Align to the right for .dropdown-menu-end */
+    transform: none !important; /* Prevent unwanted offsets */
+    z-index: 1050; /* Ensure it stays above other elements */
+}
+
+/* Optional: Adjust the dropdown menu for a consistent look */
+.full-screen-dropdown {
+    width: auto;
+    min-width: 200px;
+}
+
+/* Ensure the dropdown doesn't move when another dropdown opens */
+.navbar {
+    position: relative;
+}
+
     /* Responsive Styles */
     @media (max-width: 768px) {
         .contact-form-container, .ask-ai-container {
@@ -167,8 +188,39 @@ gap: 1rem; /* Add space between icons */
 .full-screen-dropdown {
     width: auto; /* Normal dropdown width */
 }
+
+/* Default styles for desktop */
+.desktop-search {
+    width: 50%; /* Wider search box */
+    justify-content: flex-end;
+}
+
+/* Styles for mobile */
+.mobile-search {
+    width: 100%; /* Adjust to full width or smaller for mobile */
+    justify-content: flex-start;
+    margin-top: 10px; /* Add some spacing if needed */
+}
+
 /* Mobile-specific adjustments */
 @media (max-width: 576px) {
+    #userDropdown  {
+        position: absolute; /* Fix to a specific position inside the navbar */
+        top: 10px; /* Adjust distance from the top of the navbar */
+        right: 20px; /* Align to the right edge */
+        z-index: 1050; /* Ensure it stays on top of other dropdowns */
+    }
+    .dropdown-menu {
+        position: absolute; /* Fix to a specific position inside the navbar */
+        top: 10px; /* Adjust distance from the top of the navbar */
+        right: 20px; /* Align to the right edge */
+        z-index: 1050; /* Ensure it stays on top of other dropdowns */
+    }
+    
+    form.position-relative {
+        width: 80%; /* Ensure form takes full width */
+    }
+    
     .navbar-toggler {
         margin-left: 0; /* Align toggler to the left */
     }
@@ -181,8 +233,8 @@ gap: 1rem; /* Add space between icons */
         display: none; /* Hide the "Login" text */
     }
     .login-text {
-        display: none; /* Hide t
-
+        display: none; 
+    }
     .icon-text-container{
         display: flex; /* Use Flexbox for horizontal alignment */
     align-items: center; /* Align items vertically */
@@ -203,25 +255,14 @@ gap: 1rem; /* Add space between icons */
         max-width: none; /* Remove max width */
         margin: 0.25rem; /* Maintain space around each button */
     }
-    .full-screen-dropdown {
-        position: fixed; /* Fix the dropdown to the viewport */
-        top: 0;
-        left: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        background-color: #fff; /* Optional: Set background color */
-        z-index: 1050; /* Ensure it’s above other elements */
-        overflow-y: auto; /* Allow scrolling if content overflows */
-        padding: 1rem; /* Add padding for better spacing */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
-    }
-
-    .full-screen-dropdown .dropdown-item {
-        font-size: 1.2rem; /* Optional: Increase font size for easier tapping */
-        padding: 1rem; /* Optional: Add padding for larger touch targets */
-    }
+    
+    
+   
+    
     
 }
+
+
 
 
 
