@@ -175,7 +175,8 @@
 }
 .logo {
  /* Corrected font property */
-    margin-right: 10rem; /* Adjust as needed */
+    margin-right: 10rem; 
+    align-self: center;/* Adjust as needed */
 }
 
 
@@ -200,6 +201,11 @@ gap: 1rem; /* Add space between icons */
     width: 100%; /* Adjust to full width or smaller for mobile */
     justify-content: flex-start;
     margin-top: 10px; /* Add some spacing if needed */
+}
+
+.custom-tooltip {
+    --bs-tooltip-bg: var(--bd-violet-bg, #6c757d); /* Default fallback to Bootstrap gray */
+    --bs-tooltip-color: var(--bs-white, #fff);
 }
 
 /* Mobile-specific adjustments */

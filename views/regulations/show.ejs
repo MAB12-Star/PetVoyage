@@ -6,23 +6,32 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
            
+            <% if (regulations[0].destinationCountry.country === "United States" && regulations[0].petType.type === "Dog") { %>
+                <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+                    <div class="card-body">
+                <h2 class="text-center  text-danger-emphasis">ALERT</h2>
+                        <p>
+                    As of November 22, 2024, Mexico is considered to be affected with screwworm. All dogs (including U.S. origin dogs returning to the U.S. after traveling to Mexico) must meet APHIS requirements for screwworm freedom certification upon entry (re-entry). Additional information can be found on the <a href ="https://www.aphis.usda.gov/pet-travel/another-country-to-us-import/dogs">APHIS</a> Dog Import website.
+                </p>
+            </div>
+        </div>
+            <% } %>
+          
 
             <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
                 
+               
                 
+
+                    
+         
                 <div class="card-body">
                     <h3 class="text-center text-secondary mb-4">
                         Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>
                     </h3>
 
                     <!-- Display the regulations -->
-                    <% regulations.forEach(regulation => { %>
-              
-                        
-                        
-        
-            
-                            
+                    <% regulations.forEach(regulation => { %>         
                         <div class="card-body text-center">
                             <div class="mb-2">
                                 <% if (regulations[0].petType.type === "Cat") { %>
@@ -183,3 +192,24 @@
         </div>
     </div>
 </div>
+<script>
+    function filterFlights(filterType) {
+        const cards = document.querySelectorAll('.flight-card');
+        let visibleAirlines = new Set();
+
+        cards.forEach(card => {
+            const type = card.getAttribute('data-type');
+            const airline = card.getAttribute('data-airline');
+            if (filterType === 'all' || type === filterType) {
+                card.style.display = 'block';
+                visibleAirlines.add(airline);
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Update the total airlines count dynamically
+        const totalAirlinesElement = document.getElementById('totalAirlines');
+        totalAirlinesElement.textContent = visibleAirlines.size;
+    }
+</script>

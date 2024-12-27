@@ -29,12 +29,23 @@
                     </a> -->
 
                     <div class="d-flex justify-content-center mt-3 gap-3">
-                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/newSearch'">
-                            <i class="bi bi-globe-americas"></i> Country Regulations
+                        
+                        <button type="button" 
+                        class="btn btn-outline-dark"  
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="bottom"
+                        title="Retrieve country specific pet regulations."
+                        onclick="location.href='/regulations/newSearch'">
+                        <i class="bi bi-globe-americas"></i> Country Regulations
                         </button>
+
                      
-                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/searchFlights'">
-                            <i class="bi bi-airplane"></i> Flight Regulations
+                        <button type="button" class="btn btn-outline-dark" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="bottom"
+                        title="Locate Airlines flying to your destination."
+                        onclick="location.href='/regulations/searchFlights'">
+                            <i class="bi bi-airplane"></i> Search Flights
                         </button>
                     </div>
                 
