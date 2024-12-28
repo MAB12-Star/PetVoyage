@@ -238,6 +238,9 @@ gap: 1rem; /* Add space between icons */
     #loginLink .login-text {
         display: none; /* Hide the "Login" text */
     }
+    .petAI {
+        display:none;
+    }
     .login-text {
         display: none; 
     }
@@ -267,7 +270,110 @@ gap: 1rem; /* Add space between icons */
     
     
 }
+/* Floating Button */
+#ai-chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(59, 56, 56, 0.1);
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#ai-chat-button:hover {
+    background-color: hsl(225, 94%, 19%);
+    text-decoration: none; /* Keeps it clean on hover */
+}
+/* Hidden Pop-out Form */
+#ai-chat-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 300px;
+    display: none;
+    z-index: 1001;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+/* Smooth Slide-in Animation */
+#ai-chat-popup.show {
+    display: block;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* AI Answer Container */
+.ai-answer-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.ai-answer-container.show {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Tooltip Styling */
+.tooltip-inner {
+    background-color: #007bff;
+    color: #fff;
+}
+
+
+#contact-us-button {
+    position: fixed;
+    bottom: 20px; /* Adjust vertical position */
+    left: 20px;   /* Position on the left side */
+    z-index: 1000;
+    background-color: #17b84f;
+    color: #fff;
+    border-radius: 50%; /* Makes it a perfect circle */
+    width: 60px;  /* Set a fixed width for the circle */
+    height: 60px; /* Set a fixed height for the circle */
+    display: flex;
+    align-items: center; /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none; /* Remove underline */
+    font-size: 24px; /* Adjust icon size */
+}
+#contact-us-button:hover {
+    background-color: #035e1a;
+    text-decoration: none; /* Keeps it clean on hover */
+}
 
 
 

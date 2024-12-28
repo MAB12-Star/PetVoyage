@@ -6,7 +6,5 @@ router.get('/', (req, res) => {
     res.render('regulations/aboutUs'); // Path to aboutUs.ejs in the regulations folder
 });
 
-router.get('/', (req, res) => {
-    res.render('regulations/tips'); // Path to aboutUs.ejs in the regulations folder
-});
+
 module.exports = router;

@@ -21,6 +21,7 @@ const tips = require('./routes/tips');
 const toDoListRoutes = require('./routes/toDoList');
 const reviewsRoutes = require('./routes/reviews');
 const airlineRoutes = require('./routes/airlines');
+const petVoyageAi = require('./routes/petVoyageAi');
 
 
 
@@ -97,6 +98,7 @@ app.use('/favorites', favoritesRoutes);
 app.use('/aboutUs', aboutUs);
 app.use('/contactUs', contactUs);
 app.use('/tips', tips);
+app.use('/', petVoyageAi);
 
 app.use('/', airlineRoutes);
 
