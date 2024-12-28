@@ -355,8 +355,8 @@ gap: 1rem; /* Add space between icons */
 
 #contact-us-button {
     position: fixed;
-    Top: 20px; /* Adjust vertical position */
-    left: 20px;   /* Position on the left side */
+    Top: 70px; /* Adjust vertical position */
+    left: 30px;   /* Position on the left side */
     z-index: 1000;
     background-color: #17b84f;
     color: #fff;
