@@ -273,8 +273,8 @@ gap: 1rem; /* Add space between icons */
 /* Floating Button */
 #ai-chat-button {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 70px;
+    right: 30px;
     width: 60px;
     height: 60px;
     z-index: 1000;
@@ -355,8 +355,8 @@ gap: 1rem; /* Add space between icons */
 
 #contact-us-button {
     position: fixed;
-    bottom: 20px; /* Adjust vertical position */
-    left: 20px;   /* Position on the left side */
+    Top: 70px; /* Adjust vertical position */
+    left: 30px;   /* Position on the left side */
     z-index: 1000;
     background-color: #17b84f;
     color: #fff;
