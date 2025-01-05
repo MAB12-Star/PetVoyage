@@ -13,14 +13,17 @@ router.get('/airlines', async (req, res) => {
 });
 
 // Route to fetch airline details by ID
-router.get('/flights/:id', async (req, res) => {
+// Route to fetch airline details by ID
+router.get('/airlines/:id', async (req, res) => {
     try {
         const flightId = req.params.id;
         const airline = await Airline.findById(flightId).populate('reviews').exec();
 
         if (airline) {
+            const link = `${req.protocol}://${req.get('host')}/airlines/${airline._id}`; // Dynamically generate link
             res.render('regulations/showAirline', {
                 airline,
+                link, // Pass the dynamic link to the template
                 ImprovedPetPolicySummary: airline.ImprovedPetPolicySummary || 'No pet policy summary available.',
             });
         } else {
@@ -31,6 +34,7 @@ router.get('/flights/:id', async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
 
 
 

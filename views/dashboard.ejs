@@ -49,36 +49,64 @@
         </div>
 
         <!-- Saved Airline Regulations -->
-        <div class="col-md-6">
-            <div class="card shadow-lg p-4 border-secondary rounded">
-                <h5 class="text-secondary-emphasis"><strong>Here are your saved airline regulations:</strong></h5>
-        
-                <% if (user.savedFlightRegulations.length > 0) { %>
-                    <ul class="list-group mt-4">
-                        <% user.savedFlightRegulations.forEach(airlineRegulation => { %>
-                            <li class="list-group-item mb-3 shadow-sm border rounded">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>Airline Code:</strong> <%= airlineRegulation.airlineCode %><br>
-                                        <strong>Link:</strong> <a href="<%= airlineRegulation.petPolicyURL %>" target="_blank" class="text-decoration-none">View Airline Regulation</a>
-                                    </div>
-                                    <!-- Form to delete the saved regulation -->
-                                    <form action="/favorites/deleteFlight/<%= airlineRegulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
-                                            <i class="fas fa-trash-alt"></i> DELETE
-                                        </button>
-                                    </form>
-                                    
-                                </div>
-                            </li>
-                        <% }) %>
-                    </ul>
-                <% } else { %>
-                    <p class="text-muted">You have not saved any airline regulations yet.</p>
-                <% } %>
-            </div>
-        </div>
+       
         
 
 <!-- Include Font Awesome CDN for the icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<div class="col-md-6">
+    <div class="card shadow-lg p-4 border-secondary rounded">
+        <h5 class="text-secondary-emphasis"><strong>Here are your saved airline regulations:</strong></h5>
+        
+        <!-- Check if there are any savedFlightRegulations or favoriteAirlines -->
+        <% if (user.savedFlightRegulations.length > 0 || user.favoriteAirlines.length > 0) { %>
+            <ul class="list-group mt-4">
+                
+                <!-- Render savedFlightRegulations -->
+                <% user.savedFlightRegulations.forEach(airlineRegulation => { %>
+                    <li class="list-group-item mb-3 shadow-sm border rounded">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Airline Code:</strong> <%= airlineRegulation.name %><br>
+                                <strong>Regulation Link:</strong> 
+                                <a href="<%= airlineRegulation.petPolicyURL %>" target="_blank" class="text-decoration-none">View Regulation</a>
+                            </div>
+                            <!-- Form to delete the saved regulation -->
+                            <form action="/favorites/deleteFlight/<%= airlineRegulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> DELETE
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+                
+                <!-- Render favoriteAirlines -->
+                <% user.favoriteAirlines.forEach(favoriteAirline => { %>
+                    <li class="list-group-item mb-3 shadow-sm border rounded">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Airline Name:</strong> <%= favoriteAirline.airlineName %><br>
+                                <strong>Link to Airline Page:</strong> 
+                                <a href="<%= favoriteAirline.link %>" target="_blank" class="text-decoration-none">Visit Airline</a><br>
+                                <strong>Pet Policy:</strong> 
+                                <a href="<%= favoriteAirline.petPolicyURL %>" target="_blank" class="text-decoration-none">View Pet Policy</a><br>
+  
+                            </div>
+                            <!-- Form to delete the favorite airline -->
+                            <form action="/favorites/deleteAirline/<%= favoriteAirline.airlineId %>?_method=DELETE" method="POST" style="margin: 0;">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> DELETE
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+                
+                
+            </ul>
+        <% } else { %>
+            <p class="text-muted">You have not saved any airline regulations or favorite airlines yet.</p>
+        <% } %>
+    </div>
+</div>

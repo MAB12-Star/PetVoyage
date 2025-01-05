@@ -22,11 +22,7 @@ const getRegulations = async (originCountry, destinationCountry, petTypeName) =>
             throw new Error('Origin or destination country not found');
         }
 
-        // Debugging the origin and destination countries
-        console.log('Origin Country:', origin);
-        console.log('Destination Country:', destination);
-        console.log('Origin Country ID:', origin._id, 'Type:', typeof origin._id);
-        console.log('Destination Country ID:', destination._id, 'Type:', typeof destination._id);
+  
 
         // Find the ObjectId for the specified pet type name
         const petType = await PetType.findOne({ type: petTypeName.toLowerCase() });
@@ -35,9 +31,6 @@ const getRegulations = async (originCountry, destinationCountry, petTypeName) =>
             throw new Error('Pet type not found');
         }
 
-        // Debugging the pet type
-        console.log('Pet Type:', petType);
-        console.log('Pet Type ID:', petType._id, 'Type:', typeof petType._id);
 
         // Fetch the regulations based on the selected origin, destination, and pet type ObjectId
         const regulations = await Regulation.find({

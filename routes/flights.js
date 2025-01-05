@@ -5,7 +5,7 @@ const Airport = require('../models/airlineRegulations');
 const Flight = require('../models/flightSchema');
 const Airline = require('../models/airline');
 const { saveCurrentUrl } = require('../middleware');
-
+const mongoose = require('mongoose');
 const cheerio = require('cheerio');
 const OpenAI = require("openai").default;
 const FLIGHTLABS_API_KEY = process.env.FLIGHTLABS_API_KEY_ENV;
@@ -64,6 +64,12 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
         let flightData = await Flight.findOne({ originCode, destinationCode });
 
         if (flightData) {
+              req.session.currentPage = {
+                searchId: flightData._id,
+                originCode,
+                destinationCode,
+            };
+
             // Fetch airlines from the database to build the ID and pet policy maps
             const validAirlineCodes = flightData.airlineCodes.filter(Boolean).map((code) => code.trim().toUpperCase());
             const airlines = await Airline.find({ airlineCode: { $in: validAirlineCodes } });
@@ -75,18 +81,13 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
                 airlineIdMap[airline.airlineCode] = airline._id;
             });
 
-            return res.render('regulations/showFlights', {
-                flights: flightData.airlineCodes,
-                airlineNamesMap: flightData.airlineNamesMap,
-                flightTypeMap: flightData.flightTypeMap,
-                petPolicyMap,
-                airlineIdMap,
-            });
+            return res.redirect(`/flights/${flightData._id}`);
         }
 
         // Initialize variables
         let airlineCodes = [];
         let flightTypeMap = {};
+        
 
         // Fetch direct flights from FlightLabs API
         const directFlightsResponse = await axios.get('https://app.goflightlabs.com/routes', {
@@ -196,13 +197,7 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
         await flightData.save();
 
         // Render the flights page
-        res.render('regulations/showFlights', {
-            flights: airlineCodes,
-            airlineNamesMap,
-            flightTypeMap,
-            petPolicyMap,
-            airlineIdMap,
-        });
+        res.redirect(`/flights/${flightData._id}`);
     } catch (error) {
         console.error('Error fetching flight data:', error.message);
         if (!res.headersSent) {
@@ -211,6 +206,44 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
     }
 });
 
+router.get('/:searchId', async (req, res) => {
+    const { searchId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(searchId)) {
+        return res.status(400).send('Invalid search ID');
+    }
+
+    try {
+        const flightData = await Flight.findById(searchId);
+
+        if (!flightData) {
+            return res.status(404).send('Search results not found');
+        }
+
+        // Fetch airline data
+        const validAirlineCodes = flightData.airlineCodes.filter(Boolean).map((code) => code.trim().toUpperCase());
+        const airlines = await Airline.find({ airlineCode: { $in: validAirlineCodes } });
+
+        const petPolicyMap = {};
+        const airlineIdMap = {};
+        airlines.forEach((airline) => {
+            petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
+            airlineIdMap[airline.airlineCode] = airline._id;
+        });
+
+        // Render the flights result page
+        res.render('regulations/showFlights', {
+            flights: flightData.airlineCodes,
+            airlineNamesMap: flightData.airlineNamesMap,
+            flightTypeMap: flightData.flightTypeMap,
+            petPolicyMap,
+            airlineIdMap,
+        });
+    } catch (error) {
+        console.error('Error fetching flight data:', error.message);
+        res.status(500).send('Error fetching flight data.');
+    }
+});
 
 
 const { generateAirlineNamesMap } = require('../helpers/airlineUtils');
@@ -218,30 +251,79 @@ const { generateAirlineNamesMap } = require('../helpers/airlineUtils');
 
 
 // Route to fetch and display airline information
-router.get('/:id', async (req, res, next) => {
-    try {
-        // Fetch the airline by ID from the database
-        const airline = await Airline.findById(req.params.id).populate({
-            path: 'reviews',
-            populate: { path: 'author' },
-        });
+// router.get('/:id', async (req, res, next) => {
+//     try {
+//         // Fetch the airline by ID from the database
+//         const airline = await Airline.findById(req.params.id).populate({
+//             path: 'reviews',
+//             populate: { path: 'author' },
+//         });
 
-        console.log('Airline Data:', airline);
+//         console.log('Airline Data:', airline);
 
-        // Render the airline page without web scraping or ChatGPT
-        if (airline) {
-            res.render('regulations/showAirline', {
-                airline,
-                petPolicySummary: airline.petPolicySummary || 'No pet policy summary available.',
-            });
-        } else {
-            res.status(404).send('Airline not found.');
-        }
-    } catch (error) {
-        console.error('Error fetching airline data:', error);
-        next(error);
-    }
-});
+//         // Render the airline page without web scraping or ChatGPT
+//         if (airline) {
+//             res.render('regulations/showAirline', {
+//                 airline,
+//                 petPolicySummary: airline.petPolicySummary || 'No pet policy summary available.',
+//             });
+//         } else {
+//             res.status(404).send('Airline not found.');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching airline data:', error);
+//         next(error);
+//     }
+// });
+
+// // GET Route to Retrieve Flights using FlightLabs API
+// router.get('/flights', async (req, res) => {
+//     try {
+//         const { origin, destination } = req.query;
+
+//         // If there is origin and destination in the query, use them
+//         if (origin && destination) {
+//             console.log('Reconstructing search from saved criteria:', { origin, destination });
+
+//             // Set up your logic to get the flights again based on the saved criteria
+//             const flights = await getFlightsFromCriteria(origin, destination);
+
+//             // Extract airline codes from the flights
+//             const airlineCodes = flights.flatMap(flight =>
+//                 flight.itineraries.flatMap(itinerary =>
+//                     itinerary.segments.map(segment => segment.carrierCode)
+//                 )
+//             );
+
+//             const uniqueAirlineCodes = [...new Set(airlineCodes)];
+//             const regulations = await Airport.find({ airlineCode: { $in: uniqueAirlineCodes } });
+
+//             // Map regulations for easier access
+//             const regulationMap = regulations.reduce((acc, regulation) => {
+//                 acc[regulation.airlineCode] = regulation;
+//                 return acc;
+//             }, {});
+
+//             res.render('flights', { flights, regulationMap });
+//             return;
+//         }
+
+//         // Default rendering if no origin/destination
+//         res.render('flights', { flights: [], regulationMap: {} });
+//     } catch (error) {
+//         console.error('Error retrieving flights:', error.message);
+//         res.status(500).send('Error retrieving flights.');
+//     }
+// });
+
+
+
+
+
+
+
+
+
 
 // GET Route to Retrieve Flights using FlightLabs API
 router.get('/flights', async (req, res) => {
@@ -250,56 +332,7 @@ router.get('/flights', async (req, res) => {
 
         // If there is origin and destination in the query, use them
         if (origin && destination) {
-            console.log('Reconstructing search from saved criteria:', { origin, destination });
-
-            // Set up your logic to get the flights again based on the saved criteria
-            const flights = await getFlightsFromCriteria(origin, destination);
-
-            // Extract airline codes from the flights
-            const airlineCodes = flights.flatMap(flight =>
-                flight.itineraries.flatMap(itinerary =>
-                    itinerary.segments.map(segment => segment.carrierCode)
-                )
-            );
-
-            const uniqueAirlineCodes = [...new Set(airlineCodes)];
-            const regulations = await Airport.find({ airlineCode: { $in: uniqueAirlineCodes } });
-
-            // Map regulations for easier access
-            const regulationMap = regulations.reduce((acc, regulation) => {
-                acc[regulation.airlineCode] = regulation;
-                return acc;
-            }, {});
-
-            res.render('flights', { flights, regulationMap });
-            return;
-        }
-
-        // Default rendering if no origin/destination
-        res.render('flights', { flights: [], regulationMap: {} });
-    } catch (error) {
-        console.error('Error retrieving flights:', error.message);
-        res.status(500).send('Error retrieving flights.');
-    }
-});
-
-
-
-
-
-
-
-
-
-
-// GET Route to Retrieve Flights using FlightLabs API
-router.get('/flights', async (req, res) => {
-    try {
-        const { origin, destination } = req.query;
-
-        // If there is origin and destination in the query, use them
-        if (origin && destination) {
-            console.log('Reconstructing search from saved criteria:', { origin, destination });
+          
 
             // Set up your logic to get the flights again based on the saved criteria
             const flights = await getFlightsFromCriteria(origin, destination);

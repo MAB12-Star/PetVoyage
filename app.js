@@ -120,7 +120,8 @@ app.get('/dashboard', async (req, res) => {
         try {
             const user = await User.findById(req.user._id)
                 .populate('savedRegulations')
-                .populate('savedFlightRegulations');
+                .populate('savedFlightRegulations')
+                .populate('favoriteAirlines');
             
             res.render('dashboard', { user });
         } catch (error) {

@@ -7,40 +7,137 @@ const Airline = require('../models/airline');
 const { saveCurrentUrl } = require('../middleware');
 
 
-router.post('/saveFlightToProfile', isLoggedIn, async (req, res) => {
-    const { airlineCode } = req.body;  // Get airline code from form submission
-    const userId = req.user._id;
-
-    console.log('Received airlineCode:', airlineCode);
-
-    if (!airlineCode) {
-        return res.status(400).json({ message: 'Airline code is missing' });
-    }
-
+router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, res) => {
     try {
-        // Find the airline regulation by its code instead of using _id
-        const airlineRegulation = await Airline.findOne({ airlineCode: airlineCode.trim().toUpperCase() });
+        const userId = req.user._id;
+        const { airlineId, link, airlineCode, airlineName, petPolicyURL, petPolicySummary } = req.body;
 
-        if (!airlineRegulation) {
-            return res.status(404).json({ message: 'Airline regulation not found' });
+        // Log received data for confirmation
+        console.log('Airline Data Received:', {
+            airlineId,
+            link,
+            airlineCode,
+            airlineName,
+            petPolicyURL,
+            petPolicySummary,
+        });
+
+        if (!airlineId || !link) {
+            console.error('Required fields are missing.');
+            return res.status(400).json({ message: 'Airline ID and link are required.' });
         }
 
-        // Find the user and add the regulation if not already saved.
         const user = await User.findById(userId);
-        const regulationExists = user.savedFlightRegulations.some(
-            regId => regId.equals(airlineRegulation._id)
+        if (!user) {
+            console.error('User not found.');
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        // Check if the airline already exists in the favorites
+        const airlineExists = user.favoriteAirlines.some(
+            (favorite) => String(favorite.airlineId) === String(airlineId)
         );
 
-        if (!regulationExists) {
-            user.savedFlightRegulations.push(airlineRegulation._id);
+        if (!airlineExists) {
+            // Add the new favorite airline
+            user.favoriteAirlines.push({
+                airlineId,
+                link,
+                airlineCode,
+                airlineName,
+                petPolicyURL,
+                petPolicySummary,
+            });
+
             await user.save();
-            return res.status(200).json({ message: 'Airline regulation saved successfully' });
-        } else {
-            return res.status(200).json({ message: 'Airline regulation is already saved to your profile' });
+
+            console.log('Airline saved to favorites successfully:', {
+                airlineId,
+                link,
+                airlineCode,
+                airlineName,
+                petPolicyURL,
+                petPolicySummary,
+            });
+
+            return res.status(200).json({ message: 'Airline added to favorites.' });
         }
+
+        console.log('Airline already in favorites.');
+        return res.status(200).json({ message: 'Airline already in favorites.' });
     } catch (error) {
-        console.error('Error saving regulation:', error);
-        return res.status(500).json({ message: 'Failed to save regulation' });
+        console.error('Error saving airline to favorites:', error);
+        return res.status(500).json({ message: 'Something went wrong. Please try again.' });
+    }
+});
+
+
+
+router.post('/saveFlightToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { name } = req.body;
+        
+
+        if (!airlineCode) {
+            return res.status(400).json({ message: 'Airline code is required' });
+        }
+
+        const user = await User.findById(userId);
+        const airline = await Airline.findOne({ name });
+
+        if (!airline) {
+            return res.status(404).json({ message: 'Airline not found.' });
+        }
+
+        if (!user.savedFlightRegulations.includes(airline._id)) {
+            user.savedFlightRegulations.push(airline._id);
+            await user.save();
+
+        
+            return res.status(200).json({ message: 'Flight regulation saved successfully.' });
+        }
+
+     
+        return res.status(200).json({ message: 'Flight regulation is already saved to your profile.' });
+    } catch (error) {
+        console.error('Error saving flight regulation:', error);
+        return res.status(500).json({ message: 'Something went wrong. Please try again.' });
+    }
+});
+
+
+router.post('/saveAirlineToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
+    try {
+        const userId = req.user._id; // Get the logged-in user's ID
+        const { airlineCode } = req.body; // Extract airlineCode from the request body
+
+        if (!airlineCode) {
+            return res.status(400).json({ message: 'Airline code is required' });
+        }
+
+        // Find the user and airline
+        const user = await User.findById(userId);
+        const airline = await Airline.findOne({ airlineCode });
+
+        if (!airline) {
+            return res.status(404).json({ message: 'Airline not found.' });
+        }
+
+        // Check if the airline is already saved
+        if (!user.savedFlightRegulations.includes(airline._id)) {
+            user.savedFlightRegulations.push(airline._id); // Add the airline to the savedFlightRegulations array
+            await user.save(); // Save the updated user document
+
+  
+            return res.status(200).json({ message: 'Flight regulation saved successfully.' });
+        }
+
+        console.log('Flight regulation already exists in the user profile');
+        return res.status(200).json({ message: 'Flight regulation is already saved to your profile.' });
+    } catch (error) {
+        console.error('Error saving flight regulation:', error);
+        return res.status(500).json({ message: 'Something went wrong. Please try again.' });
     }
 });
 
@@ -49,12 +146,11 @@ router.post('/saveFlightToProfile', isLoggedIn, async (req, res) => {
 
 router.post('/saveToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
     try {
-        console.log('Request received, body:', req.body); // Log the request body
+     
 
         const userId = req.user._id; // Get the logged-in user's ID
         const { regulationId } = req.body; // Get the regulationId from the form
 
-        console.log('Saving regulation with ID:', regulationId, 'for user:', userId);
 
         // Fetch the regulation by its ID
         const regulation = await Regulation.findById(regulationId);
@@ -67,7 +163,9 @@ router.post('/saveToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
         if (!user.savedRegulations.includes(regulationId)) {
             user.savedRegulations.push(regulationId); // Add regulation to the user's saved list
             await user.save(); // Save the updated user document
-            console.log('Regulation saved successfully');
+
+            
+       
             return res.status(200).json({ message: 'Regulation saved to your profile' });
         } else {
             console.log('Regulation already exists in the user profile');
@@ -126,37 +224,31 @@ router.delete('/deleteFlight/:flightId', isLoggedIn, async (req, res) => {
     }
 });
 
+// Route to delete a saved favorite airline from user's profile
+router.delete('/deleteAirline/:airlineId', isLoggedIn, async (req, res) => {
+    const { airlineId } = req.params;
 
-// Route to save regulation to the user's profile upon request
-// router.post('/saveToProfile', isLoggedIn, async (req, res) => {
-//     try {
-//         const userId = req.user._id; // Get the logged-in user's ID
-//         const { regulationContent, country, petType } = req.body; // Get the regulation content from the form
+    try {
+        // Find the logged-in user
+        const user = await User.findById(req.user._id);
 
-//         // Check if the regulation already exists in the database
-//         let regulation = await Regulation.findOne({ content: regulationContent, country, petType });
+        // Remove the airline from the user's favoriteAirlines array
+        user.favoriteAirlines = user.favoriteAirlines.filter(
+            (favorite) => favorite.airlineId.toString() !== airlineId
+        );
 
-//         if (!regulation) {
-//             // If the regulation doesn't exist, save it to the database
-//             regulation = new Regulation({ content: regulationContent, country, petType });
-//             await regulation.save();
-//         }
+        // Save the updated user document
+        await user.save();
 
-//         // Find the user and save the regulation to their profile
-//         const user = await User.findById(userId);
-//         if (!user.savedRegulations.includes(regulation._id)) {
-//             user.savedRegulations.push(regulation._id);
-//             await user.save();
-//         }
+        req.flash('success', 'Favorite airline removed from your profile');
+        res.redirect('/dashboard'); // Redirect to the user's dashboard after deletion
+    } catch (error) {
+        console.error('Error removing favorite airline:', error);
+        req.flash('error', 'Could not remove the favorite airline');
+        res.redirect('/dashboard');
+    }
+});
 
-//         req.flash('success', 'Regulation saved to your profile');
-//         res.redirect('/dashboard'); // Redirect to user's dashboard or other page
-//     } catch (error) {
-//         console.error('Error saving regulation:', error);
-//         req.flash('error', 'Failed to save regulation');
-//         res.redirect('back');
-//     }
-// });
 
 
 

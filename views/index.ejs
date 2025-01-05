@@ -18,6 +18,7 @@
                 <div class="d-flex justify-content-center mt-3 gap-3">
                     <button 
                         type="button" 
+                        aria-label="Search for country regulations"
                         class="btn btn-outline-dark fw-semibold"
                         onclick="location.href='/regulations/newSearch'">
                         <i class="bi bi-globe-americas"></i> Country Regulations
@@ -25,7 +26,9 @@
                     <button 
                         type="button" 
                         class="btn btn-outline-dark fw-semibold"
-                        onclick="location.href='/regulations/searchFlights'">
+                        aria-label="Search for flight regulations"
+                        onclick="location.href='/regulations/searchFlights'"
+                         aria-label="Search for airline regulations"
                         <i class="bi bi-airplane"></i> Search Flights
                     </button>
                 </div>
@@ -140,3 +143,18 @@
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
 </script>
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Website",
+        "name": "PetVoyage",
+        "url": "https://www.petvoyage.ai",
+        "description": "Your ultimate free resource for pet regulations across countries and airlines.",
+        "image": "https://www.petvoyage.ai/images/PetVoyageLogo.png",
+        "publisher": {
+            "@type": "Organization",
+            "name": "PetVoyage"
+        }
+    }
+    </script>
+    

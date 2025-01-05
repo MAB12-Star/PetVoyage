@@ -27,6 +27,9 @@
                                 <% let airlineId = airlineIdMap[airline]; %> <!-- Use `airline` instead of `airlineCode` -->
                                 <div class="card mb-3 border-secondary shadow-sm flight-card" data-type="<%= flightType %>" data-airline="<%= airline %>">
                                     <div class="card-header bg-light">
+                                        <div class="alert-container"></div> <!-- Changed from ID to class -->
+                                       
+                                          <div id="response-message"></div>
                                         <form class="saveFlightForm" data-airline="<%= airline %>">
                                             <input type="hidden" name="airlineCode" value="<%= airline %>">
                                             <button type="submit" class="btn btn-outline-danger float-end">
@@ -34,7 +37,7 @@
                                             </button>
                                         </form>
                                         <strong>Airline Name: </strong>
-                                        <a href="/flights/<%= airlineId %>" class="text-primary"> <!-- Changed `airlines` to `flights` -->
+                                        <a href="/airlines/<%= airlineId %>" class="text-primary"> <!-- Changed `airlines` to `flights` -->
                                             <%= airlineNamesMap[airline] || 'Unknown Airline' %>
                                         </a>
                                         

@@ -28,6 +28,17 @@ const userSchema = new mongoose.Schema({
             ref: 'Airline',
         },
     ],
+    favoriteAirlines: [
+        {
+            airlineId: { type: Schema.Types.ObjectId, ref: 'Airline' },
+            link: { type: String},
+            airlineCode: { type: String},
+            airlineName: { type: String },
+            petPolicyURL: { type: String },
+            petPolicySummary: { type: String },
+        },
+    ],
+    
     toDoList: {
         type: Map,
         of: [String],  // Change from Array to Array of Strings

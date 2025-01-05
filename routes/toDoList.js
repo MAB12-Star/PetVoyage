@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
         }
     }
 
-    console.log('Rendering toDoList:', toDoList);
+ 
     res.render('regulations/toDoList', { toDoList, isAuthenticated: req.isAuthenticated() });
 });
 
@@ -51,7 +51,7 @@ router.post('/update', async (req, res) => {
 
     const { task, fromSection, toSection } = req.body;
 
-    console.log('Received task update:', { task, fromSection, toSection });
+ 
 
     if (!task || !fromSection || !toSection) {
         return res.status(400).json({ error: 'Invalid data received' });
@@ -80,7 +80,7 @@ router.post('/update', async (req, res) => {
 
         await user.save();
 
-        console.log('Updated ToDoList:', user.toDoList);
+      
         res.status(200).json(Object.fromEntries(user.toDoList)); // Convert Map to JSON object
     } catch (error) {
         console.error('Error updating task:', error);

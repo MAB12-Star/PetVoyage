@@ -3,7 +3,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const router = express.Router();
-
+const { saveCurrentUrl, thisIsTheURL } = require('../middleware'); // Adjust the path as needed
 // Determine the callback URL dynamically based on the environment
 const callbackURL = "http://localhost:3000/google/callback";
 
@@ -20,12 +20,12 @@ passport.use(new GoogleStrategy({
     try {
         let user = await User.findOne({ googleId: profile.id });
         if (user) {
-            console.log('User Found:', user);
+         
             user.displayName = profile.displayName;
             user.email = profile.emails[0].value;
             await user.save();
         } else {
-            console.log("Creating new user with ID:", profile.id);
+       
             user = new User({
                 googleId: profile.id,
                 displayName: profile.displayName,
@@ -53,8 +53,7 @@ passport.deserializeUser((id, done) => {
 
 // Route to initiate Google authentication
 router.get('/google', (req, res, next) => {
-    req.session.currentPage = req.headers.referer || req.originalUrl;
-    console.log('Saving URL to session:', req.session.currentPage);
+   
 
     req.session.save((err) => {
         if (err) {
@@ -69,12 +68,12 @@ router.get('/google', (req, res, next) => {
 });
 
 // Callback route for Google to redirect to after authentication
-router.get('/google/callback',
+router.get('/google/callback',thisIsTheURL, 
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-        console.log('User authenticated successfully:', req.user);
+   
 
-        const redirectUrl = req.session.currentPage || '/dashboard';
+        const redirectUrl = req.redirectUrl;
         delete req.session.currentPage;
 
         console.log('Redirecting to:', redirectUrl);
@@ -91,7 +90,7 @@ router.get('/logout', (req, res, next) => {
 });
 
 // Route to render the login page
-router.get('/login', (req, res) => {
+router.get('/login',saveCurrentUrl, (req, res) => {
     console.log(req.session.currentPage);
     res.render('login');
 });

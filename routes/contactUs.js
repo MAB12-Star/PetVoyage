@@ -10,52 +10,9 @@ const openai = new OpenAI({
     apiKey: process.env.openaiKey,  // Ensure the OpenAI API key is set correctly in your .env
 });
 
-router.get('/', (req, res) => {
-    res.render('regulations/contactUs', { answer: null });  // Initially pass null for the answer
-});
-
-router.get('/', (req, res) => {
-    res.render('views/layouts/boilerplate', { answer: null });  // Initially pass null for the answer
-});
-
-
-// Route to handle the form submission and fetch answers
-router.post('/ask-question-test', async (req, res) => {
-    const { user_question } = req.body;  // Get the user question from the form submission
-    console.log("Received question:", user_question);  // Log the question
-
-    try {
-        // First, try to search for relevant data in the database
-        let answer = await searchDatabaseForAnswer(user_question);
-
-        // If no relevant answer was found in the database, proceed with OpenAI
-        if (!answer) {
-            console.log("No answer found in database, querying OpenAI...");
-            // Generate a prompt for OpenAI if no database answer
-            const prompt = `Answer the following question about pet regulations:\n\n${user_question}\n`;
-            console.log("Generated prompt:", prompt);
-
-            // Request the answer from OpenAI
-            const response = await openai.chat.completions.create({
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: prompt }],
-            });
-
-            // Extract the answer from OpenAI's response
-            answer = response.choices[0].message.content.trim();
-            console.log("OpenAI response:", answer);
-        }
-
-        // Render the answer back to the user
-        res.render('regulations/contactUs', { answer, question: user_question });
-    } catch (error) {
-        console.error("Error processing the question:", error);
-        res.status(500).send('An error occurred while processing your request.');
-    }
-});
 // Route to render the contact page initially
 router.get('/', (req, res) => {
-    res.render('./views/layouts/boilerplate', { answer: null });  // Initially pass null for the answer
+    res.render('regulations/contactUs', { answer: null });  // Initially pass null for the answer
 });
 
 

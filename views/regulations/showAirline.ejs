@@ -12,14 +12,21 @@
                         <%= airline.airlineCode %> - <%= airline.name || 'Unknown Airline' %>
                     </h5>
                     <a href="<%= airline.petPolicyURL %>" target="_blank" class="btn btn-info">View Pet Policy</a>
-
+                    <div class="alert-container"></div> <!-- Placeholder for alert messages -->
                     <div class="mt-3">
-                        <form class="saveFlightForm" data-airline="<%= airline %>">
-                            <input type="hidden" name="airlineCode" value="<%= airline %>">
+                        <form class="saveAirlineForm" method="POST" action="/favorites/saveAirlineToFavorites">
+                            <input type="hidden" name="airlineId" value="<%= airline._id %>">
+                            <input type="hidden" name="link" <input type="hidden" name="link" value="<%= link %>">
+                            <input type="hidden" name="airlineCode" value="<%= airline.airlineCode %>">
+                            <input type="hidden" name="airlineName" value="<%= airline.name %>">
+                            <input type="hidden" name="petPolicyURL" value="<%= airline.petPolicyURL %>">
+                            <input type="hidden" name="petPolicySummary" value="<%= airline.ImprovedPetPolicySummary || '' %>">
                             <button type="submit" class="btn btn-outline-danger float-end">
                                 <i class="fas fa-heart"></i> Save
                             </button>
                         </form>
+                        
+                        
                         <p><%- airline.ImprovedPetPolicySummary || 'No pet policy summary available.' %></p>
                     </div>
                 </div>

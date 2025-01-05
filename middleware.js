@@ -1,18 +1,7 @@
-module.exports.isLoggedIn = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-         // Log the return URL for debugging
-
-        if (req.xhr) { // If the request is AJAX
-            return res.status(401).json({ success: false, error: 'You need to log in to save favorites', redirect: '/login' });
-        } else {
-            req.flash('error', 'You need to log in to do that');
-            return res.redirect('/login');
-        }
-    }
-    next();
-};
 
 module.exports.saveCurrentUrl = (req, res, next) => {
+    console.log('saveCurrentUrl middleware is running');
+
     if (!req.isAuthenticated()) {
         const refererUrl = req.get('Referer'); // Get the referring page's URL
         req.session.currentPage = refererUrl // Save the referer URL or fallback to the original URL
@@ -27,6 +16,20 @@ module.exports.thisIsTheURL = (req, res, next) => {
         console.log('Using saved URL for redirection:', req.redirectUrl);
     } else {
         console.error('No URL found in session');
+    }
+    next();
+};
+
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+         // Log the return URL for debugging
+
+        if (req.xhr) { // If the request is AJAX
+            return res.status(401).json({ success: false, error: 'You need to log in to save favorites', redirect: '/login' });
+        } else {
+            req.flash('error', 'You need to log in to do that');
+            return res.redirect('/login');
+        }
     }
     next();
 };
