@@ -16,6 +16,49 @@
     gap: 15px;
 }
 
+.dynamic-image {
+    width: 30%;
+    height: auto;
+    margin: 0.5rem;
+}
+.dynamic-image-mobile {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dynamic-image {
+        display: none;
+    }
+    .dynamic-image-mobile {
+        display: block;
+        width: 100%;
+        margin: 1rem 0;
+    }
+}
+
+ /* Styling for Images */
+ img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 25px;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 20px;
+}
+
+/* Text Emphasis */
+.text-primary-emphasis {
+    color: #0056b3;
+}
+
+
     /* Contact Us and Ask Pet AI Form Containers */
     .contact-form-container, .ask-ai-container {
         margin-top: 30px;

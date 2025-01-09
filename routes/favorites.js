@@ -12,16 +12,6 @@ router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, r
         const userId = req.user._id;
         const { airlineId, link, airlineCode, airlineName, petPolicyURL, petPolicySummary } = req.body;
 
-        // Log received data for confirmation
-        console.log('Airline Data Received:', {
-            airlineId,
-            link,
-            airlineCode,
-            airlineName,
-            petPolicyURL,
-            petPolicySummary,
-        });
-
         if (!airlineId || !link) {
             console.error('Required fields are missing.');
             return res.status(400).json({ message: 'Airline ID and link are required.' });
@@ -51,15 +41,7 @@ router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, r
 
             await user.save();
 
-            console.log('Airline saved to favorites successfully:', {
-                airlineId,
-                link,
-                airlineCode,
-                airlineName,
-                petPolicyURL,
-                petPolicySummary,
-            });
-
+           
             return res.status(200).json({ message: 'Airline added to favorites.' });
         }
 
@@ -75,30 +57,32 @@ router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, r
 
 router.post('/saveFlightToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
     try {
-        const userId = req.user._id;
-        const { name } = req.body;
-        
+        const userId = req.user._id; // Get user ID from the authenticated user
+        const { airlineCode } = req.body; // Get airlineCode from the request body
 
-        if (!airlineCode) {
-            return res.status(400).json({ message: 'Airline code is required' });
+        console.log('Request Body:', req.body); // Debugging log
+
+        // Find the user in the database
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
         }
 
-        const user = await User.findById(userId);
-        const airline = await Airline.findOne({ name });
-
+        // Find the airline using airlineCode
+        const airline = await Airline.findOne({ airlineCode });
         if (!airline) {
             return res.status(404).json({ message: 'Airline not found.' });
         }
 
+        // Check if the airline is already saved in the user's profile
         if (!user.savedFlightRegulations.includes(airline._id)) {
             user.savedFlightRegulations.push(airline._id);
-            await user.save();
+            await user.save(); // Save the updated user data
 
-        
             return res.status(200).json({ message: 'Flight regulation saved successfully.' });
         }
 
-     
+        // If the airline is already saved, return a different message
         return res.status(200).json({ message: 'Flight regulation is already saved to your profile.' });
     } catch (error) {
         console.error('Error saving flight regulation:', error);
@@ -107,14 +91,13 @@ router.post('/saveFlightToProfile', saveCurrentUrl, isLoggedIn, async (req, res)
 });
 
 
+
 router.post('/saveAirlineToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
     try {
         const userId = req.user._id; // Get the logged-in user's ID
         const { airlineCode } = req.body; // Extract airlineCode from the request body
 
-        if (!airlineCode) {
-            return res.status(400).json({ message: 'Airline code is required' });
-        }
+      
 
         // Find the user and airline
         const user = await User.findById(userId);

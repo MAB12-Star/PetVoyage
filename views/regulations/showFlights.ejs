@@ -1,5 +1,49 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- Meta Tags for SEO -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Find pet-friendly flights and airlines with detailed pet policies. Travel with your furry friends with ease.">
+<meta name="keywords" content="pet-friendly flights, airlines pet policies, flights for pets, travel with pets, direct flights, indirect flights, pet travel">
+<meta name="author" content="Pet Voyage">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="Pet-Friendly Flights - Travel with Your Pets">
+<meta property="og:description" content="Discover airlines that welcome pets and offer clear pet travel policies. Choose direct or indirect flights based on your preference.">
+<meta property="og:image" content="/images/pet-travel-banner.jpg"> <!-- Replace with your actual image path -->
+<meta property="og:url" content="https://www.petvoyage.ai/flights">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pet-Friendly Flights - Travel with Your Pets">
+<meta name="twitter:description" content="Discover airlines that welcome pets and offer clear pet travel policies. Choose direct or indirect flights based on your preference.">
+<meta name="twitter:image" content="/images/pet-travel-banner.jpg"> <!-- Replace with your actual image path -->
+
+<!-- Structured Data JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Pet-Friendly Flights",
+  "itemListElement": [
+    <% flights.forEach((airline, index) => { %>
+      {
+        "@type": "ListItem",
+        "position": <%= index + 1 %>,
+        "name": "<%= airlineNamesMap[airline] || 'Unknown Airline' %>",
+        "url": "/airlines/<%= airlineIdMap[airline] %>",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Flight Type",
+          "value": "<%= flightTypeMap[airline] || 'Unknown' %>"
+        }
+      }<%= index < flights.length - 1 ? ',' : '' %>
+    <% }) %>
+  ]
+}
+</script>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">

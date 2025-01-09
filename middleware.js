@@ -28,7 +28,7 @@ module.exports.isLoggedIn = (req, res, next) => {
             return res.status(401).json({ success: false, error: 'You need to log in to save favorites', redirect: '/login' });
         } else {
             req.flash('error', 'You need to log in to do that');
-            return res.redirect('/login');
+            return res.redirect('back');
         }
     }
     next();

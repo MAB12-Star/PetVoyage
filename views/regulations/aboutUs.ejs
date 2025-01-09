@@ -1,34 +1,89 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- Meta Tags for SEO -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pet Voyage is your trusted guide for traveling with pets. Discover tips, tricks, and essential resources to make your journey with your furry friends stress-free and enjoyable.">
+<meta name="keywords" content="travel with pets, flying with pets, pet-friendly travel, pet travel tips, traveling with animals">
+<meta name="author" content="Pet Voyage">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="Pet Voyage - Travel with Your Pets">
+<meta property="og:description" content="Discover tips, tricks, and resources for traveling with pets. Your guide to stress-free adventures with your furry companions.">
+<meta property="og:image" content="/images/carriers.jpg">
+<meta property="og:url" content="https://www.petvoyage.ai">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pet Voyage - Travel with Your Pets">
+<meta name="twitter:description" content="Discover tips, tricks, and resources for traveling with pets. Your guide to stress-free adventures with your furry companions.">
+<meta name="twitter:image" content="/images/carriers.jpg">
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
                 <div class="card-body">
+                    <!-- Hero Section -->
                     <div class="image-row d-flex justify-content-center mb-4">
-                        <img src="/images/carriers.jpg" alt="Pet carriers" class="img-fluid rounded dynamic-image">
-                        <img src="/images/backpack_cat.jpg" alt="Cat in a backpack carrier" class="img-fluid rounded dynamic-image">
-                        <img src="/images/family.jpg" alt="Family traveling with pets" class="img-fluid rounded dynamic-image">
+                        <img src="/images/carriers.jpg" alt="Pet carriers" class="img-fluid rounded dynamic-image shadow-lg me-3">
+                        <img src="/images/backpack_cat.jpg" alt="Cat in a backpack carrier" class="img-fluid rounded dynamic-image shadow-lg me-3">
+                        <img src="/images/family.jpg" alt="Family traveling with pets" class="img-fluid rounded dynamic-image shadow-lg">
                     </div>
-                    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Welcome to Pet Voyage!</strong></h1>
-                    <p class="lead text-center">
-                        Pet Voyage is my labor of love, born from a passion for travel and the belief that our pets should never hold us back from exploring the world. If you're fortunate enough to share your life with animals, why not bring them along on your adventures?
+                    <h1 class="text-center text-primary-emphasis mb-4"><strong>Welcome to Pet Voyage!</strong></h1>
+                    <p class="lead text-center text-muted">
+                        Pet Voyage is a labor of love, designed to make traveling with your pets seamless and enjoyable. Whether you're embarking on a new adventure or revisiting favorite destinations, we help you navigate the complexities of pet travel with ease.
                     </p>
-                    <img src="/images/carriers.jpg" alt="Pet carriers" class="img-fluid rounded dynamic-image-mobile">
-                    <p class="lead text-center">
-                        This journey began when I decided to immerse myself in a new culture and learn something new. With three beloved pets by my side, leaving them behind was never an option. However, navigating the process of flying with pets was overwhelming, confusing, and involved countless hours of research. I was so anxious about ensuring my Pitbull could travel safely that I kept my plans to move abroad a secret, just in case things didn’t work out. 
-                        (See my <a href="/tips">Tips & Tricks Section</a> for some learned lessons. )
-                    </p>
-                    <img src="/images/backpack_cat.jpg" alt="Cat in a backpack carrier" class="img-fluid rounded dynamic-image-mobile">
-                    <p class="lead text-center">
-                        Now, having flown with my pets half a dozen times, I’ve gained valuable insights and experience. While it’s become less stressful, the process still comes with its challenges. That’s why I created Pet Voyage: to make your travels with your pets smoother, less daunting, and more enjoyable.
-                    </p>
-                    <img src="/images/family.jpg" alt="Family traveling with pets" class="img-fluid rounded dynamic-image-mobile">
-                    <p class="lead text-center">
-                        Whether you're embarking on your first trip or your tenth, I hope this site helps guide your decisions and makes your journey unforgettable—for both you and your furry companions.
-                    </p>
+                    
+                    <!-- Content Section -->
+                    <div class="content-section">
+                        <p class="lead text-center text-secondary">
+                            This journey began when I decided to immerse myself in a new culture, with my three beloved pets in tow. Leaving them behind was never an option. However, navigating the process of flying with pets was overwhelming, involving countless hours of research and planning.
+                        </p>
+                        <p class="lead text-center text-secondary">
+                            See my <a href="/tips" class="text-primary fw-bold">Tips & Tricks Section</a> for valuable insights and lessons learned along the way.
+                        </p>
+                        <p class="lead text-center text-secondary">
+                            After flying with my pets half a dozen times, I’ve gained invaluable experience and tips. While the process has become less stressful, it still presents challenges. That’s why I created Pet Voyage: to guide you through your pet travel adventures.
+                        </p>
+                        <p class="lead text-center text-secondary">
+                            Whether you're embarking on your first trip or your tenth, I hope this site makes your journey unforgettable—for both you and your furry companions.
+                        </p>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="text-center mt-5">
+                        <a href="/tips" class="btn btn-primary btn-lg shadow">Explore Tips & Tricks</a>
+                        <a href="/regulations" class="btn btn-outline-primary btn-lg shadow ms-3">Learn About Regulations</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Styling for Dynamic Images -->
+<style>
+    .dynamic-image {
+        width: 30%;
+        height: auto;
+        margin: 0.5rem;
+    }
+    .dynamic-image-mobile {
+        display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .dynamic-image {
+            display: none;
+        }
+        .dynamic-image-mobile {
+            display: block;
+            width: 100%;
+            margin: 1rem 0;
+        }
+    }
+</style>
