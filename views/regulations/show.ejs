@@ -23,7 +23,7 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-10 ">
             <!-- Alert Section -->
             <% if (regulations[0].destinationCountry.country === "United States" && regulations[0].petType.type === "Dog") { %>
                 <div class="alert alert-danger text-center" role="alert">
@@ -34,27 +34,37 @@
                     </p>
                 </div>
             <% } %>
-
-            <!-- Regulations Header -->
-            <div class="card border-primary shadow-lg p-3 mb-5 bg-white rounded">
-                <div class="card-body text-center">
-                    <h3 class="text-primary mb-4">
-                        Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>
-                    </h3>
-                    <% if (regulations[0].petType.type === "Cat") { %>
-                        <img class="img-fluid rounded mb-3" src="/images/Cat3.png" alt="Cat traveling regulations" style="max-width: 150px;">
-                    <% } else if (regulations[0].petType.type === "Dog") { %>
-                        <img class="img-fluid rounded mb-3" src="/images/Dog3.png" alt="Dog traveling regulations" style="max-width: 150px;">
-                    <% } else { %>
-                        <img class="img-fluid rounded mb-3" src="/images/Bird2.png" alt="Other pet traveling regulations" style="max-width: 150px;">
-                    <% } %>
-                    <p class="lead text-secondary">
-                        You're looking to travel to <strong><%= regulations[0].destinationCountry.country %></strong> with your precious <strong><%= regulations[0].petType.type %></strong>! Below, you'll find the necessary information to make your journey smooth and stress-free. Remember to also check airline-specific requirements.
-                    </p>
+        
+            <!-- Regulations Section -->
+            <div class="card border-primary shadow-lg p-4 mb-5 bg-white rounded">
+                <div class="card-body">
+                    <!-- Row for Text and Image -->
+                    <div class="row align-items-center">
+                        <!-- Text Section -->
+                        <div class="col-md-8">
+                            <h1 class="text-primary-emphasis mb-4"><strong> Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %> </strong></h1>
+                            <p class="lead text-secondary">
+                                You're looking to travel to <strong><%= regulations[0].destinationCountry.country %></strong> with your precious <strong><%= regulations[0].petType.type %></strong>! Below, you'll find the necessary information to make your journey smooth and stress-free. Remember to also check airline-specific requirements.
+                            </p>
+                        </div>
+        
+                        <!-- Image Section -->
+                        <div class="col-md-4 text-center">
+                            <% if (regulations[0].petType.type === "Cat") { %>
+                                <img class="img-fluid rounded mb-3" src="/images/Cat3.png" alt="Cat traveling regulations" style="max-width: 150px;">
+                            <% } else if (regulations[0].petType.type === "Dog") { %>
+                                <img class="img-fluid rounded mb-3" src="/images/Dog3.png" alt="Dog traveling regulations" style="max-width: 150px;">
+                            <% } else { %>
+                                <img class="img-fluid rounded mb-3" src="/images/Bird2.png" alt="Other pet traveling regulations" style="max-width: 150px;">
+                            <% } %>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        
 
-            <!-- Accordion Section -->
+        <div class="col-md-10 ">  <!-- Accordion Section -->
             <div class="accordion" id="accordionExample">
                 <% regulations.forEach(regulation => { %>
                     <!-- Vaccination Requirements -->
@@ -134,9 +144,11 @@
                     </div>
                 <% }) %>
             </div>
-
+            <div>
+            <%- include('../partials/findVetC') %>
+        </div>
             <!-- Navigation Buttons -->
-            <div class="d-flex justify-content-center mt-4 gap-3">
+            <div class="d-flex justify-content-center mt-4 mb-4 gap-3">
                 <button type="button" class="btn btn-outline-secondary" onclick="location.href='/regulations/newSearch'">
                     <i class="bi bi-arrow-left"></i> Back
                 </button>
@@ -147,6 +159,9 @@
                     <i class="bi bi-search"></i> Search Pet Flights
                 </button>
             </div>
+         
+            </div>
+            
         </div>
     </div>
 </div>

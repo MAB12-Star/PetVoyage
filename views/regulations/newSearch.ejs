@@ -5,8 +5,8 @@
         <div class="col-md-6">
             
             <div class="card shadow-lg p-4 border-secondary rounded">
-                <h3 class="text-center text-secondary-emphasis mb-4"><strong>Select Country and Animal Type</strong></h3>
-                <img class="align-self-center" src="/images/CandP1.png" width="400" height="250" alt="Description of image">
+                <h2 class="text-center text-primary-emphasis mb-4"><strong>Select Country and Animal Type</strong></h2>
+                <img class="align-self-center" src="/images/CandP1.png" width="200" height="150" alt="Description of image">
                 <form class="validated-form" action="/regulations/submitCountry" method="POST">
                     <!-- Dropdown for selecting origin country -->
                     <div class="form-group mt-3">
@@ -30,34 +30,56 @@
                         </select>
                     </div>
                 
-                    <!-- Dropdown for selecting pet type -->
+                    <!-- Button selection for animal type -->
                     <div class="form-group mt-3">
-                        <label for="petType">Select Animal Type</label>
-                        <select name="petType" id="petType" class="form-control" required>
-                            <option value="">Choose an animal type</option>
+                        <label>Select Animal Type</label>
+                        <div class="d-flex flex-wrap gap-2 mt-2" id="petTypeButtons">
                             <% petTypes.forEach(petType => { %>
-                                <option value="<%= petType._id %>"><%= petType.type %></option>
+                                <button type="button" 
+                                        class="btn btn-outline-secondary pet-type-btn"
+                                        data-pet-type-id="<%= petType._id %>">
+                                    <%= petType.type %>
+                                </button>
                             <% }) %>
-                        </select>
+                        </div>
+                        <!-- Hidden input to store selected pet type -->
+                        <input type="hidden" name="petType" id="selectedPetType" required>
                     </div>
                 
                     <div class="d-flex justify-content-center mt-3 gap-3">
-                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/newSearch'">
-                        <i class="bi bi-arrow-left"></i> Back
-                    </button>
-                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/'">
-                        <i class="bi bi-house-door"></i> Home
-                    </button>
-                    <div class="text-center">
-                        <button class="btn btn-outline-dark">Submit</button>
+                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/newSearch'">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/'">
+                            <i class="bi bi-house-door"></i> Home
+                        </button>
+                        <div class="text-center">
+                            <button class="btn btn-outline-dark">Submit</button>
+                        </div>
                     </div>
-                    </div>
-
                 </form>
-                
-                
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    // JavaScript to handle button selection
+    const petTypeButtons = document.querySelectorAll('.pet-type-btn');
+    const selectedPetTypeInput = document.getElementById('selectedPetType');
+
+    petTypeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'active' class from all buttons
+            petTypeButtons.forEach(btn => btn.classList.remove('btn-primary'));
+            petTypeButtons.forEach(btn => btn.classList.add('btn-outline-secondary'));
+
+            // Add 'active' class to the clicked button
+            button.classList.add('btn-primary');
+            button.classList.remove('btn-outline-secondary');
+
+            // Set the hidden input value to the selected pet type's ID
+            selectedPetTypeInput.value = button.getAttribute('data-pet-type-id');
+        });
+    });
+</script>

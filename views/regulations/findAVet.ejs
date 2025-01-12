@@ -1,0 +1,160 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+        
+   
+ 
+            <div class="card bg-white shadow-lg mb-3 border  ">
+             
+
+        <div class="card-body">
+    <div class="row">
+        <h2 class="text-center text-primary-emphasis mb-3 mt-1"><strong>Find a Vet with Pet Travel Experience</strong></h2>
+        <!-- Map on the left -->
+        <div class="col-md-6">
+            <div id="vetMap" class="border rounded" style="height: 500px; width: 100%;"></div>
+        </div>
+        
+        <!-- Search input and clinic details on the right -->
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 border-secondary rounded">
+              
+                <p class="text-center">
+                    Enter your zip code to find veterinary clinics near you that can help with pet travel.
+                </p>
+                <form id="vetSearchForm" class="validated-form">
+                    <!-- Zip code input with a button -->
+                    <div class="input-group mb-3">
+                        <input type="text" id="zipCode" class="form-control" placeholder="Enter zip code" required>
+                        <button id="searchButton" class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-geo-alt"></i> Search
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Scrollable area for clinic details -->
+                <div class="mt-4">
+                    <h5>Nearby Clinics:</h5>
+                    <div id="clinicDetails" class="overflow-auto border rounded p-3" style="height: 300px;">
+                        <!-- Cards will be dynamically added here -->
+                        <p class="text-center text-muted">No clinics found. Enter a zip code to search.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let vetMap;
+    const clinicDetailsContainer = document.getElementById('clinicDetails');
+    const zipCodeInput = document.getElementById('zipCode');
+    const searchButton = document.getElementById('searchButton');
+
+    // Initialize the map
+    function initVetMap(lat, lng) {
+        vetMap = new google.maps.Map(document.getElementById('vetMap'), {
+            center: { lat: lat, lng: lng },
+            zoom: 12
+        });
+
+        fetchNearbyVetClinics(lat, lng);
+    }
+
+    // Fetch nearby veterinary clinics
+    function fetchNearbyVetClinics(lat, lng) {
+        const service = new google.maps.places.PlacesService(vetMap);
+        const request = {
+            location: new google.maps.LatLng(lat, lng),
+            radius: '30000', // 30 km radius
+            type: ['veterinary_care']
+        };
+
+        clinicDetailsContainer.innerHTML = ''; // Clear previous results
+        service.nearbySearch(request, function (results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                results.forEach(function (place) {
+                    addClinicCard(place);
+                    new google.maps.Marker({
+                        position: place.geometry.location,
+                        map: vetMap,
+                        title: place.name
+                    });
+                });
+            } else {
+                clinicDetailsContainer.innerHTML = '<p class="text-center text-muted">No clinics found in this area.</p>';
+            }
+        });
+    }
+
+    // Add a clinic card to the scrollable area
+    function addClinicCard(place) {
+        const card = document.createElement('div');
+        card.className = 'card mb-3 p-2';
+
+        const websiteLink = place.website || '#';
+        const websiteText = place.website ? place.website : 'No website available';
+
+        card.innerHTML = `
+            <h5 class="card-title">${place.name}</h5>
+            <p class="card-text"><strong>Address:</strong> ${place.vicinity || 'N/A'}</p>
+            <p class="card-text"><strong>Phone:</strong> ${place.formatted_phone_number || 'N/A'}</p>
+            <p class="card-text"><a href="${websiteLink}" target="_blank">${websiteText}</a></p>
+        `;
+
+        clinicDetailsContainer.appendChild(card);
+    }
+
+    // Search clinics by zip code
+    function searchByZipCode() {
+        const zipCode = zipCodeInput.value.trim();
+        if (!zipCode) {
+            alert('Please enter a zip code.');
+            return;
+        }
+
+        const geocoder = new google.maps.Geocoder();
+        console.log('Entered Zip Code:', zipCode);
+geocoder.geocode({ address: zipCode }, function (results, status) {
+    console.log('Geocode Status:', status);
+    console.log('Geocode Results:', results);
+    if (status === 'OK' && results.length > 0) {
+        const location = results[0].geometry.location;
+        const lat = location.lat();
+        const lng = location.lng();
+
+        // Center map and fetch clinics
+        vetMap.setCenter({ lat, lng });
+        fetchNearbyVetClinics(lat, lng);
+    } else {
+        alert('Unable to find location. Please enter a valid zip code.');
+    }
+});
+
+    }
+
+    // Handle search button click
+    searchButton.addEventListener('click', searchByZipCode);
+
+    // Detect user's location on page load
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            initVetMap(lat, lng);
+        },
+        function () {
+            // Default location if geolocation fails
+            const defaultLat = 37.7749; // San Francisco latitude
+            const defaultLng = -122.4194; // San Francisco longitude
+            initVetMap(defaultLat, defaultLng);
+        }
+    );
+</script>
+
+<!-- Include Google Maps Script -->
+
+
+
+
+<!-- Include Google Maps Script -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
