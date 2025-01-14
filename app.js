@@ -23,6 +23,7 @@ const reviewsRoutes = require('./routes/reviews');
 const airlineRoutes = require('./routes/airlines');
 const petVoyageAi = require('./routes/petVoyageAi');
 const findAVet = require('./routes/findAVet');
+const blog = require('./routes/blog');
 
 
 const MongoStore = require('connect-mongo');
@@ -95,6 +96,7 @@ app.use('/favorites', favoritesRoutes);
 app.use('/aboutUs', aboutUs);
 app.use('/findAVet', findAVet);
 app.use('/contactUs', contactUs);
+app.use('/blog', blog);
 app.use('/tips', tips);
 app.use('/', petVoyageAi);
 
