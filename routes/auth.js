@@ -76,7 +76,7 @@ router.get('/google/callback',thisIsTheURL,
         const redirectUrl = req.redirectUrl;
         delete req.session.currentPage;
 
-        console.log('Redirecting to:', redirectUrl);
+       ;
         res.redirect(redirectUrl);
     }
 );

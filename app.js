@@ -80,9 +80,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-    console.log('Session ID:', req.sessionID);
-    console.log('User in session:', req.user);
-    console.log('Authenticated:', req.isAuthenticated());
+  
     next();
 });
 

@@ -1,4 +1,31 @@
-/* Default styling for images */
+
+/* Full-screen background */
+.background-section {
+    position: fixed; /* Fixes the background to the viewport */
+    top: 50;
+    left: 0;
+    width: 100%; /* Full width of the viewport */
+    height: 80%; /* Full height of the viewport */
+    background-image: url('/images/catanddog.jpg'); /* Replace with your image */
+    background-size: cover; /* Makes the image cover the container */
+    background-position: center center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    z-index: -1; /* Pushes it behind all other content */
+    opacity: 0.5; /* 50% transparency */
+}
+
+/* Example for other page content */
+.content {
+    position: relative; /* Keeps content on top of the background */
+    z-index: 1; /* Ensures this content stays above the background */
+    padding: 20px; /* Adds some padding for better visibility */
+}
+
+
+.blue{
+    background-color: #004085; /* Example background color */
+    opacity: 0.8; /* 50% transparency */
+}
 .dynamic-image {
     max-height: 300px;
     margin: 10px;
@@ -57,6 +84,7 @@
 .text-primary-emphasis {
     color: #0056b3;
 }
+
 
 
     /* Contact Us and Ask Pet AI Form Containers */

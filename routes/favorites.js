@@ -60,7 +60,7 @@ router.post('/saveFlightToProfile', saveCurrentUrl, isLoggedIn, async (req, res)
         const userId = req.user._id; // Get user ID from the authenticated user
         const { airlineCode } = req.body; // Get airlineCode from the request body
 
-        console.log('Request Body:', req.body); // Debugging log
+      
 
         // Find the user in the database
         const user = await User.findById(userId);

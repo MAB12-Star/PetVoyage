@@ -1,12 +1,9 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="background-section">
-   </div>
-
-<div class="container  ">
-    <div class="row justify-content-center mb-5 ">
-        <div class="col-md-8 ">
-            <div class="blue card border-secondary mt-2 shadow-lg p-3 mb-5 bg-white rounded">
+<div class="container ">
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-5 border-secondary rounded">
                 <img
                     src="/images/PetVoyageLogo.png"
                     class="img-fluid rounded-top d-block mx-auto"
@@ -15,91 +12,35 @@
                     height="400"
                 />
                 <h2 class="lead text-center ">
-                  <strong> Your ultimate free resource for pet regulations across countries and airlines. </strong> 
+                  <strong></strong>  Your ultimate free resource for pet regulations across countries and airlines. </strong> 
                    
                 </h2>
                 <div class="d-flex justify-content-center mt-3 gap-3">
-                    <!-- Card for Country Regulations -->
-                    <div class="container mt-3">
-                        <div class="row justify-content-center g-3">
-                         
-                    
-                            <!-- Country Regulations Card -->
-                            <div 
-                                class="col-12 col-md-6 col-lg-4" 
-                                aria-label="Search for country regulations">
-                                <div 
-                                    class="card text-center border-dark shadow-lg clickable-card" 
-                                    style="cursor: pointer;" 
-                                    onclick="location.href='/regulations/newSearch'">
-                                    <div class="card-body">
-                                        <i class="bi bi-globe-americas display-4"></i>
-                                        <h5 class="card-title mt-2">Country Regulations</h5>
-                                        <p class="card-text">Explore pet regulations by country.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <!-- Search Flights Card -->
-                            <div 
-                                class="col-12 col-md-6 col-lg-4" 
-                                aria-label="Search for flight regulations">
-                                <div 
-                                    class="card text-center border-dark shadow-lg clickable-card" 
-                                    style="cursor: pointer;" 
-                                    onclick="location.href='/regulations/searchFlights'">
-                                    <div class="card-body">
-                                        <i class="bi bi-airplane display-4"></i>
-                                        <h5 class="card-title mt-2">Search Flights</h5>
-                                        <p class="card-text">Find airlines with pet travel policies.</p>
-                                    </div>
-                                </div>
-                            </div>
-                               
-                        </div>
-                    </div>
-                    
-                    
-                    
+                    <button 
+                        type="button" 
+                        aria-label="Search for country regulations"
+                        class="btn btn-outline-dark fw-semibold"
+                        onclick="location.href='/regulations/newSearch'">
+                        <i class="bi bi-globe-americas"></i> Country Regulations
+                    </button>
+                    <button 
+                        type="button" 
+                        class="btn btn-outline-dark fw-semibold"
+                        aria-label="Search for flight regulations"
+                        onclick="location.href='/regulations/searchFlights'"
+                         aria-label="Search for airline regulations"
+                        <i class="bi bi-airplane"></i> Search Flights
+                    </button>
                 </div>
-                
                 <div class="mt-4">
                 <p class="lead text-center">
-                    <strong>With PetVoyage, you can effortlessly prepare for your travels with your furry friends, ensuring 
-                    you have all the necessary information and documentation ready for a smooth journey!</strong>
+                    With PetVoyage, you can effortlessly prepare for your travels with your furry friends, ensuring 
+                    you have all the necessary information and documentation ready for a smooth journey!
                 </p>
             </div>
            
             </div>
            
-        </div>
-
-        
-        <div class="row justify-content-center gap-3">
-        
-        <!-- Blog Card -->
-        <div 
-            class="col-12 col-md-6 col-lg-4 card text-center border-dark clickable-card shadow-lg" 
-            style="cursor: pointer;"
-            onclick="location.href='/blog'"
-            aria-label="Visit the PetVoyage Blog">
-            <div class="card-body">
-                <i class="bi bi-journal-bookmark display-4"></i>
-                <h5 class="card-title mt-2">PetVoyage Blog</h5>
-                <p class="card-text">Read the latest tips and stories about traveling with your pets.</p>
-            </div>
-        </div>
-
-                    <div 
-            class="col-12 col-md-6 col-lg-4 card text-center border-dark shadow-lg clickable-card" 
-            style="cursor: pointer;"
-            onclick="location.href='/findAVet'"
-            aria-label="Find a veterinarian near you">
-            <div class="card-body">
-                <i class="bi bi-hospital display-4"></i>
-                <h5 class="card-title mt-2">Find a Vet</h5>
-                <p class="card-text">Locate trusted veterinarians near your location for pet care and emergencies.</p>
-            </div>
         </div>
        
     </div>
