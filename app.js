@@ -139,10 +139,17 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+
+
 app.get('/', (req, res) => {
     res.render('index', { answer: null });
 });
 
+
+// Route for the sitemap
+app.get('/sitemap', (req, res) => {
+    res.render('sitemap'); // Render the sitemap view (e.g., sitemap.ejs)
+});
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
