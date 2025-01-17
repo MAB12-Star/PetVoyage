@@ -37,7 +37,7 @@
                     <div class="alert-container"></div>
                     <div class="mt-3">
                         <form class="saveAirlineForm" method="POST" action="/favorites/saveAirlineToFavorites">
-                            <input type="hidden" name="airlineId" value="<%= airline._id %>">
+                            <input type="hidden" name="airlineSlug" value="<%= airline.slug %>"> <!-- Use slug -->
                             <input type="hidden" name="link" value="<%= link %>">
                             <input type="hidden" name="airlineCode" value="<%= airline.airlineCode %>">
                             <input type="hidden" name="airlineName" value="<%= airline.name %>">
@@ -57,7 +57,7 @@
         <div class="col-md-6 col-12 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <form class="mb-3 validated-form" id="reviewForm" action="/flights/<%= airline._id %>/reviews" method="POST" novalidate>
+                    <form class="mb-3 validated-form" id="reviewForm" action="/flights/<%= airline.slug %>/reviews" method="POST" novalidate> <!-- Use slug here -->
                         <h2>Leave A Review</h2>
                         <fieldset class="starability-basic">
                             <input type="radio" id="rate1" name="review[rating]" value="1" />
@@ -75,9 +75,6 @@
                         <button class="btn btn-success mt-2" onclick="return validateReviewForm()">Submit Review</button>
                     </form>
                     
-        
-                   
-        
                     <h2>Reviews</h2>
                     <% if (airline.reviews.length > 0) { %>
                         <% airline.reviews.forEach(review => { %>
@@ -98,7 +95,7 @@
                                     
                                     <% } %>
                                     <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
-                                        <form action="/flights/<%= airline._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                        <form action="/flights/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST"> <!-- Use slug here -->
                                             <button class="btn btn-sm btn-danger">Delete</button>
                                         </form>
                                     <% } %>
@@ -110,7 +107,6 @@
                     <% } %>
                 </div>
             </div>
-          
         </div>
         <div class="mt-0">
             <%- include('../partials/findVetC') %>
@@ -131,4 +127,3 @@
                 }
             }
         </script>
-        

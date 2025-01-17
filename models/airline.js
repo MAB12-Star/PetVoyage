@@ -8,6 +8,7 @@ const airlineSchema = new mongoose.Schema({
     petPolicyURL: { type: String, required: false },             // URL to the airline's pet policy page
     airlineURL: { type: String },                                // Main airline website
     name: { type: String, required: true },                      // Airline name
+    slug: { type: String, required: true, unique: true },         // Slug for URL-friendly names
     body: { type: String },                                      // Placeholder body text
     reviews: [
         {
@@ -21,6 +22,15 @@ const airlineSchema = new mongoose.Schema({
     },
     PetPolicySummary: { type: String, default: "" },             // Summary of the pet policy
     ImprovedPetPolicySummary: { type: String, default: "" }      // Improved/HTML formatted pet policy summary
+});
+
+// Create a pre-save hook to generate the slug before saving the document
+airlineSchema.pre('save', function(next) {
+    // Generate the slug by converting the name to lowercase and replacing spaces with hyphens
+    if (this.name) {
+        this.slug = this.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
+    }
+    next();
 });
 
 module.exports = mongoose.model('Airline', airlineSchema);

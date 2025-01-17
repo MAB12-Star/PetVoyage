@@ -152,7 +152,7 @@
 
                 // On click, navigate to flight details page
                 listItem.addEventListener("click", () => {
-                    window.location.href = `/airlines/${encodeURIComponent(airline._id)}`;
+                    window.location.href = `/airlines/${encodeURIComponent(airline.slug)}`;
                 });
 
                 dropdownMenu.appendChild(listItem);
