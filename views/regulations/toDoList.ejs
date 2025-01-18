@@ -1,12 +1,23 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="container mt-5">
+<div class="container mt-2">
+    
     <div class="row">
         <!-- To-Do Section -->
+        <h2 class="alert-heading text-primary-emphasis text-center"><strong> Manage Your Pet Travel Here</strong></h2>
+        <hr>
+        <div class="alert alert-info mt-2" role="alert">
+         
+            <P>
+                <strong>Manage Your Tasks:</strong> Simply drag a task to update its status. For example, move a task from <strong>"To-Do"</strong> to <strong>"In Progress"</strong> when you're working on it, or from <strong>"In Progress"</strong> to <strong>"Completed"</strong> when you're finished.
+            </P>
+        </div>
+        
         <div class="col-md-4">
+            
             <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
                 <h3 class="text-primary">To-Do</h3>
-                <ul id="todo" class="task-list border p-3 rounded">
+                <ul id="To-Do" class="task-list border p-3 rounded">
                     <% (toDoList["To-Do"] || []).forEach(task => { %>
                         <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="To-Do">
                             <%= task %>
@@ -19,7 +30,7 @@
         <!-- In Progress Section -->
         <div class="col-md-4">
             <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <h3 class="text-warning">In Progress</h3>
+                <h3 class="text-info">In Progress</h3>
                 <ul id="in-progress" class="task-list border p-3 rounded">
                     <% (toDoList["in-progress"] || []).forEach(task => { %>
                         <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="in-progress">
@@ -64,7 +75,7 @@
             const fromSection = data.section;
             const toSection = e.currentTarget.id;
 
-            console.log('Dropped Task:', task, 'From Section:', fromSection, 'To Section:', toSection);
+           
 
             if (!task || !fromSection || !toSection) {
                 return alert('Invalid drag-and-drop data.');
@@ -113,7 +124,7 @@
     });
 
     function updateToDoLists(toDoList) {
-        const sections = { "To-Do": "todo", "in-progress": "in-progress", "completed": "completed" };
+        const sections = { "To-Do": "To-Do", "in-progress": "in-progress", "completed": "completed" };
         for (const [section, id] of Object.entries(sections)) {
             const list = document.getElementById(id);
             list.innerHTML = '';
