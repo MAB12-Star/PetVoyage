@@ -132,6 +132,10 @@ app.get('/dashboard', async (req, res) => {
         res.redirect('/login');
     }
 });
+// Route for serving sitemap
+app.get('/sitemap.xml', (req, res) => {
+    res.sendFile(path.join(__dirname, 'sitemap.xml'));
+  });
 
 app.get('/', (req, res) => {
     res.render('index');
