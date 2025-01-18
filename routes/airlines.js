@@ -25,6 +25,7 @@ router.get('/airlines/:slug', async (req, res) => {
                 airline,
                 link, // Pass the dynamic link to the template
                 ImprovedPetPolicySummary: airline.ImprovedPetPolicySummary || 'No pet policy summary available.',
+                slug,
             });
         } else {
             res.status(404).send("Airline not found.");

@@ -29,13 +29,14 @@ const userSchema = new mongoose.Schema({
         },
     ],
     favoriteAirlines: [
-        {
+        {   
             airlineId: { type: Schema.Types.ObjectId, ref: 'Airline' },
             link: { type: String},
             airlineCode: { type: String},
             airlineName: { type: String },
             petPolicyURL: { type: String },
             petPolicySummary: { type: String },
+            slug: { type: String }, 
         },
     ],
     

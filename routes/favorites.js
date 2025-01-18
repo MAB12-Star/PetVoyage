@@ -10,11 +10,11 @@ const { saveCurrentUrl } = require('../middleware');
 router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, res) => {
     try {
         const userId = req.user._id;
-        const { airlineId, link, airlineCode, airlineName, petPolicyURL, petPolicySummary } = req.body;
+        const { airlineId, link, airlineCode, airlineName, petPolicyURL, petPolicySummary,slug } = req.body;
 
-        if (!airlineId || !link) {
+        if (!slug || !link) {
             console.error('Required fields are missing.');
-            return res.status(400).json({ message: 'Airline ID and link are required.' });
+            return res.status(400).json({ message: 'Slug and link are required.' });
         }
 
         const user = await User.findById(userId);
@@ -25,7 +25,7 @@ router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, r
 
         // Check if the airline already exists in the favorites
         const airlineExists = user.favoriteAirlines.some(
-            (favorite) => String(favorite.airlineId) === String(airlineId)
+            (favorite) => String(favorite.slug) === String(slug)
         );
 
         if (!airlineExists) {
@@ -37,6 +37,7 @@ router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, r
                 airlineName,
                 petPolicyURL,
                 petPolicySummary,
+                slug,
             });
 
             await user.save();
