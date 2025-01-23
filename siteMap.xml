@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
     <loc>https://www.petvoyage.ai/</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -10,7 +10,7 @@
   <!-- About Us Page -->
   <url>
     <loc>https://www.petvoyage.ai/aboutus</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -18,7 +18,7 @@
   <!-- New Regulations Search -->
   <url>
     <loc>https://www.petvoyage.ai/regulations/newSearch</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -26,7 +26,7 @@
   <!-- Flight Search for Regulations -->
   <url>
     <loc>https://www.petvoyage.ai/regulations/searchFlights</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -34,7 +34,7 @@
   <!-- Contact Us -->
   <url>
     <loc>https://www.petvoyage.ai/contactUs</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -42,7 +42,7 @@
   <!-- Tips -->
   <url>
     <loc>https://www.petvoyage.ai/tips</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -50,7 +50,7 @@
   <!-- Blog -->
   <url>
     <loc>https://www.petvoyage.ai/blog</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -58,54 +58,54 @@
   <!-- Find a Vet -->
   <url>
     <loc>https://www.petvoyage.ai/findAVet</loc>
-    <lastmod>2025-01-14</lastmod>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
     <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States&amp;Dog&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada&amp;Dog&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico&amp;Dog&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States&amp;Cat&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada&amp;Cat&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico&amp;Cat&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States&amp;Other&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada&amp;Other&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico&amp;Other&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-17T14:40:58.466Z</lastmod>
+  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 
