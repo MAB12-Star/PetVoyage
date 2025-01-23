@@ -1,8 +1,26 @@
 <% layout('layouts/boilerplate') %>
 
+<head>
+    <meta name="description" content="Explore pet regulations for travel between countries and airlines. Find all the necessary information for bringing your pets to their new destinations." />
+    <meta name="keywords" content="pet regulations, pet travel, pet travel policies, airline pet policies, pet travel tips, travel with pets" />
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>" />
+    <meta property="og:description" content="Find the regulations for traveling with pets to different countries. Get detailed information on pet policies, including vaccinations, certifications, and microchip requirements." />
+    <meta property="og:image" content="URL_to_image.jpg" /> <!-- Add a relevant image -->
 
+</head>
 <div class="container mt-5">
-   
+    <div class="card-body text-center">
+        <div class="mb-2">
+            <% if (regulations[0].petType.type === "Cat") { %>
+                <img class="align-self-center img-fluid " src="/images/Cat3.png" alt="Cat>
+            <% } else if (regulations[0].petType.type === "Dog") { %>
+                <img class="align-self-center img-fluid " src="/images/Dog3.png" alt="Dog">
+            <% } else if (regulations[0].petType.type === "Other") { %>
+                <img class="align-self-center img-fluid" src="/images/Bird2.png" alt="Bird">
+            <% } %>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
            
@@ -11,9 +29,9 @@
                 
                 
                 <div class="card-body">
-                    <h3 class="text-center text-secondary mb-4">
+                    <h2 class="text-center text-primary-emphasis mb-4""><strong>
                         Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>
-                    </h3>
+                    </strong></h2>
 
                     <!-- Display the regulations -->
                     <% regulations.forEach(regulation => { %>
@@ -23,21 +41,11 @@
         
             
                             
-                        <div class="card-body text-center">
-                            <div class="mb-2">
-                                <% if (regulations[0].petType.type === "Cat") { %>
-                                    <img class="align-self-center img-fluid" src="/images/Cat3.png" alt="Description of image">
-                                <% } else if (regulations[0].petType.type === "Dog") { %>
-                                    <img class="align-self-center img-fluid" src="/images/Dog3.png" alt="Description of image">
-                                <% } else if (regulations[0].petType.type === "Other") { %>
-                                    <img class="align-self-center img-fluid" src="/images/Bird2.png" alt="Description of image">
-                                <% } %>
-                            </div>
-                        </div>
+                      
                         
-                                  <h4 class="card-text">You're looking to travel to <%= regulations[0].destinationCountry.country %>, with your precious little <%= regulations[0].petType.type %>!</h4>
-                                  <p> Below is the necessary information needed to take your friend.  Please click each topic to see what is needed for travel. Save this informaiton to your profile. </p>
-                                  <p>Make sure to check airline requirements as they can be different than the countries requirements.</p>
+                               
+                                  <p class="text-center text-primary-emphasis"> Below is the necessary information needed to take your friend.  Please click each topic to see what is needed for travel. Save this informaiton to your profile. </p>
+                                  <p class="text-center text-primary-emphasis">Make sure to check airline requirements as they can be different than the countries requirements.</p>
                                 </div>
                                 <div id="alert-container" class="mt-4"></div>
                                 <div id="response-message"></div>

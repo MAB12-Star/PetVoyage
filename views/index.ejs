@@ -1,29 +1,46 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="background-section">
-   </div>
+<!-- SEO Meta Tags -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+    <meta name="keywords" content="pet travel regulations, airline pet policies, pet import requirements, pet travel rules, pet policies by country, travel with pets, international pet travel, pet rules for airlines, pet import export rules, travel pet documents">
+    <meta name="author" content="PetVoyage">
+    <title>PetVoyage - Pet Travel Regulations and Airline Policies</title>
+    <meta property="og:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
+    <meta property="og:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+    <meta property="og:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+    <meta property="og:url" content="https://www.petvoyage.ai">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
+    <meta name="twitter:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+    <meta name="twitter:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+</head>
 
-<div class="container  ">
-    <div class="row justify-content-center mb-5 ">
-        <div class="col-md-8 ">
+<div class="background-section">
+   <!-- Background Section -->
+</div>
+
+<div class="container">
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
             <div class="blue card border-secondary mt-2 shadow-lg p-3 mb-5 bg-white rounded">
                 <img
                     src="/images/PetVoyageLogo.png"
                     class="img-fluid rounded-top d-block mx-auto"
-                    alt="PetVoyage Logo"
+                    alt="PetVoyage Logo - Pet Travel Regulations and Policies"
                     width="400"
                     height="400"
                 />
-                <h2 class="lead text-center ">
-                  <strong> Your ultimate free resource for pet regulations across countries and airlines. </strong> 
-                   
-                </h2>
+                <h1 class="lead text-center">
+                    <strong>Your Ultimate Free Resource for Pet Policies Across Countries and Airlines</strong>
+                    
+                </h1>
                 <div class="d-flex justify-content-center mt-3 gap-3">
                     <!-- Card for Country Regulations -->
                     <div class="container mt-3">
                         <div class="row justify-content-center g-3">
-                         
-                    
                             <!-- Country Regulations Card -->
                             <div 
                                 class="col-12 col-md-6 col-lg-4" 
@@ -34,8 +51,8 @@
                                     onclick="location.href='/regulations/newSearch'">
                                     <div class="card-body">
                                         <i class="bi bi-globe-americas display-4"></i>
-                                        <h5 class="card-title mt-2">Country Regulations</h5>
-                                        <p class="card-text">Explore pet regulations by country.</p>
+                                        <h2 class="card-title mt-2">Country Regulations</h2>
+                                        <p class="card-text">Explore pet policies for traveling across countries.</p>
                                     </div>
                                 </div>
                             </div>
@@ -50,62 +67,52 @@
                                     onclick="location.href='/regulations/searchFlights'">
                                     <div class="card-body">
                                         <i class="bi bi-airplane display-4"></i>
-                                        <h5 class="card-title mt-2">Search Flights</h5>
-                                        <p class="card-text">Find airlines with pet travel policies.</p>
+                                        <h2 class="card-title mt-2">Search Flights</h2>
+                                        <p class="card-text">Find airlines that allow pets and their specific policies.</p>
                                     </div>
                                 </div>
                             </div>
-                               
                         </div>
                     </div>
-                    
-                    
-                    
                 </div>
                 
                 <div class="mt-4">
-                <p class="lead text-center">
-                    <strong>With PetVoyage, you can effortlessly prepare for your travels with your furry friends, ensuring 
-                    you have all the necessary information and documentation ready for a smooth journey!</strong>
-                </p>
+                    <p class="lead text-center">
+                        <strong>With PetVoyage, you can effortlessly prepare for your travels with your furry friends, ensuring you have all the necessary information and documentation ready for a smooth journey!</strong>
+                    </p>
+                </div>
             </div>
-           
-            </div>
-           
         </div>
 
-        
         <div class="row justify-content-center gap-3">
-        
-        <!-- Blog Card -->
-        <div 
-            class="col-12 col-md-6 col-lg-4 card text-center border-dark clickable-card shadow-lg" 
-            style="cursor: pointer;"
-            onclick="location.href='/blog'"
-            aria-label="Visit the PetVoyage Blog">
-            <div class="card-body">
-                <i class="bi bi-journal-bookmark display-4"></i>
-                <h5 class="card-title mt-2">PetVoyage Blog</h5>
-                <p class="card-text">Read the latest tips and stories about traveling with your pets.</p>
+            <!-- Blog Card -->
+            <div 
+                class="col-12 col-md-6 col-lg-4 card text-center border-dark clickable-card shadow-lg" 
+                style="cursor: pointer;"
+                onclick="location.href='/blog'"
+                aria-label="Visit the PetVoyage Blog">
+                <div class="card-body">
+                    <i class="bi bi-journal-bookmark display-4"></i>
+                    <h2 class="card-title mt-2">PetVoyage Blog</h2>
+                    <p class="card-text">Read the latest tips and stories about traveling with pets on airlines while navigating international pet policies.</p>
+                </div>
             </div>
-        </div>
 
-                    <div 
-            class="col-12 col-md-6 col-lg-4 card text-center border-dark shadow-lg clickable-card" 
-            style="cursor: pointer;"
-            onclick="location.href='/findAVet'"
-            aria-label="Find a veterinarian near you">
-            <div class="card-body">
-                <i class="bi bi-hospital display-4"></i>
-                <h5 class="card-title mt-2">Find a Vet</h5>
-                <p class="card-text">Locate trusted veterinarians near your location for pet care and emergencies.</p>
+            <!-- Find a Vet Card -->
+            <div 
+                class="col-12 col-md-6 col-lg-4 card text-center border-dark shadow-lg clickable-card" 
+                style="cursor: pointer;"
+                onclick="location.href='/findAVet'"
+                aria-label="Find a veterinarian near you">
+                <div class="card-body">
+                    <i class="bi bi-hospital display-4"></i>
+                    <h2 class="card-title mt-2">Find a Vet</h2>
+                    <p class="card-text">Locate trusted veterinarians near your location for pet care and emergencies.</p>
+                </div>
             </div>
         </div>
-       
     </div>
 </div>
-
-
 
 <!-- Floating AI Chat Button -->
 <button id="ai-chat-button" class="btn btn-primary rounded-circle" data-bs-toggle="tooltip" title="Press here to ask AI">
@@ -141,8 +148,8 @@
     </div>
 </div>
 
-<!-- Inline JavaScript -->
 <script>
+    // JavaScript for handling AI chat interactions and tooltips
     document.addEventListener('DOMContentLoaded', function () {
         const chatButton = document.getElementById('ai-chat-button');
         const chatPopup = document.getElementById('ai-chat-popup');
@@ -150,63 +157,42 @@
         const aiAnswerContainer = document.getElementById('ai-answer-container');
         const aiAnswer = document.getElementById('ai-answer');
 
-        // Toggle the pop-out form
         chatButton.addEventListener('click', () => {
-            console.log("Chat button clicked");
             chatPopup.classList.toggle('show');
         });
 
-        // Handle form submission with AJAX
         askQuestionForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default form submission
-            console.log("Form submitted");
-
+            event.preventDefault();
             const userQuestion = document.getElementById('user_question').value;
-            console.log("User Question:", userQuestion); // Log the captured question
 
             try {
-                // Send the question to the server
                 const response = await fetch('/ask-question', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_question: userQuestion })
                 });
 
-                console.log("Response received:", response); // Log the raw response
-
-                // Check if the response is successful
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const result = await response.json();
-                console.log("Parsed JSON result:", result); // Log the parsed response
-
-                // Display the AI's answer dynamically
                 aiAnswerContainer.style.display = 'block';
-                aiAnswer.textContent = result.answer; // Update the answer text
-                console.log("AI Answer updated in DOM:", result.answer); // Confirm the update
+                aiAnswer.textContent = result.answer;
             } catch (error) {
                 console.error('Error fetching AI answer:', error);
                 aiAnswerContainer.style.display = 'block';
                 aiAnswer.textContent = 'An error occurred. Please try again.';
             }
         });
-
-        // Initialize Bootstrap tooltips
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-            new bootstrap.Tooltip(tooltipTriggerEl);
-        });
     });
-</script>
 
-<script>
-    // Initialize tooltip for backward compatibility
+    // Initialize Bootstrap tooltips
     $(function () {
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
 </script>
+
 <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -220,5 +206,4 @@
             "name": "PetVoyage"
         }
     }
-    </script>
-    
+</script>

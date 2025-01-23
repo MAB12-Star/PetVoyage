@@ -1,11 +1,27 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- SEO Meta Tags -->
+<head>
+    <meta name="description" content="Search for flights to your destination with your pet. Find nearby airports, select the right airline, and ensure a smooth journey for your furry friend. Get tips and advice for flying with pets.">
+    <meta name="keywords" content="search flights, pet travel, flights with pets, airport search, flying with pets, pet-friendly flights, airlines for pets, pet travel tips">
+    <meta name="author" content="PetVoyage Team">
+    <meta property="og:title" content="Search for Flights - Find Pet-Friendly Airlines">
+    <meta property="og:description" content="Search for flights to your destination with your pet. Find nearby airports, select the right airline, and ensure a smooth journey for your furry friend.">
+    <meta property="og:image" content="/images/movetocdmx.jpg">
+
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Search for Flights - Find Pet-Friendly Airlines">
+    <meta name="twitter:description" content="Search for flights to your destination with your pet. Find nearby airports, select the right airline, and ensure a smooth journey for your furry friend.">
+    <meta name="twitter:image" content="/images/movetocdmx.jpg">
+</head>
+
 <div class="container mt-0">
     <div class="row justify-content-center mb-5">
         <div class="col-md-8">
             <div class="card shadow-lg p-4 border-secondary rounded">
                 <h2 class="text-center text-primary-emphasis mb-4"><strong>Search for Flights</strong></h2>
-                <p>Still looking for the perfect airline to transport you and your pet?  Locate flights availble to your destination.  Check out our <a href="/tips" target="_blank" rel="noopener noreferrer">Tips Sections</a>  for our suggestions regarding picking an airline.</p>
+                <p>Still looking for the perfect airline to transport you and your pet? Locate flights available to your destination. Check out our <a href="/tips" target="_blank" rel="noopener noreferrer">Tips Section</a> for our suggestions regarding picking an airline.</p>
                 <form class="validated-form" action="/flights/searchFlights" method="POST">
                     <!-- Display user's current location -->
                     <div class="form-group mb-3">
@@ -58,8 +74,7 @@
                         <div class="text-center">
                             <button class="btn btn-outline-dark">Search Flights</button>
                         </div>
-                        </div>
-                    
+                    </div>
                 </form>
             </div>
         </div>

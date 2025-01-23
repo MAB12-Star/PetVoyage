@@ -24,8 +24,9 @@ async function generateSitemap() {
 
         // Loop through each airline to add its page to the sitemap
         airlines.forEach(airline => {
+            const airlineUrl = `${baseUrl}${airline.slug}&Pet&Policy`;  // Append '&Pet&Policy' to the URL
             sitemap += `  <url>\n`;
-            sitemap += `    <loc>${baseUrl}${airline.slug}</loc>\n`;  // Use the airline slug for the URL
+            sitemap += `    <loc>${airlineUrl}</loc>\n`;  // Use the updated airline URL
             sitemap += `    <lastmod>${new Date().toISOString()}</lastmod>\n`;  // Current date as last modified
             sitemap += `    <priority>0.8</priority>\n`;  // Priority can be adjusted
             sitemap += `  </url>\n`;

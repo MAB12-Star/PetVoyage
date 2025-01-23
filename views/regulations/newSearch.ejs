@@ -7,56 +7,53 @@
             
             <div class="card blue shadow-lg">
                 <h2 class="text-center text-primary-emphasis mb-4"><strong>Select Country and Animal Type</strong></h2>
+        <p class="text-center text-primary-emphasis"> Review all relevant pet policies based of the country and pet you are traveling with. <strong> Save your results in you profile for easy review!</strong></p>
+        <form class="validated-form" action="" method="POST">
+            <!-- Dropdown for selecting origin country -->
+            <div class="form-group mt-3">
+                <label for="originCountry">Select Current Country</label>
+                <select name="originCountry" id="originCountry" class="form-control" required>
+                    <option value="">Choose your home country:</option>
+                    <% countries.forEach(country => { %>
+                        <option value="<%= country._id %>"><%= country.country %></option>
+                    <% }) %>
+                </select>
+            </div>
         
-                <form class="validated-form" action="/regulations/submitCountry" method="POST">
-                    <!-- Dropdown for selecting origin country -->
-                    <div class="form-group mt-3">
-                        <label for="originCountry">Select Current Country</label>
-                        <select name="originCountry" id="originCountry" class="form-control" required>
-                            <option value="">Choose your home country:</option>
-                            <% countries.forEach(country => { %>
-                                <option value="<%= country._id %>"><%= country.country %></option>
-                            <% }) %>
-                        </select>
-                    </div>
-                
-                    <!-- Dropdown for selecting destination country -->
-                    <div class="form-group mt-3">
-                        <label for="destinationCountry">Select Destination Country</label>
-                        <select name="destinationCountry" id="destinationCountry" class="form-control" required>
-                            <option value="">Choose a destination country:</option>
-                            <% countries.forEach(country => { %>
-                                <option value="<%= country._id %>"><%= country.country %></option>
-                            <% }) %>
-                        </select>
-                    </div>
-                
-                    <!-- Button selection for animal type -->
-                    <div class="form-group mt-3">
-                        <label>Select Animal Type</label>
-                        <div class="d-flex flex-wrap gap-2 mt-2" id="petTypeButtons">
-                            <% petTypes.forEach(petType => { %>
-                                <button type="button" 
-                                        class="btn btn-outline-secondary pet-type-btn"
-                                        data-pet-type-id="<%= petType._id %>">
-                                    <%= petType.type %>
-                                </button>
-                            <% }) %>
-                        </div>
-                        <!-- Hidden input to store selected pet type -->
-                        <input type="hidden" name="petType" id="selectedPetType" required>
-                    </div>
-                
-              
-                        <div class="d-grid gap-2 mt-3">
-                            <button class="btn btn-outline-dark">Submit</button>
-                         
-                          </div>
-                        
-                    
-                        </div>
-                    </div>
-                </form>
+            <!-- Dropdown for selecting destination country -->
+            <div class="form-group mt-3">
+                <label for="destinationCountry">Select Destination Country</label>
+                <select name="destinationCountry" id="destinationCountry" class="form-control" required>
+                    <option value="">Choose a destination country:</option>
+                    <% countries.forEach(country => { %>
+                        <option value="<%= country.country %>"><%= country.country %></option>
+                    <% }) %>
+                </select>
+            </div>
+        
+            <!-- Button selection for animal type -->
+            <div class="form-group mt-3">
+                <label>Select Animal Type</label>
+                <div class="d-flex flex-wrap gap-2 mt-2" id="petTypeButtons">
+                    <% petTypes.forEach(petType => { %>
+                        <button type="button" 
+                                class="btn btn-outline-secondary pet-type-btn"
+                                data-pet-type-id="<%= petType.type %>">
+                            <%= petType.type %>
+                        </button>
+                    <% }) %>
+                </div>
+                <!-- Hidden input to store selected pet type -->
+                <input type="hidden" name="petType" id="selectedPetType" required>
+            </div>
+        
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn btn-outline-dark" type="submit">Submit</button>
+            </div>
+        </form>
+        
+       
+        
             </div>
         </div>
     </div>
@@ -82,3 +79,36 @@
         });
     });
 </script>
+<script>
+    // Add event listeners for when the user selects the country and pet type
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector('.validated-form');
+        const originCountrySelect = document.getElementById('originCountry');
+        const destinationCountrySelect = document.getElementById('destinationCountry');
+        const petTypeButtons = document.querySelectorAll('.pet-type-btn');
+        
+        let destinationCountry = '';
+        let petType = '';
+
+        // Update the form action when a country is selected
+        destinationCountrySelect.addEventListener('change', function() {
+            destinationCountry = this.value;
+            updateFormAction();
+        });
+
+        // Update the form action when a pet type is selected
+        petTypeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                petType = button.getAttribute('data-pet-type-id');
+                updateFormAction();
+            });
+        });
+
+        function updateFormAction() {
+            if (destinationCountry && petType) {
+                form.action = `/regulations/submitCountry/${destinationCountry}&${petType}&Pet&Policy`;
+            }
+        }
+    });
+</script>
+

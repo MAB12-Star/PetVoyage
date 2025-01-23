@@ -9,6 +9,11 @@ const mongoose = require('mongoose');
 const { isLoggedIn } = require('../middleware');
 const { saveCurrentUrl } = require('../middleware');
 
+
+router.get('/searchFlights', catchAsync((req, res) => {
+    res.render('regulations/searchFlights'); // Correct view name
+}));
+
 const getRegulations = async (originCountry, destinationCountry, petTypeName) => {
     try {
         console.log('Searching for regulations from:', originCountry, 'to:', destinationCountry, 'for pet type:', petTypeName);
@@ -53,14 +58,15 @@ const getRegulations = async (originCountry, destinationCountry, petTypeName) =>
 
 router.get('/newSearch', catchAsync(async (req, res) => {
     try {
-        const countries = await CountryRegulation.find().select('country');  // Removed '-_id' to ensure `_id` is fetched
+        // Fetch countries and their names
+        const countries = await CountryRegulation.find().select('country');
         const petTypes = await PetType.find().select('type');
-        
-        // Log the fetched data to confirm
+
         console.log('Fetched Countries:', countries);
         console.log('Fetched Pet Types:', petTypes);
 
-        res.render('regulations/newSearch', { countries, petTypes });
+        // Render the form with the country and pet type names
+        res.render('regulations/newSearch', { countries, petTypes, destinationCountry: '', petType: '' });
     } catch (e) {
         console.error(e);
         res.status(500).send('Error fetching countries');
@@ -69,51 +75,67 @@ router.get('/newSearch', catchAsync(async (req, res) => {
 
 
 
-router.get('/searchFlights', catchAsync((req, res) => {
-    res.render('regulations/searchFlights'); // Correct view name
-}));
 
 
 
-router.post('/submitCountry',saveCurrentUrl, catchAsync(async (req, res) => {
-    console.log('Form submission data:', req.body);
 
-    let { originCountry, destinationCountry, petType } = req.body;
+router.post('/submitCountry/:destinationCountry&:petType&Pet&Policy', saveCurrentUrl, catchAsync(async (req, res) => {
+    const { originCountry } = req.body;
+    const { destinationCountry, petType } = req.params;  // Capture destinationCountry and petType from URL
 
-    // Check if the fields are not empty
+    // Validate input
     if (!originCountry || !destinationCountry || !petType) {
-        console.error('One or more fields are empty:', { originCountry, destinationCountry, petType });
-        return res.status(400).send('Please make sure to select all fields in the form.');
-    }
-
-    // Validate if values are ObjectIds
-    if (!mongoose.Types.ObjectId.isValid(originCountry) || !mongoose.Types.ObjectId.isValid(destinationCountry) || !mongoose.Types.ObjectId.isValid(petType)) {
-        console.error('One or more provided IDs are not valid ObjectIds:', { originCountry, destinationCountry, petType });
-        return res.status(400).send('Invalid selection. Please try again.');
+        return res.status(400).send('Please make sure to select all fields.');
     }
 
     try {
+        // Fetch the destination country ObjectId using the country name from the URL
+        const destinationCountryObj = await CountryRegulation.findOne({ country: destinationCountry });
+
+        // Ensure that a valid destination country was found
+        if (!destinationCountryObj) {
+            return res.status(404).send('Destination country not found.');
+        }
+
+        // Fetch the origin country ObjectId using the country name from the form body
+        const originCountryObj = await CountryRegulation.findOne({ _id: originCountry });
+
+        // Ensure that a valid origin country was found
+        if (!originCountryObj) {
+            return res.status(404).send('Origin country not found.');
+        }
+
+        // Fetch the pet type ObjectId using the pet type from the URL
+        const petTypeObj = await PetType.findOne({ type: petType });
+
+        // Ensure that a valid pet type was found
+        if (!petTypeObj) {
+            return res.status(404).send('Pet type not found.');
+        }
+
+        // Fetch the regulations based on the ObjectIds of originCountry, destinationCountry, and petType
         const regulations = await Regulation.find({
-            originCountry: originCountry,
-            destinationCountry: destinationCountry,
-            petType: petType
+            originCountry: originCountryObj._id,
+            destinationCountry: destinationCountryObj._id,
+            petType: petTypeObj._id // Using the ObjectId of the pet type
         })
         .populate('originCountry')
         .populate('destinationCountry')
         .populate('petType');
 
-        console.log('Regulations found:', regulations);
-
+        // Render the page with the appropriate data
         if (regulations.length > 0) {
-            res.render('regulations/show', { regulations, originCountry, destinationCountry, petType });
+            res.render('regulations/show', { regulations, destinationCountry, originCountry, petType });
         } else {
             res.status(404).send('No regulations found for the selected countries and pet type.');
         }
     } catch (e) {
-        console.error('Error fetching regulations:', e);
+        console.error(e);
         res.status(500).send('Error fetching regulations.');
     }
 }));
+
+
 
 
 
