@@ -1,3 +1,28 @@
+/* Make the blue strip span the entire width of the viewport */
+.blue-strip {
+    background-color: #07c7fc; /* Blue color */
+    width: 100%; /* Full width */
+    height: 600px; /* Adjust the height of the strip */
+    position: absolute; /* Position behind the content */
+    top: 20%; /* Vertically center it */
+    left: 0;
+    right: 0;
+    z-index: -1; /* Ensure it stays behind the content */
+    opacity: .5 ;
+}
+
+/* Optional: Adjust content within the blue strip */
+.blue-strip .content {
+    color: white; /* Text color for the content */
+    font-size: 24px; /* Adjust text size */
+    text-align: center; /* Center the content */
+    line-height: 600px; /* Vertically center the text */
+
+ 
+}
+
+
+
 /* Full-screen background */
 .background-section2 {
     position: fixed; /* Fixes the background to the viewport */
@@ -27,14 +52,15 @@
     opacity: 0.5; /* 50% transparency */
 }
 
+
 /* Full-screen background */
-.background-section {
+.background{
     position: fixed; /* Fixes the background to the viewport */
-    top: 50;
+    top: 100;
     left: 0;
     width: 100%; /* Full width of the viewport */
-    height: 80%; /* Full height of the viewport */
-    background-image: url('/images/babies.jpg'); /* Replace with your image */
+    height: 100%; /* Full height of the viewport */
+   background-color: #007bff;
     background-size: cover; /* Makes the image cover the container */
     background-position: center center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents tiling */
@@ -51,7 +77,7 @@
 
 
 .blue{
-   
+   background-color: #004085;
     opacity: 0.8; /* 50% transparency */
 }
 .dynamic-image {

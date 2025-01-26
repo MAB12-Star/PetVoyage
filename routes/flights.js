@@ -76,9 +76,11 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
 
             const petPolicyMap = {};
             const airlineIdMap = {};
+            const airlineSlugMap = {};
             airlines.forEach((airline) => {
                 petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
                 airlineIdMap[airline.airlineCode] = airline._id;
+                airlineSlugMap[airline.airlineCode] = airline.slug;
             });
 
             return res.redirect(`/flights/${flightData._id}`);
@@ -181,9 +183,11 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
         const airlines = await Airline.find({ airlineCode: { $in: airlineCodes } });
         const petPolicyMap = {};
         const airlineIdMap = {};
+        const airlineSlugMap = {};
         airlines.forEach((airline) => {
             petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
             airlineIdMap[airline.airlineCode] = airline._id;
+            airlineSlugMap[airline.airlineCode] = airline.slug;
         });
 
         // Save flight data to the database
@@ -226,9 +230,11 @@ router.get('/:searchId', async (req, res) => {
 
         const petPolicyMap = {};
         const airlineIdMap = {};
+        const airlineSlugMap = {};
         airlines.forEach((airline) => {
             petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
             airlineIdMap[airline.airlineCode] = airline._id;
+            airlineSlugMap[airline.airlineCode] = airline.slug;
         });
 
         // Render the flights result page
@@ -238,6 +244,7 @@ router.get('/:searchId', async (req, res) => {
             flightTypeMap: flightData.flightTypeMap,
             petPolicyMap,
             airlineIdMap,
+            airlineSlugMap,
         });
     } catch (error) {
         console.error('Error fetching flight data:', error.message);

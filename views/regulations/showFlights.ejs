@@ -44,17 +44,22 @@
   ]
 }
 </script>
-<div class="container mt-5">
+<div class="container mt-0">
     <div class="row justify-content-center">
         <div class="col-md-8">
+           
             <% if (flights && flights.length > 0) { %>
                 <% 
                     // Remove duplicates by converting to a Set
                     let totalAirlines = new Set(flights.filter(airline => airline)).size; 
                 %>
+                
                 <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
                     <div class="card-body">
-                        <h3 class="text-center text-primary mb-4">Available Airlines</h3>
+                        <h2 class="text-center text-primary-emphasis mb-4"><strong>Available Airlines</strong> </h2>
+                        <div class="alert alert-info" role="alert">
+                            Please keep in mind, normally indirect flights require the purchase of multiple tickets for you pets.  Also, indirect flighs will also require more time your pet will be in cargo as well as in a carrier. 
+                          </div>
                         <p class="text-center text-secondary">Total Airlines: <strong id="totalAirlines"><%= totalAirlines %></strong></p>
                         
                         <!-- Filter Buttons -->
@@ -63,12 +68,14 @@
                             <button class="filter-buttons btn btn-success" onclick="filterFlights('direct')">Direct Flights</button>
                             <button class="filter-buttons btn btn-warning" onclick="filterFlights('indirect')">Indirect Flights</button>
                         </div>
+                      
 
                         <% let displayedAirlines = new Set(); %> <!-- Set to track unique airlines -->
                         <% flights.forEach(airline => { %> <!-- `airline` is the airline code here -->
                             <% if (airline && !displayedAirlines.has(airline)) { %>
                                 <% let flightType = flightTypeMap[airline] || 'unknown'; %>
-                                <% let airlineId = airlineIdMap[airline]; %> <!-- Use `airline` instead of `airlineCode` -->
+                                <% let airlineId = airlineIdMap[airline]; %>
+                                <% let airlineSlug = airlineSlugMap[airline]; %>  <!-- Use `airline` instead of `airlineCode` -->
                                 <div class="card mb-3 border-secondary shadow-sm flight-card" data-type="<%= flightType %>" data-airline="<%= airline %>">
                                     <div class="card-header bg-light">
                                         <div class="alert-container"></div> <!-- Changed from ID to class -->
@@ -77,13 +84,14 @@
                                         <form class="saveFlightForm" data-airline="<%= airline %>">
                                             <input type="hidden" name="airlineCode" value="<%= airline %>">
                                             <button type="submit" class="btn btn-outline-danger float-end">
-                                                <i class="fas fa-heart"></i> Save
+                                                <i class="fas fa-heart"></i>
                                             </button>
                                         </form>
                                         <strong>Airline Name: </strong>
-                                        <a href="/airlines/<%= airlineId %>" class="text-primary"> <!-- Changed `airlines` to `flights` -->
+                                        <a href="/airlines/<%= airlineSlug%>&Pet&Policy" class="text-primary"> <!-- Changed `airlines` to `flights` -->
                                             <%= airlineNamesMap[airline] || 'Unknown Airline' %>
                                         </a>
+                                      
                                         
                                         <br>
                                         <p><strong>Flight Type:</strong> <%= flightType %></p>
@@ -91,7 +99,7 @@
                                         <% if (petPolicyMap[airline]) { %>
                                             <strong>Pet Policy: </strong>
                                             <a href="<%= petPolicyMap[airline] %>" target="_blank" rel="noopener noreferrer">
-                                                <%= petPolicyMap[airline] %>
+                                               Official Airline Pet Policy Here
                                             </a>
                                         <% } else { %>
                                             <strong>Pet Policy: </strong>Not available
