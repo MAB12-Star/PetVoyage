@@ -15,7 +15,7 @@
                 <select name="originCountry" id="originCountry" class="form-control" required>
                     <option value="">Choose your home country:</option>
                     <% countries.forEach(country => { %>
-                        <option value="<%= country._id %>"><%= country.country %></option>
+                        <option value="<%= country.country%>"><%= country.country %></option>
                     <% }) %>
                 </select>
             </div>
@@ -80,35 +80,43 @@
     });
 </script>
 <script>
-    // Add event listeners for when the user selects the country and pet type
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector('.validated-form');
         const originCountrySelect = document.getElementById('originCountry');
         const destinationCountrySelect = document.getElementById('destinationCountry');
         const petTypeButtons = document.querySelectorAll('.pet-type-btn');
-        
+
+        let originCountry = '';
         let destinationCountry = '';
         let petType = '';
 
-        // Update the form action when a country is selected
-        destinationCountrySelect.addEventListener('change', function() {
-            destinationCountry = this.value;
+        // Update the originCountry variable when a selection is made
+        originCountrySelect.addEventListener('change', function () {
+            originCountry = this.value; // This now gets the country name
             updateFormAction();
         });
 
-        // Update the form action when a pet type is selected
+        // Update the destinationCountry variable when a selection is made
+        destinationCountrySelect.addEventListener('change', function () {
+            destinationCountry = this.value; // This now gets the country name
+            updateFormAction();
+        });
+
+        // Update the petType variable when a button is clicked
         petTypeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                petType = button.getAttribute('data-pet-type-id');
+            button.addEventListener('click', function () {
+                petType = button.getAttribute('data-pet-type-id'); // This gets the pet type
                 updateFormAction();
             });
         });
 
         function updateFormAction() {
-            if (destinationCountry && petType) {
-                form.action = `/regulations/submitCountry/${destinationCountry}&${petType}&Pet&Policy`;
+            if (originCountry && destinationCountry && petType) {
+                // Update the form's action with the selected values
+                form.action = `/regulations/submitCountry/${originCountry}/${destinationCountry}/${petType}/Pet/Policy`;
             }
         }
     });
 </script>
+
 

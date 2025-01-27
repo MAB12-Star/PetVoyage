@@ -63,51 +63,127 @@
     <priority>0.9</priority>
   </url>
 
-    <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States&amp;Dog&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/United%20States/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada&amp;Dog&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/United%20States/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico&amp;Dog&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States/Canada/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States&amp;Cat&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/Canada/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada&amp;Cat&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/Canada/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico&amp;Cat&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/Mexico/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States&amp;Other&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/Mexico/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada&amp;Other&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States/Mexico/Dog/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
 <url>
-  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico&amp;Other&amp;Pet&amp;Policy</loc>
-  <lastmod>2025-01-23T01:21:17.006Z</lastmod>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/United%20States/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
   <priority>0.8</priority>
 </url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/United%20States/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States/Canada/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/Canada/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/Canada/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/Mexico/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/Mexico/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States/Mexico/Cat/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/United%20States/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/United%20States/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States/Canada/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/Canada/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/Canada/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Canada/Mexico/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/Mexico/Mexico/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://www.petvoyage.ai/regulations/submitCountry/United%20States/Mexico/Other/Pet/Policy</loc>
+  <lastmod>2025-01-26T01:21:17.006Z</lastmod>
+  <priority>0.8</priority>
+</url>
+
 
   <url>
     <loc>https://www.petvoyage.ai/airlines/aeromexico&amp;Pet&amp;Policy</loc>

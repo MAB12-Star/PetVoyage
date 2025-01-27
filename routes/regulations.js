@@ -75,11 +75,66 @@ router.get('/newSearch', catchAsync(async (req, res) => {
 
 
 
+router.get('/submitCountry/:originCountry/:destinationCountry/:petType/Pet/Policy', saveCurrentUrl, catchAsync(async (req, res) => {
+    const { originCountry, destinationCountry, petType } = req.params; // Extract parameters from the URL
+
+    // Validate input
+    if (!originCountry || !destinationCountry || !petType) {
+        return res.status(400).send('Please make sure to select all fields.');
+    }
+
+    try {
+        // Fetch the destination country ObjectId using the country name
+        const destinationCountryObj = await CountryRegulation.findOne({ country: destinationCountry });
+
+        if (!destinationCountryObj) {
+            return res.status(404).send('Destination country not found.');
+        }
+
+        // Fetch the origin country ObjectId using the originCountry parameter
+        const originCountryObj = await CountryRegulation.findOne({ country: originCountry });
+
+        if (!originCountryObj) {
+            return res.status(404).send('Origin country not found.');
+        }
+
+        // Fetch the pet type ObjectId using the petType parameter
+        const petTypeObj = await PetType.findOne({ type: petType });
+
+        if (!petTypeObj) {
+            return res.status(404).send('Pet type not found.');
+        }
+
+        // Fetch the regulations based on the ObjectIds of originCountry, destinationCountry, and petType
+        const regulations = await Regulation.find({
+            originCountry: originCountryObj._id,
+            destinationCountry: destinationCountryObj._id,
+            petType: petTypeObj._id
+        })
+        .populate('originCountry')
+        .populate('destinationCountry')
+        .populate('petType');
+
+        // Render the page with the appropriate data
+        if (regulations.length > 0) {
+            res.render('regulations/show', { 
+                regulations, 
+                destinationCountry, 
+                originCountry: originCountryObj.country, 
+                petType 
+            });
+        } else {
+            res.status(404).send('No regulations found for the selected countries and pet type.');
+        }
+    } catch (e) {
+        console.error(e);
+        res.status(500).send('Error fetching regulations.');
+    }
+}));
 
 
 
-
-router.post('/submitCountry/:destinationCountry&:petType&Pet&Policy', saveCurrentUrl, catchAsync(async (req, res) => {
+router.post('/submitCountry/:orginCountry/:destinationCountry/:petType/Pet/Policy', saveCurrentUrl, catchAsync(async (req, res) => {
     const { originCountry } = req.body;
     const { destinationCountry, petType } = req.params;  // Capture destinationCountry and petType from URL
 
@@ -98,7 +153,7 @@ router.post('/submitCountry/:destinationCountry&:petType&Pet&Policy', saveCurren
         }
 
         // Fetch the origin country ObjectId using the country name from the form body
-        const originCountryObj = await CountryRegulation.findOne({ _id: originCountry });
+        const originCountryObj = await CountryRegulation.findOne({ country: originCountry });
 
         // Ensure that a valid origin country was found
         if (!originCountryObj) {
