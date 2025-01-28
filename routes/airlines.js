@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Airline = require('../models/airline'); // Import the correct Airline model
+const { redirectOldAirlineLinks } = require('../middleware');
 
+router.use(redirectOldAirlineLinks);
 // Route to fetch all airlines (names only)
 router.get('/airlines', async (req, res) => {
     try {
@@ -14,7 +16,7 @@ router.get('/airlines', async (req, res) => {
 });
 
 // Route to fetch airline details by slug
-router.get('/airlines/:slug&Pet&Policy', async (req, res) => {
+router.get('/airlines/:slug&Pet&Policy',redirectOldAirlineLinks, async (req, res) => {
     try {
         const slug = req.params.slug; // Get the slug from the route
         const airline = await Airline.findOne({ slug }).populate('reviews').exec(); // Find by slug

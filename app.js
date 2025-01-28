@@ -25,6 +25,7 @@ const petVoyageAi = require('./routes/petVoyageAi');
 const findAVet = require('./routes/findAVet');
 const blog = require('./routes/blog');
 
+const { redirectOldAirlineLinks } = require('./middleware');
 
 const MongoStore = require('connect-mongo');
 // Ensure correct path and case
@@ -97,6 +98,8 @@ app.use('/contactUs', contactUs);
 app.use('/blog', blog);
 app.use('/tips', tips);
 app.use('/', petVoyageAi);
+
+app.use(redirectOldAirlineLinks);
 
 app.use('/', airlineRoutes);
 
