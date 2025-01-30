@@ -6,190 +6,171 @@
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>" />
     <meta property="og:description" content="Find the regulations for traveling with pets to different countries. Get detailed information on pet policies, including vaccinations, certifications, and microchip requirements." />
-    <meta property="og:image" content="URL_to_image.jpg" /> <!-- Add a relevant image -->
-
+    <meta property="og:image" content="URL_to_image.jpg" />
 </head>
+
 <div class="container mt-5">
-    <!-- <div class="card-body text-center">
-        <div class="mb-2">
-            <% if (regulations[0].petType.type === "Cat") { %>
-                <img class="align-self-center img-fluid " src="/images/Cat3.png" alt="Cat>
-            <% } else if (regulations[0].petType.type === "Dog") { %>
-                <img class="align-self-center img-fluid " src="/images/Dog3.png" alt="Dog">
-            <% } else if (regulations[0].petType.type === "Other") { %>
-                <img class="align-self-center img-fluid" src="/images/Bird2.png" alt="Bird">
-            <% } %>
-        </div>
-    </div> -->
     <div class="row justify-content-center">
         <div class="col-md-8">
-           
-
             <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                
-                
                 <div class="card-body">
-                    <h2 class="text-center text-primary-emphasis mb-4""><strong>
-                        Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %>
-                    </strong></h2>
+                    <h2 class="text-center text-primary-emphasis mb-4">
+                        <strong>Pet Regulations for <%= regulations[0].originCountry.country %> to <%= regulations[0].destinationCountry.country %> - <%= regulations[0].petType.type %></strong>
+                    </h2>
+                    <p class="text-center text-primary-emphasis">
+                        Below is the necessary information needed to take your friend. Click each topic to see what is needed for travel. Save this information to your profile.
+                    </p>
+                    <p class="text-center text-primary-emphasis">
+                        Make sure to check airline requirements as they can be different from the country’s requirements.
+                    </p>
+                </div>
 
-                    <!-- Display the regulations -->
+                <div id="alert-container" class="mt-0"></div>
+                <div id="response-message"></div>
+
+                <!-- Save to Profile Form -->
+                <form class="saveCountryForm d-flex justify-content-end ms-auto mt-0 mb-3 ">
+                    <input type="hidden" name="regulationId" value="<%= regulations[0]._id %>">
+                    <input type="hidden" name="originCountry" value="<%= regulations[0].originCountry._id %>">
+                    <input type="hidden" name="destinationCountry" value="<%= regulations[0].destinationCountry._id %>">
+                    <input type="hidden" name="petType" value="<%= regulations[0].petType._id %>">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="fas fa-heart"></i> Save
+                    </button>
+                </form>
+
+                <!-- 6 Regulation Cards -->
+                <div class="row g-3">
                     <% regulations.forEach(regulation => { %>
-              
-                        
-                        
-        
-            
-                            
-                      
-                        
-                               
-                                  <p class="text-center text-primary-emphasis"> Below is the necessary information needed to take your friend.  Please click each topic to see what is needed for travel. Save this informaiton to your profile. </p>
-                                  <p class="text-center text-primary-emphasis">Make sure to check airline requirements as they can be different than the countries requirements.</p>
-                                </div>
-                                <div id="alert-container" class="mt-4"></div>
-                                <div id="response-message"></div>
-                                <form class="saveCountryForm d-flex justify-content-end ms-auto">
-                                    <input type="hidden" name="regulationId" value="<%= regulation._id %>">
-                                    <input type="hidden" name="originCountry" value="<%= regulation.originCountry._id %>">
-                                    <input type="hidden" name="destinationCountry" value="<%= regulation.destinationCountry._id %>">
-                                    <input type="hidden" name="petType" value="<%= regulation.petType._id %>">
-                                    <button type="submit" class="btn btn-outline-danger">
-                                        <i class="fas fa-heart"></i> Save
-                                    </button>
-                                </form>
-                                
-                            <div class="card-body">
-                                <div class=" justify-content-between">
-                                    <div class="accordion" id="accordionExample">
-                                       
-                                    
-                                        <div class="accordion-item">
-                                            <% if (regulations[0].petType.type  !== "Other") { %>
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                    <strong>Vaccination Requirements:</strong>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <%- regulation.vaccinations %>
-                                                </div>
-                                            </div>
 
-                                            <% } %>
-                                        </div>
-                            
-                                        <div class="accordion-item">
-                                            <% if (regulations[0].petType.type  !== "Other") { %>
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                   <strong> Certification Requirements:</strong>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <%- regulation.certifications %>
-                                                </div>
-                                            </div>
-                                            <% } %>
-                                        </div>
-                            
-                                        <div class="accordion-item">
-                                            <% if (regulations[0].petType.type  !== "Other") { %>
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                  <Strong> Microchip Requirements: </Strong>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <%- regulation.microchip %>
-                                                </div>
-                                            </div>
-                                            <% } %>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <% if (regulations[0].petType.type  !== "Other") { %>
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                                               <Strong> Assistance Pets </Strong>
-                                            </button>
-                                        </h2>
-                                        <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                <%- regulation.assistancePet %>
-                                            </div>
-                                        </div>
-                                        <% } %>
+                        <!-- Vaccination Requirements -->
+                        <% if (regulation.petType.type !== "Other") { %>
+                            <div class="col-6 col-md-4">
+                                <div class="card regulation-card text-center shadow-sm" data-bs-toggle="collapse" data-bs-target="#vaccinationInfo">
+                                    <div class="card-body">
+                                        <i class="bi bi-shield-check display-3"></i>
+                                        <h6 class="card-title mt-2">Vaccinations</h6>
                                     </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                                   <strong> More Information: </strong>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <%- regulation.description %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <% if (regulation.destinationCountry.country === "United States") { %>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                                                   <Strong> State Requirments:</Strong>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <%- regulation.stateTerritoryRequirements  %>
-                                                </div>
-                                            </div>
-                                            <% } %>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                                   <Strong> Links: </Strong>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <a href="<%= regulation.link %>" target="_blank"><%= regulation.link %></a>
-                                                </div>
-                                            </div>
-                                        
-                                       
+                                </div>
+                                <div id="vaccinationInfo" class="collapse regulation-info">
+                                    <div class="card-body border-top">
+                                        <p class="card-text"><%- regulation.vaccinations %></p>
                                     </div>
                                 </div>
                             </div>
-                                  
+                        <% } %>
+
+                        <!-- Certification Requirements -->
+                        <% if (regulation.petType.type !== "Other") { %>
+                            <div class="col-6 col-md-4">
+                                <div class="card regulation-card text-center shadow-sm" data-bs-toggle="collapse" data-bs-target="#certificationInfo">
+                                    <div class="card-body">
+                                        <i class="bi bi-file-earmark-text display-3"></i>
+                                        <h6 class="card-title mt-2">Certifications</h6>
+                                    </div>
                                 </div>
-                            
-                        
+                                <div id="certificationInfo" class="collapse regulation-info">
+                                    <div class="card-body border-top">
+                                        <p class="card-text"><%- regulation.certifications %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <!-- Microchip Requirements -->
+                        <% if (regulation.petType.type !== "Other") { %>
+                            <div class="col-6 col-md-4">
+                                <div class="card regulation-card text-center shadow-sm" data-bs-toggle="collapse" data-bs-target="#microchipInfo">
+                                    <div class="card-body">
+                                        <i class="bi bi-cpu display-3"></i>
+                                        <h6 class="card-title mt-2">Microchip</h6>
+                                    </div>
+                                </div>
+                                <div id="microchipInfo" class="collapse regulation-info">
+                                    <div class="card-body border-top">
+                                        <p class="card-text"><%- regulation.microchip %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <!-- Assistance Pets -->
+                        <div class="col-6 col-md-4">
+                            <div class="card regulation-card text-center shadow-sm" data-bs-toggle="collapse" data-bs-target="#assistancePets">
+                                <div class="card-body">
+                                    <i class="bi bi-heart display-3"></i>
+                                    <h6 class="card-title mt-2">Assistance Pets</h6>
+                                </div>
+                            </div>
+                            <div id="assistancePets" class="collapse regulation-info">
+                                <div class="card-body border-top">
+                                    <p class="card-text"><%- regulation.assistancePet %></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More Information -->
+                        <div class="col-6 col-md-4">
+                            <div class="card regulation-card text-center shadow-sm" data-bs-toggle="collapse" data-bs-target="#moreInfo">
+                                <div class="card-body">
+                                    <i class="bi bi-info-circle display-3"></i>
+                                    <h6 class="card-title mt-2">More Info</h6>
+                                </div>
+                            </div>
+                            <div id="moreInfo" class="collapse regulation-info">
+                                <div class="card-body border-top">
+                                    <p class="card-text"><%- regulation.description %></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Links -->
+                        <div class="col-6 col-md-4">
+                            <div class="card regulation-card text-center shadow-sm" data-bs-toggle="collapse" data-bs-target="#linksInfo">
+                                <div class="card-body">
+                                    <i class="bi bi-link display-3"></i>
+                                    <h6 class="card-title mt-2">Links</h6>
+                                </div>
+                            </div>
+                            <div id="linksInfo" class="collapse regulation-info">
+                                <div class="card-body border-top">
+                                    <a href="<%= regulation.link %>" target="_blank"><%= regulation.link %></a>
+                                </div>
+                            </div>
+                        </div>
+
                     <% }) %>
-                    <div class="d-flex justify-content-center mt-3 gap-3">
-                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/newSearch'">
-                            <i class="bi bi-arrow-left"></i> Back
-                        </button>
-                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/'">
-                            <i class="bi bi-house-door"></i> Home
-                        </button>
-                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/searchFlights'">
-                            <i class="bi bi-search"></i> Search Pet Flights
-                        </button>
-                    </div>
-                    
-                    
-                
-                
+                </div>
+                <div class="d-grid gap-2 mt-3 gap-3">
+                <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/searchFlights'">
+                    <i class="bi bi-search"></i> Search Pet Flights
+                </button>
             </div>
-            <div class="findAVet">
+            </div>
+
+            <!-- Find A Vet Section -->
+            <div class="findAVet mt-5">
                 <%- include('../partials/findVetC') %>
-              </div>  
-            <!-- Footer Links -->
-           
+            </div>
         </div>
     </div>
 </div>
+
+<!-- CSS -->
+<style>
+    .regulation-card {
+        width: 100%;
+        height: 150px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .regulation-card:hover {
+        transform: scale(1.05);
+    }
+    .regulation-info {
+        display: none;
+    }
+    .collapse.show {
+        display: block;
+    }
+</style>
