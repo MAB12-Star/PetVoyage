@@ -45,110 +45,137 @@
     </div>
 </div>
 <script>
-    let vetMap;
-    const clinicDetailsContainer = document.getElementById('clinicDetails');
-    const zipCodeInput = document.getElementById('zipCode');
-    const searchButton = document.getElementById('searchButton');
+   let vetMap;
+const clinicDetailsContainer = document.getElementById('clinicDetails');
+const zipCodeInput = document.getElementById('zipCode');
+const searchButton = document.getElementById('searchButton');
 
-    // Initialize the map
-    function initVetMap(lat, lng) {
-        vetMap = new google.maps.Map(document.getElementById('vetMap'), {
-            center: { lat: lat, lng: lng },
-            zoom: 12
-        });
+// Initialize the map
+function initVetMap(lat, lng) {
+    vetMap = new google.maps.Map(document.getElementById('vetMap'), {
+        center: { lat: lat, lng: lng },
+        zoom: 12
+    });
 
-        fetchNearbyVetClinics(lat, lng);
-    }
+    fetchNearbyVetClinics(lat, lng);
+}
 
-    // Fetch nearby veterinary clinics
-    function fetchNearbyVetClinics(lat, lng) {
-        const service = new google.maps.places.PlacesService(vetMap);
-        const request = {
-            location: new google.maps.LatLng(lat, lng),
-            radius: '30000', // 30 km radius
-            type: ['veterinary_care']
-        };
+// Fetch nearby veterinary clinics using Text Search
+function fetchNearbyVetClinics(lat, lng) {
+    const service = new google.maps.places.PlacesService(vetMap);
+    const request = {
+        query: 'veterinary_care',
+        location: new google.maps.LatLng(lat, lng),
+        radius: 30000 // 30 km search radius
+    };
 
-        clinicDetailsContainer.innerHTML = ''; // Clear previous results
-        service.nearbySearch(request, function (results, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                results.forEach(function (place) {
-                    addClinicCard(place);
-                    new google.maps.Marker({
-                        position: place.geometry.location,
-                        map: vetMap,
-                        title: place.name
-                    });
-                });
-            } else {
-                clinicDetailsContainer.innerHTML = '<p class="text-center text-muted">No clinics found in this area.</p>';
-            }
-        });
-    }
+    // Clear existing clinic list
+    clinicDetailsContainer.innerHTML = '';
 
-    // Add a clinic card to the scrollable area
-    function addClinicCard(place) {
-        const card = document.createElement('div');
-        card.className = 'card mb-3 p-2';
-
-        const websiteLink = place.website || '#';
-        const websiteText = place.website ? place.website : 'No website available';
-
-        card.innerHTML = `
-            <h5 class="card-title">${place.name}</h5>
-            <p class="card-text"><strong>Address:</strong> ${place.vicinity || 'N/A'}</p>
-            <p class="card-text"><strong>Phone:</strong> ${place.formatted_phone_number || 'N/A'}</p>
-            <p class="card-text"><a href="${websiteLink}" target="_blank">${websiteText}</a></p>
-        `;
-
-        clinicDetailsContainer.appendChild(card);
-    }
-
-    // Search clinics by zip code
-    function searchByZipCode() {
-        const zipCode = zipCodeInput.value.trim();
-        if (!zipCode) {
-            alert('Please enter a zip code.');
-            return;
+    service.textSearch(request, function (results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            results.forEach(function (place) {
+                console.log(`[DEBUG] Found Clinic: ${place.name} - Fetching details...`);
+                getClinicDetails(place.place_id); // Get full details
+            });
+        } else {
+            console.error("[ERROR] No clinics found or API request failed:", status);
+            clinicDetailsContainer.innerHTML = '<p class="text-center text-muted">No clinics found in this area.</p>';
         }
+    });
+}
 
-        const geocoder = new google.maps.Geocoder();
-        console.log('Entered Zip Code:', zipCode);
-geocoder.geocode({ address: zipCode }, function (results, status) {
-    console.log('Geocode Status:', status);
-    console.log('Geocode Results:', results);
-    if (status === 'OK' && results.length > 0) {
-        const location = results[0].geometry.location;
-        const lat = location.lat();
-        const lng = location.lng();
+// Function to fetch clinic details (phone number, website, address)
+function getClinicDetails(placeId) {
+    const service = new google.maps.places.PlacesService(vetMap);
+    const request = {
+        placeId: placeId,
+        fields: ["name", "formatted_address", "formatted_phone_number", "international_phone_number", "website", "geometry"]
+    };
 
-        // Center map and fetch clinics
-        vetMap.setCenter({ lat, lng });
-        fetchNearbyVetClinics(lat, lng);
-    } else {
-        alert('Unable to find location. Please enter a valid zip code.');
-    }
-});
+    service.getDetails(request, function (place, status) {
+        console.log(`[DEBUG] Fetching details for Place ID: ${placeId}`);
 
-    }
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            console.log(`[DEBUG] Full Details for ${place.name}:`, place);
 
-    // Handle search button click
-    searchButton.addEventListener('click', searchByZipCode);
+            const phoneNumber = place.formatted_phone_number || place.international_phone_number || "Phone not available";
+            const website = place.website ? `<a href="${place.website}" target="_blank">${place.website}</a>` : "No website available";
 
-    // Detect user's location on page load
-    navigator.geolocation.getCurrentPosition(
-        function (position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            initVetMap(lat, lng);
-        },
-        function () {
-            // Default location if geolocation fails
-            const defaultLat = 37.7749; // San Francisco latitude
-            const defaultLng = -122.4194; // San Francisco longitude
-            initVetMap(defaultLat, defaultLng);
+            console.log(`[DEBUG] Clinic: ${place.name}, Phone: ${phoneNumber}, Website: ${website}`);
+
+            // Add clinic details to UI
+            addClinicCard(place, phoneNumber, website);
+        } else {
+            console.error(`[ERROR] Failed to get details for Place ID: ${placeId} - Status: ${status}`);
         }
-    );
+    });
+}
+
+// Function to create and display clinic cards
+function addClinicCard(place, phone, website) {
+    const card = document.createElement('div');
+    card.className = 'card mb-3 p-2';
+
+    const address = place.formatted_address ? place.formatted_address : "Address not available";
+
+    card.innerHTML = `
+        <h5 class="card-title">${place.name}</h5>
+        <p class="card-text"><strong>Address:</strong> ${address}</p>
+        <p class="card-text"><strong>Phone:</strong> ${phone}</p>
+        <p class="card-text"><strong>Website:</strong> ${website}</p>
+    `;
+
+    clinicDetailsContainer.appendChild(card);
+}
+
+// Search clinics by zip code
+function searchByZipCode() {
+    const zipCode = zipCodeInput.value.trim();
+    if (!zipCode) {
+        alert('Please enter a zip code.');
+        return;
+    }
+
+    const geocoder = new google.maps.Geocoder();
+    console.log('[DEBUG] Entered Zip Code:', zipCode);
+
+    geocoder.geocode({ address: zipCode }, function (results, status) {
+        console.log('[DEBUG] Geocode Status:', status);
+        console.log('[DEBUG] Geocode Results:', results);
+
+        if (status === 'OK' && results.length > 0) {
+            const location = results[0].geometry.location;
+            const lat = location.lat();
+            const lng = location.lng();
+
+            // Center map and fetch clinics
+            vetMap.setCenter({ lat, lng });
+            fetchNearbyVetClinics(lat, lng);
+        } else {
+            alert('Unable to find location. Please enter a valid zip code.');
+        }
+    });
+}
+
+// Handle search button click
+searchButton.addEventListener('click', searchByZipCode);
+
+// Detect user's location on page load
+navigator.geolocation.getCurrentPosition(
+    function (position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        initVetMap(lat, lng);
+    },
+    function () {
+        // Default location if geolocation fails
+        const defaultLat = 37.7749; // San Francisco latitude
+        const defaultLng = -122.4194; // San Francisco longitude
+        initVetMap(defaultLat, defaultLng);
+    }
+);
+
 </script>
 
 <!-- Include Google Maps Script -->

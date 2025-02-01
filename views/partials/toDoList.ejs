@@ -1,0 +1,100 @@
+
+<div class="container mt-2">
+    <div class="row">
+        <!-- To-Do Section Header -->
+        <h2 class="alert-heading text-primary-emphasis text-center"><strong>Pet Travel Todo List!</strong></h2>
+        <hr>
+
+        <!-- Dynamic Alert Based on Authentication Status -->
+        <% if (isAuthenticated) { %>
+            <div class="alert alert-info mt-2" role="alert">
+                <p>
+                    <strong>Manage Your Tasks:</strong> Check off tasks as you complete them. Your progress will be saved automatically.
+                </p>
+            </div>
+        <% } else { %>
+            <div class="alert alert-warning mt-2 text-center" role="alert">
+                <h5><strong>New Feature! ✅</strong></h5>
+                <p>
+                    Want to keep track of your pet travel tasks? 
+                    <a href="/login" class="btn btn-sm btn-primary">Log in</a> with your Gmail.
+                   
+                </p>
+            </div>
+        <% } %>
+        <!-- To-Do Section -->
+    
+        
+                <!-- To-Do Section -->
+                <div class="col-12">
+                    <div class="card border-secondary shadow-lg p-3 mb-3 bg-white rounded">
+                        <h3 class="text-primary text-primary-emphasis"><strong>To-Do</strong></h3> 
+                        <ul id="To-Do" class="task-list border p-3 rounded list-unstyled">
+                            <% (toDoList["To-Do"] || []).forEach(task => { %>
+                                <li class="form-check">
+                                    <input class="form-check-input task-checkbox" type="checkbox" 
+                                           data-task="<%= task %>" data-section="To-Do"
+                                           <% if (!isAuthenticated) { %> disabled <% } %>> 
+                                    <label class="form-check-label"><%= task %></label>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+        
+                <!-- Completed Section -->
+                <div class="col-12">
+                    <div class="card border-secondary shadow-lg p-3 mb-3 bg-white rounded">
+                        <h3 class="text-success-emphasis"><strong> Completed</strong></h3>
+                        <ul id="completed" class="task-list border p-3 rounded list-unstyled">
+                            <% (toDoList["completed"] || []).forEach(task => { %>
+                                <li class="form-check">
+                                    <input class="form-check-input task-checkbox" type="checkbox" checked
+                                           data-task="<%= task %>" data-section="completed"
+                                           <% if (!isAuthenticated) { %> disabled <% } %>> 
+                                    <label class="form-check-label text-decoration-line-through"><%= task %></label>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<div id="auth-status" data-authenticated="<%= isAuthenticated %>"></div>
+
+<!-- ✅ JavaScript to Handle Checkbox Updates -->
+<script>
+    document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', async function () {
+            const task = this.dataset.task;
+            const fromSection = this.dataset.section;
+            const toSection = this.checked ? "completed" : "To-Do";
+
+            if (!task || !fromSection || !toSection) {
+                return alert('Invalid task update.');
+            }
+
+            const isAuthenticated = document.getElementById('auth-status').dataset.authenticated === 'true';
+            
+            if (isAuthenticated) {
+                try {
+                    const response = await fetch('/toDoList/update', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ task, fromSection, toSection }),
+                    });
+
+                    if (response.ok) {
+                        location.reload(); // Reload page to reflect changes
+                    } else {
+                        console.error('Failed to update task on server.');
+                    }
+                } catch (error) {
+                    console.error('Error updating task:', error);
+                }
+            } else {
+                alert('Please log in to save your progress.');
+            }
+        });
+    });
+</script>

@@ -10,8 +10,11 @@
 </head>
 
 <div class="container mt-5">
+       
     <div class="row justify-content-center">
+       
         <div class="col-md-8">
+          
             <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
                 <div class="card-body">
                     <h2 class="text-center text-primary-emphasis mb-4">
@@ -35,7 +38,7 @@
                     <input type="hidden" name="destinationCountry" value="<%= regulations[0].destinationCountry._id %>">
                     <input type="hidden" name="petType" value="<%= regulations[0].petType._id %>">
                     <button type="submit" class="btn btn-outline-danger">
-                        <i class="fas fa-heart"></i> Save
+                        <i class="fas fa-heart"></i>
                     </button>
                 </form>
 
@@ -141,19 +144,32 @@
 
                     <% }) %>
                 </div>
-                <div class="d-grid gap-2 mt-3 gap-3">
+                <h3 class="mt-4 text-center"><strong> Have you checked out Airline Pet Regulations?</strong></h3>
+                <p class="text-center">Search flights going to your destination, and view airline pet regulations</p>
+                <div class="d-grid gap-2 mt-1 gap-3">
                 <button type="button" class="btn btn-outline-dark" onclick="location.href='/regulations/searchFlights'">
                     <i class="bi bi-search"></i> Search Pet Flights
                 </button>
             </div>
+ <div class="col-md-4">
+   
+        </div>
             </div>
 
             <!-- Find A Vet Section -->
             <div class="findAVet mt-5">
                 <%- include('../partials/findVetC') %>
             </div>
+           
+        </div>
+        <div class="col-md-4">
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+            <%- include('../partials/toDoList') %>
+            </div>
+            </div>
         </div>
     </div>
+   
 </div>
 
 <!-- CSS -->

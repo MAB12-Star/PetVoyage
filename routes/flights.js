@@ -22,10 +22,10 @@ const mapAirportToIATA = async (req, res, next) => {
     selectedDestinationLng = parseFloat(selectedDestinationLng);
 
     //Log the received lat/lng values for debugging
-  //  console.log('Selected Airport Latitude:', selectedAirportLat);
-  //  console.log('Selected Airport Longitude:', selectedAirportLng);
-  //  console.log('Selected Destination Latitude:', selectedDestinationLat);
-  //  console.log('Selected Destination Longitude:', selectedDestinationLng);
+   console.log('Selected Airport Latitude:', selectedAirportLat);
+   console.log('Selected Airport Longitude:', selectedAirportLng);
+   console.log('Selected Destination Latitude:', selectedDestinationLat);
+   console.log('Selected Destination Longitude:', selectedDestinationLng);
 
     try {
         // Fetch the IATA code for the current location using lat/lng

@@ -86,7 +86,6 @@
 <!-- Include Google Maps Script with API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
 
-
 <script>
     let map;
     let marker;
@@ -148,16 +147,16 @@
         function fetchNearbyAirports(lat, lng) {
             const service = new google.maps.places.PlacesService(map);
             const request = {
-        query: "airport",
-        location: new google.maps.LatLng(lat, lng),
-        radius: 50000 // 50 km search radius
-    };
+                location: new google.maps.LatLng(lat, lng),
+                radius: '30000', // 50 km radius
+                type: ['airport']
+            };
     
             // Clear existing options in the airport dropdown
             const airportDropdown = document.getElementById('airport');
             airportDropdown.innerHTML = ''; // Clear previous results
     
-            service.textSearch(request, function (results, status) {
+            service.nearbySearch(request, function (results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     results.forEach(function (place, index) {
                         const option = document.createElement('option');
@@ -237,12 +236,12 @@
     function fetchNearbyAirports(lat, lng) {
         const service = new google.maps.places.PlacesService(map);
         const request = {
-        query: "airport",
-        location: new google.maps.LatLng(lat, lng),
-        radius: 50000 // 50 km search radius
+            location: new google.maps.LatLng(lat, lng),
+            radius: '50000', // 50 km radius
+            type: ['airport'] // Search for airports
         };
     
-        service.textSearch(request, function (results, status) {
+        service.nearbySearch(request, function (results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 const airportDropdown = document.getElementById('destinationLocation');
                 airportDropdown.innerHTML = '<option value="">Choose an airport</option>';

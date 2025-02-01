@@ -1,4 +1,4 @@
-
+const User = require('./models/User'); 
 module.exports.saveCurrentUrl = (req, res, next) => {
     console.log('saveCurrentUrl middleware is running');
 
@@ -48,5 +48,45 @@ module.exports.redirectOldAirlineLinks = (req, res, next) => {
     next(); // If no match, proceed to the next middleware or route
 };
 
+
+
+
+module.exports.toDoListMiddleware = async (req, res, next) => {
+    let toDoList = {
+        "To-Do": [
+            "Research your destination country's pet import requirements",
+            "Get your pet's crate or carrier and start working on acclimation",
+            "Schedule a visit to see your veterinarian",
+            "Check airline or roadway routes",
+            "Research pet-friendly hotels and services",
+            "Get your pet's supplies",
+            "Schedule a trip to the groomer",
+        ],
+        "in-progress": [],
+        "completed": [],
+    };
+
+    let isAuthenticated = req.isAuthenticated(); // ✅ Store authentication status
+
+    if (isAuthenticated) {
+        try {
+            const user = await User.findById(req.user._id);
+            if (user && user.toDoList) {
+                console.log('User toDoList from DB:', user.toDoList);
+                toDoList = {
+                    "To-Do": user.toDoList.get("To-Do") || [],
+                    "in-progress": user.toDoList.get("in-progress") || [],
+                    "completed": user.toDoList.get("completed") || [],
+                };
+            }
+        } catch (error) {
+            console.error('Error fetching user to-do list:', error);
+        }
+    }
+
+    res.locals.toDoList = toDoList; 
+    res.locals.isAuthenticated = isAuthenticated; // ✅ Now available in all templates
+    next();
+};
 
 
