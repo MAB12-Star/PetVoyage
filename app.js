@@ -25,6 +25,8 @@ const petVoyageAi = require('./routes/petVoyageAi');
 const findAVet = require('./routes/findAVet');
 const blog = require('./routes/blog');
 
+const airlineList = require('./routes/airlineList');
+
 const { redirectOldAirlineLinks } = require('./middleware');
 const { toDoListMiddleware } = require('./middleware');
 
@@ -100,6 +102,7 @@ app.use('/contactUs', contactUs);
 app.use('/blog', blog);
 app.use('/tips', tips);
 app.use('/', petVoyageAi);
+app.use('/regulations/airlineList', airlineList);
 
 app.use(redirectOldAirlineLinks);
 

@@ -16,10 +16,38 @@
     <meta name="twitter:image" content="/images/movetocdmx.jpg">
 </head>
 
-<div class="container mt-0">
+<!-- Hero Section & Navigation -->
+<div class="bg-light py-5 text-center border-bottom">
+    <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
+    <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+        <a href="/regulations/newSearch" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-globe-americas d-block fs-3"></i>
+            <small>Country Policies</small>
+        </a>
+        <a href="/regulations/searchFlights" class="btn btn-dark px-4 py-2">
+            <i class="bi bi-airplane d-block fs-3"></i>
+            <small>Search Flights</small>
+        </a>
+        <a href="/regulations/airlineList" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-card-list d-block fs-3"></i>
+            <small>Airline Policies</small>
+        </a>
+        <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-hospital d-block fs-3"></i>
+            <small>Find a Vet</small>
+        </a>
+        <a href="/blog" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-journal-text d-block fs-3"></i>
+            <small>Blog</small>
+        </a>
+    </div>
+</div>
+<div class="container mt-5">
     <div class="row justify-content-center mb-5">
         <div class="col-md-8">
-            <div class="card shadow-lg p-4 border-secondary rounded">
+            <div class="card bg-white shadow-lg mb-3 border">
                 <h2 class="text-center text-primary-emphasis mb-4"><strong>Search for Flights</strong></h2>
                 <p>Still looking for the perfect airline to transport you and your pet? Locate flights available to your destination. Check out our <a href="/tips" target="_blank" rel="noopener noreferrer">Tips Section</a> for our suggestions regarding picking an airline.</p>
                 <form class="validated-form" action="/flights/searchFlights" method="POST">

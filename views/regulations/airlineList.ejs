@@ -1,0 +1,105 @@
+<% layout('layouts/boilerplate') %>
+
+<!-- Hero Header -->
+<div class="bg-light py-5 border-bottom">
+  <div class="container text-center">
+    <h1 class="fw-bold display-5">Browse Airlines</h1>
+    <p class="fs-5 text-muted">Filter airlines based on pet travel policies and select one to view details.</p>
+    <!-- Navigation Button Strip -->
+  <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    <a href="/regulations/newSearch" class="btn btn-outline-secondary  px-4 py-2">
+      <i class="bi bi-globe-americas d-block fs-3"></i>
+      <small>Country Policies</small>
+    </a>
+    <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2">
+      <i class="bi bi-airplane d-block fs-3"></i>
+      <small>Search Flights</small>
+    </a>
+    <a href="/regulations/airlineList" class="btn btn-dark px-4 py-2">
+      <i class="bi bi-card-list d-block fs-3"></i>
+      <small>Airline Polices</small>
+    </a>
+    <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2">
+      <i class="bi bi-hospital d-block fs-3"></i>
+      <small>Find a Vet</small>
+    </a>
+    <a href="/blog" class="btn btn-outline-secondary px-4 py-2">
+      <i class="bi bi-journal-text d-block fs-3"></i>
+      <small>Blog</small>
+    </a>
+    
+  </div>
+  </div>
+</div>
+
+<!-- Filter Controls -->
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12 text-center">
+      <div class="btn-group flex-wrap" role="group">
+        <button class="btn btn-outline-secondary filter-btn" data-filter="all">Show All</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="incompartment">In Compartment</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="incargo">In Cargo</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals">Service Animals</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals">ESA Allowed</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="brachycephalic">Brachycephalic Restricted</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous">Dangerous Breeds Restricted</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Airline Cards -->
+  <div class="row" id="airlineList">
+    <% airlines.forEach(airline => { %>
+      <div 
+        class="col-md-6 col-lg-4 mb-4 airline-card"
+        data-incompartment="<%= airline.inCompartmentAnimals.length > 0 ? 'true' : 'false' %>"
+        data-incargo="<%= airline.inCargoAnimals.length > 0 ? 'true' : 'false' %>"
+        data-serviceanimals="<%= airline.serviceAnimals === 'yes' ? 'true' : 'false' %>"
+        data-esanimals="<%= airline.esAnimals === 'yes' ? 'true' : 'false' %>"
+        data-brachycephalic="<%= airline.brachycephalic === 'yes' ? 'true' : 'false' %>"
+        data-dangerous="<%= airline.dangerousBreeds === 'yes' ? 'true' : 'false' %>"
+      >
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-airplane me-2"></i><%= airline.name %>
+            </h5>
+            <p class="card-text">
+              <small>
+                <strong>In Compartment:</strong> <%= airline.inCompartmentAnimals.join(", ") || 'No' %><br>
+                <strong>In Cargo:</strong> <%= airline.inCargoAnimals.join(", ") || 'No' %><br>
+                <strong>ESA Allowed:</strong> <%= airline.esAnimals %><br>
+                <strong>Service Animals:</strong> <%= airline.serviceAnimals %><br>
+              </small>
+            </p>
+            <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">View Policy</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<!-- Filter Script -->
+<script>
+  document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      const cards = document.querySelectorAll('.airline-card');
+
+      if (filter === 'all') {
+        cards.forEach(card => card.style.display = 'block');
+      } else {
+        cards.forEach(card => {
+          const match = card.dataset[filter] === 'true';
+          card.style.display = match ? 'block' : 'none';
+        });
+      }
+
+      // Highlight active button
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-dark'));
+      button.classList.add('btn-dark');
+    });
+  });
+</script>

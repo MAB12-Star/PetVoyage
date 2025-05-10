@@ -1,0 +1,230 @@
+<% layout('layouts/boilerplate') %>
+
+<!-- SEO Meta Tags -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+    <meta name="keywords" content="pet travel regulations, airline pet policies, pet import requirements, pet travel rules, pet policies by country, travel with pets, international pet travel, pet rules for airlines, pet import export rules, travel pet documents">
+    <meta name="author" content="PetVoyage">
+    <title>PetVoyage - Pet Travel Regulations and Airline Policies</title>
+    <meta property="og:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
+    <meta property="og:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+    <meta property="og:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+    <meta property="og:url" content="https://www.petvoyage.ai">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
+    <meta name="twitter:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+    <meta name="twitter:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+</head>
+<div class="blue-strip">
+    <div class="content">
+        Your Text or Content Here
+    </div>
+</div>
+<div class="background-section">
+   <!-- Background Section -->
+</div>
+
+<div class="container">
+    
+
+    <div class="row justify-content-center mb-5  ">
+     
+        <div class="col-md-8 ">
+          
+            <div class="card mb-4 shadow-lg">
+               
+                <div class="card-body">
+                <p class="lead text-center">
+               
+                    <strong>Your Ultimate Free Resource for Pet Policies Across Countries and Airlines</strong>
+                    
+                </p>
+                <img
+                    src="/images/PetVoyageLogo.png"
+                    class="img-fluid rounded-top d-block mx-auto"
+                    alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+                    width="400"
+                    height="400"
+                />
+            </div>
+                <div class="d-flex justify-content-center mt-3 gap-3">
+                    <!-- Card for Country Regulations -->
+                    <div class="container mt-3">
+                        <div class="row justify-content-center g-3">
+                            <!-- Country Regulations Card -->
+                            <div 
+                                class="col-12 col-md-6 col-lg-4" 
+                                aria-label="Search for country regulations">
+                                <div 
+                                    class="card text-center border-dark shadow-lg clickable-card" 
+                                    style="cursor: pointer;" 
+                                    onclick="location.href='/regulations/newSearch'">
+                                    <div class="card-body">
+                                        <i class="bi bi-globe-americas display-4"></i>
+                                        <h4 class="card-title mt-2">Country Policies</h4>
+                                        <p class="card-text">Find Country Pet Policies</p>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Search Flights Card -->
+                            <div 
+                                class="col-12 col-md-6 col-lg-4" 
+                                aria-label="Search for flight regulations">
+                                <div 
+                                    class="card text-center border-dark shadow-lg clickable-card" 
+                                    style="cursor: pointer;" 
+                                    onclick="location.href='/regulations/searchFlights'">
+                                    <div class="card-body">
+                                        <i class="bi bi-airplane display-4"></i>
+                                        <h4 class="card-title mt-2">Search Flights</h4>
+                                        <p class="card-text">Find Airline Pet Policies</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <p class="lead text-center">
+                        <strong>With PetVoyage, you can effortlessly prepare for your travels with your furry friends, ensuring you have all the necessary information and documentation ready for a smooth journey!</strong>
+                    </p>
+                </div>
+                 <div class="row justify-content-center gap-3">
+            <!-- Blog Card -->
+            <div 
+                class="col-12 col-md-6 col-lg-4 card text-center border-dark clickable-card shadow-lg" 
+                style="cursor: pointer;"
+                onclick="location.href='/blog'"
+                aria-label="Visit the PetVoyage Blog">
+                <div class="card-body">
+                    <i class="bi bi-journal-bookmark display-4"></i>
+                    <h2 class="card-title mt-2">PetVoyage Blog</h2>
+                    <p class="card-text">Read the latest tips and stories about traveling with pets on airlines while navigating international pet policies.</p>
+                </div>
+            </div>
+
+            <!-- Find a Vet Card -->
+            <div 
+                class="col-12 col-md-6 col-lg-4 card text-center border-dark shadow-lg clickable-card" 
+                style="cursor: pointer;"
+                onclick="location.href='/findAVet'"
+                aria-label="Find a veterinarian near you">
+                <div class="card-body">
+                    <i class="bi bi-hospital display-4"></i>
+                    <h2 class="card-title mt-2">Find a Vet</h2>
+                    <p class="card-text">Locate trusted veterinarians near your location for pet care and emergencies.</p>
+                </div>
+            </div>
+        </div>
+            </div>
+            
+          
+        </div>
+        <div class="col-md-4">
+            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+            <%- include('partials/toDoList') %>
+            </div>
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+<!-- Floating AI Chat Button -->
+<button id="ai-chat-button" class="btn btn-primary rounded-circle" data-bs-toggle="tooltip" title="Press here to ask AI">
+    <i class="bi bi-stars fs-1"></i> 
+</button>
+
+<!-- AI Chat Pop-out Form -->
+<div id="ai-chat-popup" class="ai-chat-popup">
+    <div class="card border-secondary shadow-lg p-3 bg-white rounded">
+        <div class="card-body">
+            <h4 class="text-center text-secondary-emphasis mb-4"><strong>Ask Pet AI</strong></h4>
+            <form id="ask-question-form">
+                <div class="form-group">
+                    <label for="user_question">Your Question</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="user_question" 
+                        name="user_question" 
+                        placeholder="Ask about pet regulations..." 
+                        required>
+                </div>
+                <div class="form-group text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+            <!-- AI Answer Section -->
+            <div id="ai-answer-container" class="ai-answer-container mt-4" style="display: none;">
+                <h5 class="text-secondary"><strong>AI's Answer:</strong></h5>
+                <div id="ai-answer" class="ai-answer border p-2 rounded bg-light"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript for handling AI chat interactions and tooltips
+    document.addEventListener('DOMContentLoaded', function () {
+        const chatButton = document.getElementById('ai-chat-button');
+        const chatPopup = document.getElementById('ai-chat-popup');
+        const askQuestionForm = document.getElementById('ask-question-form');
+        const aiAnswerContainer = document.getElementById('ai-answer-container');
+        const aiAnswer = document.getElementById('ai-answer');
+
+        chatButton.addEventListener('click', () => {
+            chatPopup.classList.toggle('show');
+        });
+
+        askQuestionForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userQuestion = document.getElementById('user_question').value;
+
+            try {
+                const response = await fetch('/ask-question', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_question: userQuestion })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                aiAnswerContainer.style.display = 'block';
+                aiAnswer.textContent = result.answer;
+            } catch (error) {
+                console.error('Error fetching AI answer:', error);
+                aiAnswerContainer.style.display = 'block';
+                aiAnswer.textContent = 'An error occurred. Please try again.';
+            }
+        });
+    });
+
+    // Initialize Bootstrap tooltips
+    $(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Website",
+        "name": "PetVoyage",
+        "url": "https://www.petvoyage.ai",
+        "description": "Your ultimate free resource for pet regulations across countries and airlines.",
+        "image": "https://www.petvoyage.ai/images/PetVoyageLogo.png",
+        "publisher": {
+            "@type": "Organization",
+            "name": "PetVoyage"
+        }
+    }
+</script>

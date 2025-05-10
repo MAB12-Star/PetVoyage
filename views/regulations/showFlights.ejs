@@ -44,9 +44,85 @@
   ]
 }
 </script>
-<div class="container mt-0">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container-fluid mt-0">
+    
+   <div class="row justify-content-center">
+  <!-- Filters Column: full width on mobile, narrow on desktop -->
+  <div class="col-md-2">
+    <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+      <h2 class="text-center text-primary-emphasis mb-4"><strong>Filters</strong></h2>
+      <div class="alert alert-info" role="alert">
+        Select the filters you are looking for to narrow down your search!
+      </div>
+      <!-- Flight Type Filter Buttons -->
+      <div class="text-center mb-4">
+        <button class="filter-buttons btn btn-primary mb-2" onclick="filterFlights('all')">Show All</button>
+        <button class="filter-buttons btn btn-success mb-2" onclick="filterFlights('direct')">Direct Flights</button>
+        <button class="filter-buttons btn btn-warning mb-2" onclick="filterFlights('indirect')">Indirect Flights</button>
+      </div>
+      <!-- Additional Filters as Bubble Selects -->
+      <div class="mb-3">
+        <strong>In Compartment</strong>
+        <div class="btn-group mt-2" role="group" aria-label="In Compartment">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="inCompartment" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="inCompartment" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>In Cargo</strong>
+        <div class="btn-group mt-2" role="group" aria-label="In Cargo">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="inCargo" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="inCargo" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>Dangerous Breeds</strong>
+        <div class="btn-group mt-2" role="group" aria-label="Dangerous Breeds">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="dangerousBreeds" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="dangerousBreeds" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>Brachycephalic</strong>
+        <div class="btn-group mt-2" role="group" aria-label="Brachycephalic">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="brachycephalic" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="brachycephalic" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>Service Animals</strong>
+        <div class="btn-group mt-2" role="group" aria-label="Service Animals">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="serviceAnimals" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="serviceAnimals" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>ESA Recognized</strong>
+        <div class="btn-group mt-2" role="group" aria-label="ESA Recognized">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="esAnimals" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="esAnimals" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>Pet Shipping</strong>
+        <div class="btn-group mt-2" role="group" aria-label="Pet Shipping">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="petShipping" data-value="Yes" onclick="toggleFilter(this)">Yes</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="petShipping" data-value="No" onclick="toggleFilter(this)">No</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <strong>Health Vaccinations</strong>
+        <div class="btn-group mt-2" role="group" aria-label="Health Vaccinations">
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="healthVaccinations" data-value="Rabies" onclick="toggleFilter(this)">Rabies</button>
+          <button type="button" class="btn btn-outline-secondary bubble-select" data-filter="healthVaccinations" data-value="Internal/External parasites" onclick="toggleFilter(this)">Internal/External parasites</button>
+        </div>
+      </div>
+    </div>
+
+
+            
+        </div>
+        <div class="col-md-6">
            
             <% if (flights && flights.length > 0) { %>
                 <% 
@@ -62,55 +138,166 @@
                           </div>
                         <p class="text-center text-secondary">Total Airlines: <strong id="totalAirlines"><%= totalAirlines %></strong></p>
                         
-                        <!-- Filter Buttons -->
-                        <div class="text-center mb-4">
-                            <button class="filter-buttons btn btn-primary" onclick="filterFlights('all')">Show All</button>
-                            <button class="filter-buttons btn btn-success" onclick="filterFlights('direct')">Direct Flights</button>
-                            <button class="filter-buttons btn btn-warning" onclick="filterFlights('indirect')">Indirect Flights</button>
-                        </div>
+                        
                       
 
                         <% let displayedAirlines = new Set(); %> <!-- Set to track unique airlines -->
-                        <% flights.forEach(airline => { %> <!-- `airline` is the airline code here -->
+                        <% flights.forEach(airline => { %>
                             <% if (airline && !displayedAirlines.has(airline)) { %>
                                 <% let flightType = flightTypeMap[airline] || 'unknown'; %>
-                                <% let airlineId = airlineIdMap[airline]; %>
-                                <% let airlineSlug = airlineSlugMap[airline]; %>  <!-- Use `airline` instead of `airlineCode` -->
-                                <div class="card mb-3 border-secondary shadow-sm flight-card" data-type="<%= flightType %>" data-airline="<%= airline %>">
-                                    <div class="card-header bg-light">
-                                        <div class="alert-container"></div> <!-- Changed from ID to class -->
-                                       
-                                          <div id="response-message"></div>
-                                        <form class="saveFlightForm" data-airline="<%= airline %>">
+                                <% let airlineSlug = airlineSlugMap[airline]; %>
+                        
+                                <div class="card mb-3 border-secondary shadow-sm flight-card" 
+                                data-type="<%= flightType %>" 
+                                data-airline="<%= airline %>" 
+                                data-incompartment="<%= inCompartmentAnimals[airline] && inCompartmentAnimals[airline].length > 0 ? 'Yes' : 'No' %>" 
+                                data-incargo="<%= inCargoAnimals[airline] && inCargoAnimals[airline].length > 0 ? 'Yes' : 'No' %>" 
+                                data-dangerousbreeds="<%= dangerousBreeds[airline] || 'No' %>" 
+                                data-brachycephalic="<%= brachycephalic[airline] || 'No' %>" 
+                                data-serviceanimals="<%= serviceAnimals[airline] || 'No' %>" 
+                                data-esanimals="<%= esAnimals[airline] || 'No' %>" 
+                                data-petshipping="<%= petShipping[airline] || 'No' %>" 
+                                data-healthvaccinations="<%= healthVaccinations[airline] ? healthVaccinations[airline].join(', ') : '' %>">
+                                    <div class="row g-0 position-relative">
+                                        <!-- Airline Logo (Left) -->
+                                      
+                                        
+                        
+                                        <!-- Airline Details (Right) -->
+                                        <div class="col-md-12">
+                                             
+                                            <div class="card-body position-relative">
+                                               <!-- Favorites Button in the Right Corner -->
+                                         <form class="saveFlightForm position-absolute top-0 end-0 m-2" data-airline="<%= airline %>">
                                             <input type="hidden" name="airlineCode" value="<%= airline %>">
-                                            <button type="submit" class="btn btn-outline-danger float-end">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
                                                 <i class="fas fa-heart"></i>
                                             </button>
                                         </form>
-                                        <strong>Airline Name: </strong>
-                                        <a href="/airlines/<%= airlineSlug%>&Pet&Policy" class="text-primary"> <!-- Changed `airlines` to `flights` -->
-                                            <%= airlineNamesMap[airline] || 'Unknown Airline' %>
-                                        </a>
-                                      
+                                                <div class="col-md-3 position-relative">
+                                                    <img src="<%= logo[airline] %>" 
+                                                         alt="<%= airline %> Logo" 
+                                                         class="img-fluid rounded-start airline-logo float-start me-3 mb-3">
+                                                
+                                                </div>
+                                                <h5 class="card-title">
+                                                    <a href="/airlines/<%= airlineSlug %>&Pet&Policy" class="text-primary text-decoration-none">
+                                                        <%= airlineNamesMap[airline] || 'Unknown Airline' %>
+                                                    </a> 
+                                                    <span style="font-size: 0.8rem;"><%= flightType %></span>
+                                                </h5>
+                        
+                                                <% if (petPolicyMap[airline]) { %>
+                                                    <p class="card-text">
+                                                      
+                                                        <a href="<%= petPolicyMap[airline] %>" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                                                            Official Airline Pet Policy Here
+                                                        </a>
+                                                    </p>
+                                                <% } else { %>
+                                                    <p class="card-text">Pet Policy: Not available</p>
+                                                <% } %>
+
+                                                
+                                                <div class="card mb-1 flight-card">
+                                                    <div class="row">
+                                                      <% if (inCompartmentAnimals[airline] && inCompartmentAnimals[airline].length > 0) { %>
+                                                        <div class="col-md-4">
+                                                          <p class="card-text">In Compartment:<strong> <%= inCompartmentAnimals[airline].join(", ") %></strong></p>
+                                                        </div>
+                                                      <% } else { %>
+                                                        <div class="col-md-4">
+                                                          <p class="card-text">In Compartment: Not specified</p>
+                                                        </div>
+                                                      <% } %>
+                                                      
+                                                      <% if (inCargoAnimals[airline] && inCargoAnimals[airline].length > 0) { %>
+                                                        <div class="col-md-4">
+                                                          <p class="card-text">In Cargo:<strong> <%= inCargoAnimals[airline].join(", ") %></strong></p>
+                                                        </div>
+                                                      <% } else { %>
+                                                        <div class="col-md-4">
+                                                          <p class="card-text">In Cargo: Not specified</p>
+                                                        </div>
+                                                      <% } %>
+                                                      
+                                                      <% if (petShipping[airline] !== undefined) { %>
+                                                        <div class="col-md-4">
+                                                          <p class="card-text">Pet Shipping:<strong> <%= petShipping[airline] %></strong></p>
+                                                        </div>
+                                                      <% } %>
+                                                    </div>
+                                                  </div>
+                                                  
+                                            </div>
+                                            
+
+                                                    
+
+                                                      <div class="card mb-1 border-secondary shadow-sm flight-card">
+                                                        <div class="row">
+                                                          <!-- Column for Requirements -->
+                                                          <div class=" col-md-6 border-secondary shadow-sm ">
+                                                            <strong>Requirements:</strong>
+                                                            <% if (microchipMap[airline]) { %>
+                                                                <p class="card-text">Microchip:<strong> <%= microchipMap[airline] %></strong></p>
+                                                            <% } %>
+                                                            
+                                                            <% if (healthCertificateMap[airline]) { %>
+                                                                <p class="card-text">Health Certificate:<strong> <%= healthCertificateMap[airline] %></strong></p>
+                                                            <% } %>
+                                                            
+                                                            <% if (healthVaccinations[airline] && healthVaccinations[airline].length > 0) { %>
+                                                                <p class="card-text">
+                                                                  Health Vaccinations:<strong> <%= healthVaccinations[airline].join(", ") %></strong>
+                                                                </p>
+                                                            <% } %>
+                                                          </div>
+                                                      
+                                                          <!-- Column for Restrictions -->
+                                                          <div class=" col-md-6 border-secondary shadow-sm">
+                                                            <strong>Restrictions:</strong>
+                                                            <% if (dangerousBreeds[airline]) { %> 
+                                                                <p class="card-text"> Dangerous Breeds: <strong><%= dangerousBreeds[airline] %></strong> 
+                                                                    <a tabindex="0" 
+                                                                    role="button" 
+                                                                    data-bs-toggle="popover" 
+                                                                    data-bs-trigger="focus" 
+                                                                    data-bs-html="true" 
+                                                                    data-bs-content="<%= dangerousBreedList[airline] || 'No additional information provided.' %>"> 
+                                                                    <i class="bi bi-eye"></i> </a> 
+                                                                </p> <% } %>
+                                                            <% if (brachycephalic[airline]) { %>
+                                                                <p class="card-text">Brachycephalic Breeds:<strong> <%= brachycephalic[airline] %></strong>
+                                                                <a tabindex="0" 
+                                                                role="button" 
+                                                                data-bs-toggle="popover" 
+                                                                data-bs-trigger="focus" 
+                                                                data-bs-html="true" 
+                                                                data-bs-content="<%= brachycephalicBreedList[airline] || 'No additional information provided.' %>"> 
+                                                                <i class="bi bi-eye"></i> </a>
+                                                            </p><% } %>
+                                                            
+                                                            <% if (serviceAnimals[airline]) { %>
+                                                                <p class="card-text">Service Animals:<strong> <%= serviceAnimals[airline] %></strong></p>
+                                                            <% } %>
+                                                            
+                                                            <% if (esAnimals[airline] !== undefined) { %>
+                                                                <p class="card-text">ESA Recognized:<strong> <%= esAnimals[airline] %></strong></p>
+                                                            <% } %>
+                                                          </div>
+                                                        </div>
+                                            </div>
                                         
-                                        <br>
-                                        <p><strong>Flight Type:</strong> <%= flightType %></p>
-                                        
-                                        <% if (petPolicyMap[airline]) { %>
-                                            <strong>Pet Policy: </strong>
-                                            <a href="<%= petPolicyMap[airline] %>" target="_blank" rel="noopener noreferrer">
-                                               Official Airline Pet Policy Here
-                                            </a>
-                                        <% } else { %>
-                                            <strong>Pet Policy: </strong>Not available
-                                        <% } %>
-                                        
-                                        <!-- Add the airline to the Set to prevent duplicates -->
-                                        <% displayedAirlines.add(airline); %>
+                                        </div>
                                     </div>
                                 </div>
-                            <% } %> <!-- End if unique airline check -->
-                        <% }) %> <!-- End of flights loop -->
+                        
+                                <% displayedAirlines.add(airline); %>
+                            <% } %>
+                        <% }) %>
+                        
+                        
                         
                         
                     </div>
@@ -130,23 +317,124 @@
 
 <!-- Add JavaScript for Filtering -->
 <script>
-    function filterFlights(filterType) {
-        const cards = document.querySelectorAll('.flight-card');
-        let visibleAirlines = new Set();
-
-        cards.forEach(card => {
-            const type = card.getAttribute('data-type');
-            const airline = card.getAttribute('data-airline');
-            if (filterType === 'all' || type === filterType) {
-                card.style.display = 'block';
-                visibleAirlines.add(airline);
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        // Update the total airlines count dynamically
-        const totalAirlinesElement = document.getElementById('totalAirlines');
-        totalAirlinesElement.textContent = visibleAirlines.size;
+    // Global filter object for advanced filters.
+    let activeFilters = {
+      inCompartment: "",
+      inCargo: "",
+      dangerousBreeds: "",
+      brachycephalic: "",
+      serviceAnimals: "",
+      esAnimals: "",
+      petShipping: "",
+      healthVaccinations: ""
+    };
+  
+    // Toggle bubble select state.
+    function toggleFilter(btn) {
+      const filterType = btn.getAttribute('data-filter');
+      const filterValue = btn.getAttribute('data-value');
+      // Toggle active state.
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        activeFilters[filterType] = "";
+      } else {
+        // Remove active state from all buttons in the same group.
+        const groupButtons = document.querySelectorAll(`button[data-filter="${filterType}"]`);
+        groupButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilters[filterType] = filterValue;
+      }
+      applyAdvancedFilters();
     }
-</script>
+  
+    // Advanced filtering based on bubble selections.
+    function applyAdvancedFilters() {
+      const cards = document.querySelectorAll('.flight-card');
+      let visibleAirlines = new Set();
+  
+      cards.forEach(card => {
+        // Retrieve custom data attributes from the flight card.
+        const cardInCompartment = card.getAttribute('data-incompartment') || '';
+        const cardInCargo = card.getAttribute('data-incargo') || '';
+        const cardDangerousBreeds = card.getAttribute('data-dangerousbreeds') || '';
+        const cardBrachycephalic = card.getAttribute('data-brachycephalic') || '';
+        const cardServiceAnimals = card.getAttribute('data-serviceanimals') || '';
+        const cardEsAnimals = card.getAttribute('data-esanimals') || '';
+        const cardPetShipping = card.getAttribute('data-petshipping') || '';
+        const cardHealthVaccinations = card.getAttribute('data-healthvaccinations') || '';
+  
+        let match = true;
+        if (activeFilters.inCompartment && cardInCompartment !== activeFilters.inCompartment) match = false;
+        if (activeFilters.inCargo && cardInCargo !== activeFilters.inCargo) match = false;
+        if (activeFilters.dangerousBreeds && cardDangerousBreeds !== activeFilters.dangerousBreeds) match = false;
+        if (activeFilters.brachycephalic && cardBrachycephalic !== activeFilters.brachycephalic) match = false;
+        if (activeFilters.serviceAnimals && cardServiceAnimals !== activeFilters.serviceAnimals) match = false;
+        if (activeFilters.esAnimals && cardEsAnimals !== activeFilters.esAnimals) match = false;
+        if (activeFilters.petShipping && cardPetShipping !== activeFilters.petShipping) match = false;
+        if (activeFilters.healthVaccinations && !cardHealthVaccinations.includes(activeFilters.healthVaccinations)) match = false;
+  
+        if (match) {
+          card.style.display = 'block';
+          visibleAirlines.add(card.getAttribute('data-airline'));
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      // Update the total airlines count dynamically.
+      document.getElementById('totalAirlines').textContent = visibleAirlines.size;
+    }
+  
+    // Existing simple flight type filtering.
+   // Modify the filterFlights function to handle both flight type and advanced filters
+function filterFlights(filterType) {
+  const cards = document.querySelectorAll('.flight-card');
+  let visibleAirlines = new Set();
+
+  cards.forEach(card => {
+    const type = card.getAttribute('data-type');
+    const airline = card.getAttribute('data-airline');
+    const inCompartment = card.getAttribute('data-incompartment');
+    const inCargo = card.getAttribute('data-incargo');
+    const dangerousBreeds = card.getAttribute('data-dangerousbreeds');
+    const brachycephalic = card.getAttribute('data-brachycephalic');
+    const serviceAnimals = card.getAttribute('data-serviceanimals');
+    const esAnimals = card.getAttribute('data-esanimals');
+    const petShipping = card.getAttribute('data-petshipping');
+    const healthVaccinations = card.getAttribute('data-healthvaccinations');
+
+    // Start by checking the flight type filter
+    let match = (filterType === 'all' || type === filterType);
+
+    // Now, apply all advanced filters as well
+    if (activeFilters.inCompartment && inCompartment !== activeFilters.inCompartment) match = false;
+    if (activeFilters.inCargo && inCargo !== activeFilters.inCargo) match = false;
+    if (activeFilters.dangerousBreeds && dangerousBreeds !== activeFilters.dangerousBreeds) match = false;
+    if (activeFilters.brachycephalic && brachycephalic !== activeFilters.brachycephalic) match = false;
+    if (activeFilters.serviceAnimals && serviceAnimals !== activeFilters.serviceAnimals) match = false;
+    if (activeFilters.esAnimals && esAnimals !== activeFilters.esAnimals) match = false;
+    if (activeFilters.petShipping && petShipping !== activeFilters.petShipping) match = false;
+    if (activeFilters.healthVaccinations && !healthVaccinations.includes(activeFilters.healthVaccinations)) match = false;
+
+    // Apply the final match result
+    if (match) {
+      card.style.display = 'block';
+      visibleAirlines.add(airline);
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Update the total airlines count dynamically
+  document.getElementById('totalAirlines').textContent = visibleAirlines.size;
+}
+  
+    // Initialize Bootstrap popovers if needed.
+    document.addEventListener('DOMContentLoaded', function () {
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      popoverTriggerList.forEach(function (popoverTriggerEl) {
+        new bootstrap.Popover(popoverTriggerEl);
+      });
+    });
+  </script>
+  
+  

@@ -1,128 +1,152 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- Hero Section & Navigation -->
+<div class="bg-light py-5 text-center border-bottom">
+    <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
+    <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+        <a href="/regulations/newSearch" class="btn btn-dark px-4 py-2">
+            <i class="bi bi-globe-americas d-block fs-3"></i>
+            <small>Country Policies</small>
+        </a>
+        <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-airplane d-block fs-3"></i>
+            <small>Search Flights</small>
+        </a>
+        <a href="/regulations/airlineList" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-card-list d-block fs-3"></i>
+            <small>Airline Policies</small>
+        </a>
+        <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-hospital d-block fs-3"></i>
+            <small>Find a Vet</small>
+        </a>
+        <a href="/blog" class="btn btn-outline-secondary px-4 py-2">
+            <i class="bi bi-journal-text d-block fs-3"></i>
+            <small>Blog</small>
+        </a>
+    </div>
 </div>
-<div class="container mt-0">
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-6">
-            
-            <div class="card  shadow-lg">
-                <h2 class="text-center text-primary-emphasis mb-4"><strong>Select Country and Animal Type</strong></h2>
-        <p class="text-center text-primary-emphasis"> Review all relevant pet policies based of the country and pet you are traveling with. <strong> Save your results in you profile for easy review!</strong></p>
-        <form class="validated-form" action="" method="POST">
-            <!-- Dropdown for selecting origin country -->
-            <div class="form-group mt-3">
-                <label for="originCountry">Select Current Country</label>
-                <select name="originCountry" id="originCountry" class="form-control" required>
-                    <option value="">Choose your home country:</option>
-                    <% countries.forEach(country => { %>
-                        <option value="<%= country.country%>"><%= country.country %></option>
-                    <% }) %>
-                </select>
-            </div>
-        
-            <!-- Dropdown for selecting destination country -->
-            <div class="form-group mt-3">
-                <label for="destinationCountry">Select Destination Country</label>
-                <select name="destinationCountry" id="destinationCountry" class="form-control" required>
-                    <option value="">Choose a destination country:</option>
-                    <% countries.forEach(country => { %>
-                        <option value="<%= country.country %>"><%= country.country %></option>
-                    <% }) %>
-                </select>
-            </div>
-        
-            <!-- Button selection for animal type -->
-            <div class="form-group mt-3">
-                <label>Select Animal Type</label>
-                <div class="d-flex flex-wrap gap-2 mt-2" id="petTypeButtons">
-                    <% petTypes.forEach(petType => { %>
-                        <button type="button" 
-                                class="btn btn-outline-secondary pet-type-btn"
-                                data-pet-type-id="<%= petType.type %>">
-                            <%= petType.type %>
-                        </button>
-                    <% }) %>
+
+<!-- Main Content -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Search Form -->
+        <div class="col-md-6 pe-md-5">
+            <div class="card bg-white shadow-lg mb-3 border">
+                <div class="card-body">
+                    <h2 class="text-center text-primary-emphasis mb-4">
+                        <strong>Select Country and Animal Type</strong>
+                    </h2>
+                    <p class="text-center text-primary-emphasis">
+                        Review all relevant pet policies based on the country and pet you are traveling with. 
+                        <strong>Save your results in your profile for easy review!</strong>
+                    </p>
+                    <form class="validated-form" action="" method="POST">
+                        <!-- Origin Country -->
+                        <div class="form-group mt-3">
+                            <label for="originCountry">Select Current Country</label>
+                            <select name="originCountry" id="originCountry" class="form-control" required>
+                                <option value="">Choose your home country:</option>
+                                <% countries.forEach(country => { %>
+                                    <option value="<%= country.country %>"><%= country.country %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <!-- Destination Country -->
+                        <div class="form-group mt-3">
+                            <label for="destinationCountry">Select Destination Country</label>
+                            <select name="destinationCountry" id="destinationCountry" class="form-control" required>
+                                <option value="">Choose a destination country:</option>
+                                <% countries.forEach(country => { %>
+                                    <option value="<%= country.country %>"><%= country.country %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <!-- Pet Type Buttons -->
+                        <div class="form-group mt-4">
+                            <label>Select Animal Type</label>
+                            <div class="d-flex flex-wrap gap-2 mt-2" id="petTypeButtons">
+                                <% petTypes.forEach(petType => { %>
+                                    <button type="button" 
+                                            class="btn btn-outline-secondary pet-type-btn"
+                                            data-pet-type-id="<%= petType.type %>">
+                                        <%= petType.type %>
+                                    </button>
+                                <% }) %>
+                            </div>
+                            <input type="hidden" name="petType" id="selectedPetType" required>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                Show Travel Policy
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <!-- Hidden input to store selected pet type -->
-                <input type="hidden" name="petType" id="selectedPetType" required>
-            </div>
-        
-            <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-outline-dark" type="submit">Submit</button>
-            </div>
-        </form>
-        
-       
-        
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-            <%- include('../partials/toDoList') %>
-            </div>
+
+        <!-- To-Do List Sidebar -->
+        <div class="col-md-4 mt-5 mt-md-0">
+            <div class="card border-secondary shadow-lg p-3 bg-white rounded">
+                <%- include('../partials/toDoList') %>
             </div>
         </div>
     </div>
 </div>
 
+<!-- JavaScript: Dynamic Form Action -->
 <script>
-    // JavaScript to handle button selection
     const petTypeButtons = document.querySelectorAll('.pet-type-btn');
     const selectedPetTypeInput = document.getElementById('selectedPetType');
 
     petTypeButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove 'active' class from all buttons
-            petTypeButtons.forEach(btn => btn.classList.remove('btn-primary'));
-            petTypeButtons.forEach(btn => btn.classList.add('btn-outline-secondary'));
-
-            // Add 'active' class to the clicked button
+            petTypeButtons.forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-secondary');
+            });
             button.classList.add('btn-primary');
             button.classList.remove('btn-outline-secondary');
-
-            // Set the hidden input value to the selected pet type's ID
             selectedPetTypeInput.value = button.getAttribute('data-pet-type-id');
         });
     });
-</script>
-<script>
+
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector('.validated-form');
         const originCountrySelect = document.getElementById('originCountry');
         const destinationCountrySelect = document.getElementById('destinationCountry');
-        const petTypeButtons = document.querySelectorAll('.pet-type-btn');
 
         let originCountry = '';
         let destinationCountry = '';
         let petType = '';
 
-        // Update the originCountry variable when a selection is made
         originCountrySelect.addEventListener('change', function () {
-            originCountry = this.value; // This now gets the country name
+            originCountry = this.value;
             updateFormAction();
         });
 
-        // Update the destinationCountry variable when a selection is made
         destinationCountrySelect.addEventListener('change', function () {
-            destinationCountry = this.value; // This now gets the country name
+            destinationCountry = this.value;
             updateFormAction();
         });
 
-        // Update the petType variable when a button is clicked
         petTypeButtons.forEach(button => {
             button.addEventListener('click', function () {
-                petType = button.getAttribute('data-pet-type-id'); // This gets the pet type
+                petType = button.getAttribute('data-pet-type-id');
                 updateFormAction();
             });
         });
 
         function updateFormAction() {
             if (originCountry && destinationCountry && petType) {
-                // Update the form's action with the selected values
                 form.action = `/regulations/submitCountry/${originCountry}/${destinationCountry}/${petType}/Pet/Policy`;
             }
         }
     });
 </script>
-
-

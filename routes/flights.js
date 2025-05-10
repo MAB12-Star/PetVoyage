@@ -77,10 +77,38 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
             const petPolicyMap = {};
             const airlineIdMap = {};
             const airlineSlugMap = {};
+            const microchipMap = {};
+            const healthCertificateMap = {};
+            const logo = {};
+            const inCargoAnimals  = {};
+            const inCompartmentAnimals  = {};
+            const dangerousBreeds  = {};
+            const brachycephalic  = {};
+            const serviceAnimals  = {};
+            const esAnimals  = {};
+            const petShipping  = {};
+            const healthVaccinations ={};
+            const dangerousBreedList = {};
+            const brachycephalicBreedList ={};
+
             airlines.forEach((airline) => {
                 petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
                 airlineIdMap[airline.airlineCode] = airline._id;
                 airlineSlugMap[airline.airlineCode] = airline.slug;
+                microchipMap[airline.airlineCode] = airline.microchip; // Include microchip field
+                healthCertificateMap[airline.airlineCode] = airline.healthCertificate;
+                logo[airline.airlineCode] = airline.logo; 
+                inCargoAnimals[airline.airlineCode] = airline.inCargoAnimals;
+                inCompartmentAnimals[airline.airlineCode] = airline.inCompartmentAnimals;
+                dangerousBreeds[airline.airlineCode] = airline.dangerousBreeds;
+                brachycephalic[airline.airlineCode] = airline.brachycephalic;
+                serviceAnimals[airline.airlineCode] = airline.serviceAnimals;
+                esAnimals[airline.airlineCode] = airline.esAnimals;
+                petShipping[airline.airlineCode] = airline.petShipping;
+                healthVaccinations[airline.airlineCode]= airline.healthVaccinations;
+                dangerousBreedList[airline.airlineCode]=airline.dangerousBreedList;
+                brachycephalicBreedList[airline.airlineCode] = airline.brachycephalicBreedList;
+
             });
 
             return res.redirect(`/flights/${flightData._id}`);
@@ -184,10 +212,38 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
         const petPolicyMap = {};
         const airlineIdMap = {};
         const airlineSlugMap = {};
+        const microchipMap = {};
+        const healthCertificateMap = {};
+        const logo = {};
+        const inCargoAnimals  = {};
+        const inCompartmentAnimals  = {};
+        const dangerousBreeds  = {};
+        const brachycephalic  = {};
+        const serviceAnimals  = {};
+        const esAnimals  = {};
+        const petShipping  = {};
+        const healthVaccinations ={};
+        const dangerousBreedList = {};
+        const brachycephalicBreedList = {};
+    
         airlines.forEach((airline) => {
             petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
             airlineIdMap[airline.airlineCode] = airline._id;
             airlineSlugMap[airline.airlineCode] = airline.slug;
+            microchipMap[airline.airlineCode] = airline.microchip; // Include microchip field
+            healthCertificateMap[airline.airlineCode] = airline.healthCertificate;
+            logo[airline.airlineCode] = airline.logo; 
+            inCargoAnimals[airline.airlineCode] = airline.inCargoAnimals;
+            inCompartmentAnimals[airline.airlineCode] = airline.inCompartmentAnimals;
+            dangerousBreeds[airline.airlineCode] = airline.dangerousBreeds;
+            brachycephalic[airline.airlineCode] = airline.brachycephalic;
+            serviceAnimals[airline.airlineCode] = airline.serviceAnimals;
+            esAnimals[airline.airlineCode] = airline.esAnimals;
+            petShipping[airline.airlineCode] = airline.petShipping;
+            healthVaccinations[airline.airlineCode]= airline.healthVaccinations;
+            dangerousBreedList[airline.airlineCode]=airline.dangerousBreedList;
+            brachycephalicBreedList[airline.airlineCode]= airline.brachycephalicBreedList;
+
         });
 
         // Save flight data to the database
@@ -197,6 +253,7 @@ router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res)
             airlineCodes,
             airlineNamesMap,
             flightTypeMap,
+            
         });
         await flightData.save();
 
@@ -231,10 +288,37 @@ router.get('/:searchId', async (req, res) => {
         const petPolicyMap = {};
         const airlineIdMap = {};
         const airlineSlugMap = {};
+        const microchipMap = {};
+        const healthCertificateMap = {};
+        const logo = {};
+        const inCargoAnimals  = {};
+        const inCompartmentAnimals  = {};
+        const dangerousBreeds  = {};
+        const brachycephalic  = {};
+        const serviceAnimals  = {};
+        const esAnimals  = {};
+        const petShipping  = {};
+        const healthVaccinations ={};
+        const dangerousBreedList = {};
+        const brachycephalicBreedList = {}
+    
         airlines.forEach((airline) => {
             petPolicyMap[airline.airlineCode] = airline.petPolicyURL;
             airlineIdMap[airline.airlineCode] = airline._id;
             airlineSlugMap[airline.airlineCode] = airline.slug;
+            microchipMap[airline.airlineCode] = airline.microchip; // Include microchip field
+            healthCertificateMap[airline.airlineCode] = airline.healthCertificate; 
+            logo[airline.airlineCode] = airline.logo; 
+            inCargoAnimals[airline.airlineCode] = airline.inCargoAnimals;
+            inCompartmentAnimals[airline.airlineCode] = airline.inCompartmentAnimals;
+            dangerousBreeds[airline.airlineCode] = airline.dangerousBreeds;
+            brachycephalic[airline.airlineCode] = airline.brachycephalic;
+            serviceAnimals[airline.airlineCode] = airline.serviceAnimals;
+            esAnimals[airline.airlineCode] = airline.esAnimals;
+            petShipping[airline.airlineCode] = airline.petShipping;
+            healthVaccinations[airline.airlineCode] = airline.healthVaccinations;
+            dangerousBreedList[airline.airlineCode]=airline.dangerousBreedList;
+            brachycephalicBreedList[airline.airlineCode]= airline.brachycephalicBreedList;
         });
 
         // Render the flights result page
@@ -245,6 +329,19 @@ router.get('/:searchId', async (req, res) => {
             petPolicyMap,
             airlineIdMap,
             airlineSlugMap,
+            microchipMap,
+            healthCertificateMap,
+            logo,
+            inCargoAnimals,
+            inCompartmentAnimals,
+            dangerousBreeds,
+            brachycephalic,
+            serviceAnimals,
+            esAnimals,
+            petShipping,
+            healthVaccinations,
+            dangerousBreedList,
+            brachycephalicBreedList,
         });
     } catch (error) {
         console.error('Error fetching flight data:', error.message);

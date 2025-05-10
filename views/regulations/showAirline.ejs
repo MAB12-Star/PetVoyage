@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-title">
-                        <%= airline.name || 'Unknown Airline' %>
+                        <strong><%= airline.name || 'Unknown Airline' %></strong>
                     </h1>
                     <a href="<%= airline.petPolicyURL %>" target="_blank" class="btn btn-info">View Pet Policy</a>
                     <div class="alert-container"></div>
@@ -48,10 +48,139 @@
                                 <i class="fas fa-heart"></i> Save
                             </button>
                         </form>
-                   
-                        <p><%- airline.ImprovedPetPolicySummary || 'No pet policy summary available.' %></p>
-                    </div>
-                </div>
+                        <div class="col-md-3 position-relative">
+                          <% if (airline.logo) { %>
+                            <img src="<%= airline.logo %>" 
+                                 alt="<%= airline.name %> Logo" 
+                                 class="img-fluid rounded-start airline-logo float-start me-3 mb-3">
+                          <% } else { %>
+                            <i class="fa fa-plane fa-3x" aria-hidden="true"></i>
+                          <% } %>
+                        </div>
+                        
+    
+                        <% if (airline.inCompartmentAnimals && airline.inCompartmentAnimals.length > 0) { %>
+                            <div class="">
+                              <p class="card-text">In Compartment:<strong> <%= airline.inCompartmentAnimals.join(", ") %></strong></p>
+                            </div>
+                            <% } %>
+                          
+                          
+                          <% if (airline.inCargoAnimals && airline.inCargoAnimals.length > 0) { %>
+                            <div class="">
+                              <p class="card-text">In Cargo:<strong> <%= airline.inCargoAnimals.join(", ") %></strong></p>
+                            </div>
+                            <% } %>
+
+                            <% if (airline.petShipping !== undefined) { %>
+                                <div class="">
+                                  <p class="card-text">Pet Shipping:<strong> <%= airline.petShipping %></strong></p>
+                                </div>
+                              <% } %>
+                              
+                            <p class="card-text">Microchip:<strong> <%= airline.microchip %></strong></p>
+                            <p class="card-text">HealthCertificate:<strong> <%= airline.healthCertificate %></strong></p>
+                            <p class="card-text">Health Vaccinations:<strong> <%= airline.healthVaccinations.join(", ") %></strong></p>
+                            
+
+                            </div>
+                       <BR></BR>
+
+                        <div class="row g-3">
+                            <!-- Support Animal Details Card -->
+                            <div class="col">
+                              <div class="card flight-card text-center shadow-sm h-100 " data-bs-toggle="collapse" data-bs-target="#supportAnimalDetails">
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                  <i class="bi bi-paw display-6"></i>
+                                  <h6 class="card-title mt-2">Support Animal Details</h6>
+                                </div>
+                              </div>
+                            </div>
+                          
+                            <!-- Compartment Details Card -->
+                            <div class="col">
+                              <div class="card flight-card text-center shadow-sm h-100" data-bs-toggle="collapse" data-bs-target="#compartmentDetails">
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                  <i class="bi bi-airplane display-6"></i>
+                                  <h6 class="card-title mt-2">Compartment Details</h6>
+                                </div>
+                              </div>
+                            </div>
+                          
+                            <!-- Carrier Details Card -->
+                            <div class="col">
+                              <div class="card flight-card text-center shadow-sm h-100" data-bs-toggle="collapse" data-bs-target="#carrierDetails">
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                  <i class="bi bi-truck display-6"></i>
+                                  <h6 class="card-title mt-2">Carrier Details</h6>
+                                </div>
+                              </div>
+                            </div>
+                          
+                            <!-- Restrictions Card -->
+                            <div class="col">
+                              <div class="card flight-card text-center shadow-sm h-100" data-bs-toggle="collapse" data-bs-target="#restrictionsDetails">
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                  <i class="bi bi-exclamation-triangle display-6"></i>
+                                  <h6 class="card-title mt-2">Restrictions</h6>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <!-- Collapsible Panels for Details -->
+                          <div class="mt-3 mb-2">
+                            <!-- Support Animal Details Panel -->
+                            <div id="supportAnimalDetails" class="collapse regulation-info">
+                              <div class="card card-body border-top">
+                                <p class="card-text">
+                                  <strong>Service Animals:</strong> <%= airline.serviceAnimalDetails %>
+                                </p>
+                                <p class="card-text">
+                                  <strong>Emotional Support Animals:</strong> <%= airline.esaDetails %>
+                                </p>
+                              </div>
+                            </div>
+                          
+                            <!-- Compartment Details Panel -->
+                            <div id="compartmentDetails" class="collapse regulation-info">
+                              <div class="card card-body border-top">
+                                <p class="card-text">
+                                  <strong>Traveling In The Plane:</strong> <%= airline.inCompartmentDetails %>
+                                </p>
+                                <p class="card-text">
+                                  <strong>Traveling In Cargo:</strong> <%= airline.inCargoDetails %>
+                                </p>
+                              </div>
+                            </div>
+                          
+                            <!-- Carrier Details Panel -->
+                            <div id="carrierDetails" class="collapse regulation-info">
+                              <div class="card card-body border-top">
+                                <p class="card-text">
+                                  <strong>Compartment Carrier Details:</strong> <%= airline.inCompartmentDetails %>
+                                </p>
+                                <p class="card-text">
+                                  <strong>In Cargo Carrier Details:</strong> <%= airline.inCargoDetails %>
+                                </p>
+                              </div>
+                            </div>
+                          
+                            <!-- Restrictions Panel -->
+                            <div id="restrictionsDetails" class="collapse regulation-info">
+                              <div class="card card-body border-top">
+                                <p class="card-text">
+                                  <strong>Brachycephalic Breeds:</strong> <%= airline.brachycephalicBreedList %>
+                                </p>
+                                <p class="card-text">
+                                  <strong>Dangerous Breeds List:</strong> <%= airline.dangerousBreedList %>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          </div>    
+                          <p class="card-text">Pet Policy Summary:<%- airline.ImprovedPetPolicySummary %></p>
+
             </div>
         </div>
 
