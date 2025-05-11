@@ -22,8 +22,27 @@
 <meta name="twitter:image" content="/images/pet-travel-banner.jpg"> <!-- Replace with your actual image path -->
 
 <!-- Structured Data JSON-LD -->
-
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Pet-Friendly Flights",
+  "itemListElement": [
+    <% flights.forEach((airline, index) => { %>
+      {
+        "@type": "ListItem",
+        "position": <%= index + 1 %>,
+        "name": "<%= airlineNamesMap[airline] || 'Unknown Airline' %>",
+        "url": "/airlines/<%= airlineIdMap[airline] %>",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Flight Type",
+          "value": "<%= flightTypeMap[airline] || 'Unknown' %>"
+        }
+      }<%= index < flights.length - 1 ? ',' : '' %>
+    <% }) %>
+  ]
+}
 </script>
 <div class="container-fluid mt-0">
     
@@ -141,7 +160,9 @@
                                 data-healthvaccinations="<%= healthVaccinations[airline] ? healthVaccinations[airline].join(', ') : '' %>">
                                     <div class="row g-0 position-relative">
                                         <!-- Airline Logo (Left) -->
-
+                                      
+                                        
+                        
                                         <!-- Airline Details (Right) -->
                                         <div class="col-md-12">
                                              
@@ -209,7 +230,11 @@
                                                   </div>
                                                   
                                             </div>
-                                                  <div class="card mb-1 border-secondary shadow-sm flight-card">
+                                            
+
+                                                    
+
+                                                      <div class="card mb-1 border-secondary shadow-sm flight-card">
                                                         <div class="row">
                                                           <!-- Column for Requirements -->
                                                           <div class=" col-md-6 border-secondary shadow-sm ">
@@ -271,7 +296,10 @@
                                 <% displayedAirlines.add(airline); %>
                             <% } %>
                         <% }) %>
-
+                        
+                        
+                        
+                        
                     </div>
                 </div>
             <% } else { %>
@@ -289,80 +317,124 @@
 
 <!-- Add JavaScript for Filtering -->
 <script>
-  let currentFlightType = 'all';
-  let activeFilters = {
-    inCompartment: "",
-    inCargo: "",
-    dangerousBreeds: "",
-    brachycephalic: "",
-    serviceAnimals: "",
-    esAnimals: "",
-    petShipping: "",
-    healthVaccinations: ""
-  };
+    // Global filter object for advanced filters.
+    let activeFilters = {
+      inCompartment: "",
+      inCargo: "",
+      dangerousBreeds: "",
+      brachycephalic: "",
+      serviceAnimals: "",
+      esAnimals: "",
+      petShipping: "",
+      healthVaccinations: ""
+    };
+  
+    function toggleFilter(btn) {
+  const filterType = btn.getAttribute('data-filter');
+  const filterValue = btn.getAttribute('data-value');
 
-  function toggleFilter(btn) {
-    const filterType = btn.getAttribute('data-filter');
-    const filterValue = btn.getAttribute('data-value');
+  if (btn.classList.contains('active')) {
+    btn.classList.remove('active');
+    activeFilters[filterType] = "";
+  } else {
+    const groupButtons = document.querySelectorAll(`button[data-filter="${filterType}"]`);
+    groupButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilters[filterType] = filterValue;
+  }
 
-    if (btn.classList.contains('active')) {
-      btn.classList.remove('active');
-      activeFilters[filterType] = "";
-    } else {
-      document.querySelectorAll(`button[data-filter="${filterType}"]`).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilters[filterType] = filterValue;
+  filterFlights(currentFlightType); // Unifies filters
+}
+
+  
+    // Advanced filtering based on bubble selections.
+    function applyAdvancedFilters() {
+      const cards = document.querySelectorAll('.flight-card');
+      let visibleAirlines = new Set();
+  
+      cards.forEach(card => {
+        // Retrieve custom data attributes from the flight card.
+        const cardInCompartment = card.getAttribute('data-incompartment') || '';
+        const cardInCargo = card.getAttribute('data-incargo') || '';
+        const cardDangerousBreeds = card.getAttribute('data-dangerousbreeds') || '';
+        const cardBrachycephalic = card.getAttribute('data-brachycephalic') || '';
+        const cardServiceAnimals = card.getAttribute('data-serviceanimals') || '';
+        const cardEsAnimals = card.getAttribute('data-esanimals') || '';
+        const cardPetShipping = card.getAttribute('data-petshipping') || '';
+        const cardHealthVaccinations = card.getAttribute('data-healthvaccinations') || '';
+  
+        let match = true;
+        if (activeFilters.inCompartment && cardInCompartment !== activeFilters.inCompartment) match = false;
+        if (activeFilters.inCargo && cardInCargo !== activeFilters.inCargo) match = false;
+        if (activeFilters.dangerousBreeds && cardDangerousBreeds !== activeFilters.dangerousBreeds) match = false;
+        if (activeFilters.brachycephalic && cardBrachycephalic !== activeFilters.brachycephalic) match = false;
+        if (activeFilters.serviceAnimals && cardServiceAnimals !== activeFilters.serviceAnimals) match = false;
+        if (activeFilters.esAnimals && cardEsAnimals !== activeFilters.esAnimals) match = false;
+        if (activeFilters.petShipping && cardPetShipping !== activeFilters.petShipping) match = false;
+        if (activeFilters.healthVaccinations && !cardHealthVaccinations.includes(activeFilters.healthVaccinations)) match = false;
+  
+        if (match) {
+          card.style.display = 'block';
+          visibleAirlines.add(card.getAttribute('data-airline'));
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      // Update the total airlines count dynamically.
+      document.getElementById('totalAirlines').textContent = visibleAirlines.size;
     }
+  
+    // Existing simple flight type filtering.
+   // Modify the filterFlights function to handle both flight type and advanced filters
+function filterFlights(filterType) {
+  const cards = document.querySelectorAll('.flight-card');
+  let visibleAirlines = new Set();
 
-    filterFlights(currentFlightType);
-  }
+  cards.forEach(card => {
+    const type = card.getAttribute('data-type');
+    const airline = card.getAttribute('data-airline');
+    const inCompartment = card.getAttribute('data-incompartment');
+    const inCargo = card.getAttribute('data-incargo');
+    const dangerousBreeds = card.getAttribute('data-dangerousbreeds');
+    const brachycephalic = card.getAttribute('data-brachycephalic');
+    const serviceAnimals = card.getAttribute('data-serviceanimals');
+    const esAnimals = card.getAttribute('data-esanimals');
+    const petShipping = card.getAttribute('data-petshipping');
+    const healthVaccinations = card.getAttribute('data-healthvaccinations');
 
-  function filterFlights(filterType) {
-    currentFlightType = filterType;
-    const cards = document.querySelectorAll('.flight-card[data-type]');
-    let visibleAirlines = new Set();
+    // Start by checking the flight type filter
+    let match = (filterType === 'all' || type === filterType);
 
-    cards.forEach(card => {
-      const type = card.getAttribute('data-type');
-      const airline = card.getAttribute('data-airline');
-      const inCompartment = card.getAttribute('data-incompartment');
-      const inCargo = card.getAttribute('data-incargo');
-      const dangerousBreeds = card.getAttribute('data-dangerousbreeds');
-      const brachycephalic = card.getAttribute('data-brachycephalic');
-      const serviceAnimals = card.getAttribute('data-serviceanimals');
-      const esAnimals = card.getAttribute('data-esanimals');
-      const petShipping = card.getAttribute('data-petshipping');
-      const healthVaccinations = card.getAttribute('data-healthvaccinations');
+    // Now, apply all advanced filters as well
+    if (activeFilters.inCompartment && inCompartment !== activeFilters.inCompartment) match = false;
+    if (activeFilters.inCargo && inCargo !== activeFilters.inCargo) match = false;
+    if (activeFilters.dangerousBreeds && dangerousBreeds !== activeFilters.dangerousBreeds) match = false;
+    if (activeFilters.brachycephalic && brachycephalic !== activeFilters.brachycephalic) match = false;
+    if (activeFilters.serviceAnimals && serviceAnimals !== activeFilters.serviceAnimals) match = false;
+    if (activeFilters.esAnimals && esAnimals !== activeFilters.esAnimals) match = false;
+    if (activeFilters.petShipping && petShipping !== activeFilters.petShipping) match = false;
+    if (activeFilters.healthVaccinations && !healthVaccinations.includes(activeFilters.healthVaccinations)) match = false;
 
-      let match = (filterType === 'all' || type === filterType);
-
-      if (activeFilters.inCompartment && inCompartment !== activeFilters.inCompartment) match = false;
-      if (activeFilters.inCargo && inCargo !== activeFilters.inCargo) match = false;
-      if (activeFilters.dangerousBreeds && dangerousBreeds !== activeFilters.dangerousBreeds) match = false;
-      if (activeFilters.brachycephalic && brachycephalic !== activeFilters.brachycephalic) match = false;
-      if (activeFilters.serviceAnimals && serviceAnimals !== activeFilters.serviceAnimals) match = false;
-      if (activeFilters.esAnimals && esAnimals !== activeFilters.esAnimals) match = false;
-      if (activeFilters.petShipping && petShipping !== activeFilters.petShipping) match = false;
-      if (activeFilters.healthVaccinations && !healthVaccinations.includes(activeFilters.healthVaccinations)) match = false;
-
-      if (match) {
-        card.style.display = 'block';
-        visibleAirlines.add(airline);
-      } else {
-        card.style.display = 'none';
-      }
-    });
-
-    document.getElementById('totalAirlines').textContent = visibleAirlines.size;
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    popoverTriggerList.forEach(el => new bootstrap.Popover(el));
+    // Apply the final match result
+    if (match) {
+      card.style.display = 'block';
+      visibleAirlines.add(airline);
+    } else {
+      card.style.display = 'none';
+    }
   });
-</script>
 
-
-
+  // Update the total airlines count dynamically
+  document.getElementById('totalAirlines').textContent = visibleAirlines.size;
+}
+  
+    // Initialize Bootstrap popovers if needed.
+    document.addEventListener('DOMContentLoaded', function () {
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      popoverTriggerList.forEach(function (popoverTriggerEl) {
+        new bootstrap.Popover(popoverTriggerEl);
+      });
+    });
+  </script>
   
   

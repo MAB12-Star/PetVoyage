@@ -32,11 +32,19 @@ const airlineSchema = new mongoose.Schema({
     PetPolicySummary: { type: String, default: "" },             // Summary of the pet policy
     ImprovedPetPolicySummary: { type: String, default: "" },      // Improved/HTML formatted pet policy summary
     
+    inCargo: {
+      type: String,
+      enum: ['yes', 'no'],
+    },                    
     inCargoAnimals: {   
         type: [String],
         enum: ['Cat', 'Dog', 'Bird', 'Reptile'],
         default: []
     },
+    inCompartment: {
+      type: String,
+      enum: ['yes', 'no'],
+    }, 
     inCompartmentAnimals: {
         type: [String],
         enum: ['Cat', 'Dog', 'Bird', 'Reptile'],

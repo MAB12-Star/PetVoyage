@@ -5,30 +5,30 @@
   <div class="container text-center">
     <h1 class="fw-bold display-5">Browse Airlines</h1>
     <p class="fs-5 text-muted">Filter airlines based on pet travel policies and select one to view details.</p>
+
     <!-- Navigation Button Strip -->
-  <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-    <a href="/regulations/newSearch" class="btn btn-outline-secondary  px-4 py-2">
-      <i class="bi bi-globe-americas d-block fs-3"></i>
-      <small>Country Policies</small>
-    </a>
-    <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2">
-      <i class="bi bi-airplane d-block fs-3"></i>
-      <small>Search Flights</small>
-    </a>
-    <a href="/regulations/airlineList" class="btn btn-dark px-4 py-2">
-      <i class="bi bi-card-list d-block fs-3"></i>
-      <small>Airline Polices</small>
-    </a>
-    <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2">
-      <i class="bi bi-hospital d-block fs-3"></i>
-      <small>Find a Vet</small>
-    </a>
-    <a href="/blog" class="btn btn-outline-secondary px-4 py-2">
-      <i class="bi bi-journal-text d-block fs-3"></i>
-      <small>Blog</small>
-    </a>
-    
-  </div>
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+      <a href="/regulations/newSearch" class="btn btn-outline-secondary px-4 py-2">
+        <i class="bi bi-globe-americas d-block fs-3"></i>
+        <small>Country Policies</small>
+      </a>
+      <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2">
+        <i class="bi bi-airplane d-block fs-3"></i>
+        <small>Search Flights</small>
+      </a>
+      <a href="/regulations/airlineList" class="btn btn-dark px-4 py-2">
+        <i class="bi bi-card-list d-block fs-3"></i>
+        <small>Airline Policies</small>
+      </a>
+      <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2">
+        <i class="bi bi-hospital d-block fs-3"></i>
+        <small>Find a Vet</small>
+      </a>
+      <a href="/blog" class="btn btn-outline-secondary px-4 py-2">
+        <i class="bi bi-journal-text d-block fs-3"></i>
+        <small>Blog</small>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -42,10 +42,15 @@
         <button class="btn btn-outline-secondary filter-btn" data-filter="incargo">In Cargo</button>
         <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals">Service Animals</button>
         <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals">ESA Allowed</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="brachycephalic">Brachycephalic Restricted</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous">Dangerous Breeds Restricted</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="petshipping">Ships Pets</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous">Dangerous Breeds Allowed</button>
       </div>
     </div>
+  </div>
+
+  <!-- Count Display -->
+  <div class="text-center mb-3">
+    <strong id="filter-count">Showing <%= airlines.length %> airlines</strong>
   </div>
 
   <!-- Airline Cards -->
@@ -53,12 +58,13 @@
     <% airlines.forEach(airline => { %>
       <div 
         class="col-md-6 col-lg-4 mb-4 airline-card"
-        data-incompartment="<%= airline.inCompartmentAnimals.length > 0 ? 'true' : 'false' %>"
-        data-incargo="<%= airline.inCargoAnimals.length > 0 ? 'true' : 'false' %>"
-        data-serviceanimals="<%= airline.serviceAnimals === 'yes' ? 'true' : 'false' %>"
-        data-esanimals="<%= airline.esAnimals === 'yes' ? 'true' : 'false' %>"
-        data-brachycephalic="<%= airline.brachycephalic === 'yes' ? 'true' : 'false' %>"
-        data-dangerous="<%= airline.dangerousBreeds === 'yes' ? 'true' : 'false' %>"
+        data-incompartment="<%= typeof airline.inCompartment === 'string' && airline.inCompartment.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-incargo="<%= typeof airline.inCargo === 'string' && airline.inCargo.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-petshipping="<%= typeof airline.petShipping === 'string' && airline.petShipping.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-serviceanimals="<%= typeof airline.serviceAnimals === 'string' && airline.serviceAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-esanimals="<%= typeof airline.esAnimals === 'string' && airline.esAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-brachycephalic="<%= typeof airline.brachycephalic === 'string' && airline.brachycephalic.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-dangerous="<%= typeof airline.dangerousBreeds === 'string' && airline.dangerousBreeds.toLowerCase() === 'no' ? 'true' : 'false' %>"
       >
         <div class="card h-100 shadow-sm">
           <div class="card-body">
@@ -67,10 +73,13 @@
             </h5>
             <p class="card-text">
               <small>
+                <strong>Ship Pets:</strong> <%= airline.petShipping || 'No data' %><br>
                 <strong>In Compartment:</strong> <%= airline.inCompartmentAnimals.join(", ") || 'No' %><br>
                 <strong>In Cargo:</strong> <%= airline.inCargoAnimals.join(", ") || 'No' %><br>
-                <strong>ESA Allowed:</strong> <%= airline.esAnimals %><br>
-                <strong>Service Animals:</strong> <%= airline.serviceAnimals %><br>
+                <strong>ESA Considered:</strong> <%= airline.esAnimals || 'No data' %><br>
+                <strong>Service Animals:</strong> <%= airline.serviceAnimals || 'No data' %><br>
+                <strong>Breeds Considered Dangerous: </strong><%=airline.dangerousBreedList || 'No data' %><br>
+
               </small>
             </p>
             <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">View Policy</a>
@@ -87,17 +96,28 @@
     button.addEventListener('click', () => {
       const filter = button.dataset.filter;
       const cards = document.querySelectorAll('.airline-card');
+      let visibleCount = 0;
 
       if (filter === 'all') {
-        cards.forEach(card => card.style.display = 'block');
+        cards.forEach(card => {
+          card.style.display = 'block';
+          visibleCount++;
+        });
       } else {
         cards.forEach(card => {
           const match = card.dataset[filter] === 'true';
           card.style.display = match ? 'block' : 'none';
+          if (match) visibleCount++;
         });
       }
 
-      // Highlight active button
+      // Update visible count
+      const countText = visibleCount === 1 
+        ? 'Showing 1 airline' 
+        : `Showing ${visibleCount} airlines`;
+      document.getElementById('filter-count').innerText = countText;
+
+      // Highlight selected filter
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-dark'));
       button.classList.add('btn-dark');
     });
