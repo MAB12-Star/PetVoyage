@@ -519,7 +519,28 @@ gap: 1rem; /* Add space between icons */
 .card-text {
     margin-bottom: 0.5rem;
 }
+@media (max-width: 767.98px) {
+    .mobile-icon-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 64px;
+    }
 
+    .square-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .mobile-icon-group small {
+      margin-top: 4px;
+      font-size: 0.75rem;
+    }
+  }
 
 
 
