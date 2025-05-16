@@ -69,64 +69,75 @@
 
 <!-- Filter Controls -->
 <div class="container mt-4">
-<h4>Filters</h4>
+  <h4>Filters</h4>
+
   <!-- Desktop Filters -->
   <div class="row mb-4 d-none d-md-block">
     <div class="col-md-12 text-center">
       <div class="btn-group flex-wrap" role="group">
-        <button class="btn btn-outline-secondary filter-btn" data-filter="all">Show All</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="incompartment">In Compartment</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="incargo">In Cargo</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals">Service Animals</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals">ESA Allowed</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="petshipping">Ships Pets</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous">Dangerous Breeds Allowed</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="all" data-bs-toggle="tooltip" title="View all airlines">Show All</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="incompartment" data-bs-toggle="tooltip" title="Animals allowed in cabin">In Compartment</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="incargo" data-bs-toggle="tooltip" title="Animals allowed in cargo">In Cargo</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals" data-bs-toggle="tooltip" title="Support animals recognized">Service Animals</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals" data-bs-toggle="tooltip" title="Emotional support animals recognized">ESA Allowed</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="petshipping" data-bs-toggle="tooltip" title="Provides pet shipping">Ships Pets</button>
+        <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous" data-bs-toggle="tooltip" title="Allows considered dangerous breeds">Dangerous Breeds Allowed</button>
+        
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Mobile Filters -->
-  <div class="row mb-4 d-md-none justify-content-center">
-    <div class="col-12 text-center">
-      <div class="d-flex flex-wrap justify-content-center gap-2" id="filter-icons">
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="all">
-          <i class="bi bi-grid-3x3-gap fs-5 mb-1"></i>
-          <small>All</small>
-        </button>
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="incompartment">
-          <i class="bi bi-box fs-5 mb-1"></i>
-          <small>Compartment</small>
-        </button>
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="incargo">
-          <i class="bi bi-truck fs-5 mb-1"></i>
-          <small>Cargo</small>
-        </button>
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="serviceanimals">
-          <i class="bi bi-shield-check fs-5 mb-1"></i>
-          <small>Service</small>
-        </button>
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="esanimals">
-          <i class="bi bi-heart fs-5 mb-1"></i>
-          <small>ESA</small>
-        </button>
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="petshipping">
-          <i class="bi bi-send fs-5 mb-1"></i>
-          <small>Shipping</small>
-        </button>
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
-                data-filter="dangerous">
-          <i class="bi bi-exclamation-triangle fs-5 mb-1"></i>
-          <small>Dangerous</small>
-        </button>
-      </div>
+<!-- Mobile Filters -->
+<div class="row mb-4 d-md-none justify-content-center">
+  <div class="col-12 text-center">
+    <div class="d-flex flex-wrap justify-content-center gap-2" id="filter-icons">
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="all" title="View all airlines">
+        <i class="bi bi-ui-checks-grid fs-5 mb-1"></i>
+        <small>All</small>
+      </button>
+
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="incompartment" title="Animals allowed in cabin">
+        <span class="fs-4 mb-1">🪑</span>
+        <small>Cabin</small>
+      </button>
+
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="incargo" title="Animals allowed in cargo">
+        <span class="fs-4 mb-1">✈️</span>
+        <small>Cargo</small>
+      </button>
+
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="serviceanimals" title="Support animals recognized">
+        <span class="fs-4 mb-1">🐕</span>
+        <small>Support Animal</small>
+      </button>
+
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="esanimals" title="Emotional support animals recognized">
+        <span class="fs-4 mb-1">❤️</span>
+        <small>ESA</small>
+      </button>
+
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="petshipping" title="Provides pet shipping">
+        <i class="bi bi-send-check fs-5 mb-1"></i>
+        <small>Shipping</small>
+      </button>
+
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+              data-filter="dangerous" title="Allows considered dangerous breeds">
+        <i class="bi bi-exclamation-diamond fs-5 mb-1"></i>
+        <small>Dangerous Breeds</small>
+      </button>
     </div>
   </div>
+</div>
+
+
 
   <!-- Count Display -->
   <div class="text-center mb-3">
@@ -172,42 +183,41 @@
     <% }) %>
   </div>
 </div>
-
 <div class="row mb-4 justify-content-center">
   <div class="col-md-12 text-center">
     <div class="d-flex flex-wrap justify-content-center gap-3" id="filter-icons">
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="all">
+              data-filter="all" data-bs-toggle="tooltip" title="View all airlines">
         <i class="bi bi-grid-3x3-gap fs-4 mb-1"></i>
         <small>Show All</small>
       </button>
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="incompartment">
+              data-filter="incompartment" data-bs-toggle="tooltip" title="Animals allowed in cabin">
         <i class="bi bi-box fs-4 mb-1"></i>
         <small>In Compartment</small>
       </button>
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="incargo">
+              data-filter="incargo" data-bs-toggle="tooltip" title="Animals allowed in cargo">
         <i class="bi bi-truck fs-4 mb-1"></i>
         <small>In Cargo</small>
       </button>
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="serviceanimals">
+              data-filter="serviceanimals" data-bs-toggle="tooltip" title="Support animals recognized">
         <i class="bi bi-shield-check fs-4 mb-1"></i>
         <small>Service Animals</small>
       </button>
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="esanimals">
+              data-filter="esanimals" data-bs-toggle="tooltip" title="Emotional support animals recognized">
         <i class="bi bi-heart fs-4 mb-1"></i>
         <small>ESA Allowed</small>
       </button>
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="petshipping">
+              data-filter="petshipping" data-bs-toggle="tooltip" title="Provides pet shipping">
         <i class="bi bi-send fs-4 mb-1"></i>
         <small>Ships Pets</small>
       </button>
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="dangerous">
+              data-filter="dangerous" data-bs-toggle="tooltip" title="Allows considered dangerous breeds">
         <i class="bi bi-exclamation-triangle fs-4 mb-1"></i>
         <small>Dangerous Breeds</small>
       </button>
@@ -216,8 +226,19 @@
 </div>
 
 
+
 <!-- Filter Script -->
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+</script>
+
+<script>
+
   document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', () => {
       const filter = button.dataset.filter;
