@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Request - Summary & Cost Allocation</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #1a73e8;
+      padding-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    /* Card Containers */
+    .card, .container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 1100px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Summary Section Layout */
+    .form-row {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: center;
+    }
+
+    .form-label {
+      width: 45%;
+      font-size: 0.95em;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .form-value {
+      width: 55%;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 6px 10px;
+      font-size: 0.95em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+
+    input[readonly] {
+      color: #1a0dab;
+      background-color: #f9f9f9;
+      border: none;
+      text-decoration: underline;
+      cursor: pointer;
+      padding-left: 0;
+    }
+
+    .info-icon {
+      margin-left: 6px;
+      font-size: 1.1em;
+      cursor: help;
+    }
+
+    /* Cost Allocation Table */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table th,
+    table td {
+      text-align: left;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .search-icon {
+      padding-left: 5px;
+      color: #1a73e8;
+      cursor: pointer;
+    }
+
+    /* Button Styles */
+    .button-group {
+      margin-top: 20px;
+    }
+
+    .button-group button {
+      padding: 8px 16px;
+      font-size: 0.95em;
+      border: none;
+      border-radius: 4px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .save-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .add-btn {
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Summary Section -->
+  <div class="card">
+    <h3>Summary Information</h3>
+    <div class="subtitle">Required fields include an *</div>
+
+    <div class="form-row">
+      <div class="form-label">Geography:</div>
+      <div class="form-value">India</div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label">Labor Category:</div>
+      <div class="form-value">IN Agency Professional</div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label">Procurement Type:</div>
+      <div class="form-value">Contingent Labour</div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label">Request Type:</div>
+      <div class="form-value">IN Agency Professional</div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label"><strong>* Work Director:</strong></div>
+      <div class="form-value">
+        <input type="text" value="Bradley, Mark" readonly />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label"><strong>* Cost Centre:</strong></div>
+      <div class="form-value">
+        <select required>
+          <option value="">--Select--</option>
+          <option selected>XXXXXXXXXXXXXX</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label"><strong>* Physical Work Location:</strong></div>
+      <div class="form-value">
+        <select required>
+          <option value="">--Select--</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label"><strong>* Tax Work Location:</strong></div>
+      <div class="form-value">
+        <select required>
+          <option value="">--Select--</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label"><strong>* Tax Job Category:</strong></div>
+      <div class="form-value">
+        <select required>
+          <option value="">--Select--</option>
+          <option selected>Staff Aug - IN</option>
+        </select>
+        <span class="info-icon" title="Tax Job Category Info">ℹ️</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cost Allocation Section -->
+  <div class="container">
+    <h3>Cost Allocation</h3>
+    <div class="subtitle">Required fields include an *</div>
+
+    <div class="form-group">
+      <label for="erpCode"><strong>* ERP|Company Code:</strong></label>
+      <select id="erpCode" required>
+        <option value="">--Select--</option>
+        <option selected>CBS | YC00</option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Account Type <span style="color:red">*</span></th>
+            <th>Facility</th>
+            <th>Plant Code</th>
+            <th>GL Account</th>
+            <th>Cost Center</th>
+            <th>PAC2 Account</th>
+            <th>Dummy Org</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><input type="text" /><span class="search-icon">🔍</span></td>
+            <td><input type="text" value="DX" /><span class="search-icon">🔍</span></td>
+            <td><input type="text" value="J****0C628_PERKINS UN" /></td>
+            <td><input type="text" /><span class="search-icon">🔍</span></td>
+            <td><input type="text" /><span class="search-icon">🔍</span></td>
+            <td><input type="text" /><span class="search-icon">🔍</span></td>
+            <td><input type="text" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="button-group">
+      <button class="save-btn">Save</button>
+      <button class="add-btn">+ Add New Unit</button>
+    </div>
+  </div>
+
+</body>
+</html>

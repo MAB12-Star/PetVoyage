@@ -989,30 +989,24 @@
   "PetPolicySummary": "",
   "slug": "amerijet-international",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "Yes",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [
-    "Domesticated Animals / Pets",
-    "Horses",
-    "Livestock",
-    "Hatching Eggs",
-    "Baby Chicks",
-    "Zoo Animals",
-    "Live Tropical Fish",
-    "Reptiles",
-    "Birds"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "inCompartmentAnimals": [],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "List Not Available",
-  "dangerousBreedList": "Not Available",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1209,29 +1203,24 @@
   "PetPolicySummary": "",
   "slug": "baltia-air-lines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not Allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Singing Birds",
-    "Rabbits",
-    "Guinea pig",
-    "hamsters",
-    "Ferrets"
-  ],
-  "brachycephalicBreedList": "No specific list available",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1282,25 +1271,24 @@
   "PetPolicySummary": "",
   "slug": "big-sky-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Dogs: \nRabies,\nDistemper, \nHepatitis,\nParvovirus \nParainfluenza \nCats: \nRabies, \nFeline Panleukopenia, \nFeline Calicivirus,\nFeline Herpesvirus\n",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Boston Terrier, \nBoxer, \nBulldog, \nChow Chow, \nBrussels Griffon, \nJapanese Chin,\nEnglish Toy Spaniel, \nPug,\nPekingese, \nShih Tzu\nCats:\nBritish Shorthair, \nExotic Shorthair, \nHimalayan, \nPersian, \nScottish Fold",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1317,25 +1305,24 @@
   "PetPolicySummary": "",
   "slug": "boston-maine-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "No specific list available",
-  "dangerousBreedList": "Dogs: Pit Bull Terrier\nStaffordshire Bull Terrier\nAmerican Staffordshire Terrier\nRottweiler\nDogo Argentino\nBrazilian Mastiff ('Fila Brasileiro')\nTosa Inu\nAkita\nInu",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1352,24 +1339,24 @@
   "PetPolicySummary": "",
   "slug": "breeze-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies \n",
-  "microchip": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Does not permit any animal"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Data not available",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1386,30 +1373,24 @@
   "PetPolicySummary": "Pet Travel\nCalm Air understands that pets are very important family members, and their comfort and safety is of the utmost importance to us.\n\nWe also understand that air travel can be a stressful experience for our furry friends, so we ask that you please review the following travel options and requirements to ensure your pet has a safe and comfortable flight.\n\nRequests to bring animals must be made a minimum of 48 hours prior to travel. Please call Calm Air Reservations at 1-800-839-2256 to include your pet in your reservation information.\n\nThe number of animals accepted on a flight are limited, so if a flight has reached its limit for the number of pets allowed, it may be required to modify your reservation in order to accommodate your pet. Some Calm Air flights may be operated by other carriers which may have additional restrictions to pet travel. Please ensure to confirm pet travel details with Calm Air Reservations directly.\n\nPets in the Cabin\nCalm Air allows small household pets such as dogs, cats, birds, rabbits, gerbils, guinea pigs and hamsters to travel in the aircraft cabin with the passenger, provided they are in a kennel small enough to fit under the seat.\n\nA pet kennel is considered carry-on baggage and is subject to a one-way charge of $78.75.\n\nPets must be placed in an airline-approved carrier (see Pet Carriers below).\nThe pet kennel must not exceed the dimensions of 10\" x 16\" x 12\" and the combined weight of pet and kennel must not exceed 20lbs.\nPets must remain in the kennel, under the seat, at all times.\nOnly one kennel per person is permitted.\nSpecial service animals that assist customers with a disability are allowed in the cabin at no charge, provided they have a registered training certificate.\nReptiles (including snakes and lizards) and animals such as rats, mice, ferrets, weasels, etc. cannot be carried in the cabin.\nPets in the Baggage Compartment\nYour pet will travel on the same flight as you do in a temperature-controlled and ventilated baggage compartment.\n\nThe pet kennel is subject to a one-way charge of either:\n\n$78.75 when the combined weight of pet + kennel is 70lbs or less\n$157.50 when the combined weight of pet + kennel exceeds 70lbs\nPlease also note that:\n\nPets must be placed in an airline-approved carrier (see Pet Carriers below).\nPuppies/kittens under six months old from the same litter can travel in groups of three (3) in the same kennel.\nA maximum of two (2) dogs/cats may travel in the same kennel provided they are used to cohabitating and do not weigh more than 31 lbs each. Any animal 31 lbs or more must have its own kennel.\nOnly two kennels per person/family are permitted.\nUnaccompanied pets must be shipped through cargo.\nRates for transporting pets unaccompanied, are based on weight and volume of the combined animal and kennel and the same rules as listed above apply.\n\nPlease contact your local Calm Air Cargo Office for further information, as other conditions for the acceptance of pet carriers do apply.\n\nPet Carriers\nRequirements are as follows:\n\nSoft-sided carriers are permitted for pets traveling in the cabin only.\nHard-sided carriers are recommended and must have proper holes for ventilation. Wire kennels are not permitted.\nAll carriers must be secure, in good condition, leak-proof, and contain absorbent material.\nNo part of the animal is allowed to protrude from the kennel.\nThe carrier must be large enough to allow the animal(s) to stand, turn around and lie down comfortably. If the carrier does not allow the animal to do this, transport will be refused.\nWheels on kennels must be removed before transport.\nTips for Pet Preparation\nIt is recommended that you prepare the carrier and your pet ahead of time. \nGive your pet water right up to the time of travel. Please provide a watering dish inside the carrier so that agents may provide water in the event of extended waits. Please empty the water dish before the flight to avoid spillage.\nExercise your pet immediately before leaving for the airport.\nTranquillizers and other medications are not generally recommended. Please consult your veterinarian.\nCover the bottom of the kennel with absorbent material such as a blanket.\nSecure, but do not lock the carrier as an agent may need to access your pet in case of emergency.\nA favorite toy or article inside the container may help to calm your pet.\nPlease mark the pet’s name on the outside of the container so that our agents can better reassure the animal when talking to him/her.\nCalm Air assumes no responsibility for the care or feeding of pets while in transit. Pregnant animals, animals in heat (estrus), and animals less than eight weeks old should not travel, as the animal’s health may be affected. Please consult your veterinarian.",
   "slug": "calm-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds",
-    "Rabbits",
-    "Gerbils",
-    "Guinea pigs",
-    "Hamsters"
-  ],
-  "brachycephalicBreedList": "Pugs, \nPersians, \nExotic Shorthairs",
-  "dangerousBreedList": "Pit Bulls, \nRottweilers, \nGerman Shepherds",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1460,26 +1441,24 @@
   "PetPolicySummary": "",
   "slug": "cape-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Yellow Fever.",
-  "microchip": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not Allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Cats",
-    "Dogs",
-    "Rabbits",
-    "Household birds"
-  ],
-  "brachycephalicBreedList": "Dogs:\nPugs,\nBulldogs, \nBoxers, \nShih Tzus\nCats: Persian cats",
-  "dangerousBreedList": "Akita, Caucasian Ovcharka, Karabash Dog, Rottweiler, and wolf-dog hybrids",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1496,28 +1475,24 @@
   "PetPolicySummary": "",
   "slug": "capital-cargo-international-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Data not available"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds",
-    "Guinea pigs",
-    "Hamsters",
-    "Rabbits"
-  ],
-  "brachycephalicBreedList": "No specific list available",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1534,24 +1509,24 @@
   "PetPolicySummary": "",
   "slug": "central-mountain-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Data not available"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Bulldogs, Pugs",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1603,24 +1578,23 @@
   "slug": "colgan-air",
   "brachycephalic": "Yes",
   "dangerousBreeds": "Yes",
-  "esAnimals": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Bulldogs \nPugs",
-  "dangerousBreedList": "American Pit Bull Terrier, \nRottweiler, \nDogo Argentino,\nAmerican Bully \nKarabash \nCaucasian Ovcharka \nTosa Inu \nFila Brasileiro \nPresa Canario\nMastiff\n\n",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1637,24 +1611,24 @@
   "PetPolicySummary": "",
   "slug": "contour-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": null,
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Does not permit any animal"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "French Bulldogs, English Bulldogs, Pugs",
-  "dangerousBreedList": "Dogs: French Bulldog, English Bulldog, Boxer, Pug, Shih Tzu, Pekingese, Cavalier King Charles, Belgian Griffon Cats: Persian, British Shorthair, Exotic Shorthair",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1739,25 +1713,24 @@
   "PetPolicySummary": "Flying with pets: the benefits of a private flight\nNews\nfly with luxwing, pets, private flights\nWhen traveling with your pet it is very important to ensure that the flight it is the least stressful possible. Private flights are currently the best solution because they are able to provide numerous additional benefits compared to commercial flights.\n\nLuxwing allows you to travel in the cabin with your cat or your dog, limiting stress for you and your pet.\n\nBook your flight now: contact us!\n\nFlying with pets: why should you choose a private flight?\nFlying with pets can be very relaxing and fun and the benefits that a private flight puts at your disposal if you travel with your dog or cat are many.\n\nThe most important is the possibility of traveling in the cabin with your pet even if it is a large dog. The commercial airlines, however, allow you to travel with your pet in the cabin only if you have a small dog or a cat.\n\nAnother great advantage is the absence of movement restrictions for your pet during the flight: you do not have to keep it on a leash or inside the carrier because you can easily keep it next to you and leave it free to explore the environment.\n\nA private flight allows both you and your pet a less stressful and happier journey. In this way you will not be forced to give him some sedatives to make him relax: just bring your toy or his favorite blanket with you.\n\nAnd if you need extra services once you arrive at your destination the Luxwing staff will be happy to help you meet all your needs. Discover all the services we provide!\n\nSome advice if you fly with your pet\nWe at Luxwing love pets and for this we want to share some extra tricks that will allow you to spend a good flight with your dog or cat.\n\nMake sure you have all the documents of your pet: some countries restrict access to pets. You may need to do at your dog or cat some particular vaccination or you may need a good health certificate issued by your vet.\n\nIf your dog or cat has never traveled by air, ask your veterinarian to prescribe an anti-emetic drug: in this way you will help them not to suffer from air sickness.\n\nFor the rest, have a good trip!\n\nBook your private flight now: contact us now!",
   "slug": "forward-air-international-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Bulldogs, Pugs",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1774,24 +1747,24 @@
   "PetPolicySummary": "",
   "slug": "frontier-flying-service",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Does not permit any animal"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Pugs, Bulldogs, Persian cats",
-  "dangerousBreedList": "Data not available",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1808,23 +1781,24 @@
   "PetPolicySummary": "",
   "slug": "gemini-air-cargo",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1841,20 +1815,24 @@
   "PetPolicySummary": "",
   "slug": "grant-aviation",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1871,23 +1849,24 @@
   "PetPolicySummary": "",
   "slug": "hageland-aviation-services",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1904,20 +1883,24 @@
   "PetPolicySummary": "",
   "slug": "harbor-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Does Not Permitany Animals",
-  "inCompartment": "No Information Found"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1934,23 +1917,24 @@
   "PetPolicySummary": "",
   "slug": "hooters-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -1967,32 +1951,24 @@
   "PetPolicySummary": "",
   "slug": "interjet",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds",
-    "Rabbits",
-    "Guinea Pigs"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds",
-    "Rabbits",
-    "Guinea Pigs"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2009,28 +1985,24 @@
   "PetPolicySummary": "Transportation of Pets\nGeneral Information\nThe transportation of pets (PETC and AVIH) accompanying passengers on Southwind Airlines flights is not included in the free baggage allowance and is subject to an additional fee. Only the following pets are allowed to be transported on our international flights.\n\nPets carried in Cabin (PETC):\nDogs;\nCats;\nBirds.\nDocuments Required for European Flights:\nPet Passport;\nMicrochip placement date;\nVeterinary Certificate;\nRabies vaccination date and validity period;\nIndication of treatment against Echinococcus multilocularis in the passport;\nBlood test (Sending the blood test to a European Union approved laboratory);\nHealth certificate;\nWritten statement that the transport is for non-commercial reasons;\n«BMEL - Haus- und Zootiere - Regelungen zur Einreise mit Hunden, Katzen und Frettchen in die Europäische Union»;\nNon-commercial movement from non-EU countries (europa.eu).\nDocuments Required for Flights to Russia:\nPet Passport;\nMicrochip placement date;\nVeterinary Certificate;\nRabies vaccination date and validity period;\nIn addition, the pet must be free from parasites or have been tested for parasites within one month of departure.\nInstructions: how to travel abroad with an animal (fsvps.gov.ru)\nIn-cage transport rules\n\n\nThe cage size should not exceed 55X40X20 cm.\nThe cage is provided by the owner of the livestock.\nWhen weighed together with the pet cage, it should have a maximum weight of 8 kg. Pets weighing more than 8kg with their cage are considered AVIH (Animal on Hold) and must travel under the plane.\nThe label on the cage should include the passenger's full name, address, phone number, the number of pets being transported, and the name of the pet.\nThe pet inside the cage should be able to stand, lie down, and turn around in its natural position.\nThe cage structure should be waterproof, sturdy, lockable, adequately ventilated, and resistant to scratches and impacts.\nBirds should be transported in a specially designed cage for bird transportation. Within the cage, birds should have enough space to stretch their wings or be placed in individual compartments that do not restrict their movement and prevent damage to their feathers. For cabin transport, it is necessary to cover the top of the cage with a dark-colored cloth to block out daylight.\nAbsorbent material should be placed inside the cage. We recommend blankets or old clothes. Newspapers, cardboard or sand are not allowed.\nThe PETC in the cage will be secured under the seat in front of you. If this is not possible, it should be attached to your seat belt with a leash while in the cage\nOne Cage/Box for each passenger can be taken into the cabin.\nOne pet can be transported per Cage/Box. However, there may be exceptions:\nThe pet fee is charged per cage. Pets of the same species who are accustomed to living together (2 birds, 2 cats, 2 dogs) can be transported in the same cage within the cabin, as long as they do not exceed the maximum weight (8 kg) and size limits (55 x 40 x 20 cm).\nIf there are two cats in a cage with the passenger, only per cage is charged, not for each cat.\nPets with a combined weight of 0-8 kg, including their cage, are considered as AVIH (Animals in Hold) and are required to be transported in the aircraft's cargo hold. In this case, they will be subject to the applicable fees and regulations for transporting pets in the hold.\nThe pet must have a chip. Each animal must be identified by a clearly recognizable tattoo or a microchip (this is mandatory for newly identified animals as of July 3, 2011).\nThe dog and bird are carried in different cabins or in the same cabin as far as possible.\nEndangered and protected domestic animals specific to Turkey, such as Sivas Kangal, Ankara Cat, and Van Cat, are prohibited from being taken out of the country. However, if you have obtained approval from the relevant departments of the Turkish Ministry of Agriculture and Forestry, transportation may be permitted. We would like to remind you that, according to the instructions of the Turkish Ministry of Agriculture and Forestry, you must obtain a health certificate from a veterinarian prior to your international travel with your pet. Unfortunately, without the necessary documentation, you will not be allowed to board the flight.\nSmall bird species other than budgerigars and canaries are not allowed in the cabin. Parrot and pigeon species that are pets are only accepted as (AVIH).\nPets under the age of 3 months on the date of the flight and pregnant adult pets are prohibited. 2. Pets must be \"at least 7 months old\" on flights to European Union destinations from \"unlisted third countries\" specified in regulation EU-576/2013. (For example: flights from Egypt, Turkey to European Union destinations).\nOwners of dogs and cats older than three months are required to have their pets vaccinated against rabies once a year. Animals that have not completed their vaccinations will not be accepted for the flight. The valid rabies vaccination should be documented in the pet health certificate. (Please note that the rabies vaccination should be administered after the microchip is implanted to ensure accurate and traceable administration). On the day of the flight, it is important to remember that the rabies vaccination on the vaccination record should be no newer than 21 days and no older than one (1) year. For cats and dogs, you should have the vaccination record containing their identification information, and for birds, you should have the flight certificate with you.\nGuests aged 12 and under (UM) traveling alone cannot travel with a pet (PETC).\nGuests traveling with pets (PETC) cannot sit in the emergency exit and in the front seat.\nResponsibility for using sedatives under veterinary control before the flight for nervous, aggressive, restless pets belongs to the guest.\nPets are accepted within certain limits. Pets will not be accepted if the limit is reached. Passengers should indicate their intention to carry pets when booking or purchasing a flight ticket with the Airline, or send an e-mail to crm@southwindairlines.com at the latest 3 days before the flight date or get approval from our Call Center at 444 80 79.\nCare is taken to ensure that domestic animals are clean, odorless and calm-looking. Pets with poor health and appearance are not accepted for transport.\nThe following dangerous breeds and crosses are prohibited on Southwind flights:\n\nAmerican Pit Bull Terrier;\nAmerican Staffordshire-Terrier;\nPitbull Terrier;\nAmerican Bully;\nStaffordshire Bull Terrier;\nJapanese Tosa;\nDogo Argentino;\nDoberman;\nPincher Doberman;\nRottweiler;\nTropical region animals;\nFila Brasileiro.\nPassengers are assumed to be fully responsible for complying with all health, safety, animal management, government-mandated conditions and approvals, regulations, entry and exit permits, country-specific health certificates, and restrictions imposed by governments, regions, or relevant authorities. Travel requests with pets may be denied at the airport, even if the reservation is confirmed.\n\nIf there are passengers who report an allergy to pets with a doctor's report before the flight, the pets are accepted into the passenger cabin according to certain conditions:\n\nIf the passenger who declares to have an allergy and the passenger who has a pet have a travel request at the same time, the acceptance procedures are carried out by considering the reservation priority.\nPets transported in the cargo compartment (AVIH)\nBefore buying a ticket, it is necessary to send an e-mail to crm@southwindairlines.com or get approval from our Call Center at 444 80 79.\n(AVIH) It can be carried as registered baggage in the luggage compartment of the aircraft in accordance with IATA Live Animals Regulations (IATA Live Animals Regulations-(LAR) and operating airline procedures.\nCats and dogs weighing more than 8 kg including the carrier can be transported as special baggage in the air-conditioned cargo hold of the aircraft under certain conditions.\nImportant: In case the baggage and cargo compartments of the aircraft are technically suitable, AVIH will only be accepted upon the approval of the airline.\nThe airline may refuse the carriage of a passenger with a pet if the carriage of the pet has not been booked, confirmed or paid for.\nFor the transportation of pets, passengers must present all the documents required by the laws of the country where the transportation is taking place during the check-in process.\nIf a pet exhibits aggressive behavior and poses a threat to the safety and well-being of other individuals or disrupts the flight operations, the airline has the right to refuse the transportation of the pet.\nThe acceptance of transporting pets is conditional upon the passenger assuming full responsibility for them. The airline is not liable for any physical injuries, illnesses, or deaths of the pets, as well as any refusal of their importation or transportation from any country or region.\nImportant: Some countries have specific rules and regulations regarding the entry of pets. We recommend contacting the embassy or consulate of the destination/transit country in order to clarify the export/transit/import rules for pets.",
   "slug": "island-express",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "American Pit Bull Terrier, \nAmerican Staffordshire-Terrier, \nPitbull Terrier, \nAmerican Bully, \nStaffordshire Bull Terrier, \nJapanese Tosa, \nDogo Argentino, \nDoberman, \nPincher Doberman, \nRottweiler, \nTropical region animals, \nFila Brasileiro.",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2047,23 +2019,24 @@
   "PetPolicySummary": "https://southwindairlines.com/en/baggage/animals\n",
   "slug": "jetblue-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
-  "microchip": "Yes",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2080,23 +2053,24 @@
   "PetPolicySummary": "",
   "slug": "jsx-airline",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Cats",
-    "Small Dogs"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2113,26 +2087,24 @@
   "PetPolicySummary": "",
   "slug": "key-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "Yes",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "Yes",
-  "serviceAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2149,23 +2121,24 @@
   "PetPolicySummary": "",
   "slug": "keystone-air-service",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Anti-Rabies Vaccination and Antibody Test,\nTreatment Against Parasite Echinococcus\n",
-  "microchip": "Yes",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "Bandog, Caucasian Ovcharka, Dogo Argentino, Fila Brazileiros, Japanese Tosa, Karabash, Mastino Napoletano, Rottweiler, Tosa Inu",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2182,22 +2155,24 @@
   "PetPolicySummary": "",
   "slug": "kiwi-international-air-lines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "Yes, \nNo Information Found",
-  "healthVaccinations": "Yes, \nNo Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2214,27 +2189,24 @@
   "PetPolicySummary": "",
   "slug": "knighthawk-air-express",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Vaccination",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Rodents"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2251,23 +2223,24 @@
   "PetPolicySummary": "",
   "slug": "lynx-aviation",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Cats",
-    "Dogs"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2284,23 +2257,24 @@
   "PetPolicySummary": "",
   "slug": "markair",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Only Dogs",
-    "Cats"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2317,23 +2291,24 @@
   "PetPolicySummary": "",
   "slug": "nantucket-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "Yes",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [
-    "Only Animals",
-    "Birds"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "inCompartmentAnimals": [],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2384,23 +2359,24 @@
   "PetPolicySummary": "",
   "slug": "northeast-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Health Vaccination Certificate",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Cats",
-    "Dogs"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2553,23 +2529,24 @@
   "PetPolicySummary": "",
   "slug": "porter-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
-  "microchip": "Yes",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Cats",
-    "Dogs"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2586,23 +2563,24 @@
   "PetPolicySummary": "Traveling With Pets, Service / Specialty Animals\nPets (cats/dogs only) in the Cabin\nAs of November 3, 2023 we welcome you to travel with your pet cat or small dog in the cabin on our scheduled service flights, provided the pet can stand, turn around and lie down in its carrier under the seat in front of you.\n\nThe pet must be in an approved soft-sided kennel or bag/backpack and must be no bigger than:\n\n \n\nHeight: 11 inches\n\nWidth: 15 inches\n\nLength: 14.5 inches\n\n \n\nThere will be a fee to travel with a pet in the cabin; $50 plus applicable taxes for domestic travel, $100 plus applicable taxes for international travel.\nThe pet in the cabin must be booked at least 24 hours after you make your reservation as space is sometimes limited.  This can be booked by calling our Customer Care and Reservation Center at 1-800-563-2800 or emailing them at reservations@palairlines.ca or reservationsfr@palairlines.ca for French.\nAt this time, you will be asked the dimensions of the carrier, weight, and breed of your pet.\nFee will be collected.\nThe carrier must be placed underneath the seat in front of your assigned seat and not obstruct and/or reduce access to aisles. \nThe carrier can be removed from underneath the seat during flight but must be stowed for taxi, take-off, landing and at any time the seat belt sign is illuminated.\nThe carrier can not be accepted as a sky check.\nWe do not accept you to travel with your pet in the cabin if you are an Unaccompanied Minor.\nWe do not accept you to travel with your pet in the cabin if you are seated in emergency exit seating.\nWe do not accept you to travel with your pet in the cabin if you use a medical device that needs to be stowed underneath the seat in front of you.\nThe pet must always remain in its carrier.\nThe carrier must accompany you to the washroom if required.\nThe pet carrier will be counted as your one carry on baggage allowance permitted in the cabin.\nOne pet per carrier per person in the cabin.\nThe pet must be at least 10 weeks old and fully weaned.\nThe pet must be fully trained.\nYou must see an agent at the check in counter prior to proceeding through security for departure lounge when traveling with a pet in the cabin.\nPet strollers and pet car seats are accepted as checked baggage only and checked baggage rules would apply.\nIf your pet appears to be aggressive, in distress, unruly or whose health appears questionable we reserve the right to refuse travel.\n– Preparing your pet for travel:\n\nRemove your pet’s leash.\nFeed your pet four to six hours prior to departure, as a full stomach may cause discomfort during travel.\nPlease exercise your pet before coming to the airport.\nTranquilizers and other medications are not recommended. Consult your veterinarian.\n \n***Please note pet in the cabin policy does NOT apply for Air Borealis flights\n\nTravelling with Pets as Checked Baggage\nA maximum of two animals will be permitted in one kennel, providing the animals are familiar with each other and they may both stand up and turn around freely.\nThe maximum number of kennels per flight is limited, and as such, early booking is encouraged. Please note: During the period from December 15th to January 9th, PAL Airlines will only accept one kennel as checked baggage due to increased loads during the Christmas season.\nPAL Airlines assumes no responsibility for feeding and/or caring for pets nor will PAL Airlines assume responsibility for injury, sickness or death of pets during travel.\nWhere containers are assembled from a top and bottom part, these must be securely bolted together.  Plastic clips must not be the only fasteners holding the top and bottom part together, the use of metal nuts and bolts in every hole is recommended.\nFor a dog or cat to be accepted for carriage as checked baggage, the following conditions must be met:\n\n1. The caring kennel must be hard-sided, leak-proof, and not allow for any protrusion of the animal’s paws. (Wire cages are not permitted.)\n2. Any affixed wheels must be removed by the owner prior to check in.\n3. Kennel door must have a secure latch but not be locked with any type of locking mechanism. The pet must be accessible by PAL Airlines.\n4. PAL Airlines reserves the right to refuse transport to any animal that appears to be aggressive, in distress, unruly or whose health appears questionable for travel.\n5. The animal must be a minimum of 8 weeks old.\n6. The kennel must be marked with each pet’s name and the owner’s contact information.\n7. Owners are advised to feed their pets only a light meal prior to departure and to give them a small drink of water before being brought to the check-in counter. A toy or blanket can be placed in the kennel to help the animal feel calm.\n8. The owner of the animal should exercise their pet before leaving for the airport. We do not recommend tranquilizers or other medications be administered to pets. If the pet is tranquilized, the owner will require a letter from a veterinarian upon check-in stating the animal is acceptable for travel.\n9. The passenger is required to pay a kennel fee, which is charged per direction, per kennel, whether or not the passenger is travelling with any checked bags. The rates are as follows:\n\nSize\tIATA\nCode\tExternal\nDimensions\nLxWxH\tInternal\nDimensions\nLxWxH\tCost\nSmall\t0\t21” x 16” x 15”\t17” x 12” x 13”\t100.00\n+ tax\nMedium\t200\t28” x 20.5” x 21.5”\t28” x 16” x 20.5”\t100.00\n+ tax\nLarge\t400\t36” x 25” x 27”\t32” x 22” x 26”\t100.00\n+ tax\nExtra\nLarge\t500\t40” x 28” x 30”\t36” x 24” x 26”\t100.00\n+ tax\n \nConnecting Flights with Air Borealis\nAir Borealis will only accept one kennel per flight due to the size of the aircraft and as such, early booking is encouraged.\nAnimals are not accepted on Air Borealis flights from October 15th-April 15th due to cold temperatures.\nNo pets booked in the cabin on Air Borealis\nService Animals\nService animals provide assistance to a person with a disability and are certified, in writing, as being trained by a professional service institution.\n\nPAL Airlines allows service animals to ride free of charge and in the aircraft’s cabin, as long as they remain harnessed and at their owner’s feet for the duration of the flight.\n\nSpecialty Animals\nSpecialty animals are defined as dogs that are not providing a service to a person with a disability but are trained to perform professional functions. A registered certificate would be required as proof the dog and handler are trained.\n\nWe allow specialty dogs to travel with the certified trainer/owner and they must remain harnessed and at the trainer/owner’s feet for the duration of the flight. The fare for the dog will be the same as the fare paid by the trainer/owner of the dog.\n\nBook A Flight\nOne-Way Round Trip\nDeparting:\n\nYYT - St. John's, NL\nArriving:\n\nYYT - St. John's, NL\nDeparture Date:\n2025-01-01\nReturn Date:\n2025-01-11\nAdults:\n1\nOver 10?\n Children (2-11):\n0\n Infants ( < 2)\n0\nPromo Code:\nSubmit\nCheck In nEW\nMy Flights\nTravel Agents\nCorporate Login\n\nAir Borealis Site Map Privacy Policy Modern Slavery Report ",
   "slug": "provincial-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "Yes",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Cats",
-    "Dogs"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2619,28 +2597,24 @@
   "PetPolicySummary": "Pets & Animals\nAir Chathams is happy to carry your pets and animals under the following conditions.\n\n\n\n\nThis information applies to animals being sent unaccompanied as freight. If you are travelling as a passenger and wish to have a live animal as part of your baggage, please contact us by calling 0800 FLY NOW to arrange this. \n\nPlease prebook your live animal or pet’s travel between any of our scheduled mainland New Zealand destinations by using the form below. For animals and pets travelling to for from the Chatham Islands, please call 0800 FLY NOW and select option 2. \n\nStandard freight rates will be charged per kilogram plus a live animal handling fee as listed below.\n\n54523083_2100193440017266_7554592107793481728_o.jpg\n\n\nStandard freight rates per sector: \n$3.00 per kilogram including GST for flights between destinations in mainland New Zealand, with a minimum freight charge of $29.99.\n$4.13 per kilogram including GST for flights between mainland New Zealand and the Chatham Islands, with a minimum freight charge of $24.99.\n\nLive animal handling fees: \n$75 for animals in crates up to 23KG \n$100 for animals in crates over 23KG but under 32KG for animals in crates over 32KG please contact 0800 FLY NOW. Additional charges may apply.\n\n\nAll animals (dogs, cats and other pets) are to be properly and securely caged with appropriate absorbent material lining the base of the cage. The transport cage or box must be appropriately sized for the animal, able to be locked, and be leak-proof. No food, water, or other liquids may be open in the crate.\n\nAnimals transported as freight are to be dropped off and collected from the Air Chathams check-in desk in the terminal, except for animals transported as freight to the Chatham Islands which will be taken to the Air Chathams office for collection. If it is preferred to collect the animal at the Chatham Island Airport, please contact the office to arrange this prior to the flight.\n\nPets and other live animals are unable to be held overnight at any Air Chatham premises, and will be returned to the point of origin at the shipper's expense if not collected.",
   "slug": "regionsair",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "Yes",
-  "serviceAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "other Pets"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "other Pets"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2657,28 +2631,24 @@
   "PetPolicySummary": "",
   "slug": "seaborne-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2695,28 +2665,24 @@
   "PetPolicySummary": "",
   "slug": "silver-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2767,26 +2733,24 @@
   "PetPolicySummary": "",
   "slug": "southern-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "Confused about the list\n\nhttps://hdoa.hawaii.gov/pi/files/2012/12/AR-71P.pdf",
-  "healthVaccinations": "Rabies vaccination",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2871,26 +2835,24 @@
   "PetPolicySummary": "",
   "slug": "tol-air-services",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Valied vaccination",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2907,24 +2869,24 @@
   "PetPolicySummary": "",
   "slug": "trans-world-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2941,22 +2903,24 @@
   "PetPolicySummary": "",
   "slug": "valujet-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -2973,22 +2937,24 @@
   "PetPolicySummary": "",
   "slug": "wasaya-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "No Information Found"
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "No Information Found",
-  "inCompartment": "No Information Found"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3005,26 +2971,24 @@
   "PetPolicySummary": "",
   "slug": "westjet",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "Cats :\nBritish Shorthair\nBurmese\nExotic Shorthair\nHimalayan\nPersian\nSelkirk Rex\nScottish Fold\n\nDogs : \n\nAffenpinscher \nBrasileiro \nBrussels Griffon \nBoston Terrier \nBoxer \nBulldog  (all breeds) \nBullmastiff \nCane Corso \nCavalier King Charles Spaniel \nChihuahua (apple-headed) \nChow Chow \nDogue de Bordeaux \nEnglish Toy Spaniel \nJapanese Chin \nLhasa Apso \nNeapolitan Mastiff \nPekingese \nPug - all breeds including the Chinese Pug \nShar-Pei \nShih Tzu \nStaffordshire Bull Terrier \nTibetan Spaniel",
-  "dangerousBreedList": "American Bulldog \nAmerican Staffordshire Terrier \nAnatolian Shepard \nBandog \nCane Corso \nCaucasian Shepherd \nDoberman \nDogo Argentino \nFila Brasileiro \nMastiff (all breeds) \nPitbull (all breeds) \nPresa Canario \nRottweiler \nStaffordshire Bull Terrier \nWolf Dog Hybrids",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3041,29 +3005,24 @@
   "petPolicyURL": "https://www.emirates.com/us/english/information/optional-services/",
   "slug": "emirates",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Dogs: Rabies \nCanine distemper, Parvovirus,\nInfectious canine hepatitis, \nLeptospirosis\nCats: Rabies, \nFeline panleukopenia, \nRhinotracheitis,\nCalicivirus",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Falcons",
-    "Cats",
-    "Dogs",
-    "Pet birds",
-    "Horses",
-    "Cool Dollies",
-    "Aquatic fish"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Not Allowed"
-  ],
-  "brachycephalicBreedList": "Yes",
-  "dangerousBreedList": "Staffordshire Bull Terriers,\nAmerican Staffordshire Terriers\nRottweilers,\nMastiff dogs",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3080,24 +3039,24 @@
   "petPolicyURL": "https://flyflair.com/pet-in-cabin",
   "slug": "flair-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not Allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "No Specific list",
-  "dangerousBreedList": "No Specific list",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3114,25 +3073,24 @@
   "petPolicyURL": "https://www.aireuropa.com/us/en/aea/travel-information/passengers/pets.html",
   "slug": "air-europa",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinscher, American Bully, \nBoston Terrier, Boxer (all breeds), \nBulldog (all breeds), Bullmastiff, \nCane Corso, \nPug (all breeds), \nChin / Japanese Spaniel Chow Chow,\nDogue de Bordeaux, Griffon Bruxellois, \nLhasa Apso, \nEnglish Mastiff, \nNeapolitan Mastiff, Pekingese, \nPitbull, \nShar-Pei, \nShih Tzu, \nStaffordshire bull terrier, English Toy Spaniel \nCocker\nCats: Burmese, \nBurmese Shorthair, \nExotic Cat, \nHimalayan ,\nPersian",
-  "dangerousBreedList": "Pit Bull Terrier, \nAmerican Staffordshire Terrier, \nRottweiler, \nFila Brasileiro, \nTosa Inu \nAkita Inu",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3149,27 +3107,24 @@
   "petPolicyURL": "https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html#/",
   "slug": "air-canada-rouge",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Birds",
-    "Tropical fish",
-    "Rodents",
-    "Horse"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Pugs, \nBulldogs, \nFrench Bulldogs",
-  "dangerousBreedList": "No Specific list",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3186,24 +3141,24 @@
   "petPolicyURL": "https://www.sunwing.ca/en/sunwing-airlines/special-assistance",
   "slug": "sunwing-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "No Specific list",
-  "dangerousBreedList": "No Specific list",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3220,27 +3175,24 @@
   "petPolicyURL": "https://www.evaair.com/en-us/fly-prepare/baggage/travelling-with-pets/",
   "slug": "eva-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Rabbits"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Rabbits"
-  ],
-  "brachycephalicBreedList": "Dog: Affenpinscher\nBoston Terrier\nBoxer\nBrussels Griffon\nBulldog (all breeds)\nCavalier King Charles Spaniel\nChow Chow\nDogue de Bordeaux\nEnglish Toy Spaniel\nJapanese Chin (Japanese Spaniel)\nLhasa Apso\nMastiff (all breeds)\nPekingese\nPug (all breeds)\nShar Pei\nTibetan Spaniel\nShih Tzu\nStaffordshire Bull Terrier\nCats: British Shorthair\nBurmese\nExotic Shorthair\nHimalayan Cat\nPersian Cat\nScottish Fold\nChinchilla Cat",
-  "dangerousBreedList": "American Pit Bull (Terrier)\nAmerican Staffordshire,\nTerrier Fila Brazileiros,\nJapanese Tosa,\nPit Bull Terrier,\nDogo Argentino (Argentine Mastiff),\nCane Corso",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3257,25 +3209,24 @@
   "petPolicyURL": "https://www.flytap.com/en-us/information/traveling-with-animals",
   "slug": "tap-portugal",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
-  "healthCertificate": "",
-  "healthVaccinations": "",
-  "microchip": "",
-  "petShipping": "",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    ""
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "",
-  "dangerousBreedList": "Dogs:\n\nAffenpinscher\nBoston Terrier\nBoxer\nBulldog (all types)\nAmerican Bully\nCavalier King Charles Spaniel\nChihuahua\nJapanese Chin / Japanese Chin\nChow Chow\nGriffon Bruxellois\nLhasa Apso\nMastiff (all types) / Cane Corso\nPekingese\nPug (all types)\nShar Pei / Chinese Shar Pei\nShih Tzu\nTibetan Spaniel\nAmerican Staffordshire Terrier / Amstaff\nStaffordshire Bull Terrier / Staffys\nEnglish Toy Spaniel / King Charles Spaniel\nFila Brasileiro; \nArgentine Mastiff; \nPit Bull Terrier; \nRottweiler; \nTosa Inu.\n\nCats:\n\nBurmese\nExotic\nHimalayan Cat\nPersian\nScottish Fold",
-  "inCargo": "",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3292,34 +3243,24 @@
   "petPolicyURL": "https://www.lot.com/us/en/journey/special-services/traveling-with-pets",
   "slug": "lot-polish-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies,Distemper",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "One-day-old chicks",
-    "Ornamental fish",
-    "Zoo animals",
-    "Hatching eggs",
-    "Reptiles",
-    "Amphibians",
-    "Insects",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Ferret"
-  ],
-  "brachycephalicBreedList": "Dogs: American staffordshire terrier (staffordshire bull terrier).\nAmerican pit bull terrier\nBoxer\nBoston terrier\nBulldog (all breeds)\nBull mastiff\nCane corso\nCavalier king charles spaniel\nChihuahua\nJapanese chin\nChow chow\nAmerican cocker-spaniel\nDogue de bordeaux\nBelgian gryphon\nBrussels spaniel\nKing charles spaniel\nlhasa apso\nMastiff (all breeds)\nPugs (all breeds)\nPekingese\nPinscher monkey\nShar pei\nShih tzu\nJapanese spaniel\nTibetan spaniel\nCats: Persian\nExotic\nHimalayan\nBritish shorthair\nScottish fold\n\n",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3336,29 +3277,24 @@
   "petPolicyURL": "https://www.brusselsairlines.com/us/en/special-care/pets",
   "slug": "brussels-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": null,
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Rodents",
-    "Rabbits",
-    "Fish",
-    "Birds",
-    "Large domestic animals",
-    "Wild animals"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: American Bully, \nAffenpinscher?,\nBulldog (all?breeds?with?the exception of the American Bulldog)? \nPugs?(all?breeds)?,\nAmerican Pit Bull Terrier?,\nAmerican Staffordshire Terrier?,\nBoston Terrier, Boxer?,\nBrussels Griffon, Bull Mastiff?,\nBull Terrier (except Miniature Bull Terrier), \nChow?Chow?,\nEnglish Toy Spaniel?,\nJapanese Chin, \nJapanese Spaniel,\nLhaso?Apso, \nPekinese, \nPit Bull?,\nShar?Pei, \nShih?Tzu, \nStaffordshire Bull Terrier, \nTibetan Spaniel, \nCross-breeds?of the?above-mentioned?breeds\nCats: British Shorthair, \nExotic Shorthair, \nHimalayan,\nPersian, \nScottish Fold",
-  "dangerousBreedList": "Pitbull Terriers,\nRottweilers,\nAmerican Bulldogs.",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3375,31 +3311,24 @@
   "petPolicyURL": "https://www.airnewzealand.co.nz/travelling-with-pets",
   "slug": "gol-transportes-areos",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
-  "healthCertificate": "No",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds",
-    "Guinea pigs",
-    "Kiwi",
-    "Turtles",
-    "Scorpion"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinscher (all breeds)\nBoston Terrier\nBoxer (all breeds)\nBrussels Griffon\nBulldog (all breeds)\nCane Corso\nChow Chow\nDogue de Bordeaux\nEnglish Toy Spaniel\nJapanese Chin\nLhasa Apso\nMastiff (all breeds)\nPit Bull\nPresa Canario\nPug (all breeds)\nPekingese\nShih Tzu\nCats: Burmese\nHimalayan\nPersian",
-  "dangerousBreedList": "American Pit Bull Terrier\nDogo Argentino\nJapanese Tosa\nBrazilian Fila",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3423,25 +3352,24 @@
   "petPolicyURL": "https://www.aerolineas.com.ar/en-us/useful-information/pets",
   "slug": "aerolneas-argentinas",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinscher (all breeds)\nBoston Terrier\nBoxer (all breeds)\nBrussels Griffon\nBulldog (all breeds)\nCane Corso\nChow Chow\nDogue de Bordeaux\nEnglish Toy Spaniel\nJapanese Chin\nLhasa Apso\nMastiff (all breeds)\nPit Bull\nPresa Canario\nPug (all breeds)\nPekingese\nShih Tzu\nCats: Burmese\nHimalayan\nPersian",
-  "dangerousBreedList": "Bulldog, \nEnglish Bulldog, \nAmerican Bulldog, \nFrench Bulldog, \nBoxer, \nJapanese Boxer, \nBoston Terrier, \nJapanese Chin, \nPug, \nChinese Pug, \nGerman Pug, \nPekinese, \nLhasa Apso, \nChow Chow,\nEnglish Toy Spaniel, \nMastiff, \nStaffordshire Bull Terrier, \nTibetan Spaniel, \nShih Tzu, \nBurmese Brussels Griffon, \nExotic ones, \nHimalayan, \nPersian",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3458,26 +3386,24 @@
   "petPolicyURL": "https://www.flysas.com/us-en/travel-info/special-travel-needs/travel-with-animals/",
   "slug": "scandinavian-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "No Information Found",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies vaccination",
-  "microchip": "No Information Found",
-  "petShipping": "No Information Found",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "bulldogs, pugs, Pekingese and crossbreeds of these breeds",
-  "dangerousBreedList": "No Information Found",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3494,24 +3420,24 @@
   "petPolicyURL": "",
   "slug": "psa-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not Allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Bulldogs,\nPugs, \nPekingese, \nBull Mastiffs, \nBoston Terriers, \nShih Tzus, \nLhasa Apsos\nCats:Persians, \nExotic Shorthairs, \nHimalayans, \nBritish Shorthairs, \nScottish Folds. \n",
-  "dangerousBreedList": "No Specific list",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3528,27 +3454,24 @@
   "petPolicyURL": "https://us.ceair.com/newCMS/us/en/content/en_Header/headerBottom/service/Infomation/ticket/201903/t20190305_2971.html",
   "slug": "china-eastern-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "Terrier,\nAffenpinscher,\nPitbull,\nSpaniel,\nMastiff,\nPug,\nMastiff,\nAmerican Staffordshire terrier,\nAmerican puppies,Boston Terrier,\nBrussels griffon,\nSpaniel,\nEnglish Toy Spaniel,\nKing Charles spaniel,\nBullmastiff,Belgian shaggy,\nChrysanthemum,\nAmerican bully pitbull,\nThe yankees dog,\nPekingese,\nchow\nJapanese Chin,\nDogue de Bordeaux,\nShar pei,Shih tzus,\nTOSA INU,\nFila Brasileiro,\nDogo Argentino,\nSamoyed,\nBrazilian filet and its hybrids,\nBurmese,\nHimalayan Cat,\nPersian cat,\nExotic Shorthair,\nBritish Shorthair Cat",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3565,28 +3488,24 @@
   "petPolicyURL": "https://www.cathaypacific.com/cx/en_HK/prepare-trip/help-for-passengers/travelling-with-animals/overview-cargo.html",
   "slug": "cathay-pacific",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Sheep",
-    "Goat",
-    "Pig",
-    "Cattle",
-    "Buffalo"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dog: Affenpinscher\nBoston Terrier\nBoxer\nBrussels Griffon\nBulldog (all breeds)\nCavalier King Charles Spaniel\nChow Chow\nDogue de Bordeaux\nEnglish Toy Spaniel\nJapanese Chin (Japanese Spaniel)\nLhasa Apso\nMastiff (all breeds)\nPekingese\nPug (all breeds)\nShar Pei\nTibetan Spaniel\nShih Tzu\nStaffordshire Bull Terrier\nCats: British Shorthair\nBurmese\nExotic Shorthair\nHimalayan Cat\nPersian Cat\nScottish Fold\nChinchilla Cat",
-  "dangerousBreedList": "American Pit Bull\nAmerican Staffordshire Terrier\nDogo Argentino\nFila Brasiliero\nJapanese Tosa",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3603,26 +3522,24 @@
   "petPolicyURL": "https://www.airserbia.com/en/info-and-help/travel-guidelines/traveling-with-your-pets",
   "slug": "air-serbia",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Ferret"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "American Pit Bull Terrier and Staffordshire Bull Terrier\nRottweilers\nDoberman Pinscher\nGerman Shepherds\nChow Chow\nCane Corsos\nAkita\nAmerican Bulldog\nTosa Inus\nDogo Argentino\nPresa Canario",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3639,29 +3556,24 @@
   "petPolicyURL": "https://www.ana.co.jp/en/us/travel-information/pet-policy/",
   "slug": "all-nippon-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Rodents",
-    "Hamsters",
-    "Guinea pigs",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Mammals",
-    "Birds"
-  ],
-  "brachycephalicBreedList": "Bulldog, \nFrench Bulldog,\nBoxer, \nShih Tzu, \nBoston Terrier, \nBull Terrier, \nKing Charles Spaniel, \nTibetan Spaniel, \nBrussels Griffin, \nChow Chow, \nPug, \nChin, \nPekingese",
-  "dangerousBreedList": "No Specific list",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3678,25 +3590,24 @@
   "petPolicyURL": "https://www.singaporeair.com/en_UK/us/travel-info/special-assistance/travelling-with-pets/",
   "slug": "singapore-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Spaniel, including Cavalier King Charles Spaniel, \nEnglish Toy Spaniel (King Charles Spaniel), \nTibetan Spaniels",
-  "dangerousBreedList": "Akita,\nBoerboel,\nBoston Terrier,\nBoxer,\nBrussels Griffon (Petit Brabancon),\nBull Dogs, including American, French, and English Bull Dogs,\nChow Chow,\nDogo Argentino,\nFila Brasileiro,\nJapanese Chin (Chin, Japanese Spaniels, Japanese Pug),\nLhasa Apso,\nMastiffs, including Neapolitan, and Dogue de Bordeaux,\nPerro De Presa Canario,\nPit Bull (American Pit Bull Terriers, American Staffordshire Terrier, American Bull Dog, and Staffordshire Bull Terrier)\nPugs, including Carlino, Chinese, Mopshond, Mops Hund, and Pekingese,\nShar-Pei,\nShih Tzu\nCats: British Shorthair,\nBurmese,\nExotic Shorthair,\nHimalayan,\nPersian,\nScottish Fold",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3713,27 +3624,25 @@
   "petPolicyURL": "https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html#/",
   "slug": "air-canada-jazz",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
-  "healthCertificate": "No Information Found",
-  "healthVaccinations": "No Information Found",
-  "microchip": "No Information Found",
-  "petShipping": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
-  "logo": "https://www.aircanada.com/content/dam/aircanada/generic/ac_logo.svg",
-  "Unnamed: 16": null,
-  "brachycephalicBreedList": "Affenpinscher \nBoston Terrier \nBoxer \nBrussels Griffon \nBulldog - all breeds including the American, English, French and Dutch Bulldog \nChihuahua (apple-headed) \nChow Chow \nEnglish Toy Spaniel \nJapanese Chin \nLhasa Apso \nPekingese \nPug - all breeds including the Chinese Pug \nShar-Pei \nShih Tzu \nTeddy Bear (also known as Zuchon or Shichon) \nTibetan Spaniel",
-  "dangerousBreedList": "Caucasian Ovcharka (Caucasian Shepherd Dog) \nKarabash (Kangal Dog, Anatolin Shepherd Dog) \nPit-bull - all breeds \nIncluding: American Pit-bull, American Bully, American Staffordshire Terrier (Amstaff), British Staffordshire Terrier, Staffordshire Bull Terrier \nMastiff - all breeds \nIncluding: American, Argentine (Dogo Argentino), Bandog (Bandogge), Brazilian (Fila Brasileiro), English, French (Dogue de Bordeaux), Italian (Cane Corso), Neapolitan, Presa Canario \nRottweiller \nWolf Dog Hybrids \nEnglish Bull Terriers",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+  "logo": "https://www.aircanada.com/content/dam/aircanada/generic/ac_logo.svg"
 },
 {
   "_id": {
@@ -3784,27 +3693,24 @@
   "petPolicyURL": "https://www.elal.com/eng/baggage/pets",
   "slug": "el-al",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Exotic birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Exotic birds"
-  ],
-  "brachycephalicBreedList": "No Specific list",
-  "dangerousBreedList": "No Specific list",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3821,25 +3727,24 @@
   "petPolicyURL": "http://www.csair.com/us/en/tourguide/luggage_service/special_baggage/pets/",
   "slug": "china-southern-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Small birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "No Specific list",
-  "dangerousBreedList": "Dogs:AffenpinscherBoston Terrier, Boxers(all breeds),\nBrussels Griffin, Bulldog(all breeds),\nBull Terrier,\nPug(all breeds),\nCane Corso,\nChow Chow,\nDogue de Bordeaux,\nEnglish Toy Spaniel,\nJapanese Chin/Japanese Spaniel/Chin Chin,\nCavalier King Charles Spaniel\nLhasa Apso,\nMastiff(all breeds),\nPekinese,\nPresa Canario,\nShar Pei,\nShih Tzu,\nTibetan Spaniel,\nAmerican Bully,\nYankeeTerrier,\nGull Ter,\nStaffordshire Terrierr\nCats: Burmese,\nExotic shorthair cats,\nPersian,\nHimalayan,\nBritish Shorthair Cats.",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3856,25 +3761,24 @@
   "petPolicyURL": "https://www.etihad.com/en-us/fly-etihad/baggage/travelling-with-pets",
   "slug": "etihad-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Falcon"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "Dogs: Pit Bulls\nStaffordshire Bull Terrier breed of dog\nAmerican Pit Bull Terrier breed of dog\nAmerican Staffordshire Terrier breed of dog\nAmerican Bully\nMastiff Dogs: \nBrazilian Mastiff (Fila Brasiliero)\nArgentinian Mastiff (Dogo Argentino)\nAny Mastiff or Hybrid\nJapanese Tosa or hybrid\nTosa:Japanese Tosa or hybrid\nRottweilers breed or hybrid\nDoberman Pinschers\nCanario Presa\nBoxerAny mixed breed of above breeds of dog or their Hybrid",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3891,23 +3795,24 @@
   "petPolicyURL": "https://www.icelandair.com/support/special-assistance/animal-transportation/",
   "slug": "icelandair",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Not allowed",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Animal transportation services\nCargo are currently unavailable",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3924,27 +3829,24 @@
   "petPolicyURL": "https://www.royalairmaroc.com/ru-en/information/travel-with-animals",
   "slug": "royal-air-maroc",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Birds"
-  ],
-  "brachycephalicBreedList": "Dogs:\nBulldogs (American, English, French, Dutch), \nBoxers, \nBoston Terriers\nCats: Persians, \nExotics, \nHimalayans,\nBritish Shorthairs",
-  "dangerousBreedList": "Dogs: Affenpinscher, \nAmerican Cocker Spaniel, \nBoston Terrier, \nBoxer, \nBrussels Griffon, \nBulldog , \nall breeds including the American, \nEnglish, French and Dutch Bulldog, \nCavalier King Charles Spaniel, \nChihuahua (apple-headed), \nChow Chow, English Toy Spaniel, Japanese Chin, \nLhasa Apso, \nMastiff (all breeds), \nPekingese, \nPit-bull (all breeds), \nPug (all breeds), \nShar-Pei, \nShih Tzu, \nTibetan Spaniel, \nBull mastiff,\nCane corso, \nCarlins (all breeds), \nDogues (all breeds), \nEpagneuls (all breeds), \nMâtin napolitain, \nPékinois, \nPetit brabançon, \nStaffordshire bull terrier, \nBrussels Griffon, \nGriffon bruxellois\nCats: British Shorthair, \nBurmese, \nExotic Shorthair, \nHimalayan, \nPersian, \nScottish Fold",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3961,25 +3863,24 @@
   "petPolicyURL": "https://www.malaysiaairlines.com/us/en/home.html",
   "slug": "malaysia-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
-  "serviceAnimals": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Fish"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Not Allowed"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -3996,26 +3897,24 @@
   "petPolicyURL": "https://www.fijiairways.com/en-us/book/cargo-and-freight",
   "slug": "fiji-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Cats",
-    "Dogs",
-    "Household birds",
-    "Other small pets"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "Pugs, \nFrench Bulldogs, \nBoston Terriers",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4032,27 +3931,24 @@
   "petPolicyURL": "https://www.silkwaywest.com/products-and-services/live-animals/",
   "slug": "silk-way-west-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
-  "healthCertificate": "No Specific List",
-  "healthVaccinations": "No Specific List",
-  "microchip": "No",
+  "healthCertificate": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
-  "serviceAnimals": "No",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Alpacas",
-    "Kangaroos",
-    "Dogs",
-    "Horses",
-    "European bison"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Not Allowed"
-  ],
-  "brachycephalicBreedList": "Not Allowed",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4069,25 +3965,24 @@
   "petPolicyURL": "https://www.kenya-airways.com/en/plan/baggage-information/pet-carriage/",
   "slug": "kenya-airways",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Ferrets"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "Dogs: \nAmerican staffordshire terrier \n(staffordshire bull terrier).\nAmerican pit bull terrier\nBoxer\nBoston terrier\nBulldog (all breeds)\nBull mastiff\nCane corso\nCavalier king charles spaniel\nChihuahua\nJapanese chin\nChow chow\nAmerican cocker-spaniel\nDogue de bordeaux\nBelgian gryphon\nBrussels spaniel\nKing charles spaniel\nlhasa apso\nMastiff (all breeds)\nPugs (all breeds)\nPekingese\nPinscher monkey\nShar pei\nShih tzu\nJapanese spaniel\nTibetan spaniel\nCats: Persian\nExotic\nHimalayan\nBritish shorthair\nScottish fold\n\n",
-  "dangerousBreedList": "American Staffordshire Terrier, \nAmerican Pit Bull Terrier, \nRottweiler, \nDogo Argentino",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4104,33 +3999,24 @@
   "petPolicyURL": "https://www.finnair.com/en/pets-on-finnair-flights",
   "slug": "finnair",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Living animals",
-    "Birds",
-    "Mammals",
-    "Reptiles",
-    "Fish",
-    "Crustacean",
-    "Amphibians"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Cats",
-    "Small dogs",
-    "Pet rabbits",
-    "Tortoises",
-    "Hedgehogs"
-  ],
-  "brachycephalicBreedList": "Pugs, \nBulldogs, \nPersians",
-  "dangerousBreedList": "Mastiffs, \nWolf dogs\nPit Bull Terriers, \nRottweilers, \nDogo Argentino, \nDoberman Pinschers,\nAmerican Bulldogs",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4147,24 +4033,24 @@
   "petPolicyURL": "https://www.gulfair.com/cargo",
   "slug": "gulf-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "Pugs, \nBulldogs, \nPersians",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4181,25 +4067,24 @@
   "petPolicyURL": "https://www.nationalairlines.com/contract-of-carriage/",
   "slug": "national-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
     "Dog",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs:Bulldogs (American, English, French, Dutch), \nBoxers, \nBoston Terriers\nCats: Persians, \nExotics, \nHimalayans,\nBritish Shorthairs",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4250,26 +4135,24 @@
   "petPolicyURL": "https://www.saudia.com/pages/before-flying/travel-information/travelling-with-pets",
   "slug": "saudi-arabian-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
   "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Falcons",
-    "Birds"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "Mastiffs, \nWolf dogs\nPit Bull Terriers, \nRottweilers, \nDogo Argentino, \nDoberman Pinschers,\nAmerican Bulldogs",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4286,27 +4169,24 @@
   "petPolicyURL": "https://www.rj.com/en/info-and-tips/special-services/flying-with-pets",
   "slug": "royal-jordanian",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Falcons",
-    "Birds"
-  ],
-  "brachycephalicBreedList": "Dogs:\nBulldogs (American, English, French, Dutch), \nBoxers, \nBoston Terriers\nCats: Persians, \nExotics, \nHimalayans,\nBritish Shorthairs",
-  "dangerousBreedList": "Greyhound Dogs",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4323,25 +4203,24 @@
   "petPolicyURL": "https://www.airtahitinui.com/en/transporting-pets-and-animals",
   "slug": "air-tahiti-nui",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Pugs, \nFrench Bulldogs, \nBoston Terriers",
-  "dangerousBreedList": "Pitt Bulls, \nAmerican Staffordshire terrier,\nRottweiler,\nDogo Argentino,\nFila Brasileiro,\nBroholmer,\nGerman mastiff,\nMajorca mastiff,\nBordeaux mastiff,\nBulldog,\nBullmastiff,\nMastiff,\nNeapolitan Mastiff,\nItalian Cane Corso and Tosa",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4358,25 +4237,24 @@
   "petPolicyURL": "https://www.cargolux.com/products-services/cv-alive/",
   "slug": "cargolux",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
   "petShipping": "No",
-  "serviceAnimals": "No Specific Policy",
+  "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Polo horses",
-    "Beluga whales",
-    "Pets"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Not Allowed"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "Pit Bulls, \nRottweilers, \nGerman Shepherds,\nDobermans",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4393,23 +4271,24 @@
   "petPolicyURL": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/",
   "slug": "aer-lingus",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "Yes",
-  "petShipping": "Yes",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Ferret"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "brachycephalicBreedList": "All Bulldogs: \n(English, French, American, etc.)\nPugs\nBoxers\nPersian/Exotic Cats",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4426,26 +4305,24 @@
   "petPolicyURL": "https://www.virginaustralia.com/au/en/travel-info/specific-travel/pets/",
   "slug": "virgin-australia",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Domesticated birds"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinscher\nAmerican Bully,\nAmerican Bulldog\nAustralian Bulldog\nBoston Terrier,\nBoxer,\nBrussels Griffon/ Griffon Bruxellois,\nBritish/ English Bulldog\nChow Chow,\nDogue De Bordeaux\nEnglish Toy Spaniel/ King Charles Spaniel,\nFrench Mastiff,\nFrench Bulldog,\nJapanese Chin/ Japanese Spaniel,\nLhasa Apso,\nNeapolitan Mastiff\nPekingese,\nPug (Chinese Pug, Dutch Pug, Japanese Pug)\nShih-Zhu (Tsu) (Tzu)\nTibetan Spaniel,\nValley Bulldog\nCats: Exotic Shorthair Cat\nHimalayan Cat,\nPersian Cat",
-  "dangerousBreedList": "Fila Brasilerio,\nJapanese Tosa,\nDogo Argentino,\nAmerican Pit Bull and other Pit Bull Breeds\nPerro de Presa Canario (Presa Canario)",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4462,26 +4339,24 @@
   "petPolicyURL": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets",
   "slug": "asiana-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Pet birds"
-  ],
-  "brachycephalicBreedList": "Dogs:Affenpinscher, \nDogo Argentino, \nMastiff, \nBoston Terrier, \nBoxer, \nBulldog, \nBrussels Griffon, \nShih Tzu, Spaniel (English Toy, \nKing Charles Spaniel, Tibetan), \nChihuahua,\nJapanese Chin, \nLhasa Apso, \nPresa Canario, \nChow Chow, \nPug, \nPekingese, \nShar Pei, \nCane Corso, \nDogue de Bordeaux\nCats: Burmese, \nExotic, \nHimalayan, \nPersian, \nBritish Shorthair, \nScottish Fold, \nSilver Chinchilla",
-  "dangerousBreedList": "Tosa dogs and their crossbreeds,\nAmerican Pitbull Terriers and their crossbreeds,\nAmerican Staffordshire Terriers and their crossbreeds,\nStaffordshire Bull Terriers and their crossbreeds,\nRottweilers and their crossbreeds,\nMastiff and its mixed breed,\nLaika and its mixed breed,\nOvtcharka and its mixed breed,\nKangal and its mixed breed,\nWolfdog and its mixed breed,\nAmerican bully, Cane Corso and its mixed breed,\nMiniature Bull Terrier and its mixed breed",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4501,22 +4376,21 @@
   "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinschers\nAmerican Bully,\nBulldogs,\nPugs (all breeds),\nAmerican pit bull terriers,\nAmerican Staffordshire terriers,\nBoston terriers,\nBoxers,\nBrussels Griffon,\nBull mastiffs,\nBull terrier,\nChow chows,\nEnglish toy spaniels,\nJapanese chins,\nJapanese spaniels,\nLhasa apso,\nPekinese,\nPit bulls,\nShar Pei,\nShih Tzus,\nStaffordshire bull terriers,\nTibetan Spaniel\nCats: British short-haired cats,\nExotic shorthairs,\nHimalayan cats,\nPersian cats,\nScottish fold cats",
-  "dangerousBreedList": "American Bully,\nAmerican bulldogs\nDogo Argentino,\nKarabash (Kangal) (Anatolian Shepherd dog),\nCaucasian Ovcharka (Caucasian Shepherd dog),\nRottweilers",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4533,25 +4407,24 @@
   "petPolicyURL": "https://cargo.china-airlines.com/ccnetv2/content/services/LiveAnimals.aspx?view=tmp",
   "slug": "china-cargo-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpischer, \nPekingese,\nPug (all breeds), \nShar Pei, \nShih Tzu, \nJapanese Dog, \nLhasa Apso, \nTibetan Spaniel, \nChow Chow, \nEnglish Little Spaniel, \nEnglish Bulldog, \nFrench Bulldog, \nBoston Terrier,\nBoxer, \nBrussels Griffon, \nBullmastiff, \nBritish Mastiff\nCats: Birman, \nExotic,\nPersian, \nHimalayan, \nBurmese, \nScottish Fold, \nBritish Shorthair\n",
-  "dangerousBreedList": "Pit Bull Terrier: American Pit Bull Terrier, \nAmerican Pit Bull, \nStaffordshire Bull Terrier, \nAmerican Staffordshire Terrier\nAmerican Bully,\nFila Brasileiro,\nJapanese Tosa,\nDogo Argentino,\nMastiffs : Neapolitan Mastiff, \nTibetan Mastiff, \nBull Mastiff, \nCane Corso, \nDogue de Bordeaux",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4568,26 +4441,24 @@
   "petPolicyURL": "https://www.ana.co.jp/en/us/travel-information/pet-policy/",
   "slug": "nippon-cargo-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats",
-    "Rodents as Hamsters",
-    "Guinea pigs"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Service Dogs"
-  ],
-  "brachycephalicBreedList": "Bulldog, \nFrench Bulldog, \nBoxer, \nShih Tzu, \nBoston Terrier, \nBull Terrier, \nKing Charles Spaniel, \nTibetan Spaniel, \nBrussels Griffin, \nChow Chow, \nPug, \nChin, \nPekingese",
-  "dangerousBreedList": "Bulldog, \nFrench Bulldog, \nBoxer, Shih Tzu, \nBoston Terrier, \nBull Terrier, \nKing Charles Spaniel, \nTibetan Spaniel,\nBrussels Griffon, \nChow chow, \nPug, \nChin, \nPekingese",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4604,24 +4475,24 @@
   "petPolicyURL": "https://www.turkishairlines.com/en-int/any-questions/traveling-with-pets/",
   "slug": "turkish-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
-  "esAnimals": "Yes",
+  "dangerousBreeds": "Yes",
+  "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "Yes",
-  "petShipping": "Yes",
-  "serviceAnimals": "Yes",
-  "inCargoAnimals": [],
-  "inCompartmentAnimals": [
-    "Cats",
-    "Dogs",
-    "Parakeets",
-    "Canaries"
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
   ],
-  "brachycephalicBreedList": "Dogs: Affenpischer, \nPekingese,\nPug (all breeds), \nShar Pei, \nShih Tzu, \nJapanese Dog, \nLhasa Apso, \nTibetan Spaniel, \nChow Chow, \nEnglish Little Spaniel, \nEnglish Bulldog, \nFrench Bulldog, \nBoston Terrier,\nBoxer, \nBrussels Griffon, \nBullmastiff, \nBritish Mastiff\nCats: Birman, \nExotic,\nPersian, \nHimalayan, \nBurmese, \nScottish Fold, \nBritish Shorthair",
-  "dangerousBreedList": "American Bulldog, \nBandog Tosa Inu, \nCaucasian Shepherd Dog, \nFrench Mastiff, \nPincher, \nAll Doberman breeds, \nPresa Canario, \nRottweiler,\nMastiffs (except Bullmastiff), \nWolfhounds, \nAnatolian Shepherd Dog, \nBoerboel \nHybrids of these breeds",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+  "microchip": "Yes",
+  "petShipping": "No",
+  "serviceAnimals": "Yes",
+  "inCargoAnimals": [
+    "Dog",
+    "Cat"
+  ],
+  "inCompartmentAnimals": [
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4638,25 +4509,24 @@
   "petPolicyURL": "https://www.austrian.com/at/en/travelling-with-animals",
   "slug": "austrian-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinschers\nAmerican Bully,\nBulldogs,\nPugs (all breeds),\nAmerican pit bull terriers,\nAmerican Staffordshire terriers,\nBoston terriers,\nBoxers,\nBrussels Griffon,\nBull mastiffs,\nBull terrier,\nChow chows,\nEnglish toy spaniels,\nJapanese chins,\nJapanese spaniels,\nLhasa apso,\nPekinese,\nPit bulls,\nShar Pei,\nShih Tzus,\nStaffordshire bull terriers,\nTibetan Spaniel\nCats: British short-haired cats,\nExotic shorthairs,\nHimalayan cats,\nPersian cats,\nScottish fold cats",
-  "dangerousBreedList": "American Bully,\nAmerican bulldogs\nDogo Argentino,\nKarabash (Kangal) :\nAnatolian Shepherd dog,\nCaucasian Ovcharka:\nCaucasian Shepherd dog,\nRottweilers",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4673,25 +4543,24 @@
   "petPolicyURL": "https://www.china-airlines.com/it/en/fly/prepare-for-the-fly/baggage/pets",
   "slug": "china-airlines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinscher\nBoston Terrier\nBoxer\nBrussels Griffin\nBull Terrier\nChinese Pug\nChow Chow\nDutch Pug\nEnglish Bulldogs\nEnglish Toy Spaniel\nFrench Bulldogs\nJapanese Chin\nJapanese Pug\nLhasa Apso\nPekinese\nPug\nShih Tzu\nTibetan Spaniel\nCats: British Shorthair\nBurmese\nExotic\nHimalayans\nPersians\nScottish Fold\n\n",
-  "dangerousBreedList": "Pit Bull Terrier,\nAmerican Pit Bull Terrier,\nAmerican Pit Bull, \nStaffordshire Bull Terrier, \nAmerican Staffordshire Terrier\nAmerican Bully\nFila Brasileiro\nJapanese Tosa\nDogo Argentino\nMastiffs \nNeapolitan Mastiff, \nTibetan Mastiff, \nBull Mastiff, \nCane Corso,\nDogue de Bordeaux\n",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4708,25 +4577,24 @@
   "petPolicyURL": "https://www.iata.org/en/about/members/airline-list/condor/392/",
   "slug": "condor",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Boxers,\nPugs, \nBulldogs, \nPekinese,",
-  "dangerousBreedList": "Pitbull-Terrier,\nAmerican Pitbull,\nAmerican Staffordshire Terrier,\nStaffordshire Bullterrier,\nBullterrier,\nAm. Bulldog,\nDogo Argentino,\nFila Brasileiro,\nKarabash Kangal,\nAnatolian Shepherd Dog,\nCaucasian Ovcharka:\nCaucasian Shepherd Dog,\nMastiff,\nMastino Napoletano,\nRottweiler",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4743,23 +4611,24 @@
   "petPolicyURL": "https://www.flytradewind.com/blog/aviation-private-aviation-for-pets-when-dogs-fly-tradewind/",
   "slug": "tradewind-aviation",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpischer, \nPekingese,\nPug (all breeds), \nShar Pei, \nShih Tzu, \nJapanese Dog, \nLhasa Apso, \nTibetan Spaniel, \nChow Chow, \nEnglish Little Spaniel, \nEnglish Bulldog, \nFrench Bulldog, \nBoston Terrier,\nBoxer, \nBrussels Griffon, \nBullmastiff, \nBritish Mastiff\nCats: Birman, \nExotic,\nPersian, \nHimalayan, \nBurmese, \nScottish Fold, \nBritish Shorthair\n",
-  "dangerousBreedList": "No Specific List",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4776,25 +4645,24 @@
   "petPolicyURL": "https://www.swiss.com/us/en/prepare/special-care/animals-travelling",
   "slug": "swiss-international-air-lines",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinscher, \nAmerican Bully, \nBulldog (all breeds except American Bulldog), \nPugs (all breeds), \nAmerican Pit Bull \nTerrier,\nAmerican Staffordshire Terrier, \nBoston Terrier, \nBoxer, \nBrussels Griffon, \nBull Mastiff, \nBull Terrier (except Miniature Bull Terrier), \nChow Chow, \nEnglish Toy Spaniel, \nJapanese Chin, \nJapanese Spaniel, \nKing Charles Spaniel, \nLhaso Apso, \nPekinese, \nPit Bull, \nShar Pei, \nShih Tzu, \nStaffordshire Bull Terrier, \nTibetan Spaniel.\nCats: British Shorthair, \nExotic Shorthair, \nHimalayan, \nPersian, \nScottish Fold.",
-  "dangerousBreedList": "American Bully,\nAmerican bulldogs\nDogo Argentino,\nKarabash (Kangal) :\nAnatolian Shepherd dog,\nCaucasian Ovcharka:\nCaucasian Shepherd dog,\nRottweilers",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4811,25 +4679,24 @@
   "petPolicyURL": "https://www.airchina.us/US/GB/info/assistance/pets.html",
   "slug": "air-china",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpischer, \nPekingese,\nPug (all breeds), \nShar Pei, \nShih Tzu, \nJapanese Dog, \nLhasa Apso, \nTibetan Spaniel, \nChow Chow, \nEnglish Little Spaniel, \nEnglish Bulldog, \nFrench Bulldog, \nBoston Terrier,\nBoxer, \nBrussels Griffon, \nBullmastiff, \nBritish Mastiff\nCats: Birman, \nExotic,\nPersian, \nHimalayan, \nBurmese, \nScottish Fold, \nBritish Shorthair\n",
-  "dangerousBreedList": "Pit Bull Terrier: American Pit Bull Terrier, \nAmerican Pit Bull, \nStaffordshire Bull Terrier, \nAmerican Staffordshire Terrier\nAmerican Bully,\nFila Brasileiro,\nJapanese Tosa,\nDogo Argentino,\nMastiffs : Neapolitan Mastiff, \nTibetan Mastiff, \nBull Mastiff, \nCane Corso, \nDogue de Bordeaux",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4846,35 +4713,24 @@
   "petPolicyURL": "https://www.alaskaair.com/content/travel-info/pets?srsltid=AfmBOor_mk30L6RysmsZ5QPZlxlIrTiFxdaYOqkFKPObcLUPVPVM_11d",
   "slug": "horizon-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Cats",
-    "Dogs",
-    "Ferrets",
-    "Guinea pigs",
-    "Hamsters",
-    "Household birds",
-    "Non-poisonous reptiles",
-    "Pot-bellied pigs",
-    "Rabbits",
-    "Tropical fish"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Small dogs",
-    "House cats",
-    "Domesticated rabbits",
-    "Household birds"
-  ],
-  "brachycephalicBreedList": "Dogs: American Pit Bull, \nAmerican Staffordshire Terrier, \nBoston Terrier, \nBoxer, Brussels Griffon, \nMastiff (All Breeds), \nBulldog, \nBull Terrier, \nChow Chow, \nDutch Pug, \nEnglish Bulldog, \nEnglish Toy Spaniel, \nFrench Bulldog, \nJapanese Boxer, \nJapanese Pug, \nJapanese Spaniel, \nPekingese, \nPug, \nShih Tzu, \nStaffordshire Bull Terrier\nCats: Burmese, \nExotic Shorthair, \nHimalayan, \nPersian",
-  "dangerousBreedList": "Pit Bull Terrier: American Pit Bull Terrier, \nAmerican Pit Bull, \nStaffordshire Bull Terrier, \nAmerican Staffordshire Terrier\nAmerican Bully,\nFila Brasileiro,\nJapanese Tosa,\nDogo Argentino,\nMastiffs : Neapolitan Mastiff, \nTibetan Mastiff, \nBull Mastiff, \nCane Corso, \nDogue de Bordeaux",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4891,24 +4747,24 @@
   "petPolicyURL": "https://kenmoreair.com/flying-with-your-fur-baby/",
   "slug": "kenmore-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Not Allowed"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "No Specific List",
-  "dangerousBreedList": "Pit Bulls (Pit Bull Terriers, \nAmerican Staffordshire Terriers)\nRottweilers,\nGerman Shepherds\nDoberman Pinschers\nChow Chows\nAmerican Bulldogs\nAkita\nWolfdogs (Wolf Hybrids)\nTosa Inu\nCentral Asian Shepherd Dogs\nCane Corso\nPresa Canario\nBullmastiff",
-  "inCargo": "No",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -4925,37 +4781,24 @@
   "petPolicyURL": "https://www.azoresairlines.pt/en/information/special-services/travelling-with-pets",
   "slug": "sata-international",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Hamsters",
-    "Guinea pigs",
-    "Chinchillas",
-    "Terrapins",
-    "Turtles",
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats",
-    "Ferrets",
-    "Guinea pigs",
-    "Hamsters",
-    "Chinchillas",
-    "Rabbits",
-    "Terrapins",
-    "Tortoises/turtles"
-  ],
-  "brachycephalicBreedList": "Dogs: Affenpinschers\nAmerican Bully,\nBulldogs,\nPugs (all breeds),\nAmerican pit bull terriers,\nAmerican Staffordshire terriers,\nBoston terriers,\nBoxers,\nBrussels Griffon,\nBull mastiffs,\nBull terrier,\nChow chows,\nEnglish toy spaniels,\nJapanese chins,\nJapanese spaniels,\nLhasa apso,\nPekinese,\nPit bulls,\nShar Pei,\nShih Tzus,\nStaffordshire bull terriers,\nTibetan Spaniel\nCats: British short-haired cats,\nExotic shorthairs,\nHimalayan cats,\nPersian cats,\nScottish fold cats",
-  "dangerousBreedList": "Fila Brasileiro,\nDogo Argentino,\nPit Bull Terrier,\nRottweiler,\nAmerican Staffordshire Terrier,\nStaffordshire Bull Terrier,\nTosa Inu",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -5006,24 +4849,24 @@
   "petPolicyURL": "www.abxair.com",
   "slug": "abx-air",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies,\nInternal/External parasites",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
   "microchip": "Yes",
-  "petShipping": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Not allowed"
-  ],
-  "brachycephalicBreedList": "Dogs: American Pit Bull, \nAmerican Staffordshire Terrier, \nBoston Terrier, \nBoxer, Brussels Griffon, \nMastiff (All Breeds), \nBulldog, \nBull Terrier, \nChow Chow, \nDutch Pug, \nEnglish Bulldog, \nEnglish Toy Spaniel, \nFrench Bulldog, \nJapanese Boxer, \nJapanese Pug, \nJapanese Spaniel, \nPekingese, \nPug, \nShih Tzu, \nStaffordshire Bull Terrier\nCats: Burmese, \nExotic Shorthair, \nHimalayan, \nPersian",
-  "dangerousBreedList": "Pit Bull Terrier: American Pit Bull Terrier, \nAmerican Pit Bull, \nStaffordshire Bull Terrier, \nAmerican Staffordshire Terrier\nAmerican Bully,\nFila Brasileiro,\nJapanese Tosa,\nDogo Argentino,\nMastiffs : Neapolitan Mastiff, \nTibetan Mastiff, \nBull Mastiff, \nCane Corso, \nDogue de Bordeaux",
-  "inCargo": "Yes",
-  "inCompartment": "No"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": {
@@ -5040,46 +4883,45 @@
   "petPolicyURL": "https://www.airindia.com/in/en/travel-information/first-time-flyers/carriage-of-pets.html",
   "slug": "air-india",
   "brachycephalic": "Yes",
-  "dangerousBreeds": "No",
+  "dangerousBreeds": "Yes",
   "esAnimals": "No",
   "healthCertificate": "Yes",
-  "healthVaccinations": "Rabies",
-  "microchip": "No",
-  "petShipping": "Yes",
+  "healthVaccinations": [
+    "Rabies",
+    "Internal/External parasites"
+  ],
+  "microchip": "Yes",
+  "petShipping": "No",
   "serviceAnimals": "Yes",
   "inCargoAnimals": [
-    "Dogs",
-    "Cats"
+    "Dog",
+    "Cat"
   ],
   "inCompartmentAnimals": [
-    "Dogs",
-    "Cats"
-  ],
-  "brachycephalicBreedList": "Dogs: American Pit Bull, \nAmerican Staffordshire Terrier, \nBoston Terrier, \nBoxer, Brussels Griffon, \nMastiff (All Breeds), \nBulldog, \nBull Terrier, \nChow Chow, \nDutch Pug, \nEnglish Bulldog, \nEnglish Toy Spaniel, \nFrench Bulldog, \nJapanese Boxer, \nJapanese Pug, \nJapanese Spaniel, \nPekingese, \nPug, \nShih Tzu, \nStaffordshire Bull Terrier\nCats: Burmese, \nExotic Shorthair, \nHimalayan, \nPersian",
-  "dangerousBreedList": "American Bully,\nAmerican bulldogs\nDogo Argentino,\nKarabash (Kangal) :\nAnatolian Shepherd dog,\nCaucasian Ovcharka:\nCaucasian Shepherd dog,\nRottweilers",
-  "inCargo": "Yes",
-  "inCompartment": "Yes"
+    "Dog",
+    "Cat"
+  ]
 },
 {
   "_id": "67219a910310a8a5f2292a05",
   "brachycephalic": "Yes",
   "inCompartment": "Yes",
   "inCompartmentAnimals": [
-    "Cats",
-    "Dogs"
+    "Dogs",
+    "Cats"
   ],
-  "inCargo": "No",
-  "inCargoAnimals": [],
-  "petShipping": "No Information Found",
-  "dangerousBreeds": "No Information Found",
-  "dangerousBreedList": "No Information Found",
-  "brachycephalicBreedList": "No Information Found",
-  "serviceAnimals": "No Information Found",
-  "esAnimals": "No Information Found",
-  "healthVaccinations": "Health Vaccination Certificate",
+  "inCargo": "Yes",
+  "inCargoAnimals": [
+    "Dogs",
+    "Cats"
+  ],
+  "petShipping": "Yes",
+  "dangerousBreeds": "No",
+  "dangerousBreedList": "Not Available",
+  "brachycephalicBreedList": "List Not Available",
+  "serviceAnimals": "Yes",
+  "esAnimals": "Yes",
+  "healthVaccinations": "Rabies",
   "healthCertificate": "Yes",
-  "microchip": "No Information Found",
-  "Unnamed: 16": null,
-  "airlineCode": null,
-  "name": "North Coast Air Services Ltd"
+  "microchip": "No"
 }]

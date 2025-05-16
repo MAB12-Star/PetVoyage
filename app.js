@@ -24,8 +24,11 @@ const airlineRoutes = require('./routes/airlines');
 const petVoyageAi = require('./routes/petVoyageAi');
 const findAVet = require('./routes/findAVet');
 const blog = require('./routes/blog');
+const beeline = require('./routes/beeline');
 
 const airlineList = require('./routes/airlineList');
+
+const mainRoutes = require('./routes/main');
 
 const { redirectOldAirlineLinks } = require('./middleware');
 const { toDoListMiddleware } = require('./middleware');
@@ -106,11 +109,11 @@ app.use('/regulations/airlineList', airlineList);
 
 app.use(redirectOldAirlineLinks);
 
+app.use('/beeline', beeline);
+
 
 
 app.use('/', airlineRoutes);
-
-console.log('To-Do List route registered');
 app.use('/toDoList', toDoListRoutes);
 app.use((req, res, next) => {
     res.locals.user = req.user; // Assuming you use Passport.js for authentication
@@ -121,6 +124,7 @@ app.use('/flights', reviewsRoutes); // Ensure reviewsRoutes is properly imported
 
 
 
+  
 
 
 app.get('/dashboard', async (req, res) => {
@@ -156,7 +160,10 @@ app.get('/', (req, res) => {
 app.get('/', (req, res) => {
     res.render('index', { answer: null });
 });
-
+app.get('regulations/newSearch', (req, res) => {
+    console.log('/regulations/newSearch hit');
+    res.render('/regulations/newSearch', { currentPage: 'newSearch' });
+  });
 
 // Route for the sitemap
 app.get('/sitemap', (req, res) => {
@@ -176,3 +183,7 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
     console.log('Serving on port 3000');
 });
+
+
+
+  

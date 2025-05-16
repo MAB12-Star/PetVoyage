@@ -528,8 +528,8 @@ gap: 1rem; /* Add space between icons */
     }
 
     .square-icon {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
