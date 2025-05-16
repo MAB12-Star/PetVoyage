@@ -524,24 +524,72 @@ gap: 1rem; /* Add space between icons */
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 64px;
+      width: 70px; /* slightly larger for visual balance */
     }
-
+  
     .square-icon {
-      width: 60px;
-      height: 60px;
+      width: 64px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0;
+      padding: 0; /* reset padding */
+      border-radius: 12px; /* optional: for a slightly rounded square */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-
+  
     .mobile-icon-group small {
-      margin-top: 4px;
+      margin-top: 6px;
       font-size: 0.75rem;
+      text-align: center;
     }
   }
+  
+  @media (max-width: 768px) {
+    #filter-icons .filter-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+    
+      font-size: 0.65rem;
+      padding: 0.5rem;
+    }
+  
+    #filter-icons .filter-btn i {
+      font-size: 1.25rem;
+    }
+  
+    #filter-icons {
+      gap: 0.5rem;
+    }
 
+  }
+
+  @media (min-width: 768px) {
+    .desktop-icon-nav a {
+      width: 100px;         /* make it square */
+      height: 100px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+  
+    .desktop-icon-nav i {
+      font-size: 1.75rem; /* slightly bigger icon */
+      margin-bottom: 0.3rem;
+    }
+  
+    .desktop-icon-nav small {
+      font-size: 0.8rem;
+    }
+  }
+  
+  
 
 
 

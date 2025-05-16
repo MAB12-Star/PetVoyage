@@ -9,7 +9,7 @@
    <!-- Navigation Strip -->
 <div class="mt-4">
   <!-- Desktop Layout (unchanged) -->
-  <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap">
+  <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
     <a href="/regulations/newSearch" class="btn btn-outline-secondary px-4 py-2 text-center">
       <i class="bi bi-globe-americas d-block fs-3"></i>
       <small>Country Policies</small>
@@ -67,10 +67,11 @@
     </div>
 </div>
 
-
 <!-- Filter Controls -->
 <div class="container mt-4">
-  <div class="row mb-4">
+<h4>Filters</h4>
+  <!-- Desktop Filters -->
+  <div class="row mb-4 d-none d-md-block">
     <div class="col-md-12 text-center">
       <div class="btn-group flex-wrap" role="group">
         <button class="btn btn-outline-secondary filter-btn" data-filter="all">Show All</button>
@@ -84,10 +85,56 @@
     </div>
   </div>
 
+  <!-- Mobile Filters -->
+  <div class="row mb-4 d-md-none justify-content-center">
+    <div class="col-12 text-center">
+      <div class="d-flex flex-wrap justify-content-center gap-2" id="filter-icons">
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="all">
+          <i class="bi bi-grid-3x3-gap fs-5 mb-1"></i>
+          <small>All</small>
+        </button>
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="incompartment">
+          <i class="bi bi-box fs-5 mb-1"></i>
+          <small>Compartment</small>
+        </button>
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="incargo">
+          <i class="bi bi-truck fs-5 mb-1"></i>
+          <small>Cargo</small>
+        </button>
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="serviceanimals">
+          <i class="bi bi-shield-check fs-5 mb-1"></i>
+          <small>Service</small>
+        </button>
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="esanimals">
+          <i class="bi bi-heart fs-5 mb-1"></i>
+          <small>ESA</small>
+        </button>
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="petshipping">
+          <i class="bi bi-send fs-5 mb-1"></i>
+          <small>Shipping</small>
+        </button>
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2"
+                data-filter="dangerous">
+          <i class="bi bi-exclamation-triangle fs-5 mb-1"></i>
+          <small>Dangerous</small>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Count Display -->
   <div class="text-center mb-3">
     <strong id="filter-count">Showing <%= airlines.length %> airlines</strong>
   </div>
+
+</div>
+
 
   <!-- Airline Cards -->
   <div class="row" id="airlineList">
@@ -125,6 +172,49 @@
     <% }) %>
   </div>
 </div>
+
+<div class="row mb-4 justify-content-center">
+  <div class="col-md-12 text-center">
+    <div class="d-flex flex-wrap justify-content-center gap-3" id="filter-icons">
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="all">
+        <i class="bi bi-grid-3x3-gap fs-4 mb-1"></i>
+        <small>Show All</small>
+      </button>
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="incompartment">
+        <i class="bi bi-box fs-4 mb-1"></i>
+        <small>In Compartment</small>
+      </button>
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="incargo">
+        <i class="bi bi-truck fs-4 mb-1"></i>
+        <small>In Cargo</small>
+      </button>
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="serviceanimals">
+        <i class="bi bi-shield-check fs-4 mb-1"></i>
+        <small>Service Animals</small>
+      </button>
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="esanimals">
+        <i class="bi bi-heart fs-4 mb-1"></i>
+        <small>ESA Allowed</small>
+      </button>
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="petshipping">
+        <i class="bi bi-send fs-4 mb-1"></i>
+        <small>Ships Pets</small>
+      </button>
+      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
+              data-filter="dangerous">
+        <i class="bi bi-exclamation-triangle fs-4 mb-1"></i>
+        <small>Dangerous Breeds</small>
+      </button>
+    </div>
+  </div>
+</div>
+
 
 <!-- Filter Script -->
 <script>
