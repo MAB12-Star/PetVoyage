@@ -19,7 +19,13 @@ router.get('/airlines', async (req, res) => {
 router.get('/airlines/:slug&Pet&Policy',redirectOldAirlineLinks, async (req, res) => {
     try {
         const slug = req.params.slug; // Get the slug from the route
-        const airline = await Airline.findOne({ slug }).populate('reviews').exec(); // Find by slug
+        const airline = await Airline.findOne({ slug })
+  .populate({
+    path: 'reviews',
+    populate: { path: 'author' }
+  })
+  .exec();
+
         const microchipMap = {};
         const healthCertificateMap = {};
         const logo = {};
