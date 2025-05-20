@@ -7,6 +7,8 @@ const { saveCurrentUrl, thisIsTheURL } = require('../middleware'); // Adjust the
 // Determine the callback URL dynamically based on the environment
 const callbackURL = "http://www.petvoyage.ai/google/callback";
 
+
+
 //
 //"http://localhost:3000/google/callback"
 //

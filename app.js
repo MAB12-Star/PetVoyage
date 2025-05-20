@@ -120,7 +120,7 @@ app.use((req, res, next) => {
     next();
 });
 // Mount review routes under flights
-app.use('/flights', reviewsRoutes); // Ensure reviewsRoutes is properly imported
+app.use('/airlines', reviewsRoutes); // Ensure reviewsRoutes is properly imported
 
 
 

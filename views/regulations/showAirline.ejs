@@ -187,7 +187,9 @@
         <div class="col-md-6 col-12 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <form class="mb-3 validated-form" id="reviewForm" action="/flights/<%= airline._id %>/reviews" method="POST" novalidate>
+                  <form class="mb-3 validated-form" id="reviewForm"
+                  action="/airlines/<%= airline.slug %>/reviews"
+                  method="POST" novalidate>
                         <h2>Leave A Review</h2>
                         <fieldset class="starability-basic">
                             <input type="radio" id="rate1" name="review[rating]" value="1" />
@@ -228,9 +230,10 @@
                                     
                                     <% } %>
                                     <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
-                                        <form action="/flights/<%= airline._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
+                                      <form action="/airlines/slug/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                    
                                     <% } %>
                                 </div>
                             </div>
