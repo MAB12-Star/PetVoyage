@@ -25,6 +25,7 @@ const petVoyageAi = require('./routes/petVoyageAi');
 const findAVet = require('./routes/findAVet');
 const blog = require('./routes/blog');
 const beeline = require('./routes/beeline');
+const countryRegulationListRoutes = require('./routes/countryRegulationList');
 
 const airlineList = require('./routes/airlineList');
 
@@ -106,6 +107,8 @@ app.use('/blog', blog);
 app.use('/tips', tips);
 app.use('/', petVoyageAi);
 app.use('/regulations/airlineList', airlineList);
+app.use('/', countryRegulationListRoutes);
+
 
 app.use(redirectOldAirlineLinks);
 
@@ -157,11 +160,9 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/', (req, res) => {
-    res.render('index', { answer: null });
-});
+
 app.get('regulations/newSearch', (req, res) => {
-    console.log('/regulations/newSearch hit');
+  
     res.render('/regulations/newSearch', { currentPage: 'newSearch' });
   });
 
