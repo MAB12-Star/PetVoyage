@@ -10,7 +10,7 @@
 <div class="mt-4">
   <!-- Desktop Layout (unchanged) -->
   <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
-    <a href="/regulations/newSearch" class="btn btn-outline-secondary px-4 py-2 text-center">
+    <a href="/getCountryRegulationList"  class="btn btn-outline-secondary px-4 py-2 text-center">
       <i class="bi bi-globe-americas d-block fs-3"></i>
       <small>Country Policies</small>
     </a>
@@ -35,7 +35,7 @@
      <!-- Mobile Layout -->
      <div class="d-flex d-md-none justify-content-between text-center mt-3 px-2">
       <div class="mobile-icon-group">
-        <a href="/regulations/newSearch" class="square-icon btn btn-outline-secondary">
+        <a href="/getCountryRegulationList"  class="square-icon btn btn-outline-secondary">
           <i class="bi bi-globe-americas fs-3"></i>
         </a>
         <small>Country</small>
@@ -136,6 +136,142 @@
     </div>
   </div>
 </div>
+<!-- Airline Autocomplete UI -->
+<div class="d-flex justify-content-center align-items-center mt-3 mb-4 flex-column">
+  <div class="input-group w-50 mb-2 position-relative">
+    <input type="text" id="airlineSearchInput" class="form-control" placeholder="Start typing an airline..." autocomplete="off">
+    <button class="btn btn-outline-primary" type="button" id="airlineSearchBtn">
+      <i class="bi bi-search"></i>
+    </button>
+    <ul id="suggestionList" class="list-group position-absolute w-100 shadow" style="z-index: 1000; top: 100%;"></ul>
+  </div>
+
+  <!-- Hidden select and form -->
+  <form id="airlineSearchForm" class="d-none">
+    <select id="airlineSelect">
+      <% airlines.forEach(airline => { %>
+        <option value="/airlines/<%= airline.slug %>"><%= airline.name %></option>
+      <% }); %>
+    </select>
+    <button type="submit" id="goButton">Go</button>
+  </form>
+</div>
+
+<script>
+  const input = document.getElementById("airlineSearchInput");
+  const select = document.getElementById("airlineSelect");
+  const suggestionList = document.getElementById("suggestionList");
+  const searchBtn = document.getElementById("airlineSearchBtn");
+  const cards = document.querySelectorAll(".airline-card");
+  const countDisplay = document.getElementById("filter-count");
+
+  // Show autocomplete suggestions
+  function renderSuggestions(query) {
+    suggestionList.innerHTML = "";
+    if (!query) return;
+
+    Array.from(select.options).forEach(option => {
+      const name = option.text.toLowerCase();
+      if (name.includes(query)) {
+        const li = document.createElement("li");
+        li.className = "list-group-item list-group-item-action";
+        li.textContent = option.text;
+        li.addEventListener("click", () => {
+          input.value = option.text;
+          suggestionList.innerHTML = "";
+          filterCards(option.text.toLowerCase());
+        });
+        suggestionList.appendChild(li);
+      }
+    });
+  }
+
+  // Filter visible airline cards based on input
+  function filterCards(query) {
+  let visibleCount = 0;
+
+  document.querySelectorAll(".airline-card").forEach(col => {
+    const title = col.querySelector(".card-title");
+    if (!title) return;
+
+    const airlineName = title.innerText.toLowerCase();
+    const match = airlineName.includes(query);
+
+    col.style.display = match ? "" : "none"; // Use "" not "block"
+    if (match) visibleCount++;
+  });
+
+  document.getElementById("filter-count").innerText =
+    visibleCount === 1 ? "Showing 1 airline" : `Showing ${visibleCount} airlines`;
+}
+
+// Live suggestions while typing
+input.addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  renderSuggestions(query);
+});
+
+// Click on a suggestion → redirect to pet policy page
+function renderSuggestions(query) {
+  suggestionList.innerHTML = "";
+  if (!query) return;
+
+  Array.from(select.options).forEach(option => {
+    const name = option.text.toLowerCase();
+    if (name.includes(query)) {
+      const li = document.createElement("li");
+      li.className = "list-group-item list-group-item-action";
+      li.textContent = option.text;
+
+      li.addEventListener("click", () => {
+        input.value = option.text;
+        suggestionList.innerHTML = "";
+
+        const slug = option.value.replace('/airlines/', '');
+        window.location.href = `/airlines/${slug}&Pet&Policy`;
+      });
+
+      suggestionList.appendChild(li);
+    }
+  });
+}
+
+// Search icon button filters visible cards
+searchBtn.addEventListener("click", function () {
+  const query = input.value.toLowerCase();
+  renderSuggestions(query);
+  filterCards(query);
+});
+
+// Enter key → redirect if exact match found
+input.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const query = this.value.toLowerCase();
+
+    const match = Array.from(select.options).find(opt =>
+      opt.text.toLowerCase() === query
+    );
+
+    if (match) {
+      const slug = match.value.replace('/airlines/', '');
+      window.location.href = `/airlines/${slug}&Pet&Policy`;
+    } else {
+      filterCards(query); // fallback to filtering
+    }
+  }
+});
+
+// Hide suggestions on outside click
+document.addEventListener("click", function (e) {
+  if (!e.target.closest(".input-group")) {
+    suggestionList.innerHTML = "";
+  }
+});
+
+</script>
+
+
 
 
 
@@ -162,9 +298,10 @@
       >
         <div class="card h-100 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title">
-              <i class="bi bi-airplane me-2"></i><%= airline.name %>
+            <h5 class="card-title fw-bold fs-4">
+              <i class="bi bi-airplane me-2"></i><span><%= airline.name %></span>
             </h5>
+            
             <p class="card-text">
               <small>
                 <strong>Ship Pets:</strong> <%= airline.petShipping || 'No data' %><br>
