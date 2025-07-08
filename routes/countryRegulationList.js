@@ -24,11 +24,20 @@ router.get('/getCountryRegulationList', async (req, res) => {
       const country = req.params.country;
       console.log("[LOG] Fetching regulations for:", country);
   
-      const regulations = await CountryRegulation.findOne({ destinationCountry: country });
+      const regulations = await CountryRegulation.findOne({ destinationCountry: country }).lean();
   
       if (!regulations) {
         console.warn(`[WARN] No regulations found for ${country}`);
         return res.status(404).send('Country regulations not found.');
+      }
+  
+      // Convert Map to plain object if needed
+      if (regulations.regulationsByPetType instanceof Map || typeof regulations.regulationsByPetType === 'object') {
+        regulations.regulationsByPetType = Object.fromEntries(
+          Object.entries(regulations.regulationsByPetType).filter(
+            ([key]) => !key.startsWith('$_')
+          )
+        );
       }
   
       res.render('regulations/showCountry', { regulations });

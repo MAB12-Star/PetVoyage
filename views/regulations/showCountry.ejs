@@ -65,47 +65,188 @@
     </div>
   </div>
 </div>
-
 <!-- Styled Regulation Summary Box -->
 <div class="container my-5">
-  <div class="card shadow-lg border-0">
-    <div class="card-body p-4">
-      <div class="row gy-4">
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Country</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.destinationCountry %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Pet Type</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.petType %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Vaccinations</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.vaccinations %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Certifications</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.certifications %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Microchip</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.microchip %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Assistance Pets</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.assistancePet %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">More Info</h4>
-          <div class="bg-white p-3 rounded shadow-sm border"><%- regulations.description %></div>
-        </div>
-        <div class="col-12">
-          <h4 class="text-dark fw-semibold">Links</h4>
-          <div class="bg-white p-3 rounded shadow-sm border">
-            <a href="<%= regulations.link %>" target="_blank"><%= regulations.link %></a>
-          </div>
-        </div>
-      </div>
+  <!-- Country Header -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-geo-alt-fill me-2"></i><%- regulations.destinationCountry %>
+    </h2>
+    <hr class="w-25 mx-auto opacity-75">
+
+    <!-- Pet Types Label -->
+    <p class="text-muted fw-semibold mb-2">Pet Types</p>
+
+    <!-- Pet Type Badges (Clickable Buttons) -->
+    <div class="d-flex flex-wrap justify-content-center gap-2" id="petTypeSelector">
+      <% Object.keys(regulations.regulationsByPetType || {}).forEach((type, i) => { %>
+        <button class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= i === 0 ? 'active' : '' %>" data-pet="<%= type %>">
+          <i class="bi bi-paw-fill me-1"></i><%= type %>
+        </button>
+      <% }) %>
     </div>
   </div>
+
+  <!-- Per-Pet Regulation Details -->
+  <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details], i) => { %>
+    <div class="pet-regulation-section" data-pet="<%= pet %>" style="<%= i === 0 ? '' : 'display:none;' %>">
+      <h3 class="text-primary text-center text-capitalize mb-4">
+        <i class="bi bi-paw-fill me-2"></i><%= pet %> Regulations
+      </h3>
+
+      <div class="row gy-4">
+
+        <!-- Vaccinations -->
+        <div class="col-md-6">
+          <div class="card border-start border-dark border-4 shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold card-title text-dark"><i class="bi bi-shield-plus me-2"></i>Vaccinations</h5>
+              <% const vaccinationKeys = Object.keys(details?.vaccinations || {}); %>
+              <% if (vaccinationKeys.length) { %>
+                <div class="mb-3 d-flex flex-wrap gap-2">
+                  <% vaccinationKeys.forEach((key, j) => { %>
+                    <button class="btn btn-sm btn-outline-primary vac-btn <%= j === 0 ? 'active' : '' %>" data-target="vaccination-<%= pet %>-<%= key %>"><%= key %></button>
+                  <% }) %>
+                </div>
+                <% vaccinationKeys.forEach((key, j) => { const vac = details.vaccinations[key]; %>
+                  <div id="vaccination-<%= pet %>-<%= key %>" class="vaccination-detail" style="<%= j === 0 ? '' : 'display:none;' %>">
+                    <div class="mb-2"><strong>Description:</strong> <%- vac.description || "<p>Not specified.</p>" %></div>
+                    <% if (vac.requirements?.length) { %>
+                      <ul>
+                        <% vac.requirements.forEach(req => { %><li><%- req %></li><% }) %>
+                      </ul>
+                    <% } %>
+                  </div>
+                <% }) %>
+              <% } else { %><p class="text-muted">Not specified.</p><% } %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="col-md-6">
+          <div class="card border-start border-dark border-4 shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold card-title text-dark"><i class="bi bi-patch-check-fill me-2"></i>Certifications</h5>
+              <% const certKeys = Object.keys(details?.certifications || {}); %>
+              <% if (certKeys.length) { %>
+                <div class="mb-3 d-flex flex-wrap gap-2">
+                  <% certKeys.forEach((key, j) => { %>
+                    <button class="btn btn-sm btn-outline-success cert-btn <%= j === 0 ? 'active' : '' %>" data-target="certification-<%= pet %>-<%= key %>"><%= key %></button>
+                  <% }) %>
+                </div>
+                <% certKeys.forEach((key, j) => { const cert = details.certifications[key]; %>
+                  <div id="certification-<%= pet %>-<%= key %>" class="certification-detail" style="<%= j === 0 ? '' : 'display:none;' %>">
+                    <div class="mb-2"><strong>Description:</strong> <%- cert.description || "<p>Not specified.</p>" %></div>
+                    <% if (cert.requirements?.length) { %>
+                      <ul>
+                        <% cert.requirements.forEach(req => { %><li><%- req %></li><% }) %>
+                      </ul>
+                    <% } %>
+                  </div>
+                <% }) %>
+              <% } else { %><p class="text-muted">Not specified.</p><% } %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Microchip -->
+        <div class="col-md-6">
+          <div class="card border-start border-dark border-4 shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold card-title text-dark"><i class="bi bi-cpu me-2"></i>Microchip</h5>
+              <div class="card-text"><%- details?.microchip || "<p>Not specified.</p>" %></div>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <!-- More Info -->
+        <div class="col-12">
+          <div class="card border-start border-dark border-4 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title text-secondary"><i class="bi bi-info-circle-fill me-2"></i>More Info</h5>
+              <div class="card-text"><%- details?.moreInfo || "<p>Not specified.</p>" %></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Import-Specific Links -->
+        <% if (Array.isArray(details?.links) && details.links.length > 0) { %>
+          <div class="col-12">
+            <div class="card bg-light shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="card-title text-success"><i class="bi bi-journal-code me-2"></i>Import-Specific Links</h5>
+                <% details.links.forEach(link => { %>
+                  <% if (typeof link === 'object' && link.name && link.url) { %>
+                    <a href="<%= link.url %>" target="_blank" class="btn btn-outline-success mb-2 me-2"><%= link.name %></a>
+                  <% } else { %>
+                    <a href="<%= link %>" target="_blank" class="btn btn-outline-success mb-2 me-2">Visit Link</a>
+                  <% } %>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- Official Links -->
+        <% if (Array.isArray(regulations?.officialLinks) && regulations.officialLinks.length > 0) { %>
+          <div class="col-12">
+            <div class="card bg-light shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="card-title text-primary"><i class="bi bi-link-45deg me-2"></i>Official Source(s)</h5>
+                <% regulations.officialLinks.forEach(link => { %>
+                  <% if (typeof link === 'object' && link.name && link.url) { %>
+                    <a href="<%= link.url %>" target="_blank" class="btn btn-outline-primary mb-2 me-2"><%= link.name %></a>
+                  <% } else { %>
+                    <a href="<%= link %>" target="_blank" class="btn btn-outline-primary mb-2 me-2">Visit Source</a>
+                  <% } %>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+      </div>
+    </div>
+  <% }) %>
 </div>
+
+<!-- Toggle Logic -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const petButtons = document.querySelectorAll('.pet-type-btn');
+    const petSections = document.querySelectorAll('.pet-regulation-section');
+
+    petButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.dataset.pet;
+        petSections.forEach(section => section.style.display = section.dataset.pet === selected ? 'block' : 'none');
+        petButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.vac-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.target.split('-')[1];
+        document.querySelectorAll(`[id^="vaccination-${group}-"]`).forEach(el => el.style.display = 'none');
+        document.getElementById(btn.dataset.target).style.display = 'block';
+        btn.parentElement.querySelectorAll('.vac-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.cert-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.target.split('-')[1];
+        document.querySelectorAll(`[id^="certification-${group}-"]`).forEach(el => el.style.display = 'none');
+        document.getElementById(btn.dataset.target).style.display = 'block';
+        btn.parentElement.querySelectorAll('.cert-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  });
+</script>
+

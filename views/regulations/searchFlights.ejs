@@ -131,7 +131,8 @@
                     <div class="d-grid gap-2 mt-3 gap-3">
                      
                     
-                            <button class="btn btn-outline-dark">Search Flights</button>
+                        <button id="searchBtn" type="submit" class="btn btn-outline-dark">Search Flights</button>
+
                         
                         </div>
                    
@@ -140,6 +141,13 @@
                        
                        
                     </div>
+                    <div id="loadingSpinner" class="text-center my-4" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Searching for flights...</p>
+                      </div>
+                      
                 </form>
             </div>
             <div class="col-md-4">
@@ -151,7 +159,20 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector(".validated-form");
+      const spinner = document.getElementById("loadingSpinner");
+      const button = document.getElementById("searchBtn");
+  
+      form.addEventListener("submit", function () {
+        spinner.style.display = "block";
+        button.disabled = true;
+        button.innerHTML = 'Searching...';
+      });
+    });
+  </script>
+  
 <!-- Include Google Maps Script with API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
 

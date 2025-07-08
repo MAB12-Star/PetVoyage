@@ -299,7 +299,16 @@ document.addEventListener("click", function (e) {
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <h5 class="card-title fw-bold fs-4">
-              <i class="bi bi-airplane me-2"></i><span><%= airline.name %></span>
+              <div class="col-md-3 position-relative">
+                <% if (airline.logo) { %>
+                  <img src="<%= airline.logo %>" 
+                       alt="<%= airline.name %> Logo" 
+                       class="img-fluid rounded-start airline-logo float-start me-3 mb-3">
+                <% } else { %>
+                  <i class="fa fa-plane fa-3x" aria-hidden="true"></i>
+                <% } %>
+              </div>
+             <span><%= airline.name %></span>
             </h5>
             
             <p class="card-text">
