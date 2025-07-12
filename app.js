@@ -21,10 +21,10 @@ const tips = require('./routes/tips');
 const toDoListRoutes = require('./routes/toDoList');
 const reviewsRoutes = require('./routes/reviews');
 const airlineRoutes = require('./routes/airlines');
-const petVoyageAi = require('./routes/petVoyageAi');
+
 const findAVet = require('./routes/findAVet');
 const blog = require('./routes/blog');
-const beeline = require('./routes/beeline');
+
 const countryRegulationListRoutes = require('./routes/countryRegulationList');
 
 const airlineList = require('./routes/airlineList');
@@ -105,14 +105,14 @@ app.use('/findAVet', findAVet);
 app.use('/contactUs', contactUs);
 app.use('/blog', blog);
 app.use('/tips', tips);
-app.use('/', petVoyageAi);
+
 app.use('/regulations/airlineList', airlineList);
 app.use('/', countryRegulationListRoutes);
 
 
 app.use(redirectOldAirlineLinks);
 
-app.use('/beeline', beeline);
+
 
 
 

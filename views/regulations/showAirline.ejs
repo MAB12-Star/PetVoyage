@@ -1,26 +1,5 @@
 <% layout('layouts/boilerplate') %>
 
-<!-- Meta Tags for SEO -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="PetVoyage - Find airline pet policies, reviews, and the best ways to fly with your pets.">
-<meta name="keywords" content="pet travel, airline pet policies, flying with pets, pet-friendly airlines, PetVoyage">
-<meta name="author" content="PetVoyage">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="PetVoyage - Your Pet Travel Companion">
-<meta property="og:description" content="Discover airline pet policies and reviews to ensure a smooth journey with your pet.">
-<meta property="og:image" content="/images/pet-voyage-banner.jpg">
-<meta property="og:url" content="https://www.petvoyage.ai/">
-<meta property="og:type" content="website">
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PetVoyage - Your Pet Travel Companion">
-<meta name="twitter:description" content="Discover airline pet policies and reviews to ensure a smooth journey with your pet.">
-<meta name="twitter:image" content="/images/pet-voyage-banner.jpg">
-
 <!-- Stylesheets -->
 <link rel="stylesheet" href="/styleSheets/stars.css">
 
@@ -30,7 +9,9 @@
         <!-- Airline Information -->
         <div class="col-md-6 col-12 mb-3">
             <div class="card">
+              
                 <div class="card-body">
+                  
                     <h1 class="card-title">
                         <strong><%= airline.name || 'Unknown Airline' %></strong>
                     </h1>
@@ -186,6 +167,32 @@
         </div>
 
         <div class="col-md-6 col-12 mb-3">
+          <!-- Amazon Affiliate Dog Carrier Ad -->
+          <div class="card mb-4 shadow-sm border border-warning">
+            <div class="card-body text-center">
+              <h5 class="card-title text-warning">🐶 Recommended Travel Carrier</h5>
+              <a href="https://amzn.to/4eLSDY7" target="_blank" rel="noopener noreferrer">
+                <img 
+                  src="https://m.media-amazon.com/images/I/81GSowmJ+gL._AC_SX679_.jpg" 
+                  alt="Soft Dog Travel Carrier" 
+                  class="img-fluid rounded mb-3" 
+                  style="max-height: 200px;">
+              </a>
+              <p class="card-text">
+                Hard-Sided Pet Travel Carrier – Airline Approved dog carrier for cargo, has great ventilation, and keeps pets secure and comfortable during flights.
+              </p>
+              <a href="https://amzn.to/4eLSDY7" 
+                class="btn btn-warning btn-sm" 
+                target="_blank" 
+                rel="noopener noreferrer">
+                🛍️ Buy on Amazon
+              </a>
+              <p class="mt-2 text-muted small">
+                Purchasing through this link helps support PetVoyage at no extra cost to you. 💛
+              </p>
+            </div>
+          </div>
+
             <div class="card">
                 <div class="card-body">
                   <form class="mb-3 validated-form" id="reviewForm"

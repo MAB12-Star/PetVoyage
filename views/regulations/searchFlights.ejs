@@ -1,20 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-<!-- SEO Meta Tags -->
-<head>
-    <meta name="description" content="Search for flights to your destination with your pet. Find nearby airports, select the right airline, and ensure a smooth journey for your furry friend. Get tips and advice for flying with pets.">
-    <meta name="keywords" content="search flights, pet travel, flights with pets, airport search, flying with pets, pet-friendly flights, airlines for pets, pet travel tips">
-    <meta name="author" content="PetVoyage Team">
-    <meta property="og:title" content="Search for Flights - Find Pet-Friendly Airlines">
-    <meta property="og:description" content="Search for flights to your destination with your pet. Find nearby airports, select the right airline, and ensure a smooth journey for your furry friend.">
-    <meta property="og:image" content="/images/movetocdmx.jpg">
 
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Search for Flights - Find Pet-Friendly Airlines">
-    <meta name="twitter:description" content="Search for flights to your destination with your pet. Find nearby airports, select the right airline, and ensure a smooth journey for your furry friend.">
-    <meta name="twitter:image" content="/images/movetocdmx.jpg">
-</head>
 <div class="bg-light py-5 text-center border-bottom">
     <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
     <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
@@ -159,20 +145,7 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.querySelector(".validated-form");
-      const spinner = document.getElementById("loadingSpinner");
-      const button = document.getElementById("searchBtn");
-  
-      form.addEventListener("submit", function () {
-        spinner.style.display = "block";
-        button.disabled = true;
-        button.innerHTML = 'Searching...';
-      });
-    });
-  </script>
-  
+
 <!-- Include Google Maps Script with API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
 

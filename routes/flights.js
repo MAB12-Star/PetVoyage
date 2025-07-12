@@ -342,6 +342,18 @@ router.get('/:searchId', async (req, res) => {
             healthVaccinations,
             dangerousBreedList,
             brachycephalicBreedList,
+
+            // SEO Meta Tags
+            title: 'Pet-Friendly Airlines for Your Route | PetVoyage',
+            metaDescription: 'View airline pet travel policies based on your search. Quickly find pet-friendly flights and compare animal requirements by airline.',
+            metaKeywords: 'flight pet travel, pet-friendly flights, airline pet policy comparison, travel with pets, find pet airlines',
+            ogTitle: 'Compare Airline Pet Policies by Route',
+            ogDescription: 'See results for your flight route and find which airlines allow pets in cabin, cargo, or as service animals.',
+            ogUrl: `https://www.petvoyage.ai/flights/${searchId}`,
+            ogImage: '/images/flight-results-pet-travel.jpg',
+            twitterTitle: 'Flight Results for Traveling with Pets | PetVoyage',
+            twitterDescription: 'Explore airline pet regulations for your selected flight route. See which options are best for your pet.',
+            twitterImage: '/images/flight-results-pet-travel.jpg'
         });
     } catch (error) {
         console.error('Error fetching flight data:', error.message);

@@ -1,35 +1,27 @@
 <% layout('layouts/boilerplate') %>
 
-<!-- Meta Tags for SEO -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Find pet-friendly flights and airlines with detailed pet policies. Travel with your furry friends with ease.">
-<meta name="keywords" content="pet-friendly flights, airlines pet policies, flights for pets, travel with pets, direct flights, indirect flights, pet travel">
-<meta name="author" content="Pet Voyage">
-<meta name="robots" content="index, follow">
 
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="Pet-Friendly Flights - Travel with Your Pets">
-<meta property="og:description" content="Discover airlines that welcome pets and offer clear pet travel policies. Choose direct or indirect flights based on your preference.">
-<meta property="og:image" content="/images/pet-travel-banner.jpg"> <!-- Replace with your actual image path -->
-<meta property="og:url" content="https://www.petvoyage.ai/flights">
-<meta property="og:type" content="website">
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Pet-Friendly Flights - Travel with Your Pets">
-<meta name="twitter:description" content="Discover airlines that welcome pets and offer clear pet travel policies. Choose direct or indirect flights based on your preference.">
-<meta name="twitter:image" content="/images/pet-travel-banner.jpg"> <!-- Replace with your actual image path -->
-
-<!-- Structured Data JSON-LD -->
-
-
-</script>
 <div class="container-fluid mt-0">
     
    <div class="row justify-content-center">
+    
   <!-- Filters Column: full width on mobile, narrow on desktop -->
-  <div class="col-md-2">
+     <!-- Mobile Toggle Button -->
+     <div class="d-md-none text-center mb-3">
+      <button 
+        class="btn btn-outline-primary" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#filterCard" 
+        aria-expanded="false" 
+        aria-controls="filterCard"
+        id="filterToggleBtn"
+      >
+        🔍 Show Filters
+      </button>
+    </div>
+  <div class="col-md-2 collapse d-md-block" id="filterCard">
+    
     <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
       <h2 class="text-center text-primary-emphasis mb-4"><strong>Filters</strong></h2>
       <div class="alert alert-info" role="alert">
@@ -100,10 +92,23 @@
       </div>
     </div>
 
-
+    <script>
+      const btn = document.getElementById('filterToggleBtn');
+      const filterCard = document.getElementById('filterCard');
+    
+      if (filterCard) {
+        filterCard.addEventListener('shown.bs.collapse', () => {
+          btn.innerHTML = '❌ Hide Filters';
+        });
+        filterCard.addEventListener('hidden.bs.collapse', () => {
+          btn.innerHTML = '🔍 Show Filters';
+        });
+      }
+    </script>
             
         </div>
         <div class="col-md-6">
+          
            
             <% if (flights && flights.length > 0) { %>
                 <% 
@@ -123,6 +128,7 @@
                       
 
                         <% let displayedAirlines = new Set(); %> <!-- Set to track unique airlines -->
+                        <% let uniqueAirlineIndex = 0; %>
                         <% flights.forEach(airline => { %>
                             <% if (airline && !displayedAirlines.has(airline)) { %>
                                 <% let flightType = flightTypeMap[airline] || 'unknown'; %>
@@ -269,6 +275,20 @@
                                 </div>
                         
                                 <% displayedAirlines.add(airline); %>
+                                <% uniqueAirlineIndex++; %>
+                                <% if (uniqueAirlineIndex % 3 === 0) { %>
+                                  <% 
+                                    const adPartials = [
+                                      '../partials/ads/petCarrier',
+                                      '../partials/ads/calmingOil',
+                         
+                                    ];
+                                    const randomAd = adPartials[Math.floor(Math.random() * adPartials.length)];
+                                  %>
+                                  <div class="d-md-none">
+                                    <%- include(randomAd) %>
+                                  </div>
+                                <% } %>
                             <% } %>
                         <% }) %>
 
@@ -278,11 +298,13 @@
                 <p class="text-center text-danger">No flights available for the selected criteria.</p>
             <% } %>
         </div>
-        <div class="col-md-4">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="col-md-4 d-none d-md-block">
+          <%- include('../partials/ads/petCarrier') %>
+          <%- include('../partials/ads/calmingOil') %>
+        
+          <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
             <%- include('../partials/toDoList') %>
-            </div>
-            </div>
+          </div>
         </div>
     </div>
 </div>

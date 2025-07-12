@@ -117,15 +117,31 @@ router.get('/submitCountry/:originCountry/:destinationCountry/:petType/Pet/Polic
 
         // Render the page with the appropriate data
         if (regulations.length > 0) {
-            res.render('regulations/show', { 
-                regulations, 
-                destinationCountry, 
-                originCountry: originCountryObj.country, 
-                petType 
+            const origin = originCountryObj.country;
+            const destination = destinationCountryObj.country;
+            const pageTitle = `Pet Travel from ${origin} to ${destination} for ${petType}`;
+            const description = `Find official pet travel requirements when flying with your ${petType} from ${origin} to ${destination}. Covers documents, crate rules, vaccinations, and airline restrictions.`;
+        
+            res.render('regulations/show', {
+                regulations,
+                destinationCountry: destination,
+                originCountry: origin,
+                petType,
+                title: pageTitle,
+                metaDescription: description,
+                metaKeywords: `pet travel ${origin} to ${destination}, ${petType} travel rules, ${destination} pet entry, pet documents, international travel for pets`,
+                ogTitle: pageTitle,
+                ogDescription: description,
+                ogUrl: `https://www.petvoyage.ai/submitCountry/${origin}/${destination}/${petType}/Pet/Policy`,
+                ogImage: '/images/pet-travel-cover.jpg',
+                twitterTitle: pageTitle,
+                twitterDescription: description,
+                twitterImage: '/images/pet-travel-cover.jpg'
             });
         } else {
             res.status(404).send('No regulations found for the selected countries and pet type.');
         }
+        
     } catch (e) {
         console.error(e);
         res.status(500).send('Error fetching regulations.');

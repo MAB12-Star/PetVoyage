@@ -308,20 +308,20 @@ document.addEventListener("click", function (e) {
                   <i class="fa fa-plane fa-3x" aria-hidden="true"></i>
                 <% } %>
               </div>
-             <span><%= airline.name %></span>
+              <span><%= airline.name %> Pet Travel Policy</span>
             </h5>
             
-            <p class="card-text">
-              <small>
-                <strong>Ship Pets:</strong> <%= airline.petShipping || 'No data' %><br>
-                <strong>In Compartment:</strong> <%= airline.inCompartmentAnimals.join(", ") || 'No' %><br>
-                <strong>In Cargo:</strong> <%= airline.inCargoAnimals.join(", ") || 'No' %><br>
-                <strong>ESA Considered:</strong> <%= airline.esAnimals || 'No data' %><br>
-                <strong>Service Animals:</strong> <%= airline.serviceAnimals || 'No data' %><br>
-                <strong>Breeds Considered Dangerous: </strong><%=airline.dangerousBreedList || 'No data' %><br>
-
-              </small>
+            
+            <p class="card-text small">
+              <%= airline.name %> allows pets to travel 
+              <%= airline.inCompartment === 'Yes' ? 'in the cabin' : '' %>
+              <%= airline.inCompartment === 'Yes' && airline.inCargo === 'Yes' ? ' and ' : '' %>
+              <%= airline.inCargo === 'Yes' ? 'in the cargo hold' : '' %>.
+              <%= airline.petShipping === 'Yes' ? ' They also offer pet shipping services.' : '' %>
+              <%= airline.serviceAnimals === 'Yes' ? ' Service animals are permitted.' : '' %>
+              <%= airline.esAnimals === 'Yes' ? ' ESA animals may be accepted under certain conditions.' : '' %>
             </p>
+            
             <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">View Policy</a>
           </div>
         </div>
