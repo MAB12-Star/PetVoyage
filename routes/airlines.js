@@ -17,7 +17,7 @@ router.get('/airlines', async (req, res) => {
 
 
 // Route to fetch airline details by slug
-router.get('/airlines/:slug&Pet&Policy', redirectOldAirlineLinks, async (req, res) => {
+router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
     try {
       const slug = req.params.slug;
       const airline = await Airline.findOne({ slug }).populate('reviews').exec();

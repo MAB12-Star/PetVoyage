@@ -33,21 +33,21 @@ module.exports.isLoggedIn = (req, res, next) => {
     }
     next();
 };
-// Redirect old airline links to the new format
+// ✅ Redirect old &Pet&Policy URLs to the clean version
 module.exports.redirectOldAirlineLinks = (req, res, next) => {
-    const airlineSlugRegex = /^\/airlines\/([a-zA-Z0-9-]+)$/; // Match old URL structure like /airlines/sunwing-airlines
-    const match = req.url.match(airlineSlugRegex);
-
+    const oldFormatRegex = /^\/airlines\/([^\/]+)&Pet&Policy$/;
+    const match = req.url.match(oldFormatRegex);
+  
     if (match) {
-        const slug = match[1]; // Extract the slug from the URL
-        const updatedUrl = `/airlines/${slug}&Pet&Policy`; // Redirect to the updated URL format
-        console.log(`Redirecting old URL to new format: ${req.url} -> ${updatedUrl}`); // Log for debugging
-        return res.redirect(301, updatedUrl); // Use 301 (Permanent Redirect) for SEO purposes
+      const slug = match[1];
+      const updatedUrl = `/airlines/${slug}`;
+      console.log(`Redirecting old URL to clean format: ${req.url} -> ${updatedUrl}`);
+      return res.redirect(301, updatedUrl);
     }
-
-    next(); // If no match, proceed to the next middleware or route
-};
-
+  
+    next();
+  };
+  
 
 
 
