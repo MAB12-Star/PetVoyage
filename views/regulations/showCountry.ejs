@@ -80,7 +80,8 @@
     <!-- Pet Type Badges (Clickable Buttons) -->
     <div class="d-flex flex-wrap justify-content-center gap-2" id="petTypeSelector">
       <% Object.keys(regulations.regulationsByPetType || {}).forEach((type, i) => { %>
-        <button class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= i === 0 ? 'active' : '' %>" data-pet="<%= type %>">
+        <button class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= type === selectedPetType ? 'active' : '' %>" data-pet="<%= type %>">
+
           <i class="bi bi-paw-fill me-1"></i><%= type %>
         </button>
       <% }) %>
@@ -88,8 +89,9 @@
   </div>
 
   <!-- Per-Pet Regulation Details -->
-  <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details], i) => { %>
-    <div class="pet-regulation-section" data-pet="<%= pet %>" style ="<%= i === 0 ? '' : 'display:none;' %>">
+  <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details]) => { %>
+    <div class="pet-regulation-section" data-pet="<%= pet %>" style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
+  
       <h3 class="text-primary text-center text-capitalize mb-4">
         <i class="bi bi-paw-fill me-2"></i><%= pet %> Regulations
       </h3>
@@ -212,6 +214,22 @@
     </div>
   <% }) %>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const petButtons = document.querySelectorAll('.pet-type-btn');
+
+    petButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedPet = button.dataset.pet;
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('petType', selectedPet);
+        window.location.href = currentUrl.toString();
+      });
+    });
+
+    // Keep your existing cert-btn and vac-btn JS unchanged
+  });
+</script>
 
 <!-- Toggle Logic -->
 <script>

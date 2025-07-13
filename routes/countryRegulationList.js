@@ -34,52 +34,48 @@ router.get('/getCountryRegulationList', async (req, res) => {
 router.get('/country/:country', async (req, res) => {
   try {
     const country = req.params.country;
-    console.log("[LOG] Fetching regulations for:", country);
+    const selectedPetType = req.query.petType;
 
     const regulations = await CountryRegulation.findOne({ destinationCountry: country }).lean();
 
-    if (!regulations) {
-      console.warn(`[WARN] No regulations found for ${country}`);
-      return res.status(404).send('Country regulations not found.');
-    }
+    if (!regulations) return res.status(404).send('Country regulations not found.');
 
-    if (regulations.regulationsByPetType instanceof Map || typeof regulations.regulationsByPetType === 'object') {
+    if (typeof regulations.regulationsByPetType === 'object') {
       regulations.regulationsByPetType = Object.fromEntries(
-        Object.entries(regulations.regulationsByPetType).filter(
-          ([key]) => !key.startsWith('$_')
-        )
+        Object.entries(regulations.regulationsByPetType).filter(([key]) => !key.startsWith('$_'))
       );
     }
 
-    const safeCountry = regulations.destinationCountry || 'this country';
-    const pageUrl = `https://www.petvoyage.ai/country/${encodeURIComponent(safeCountry)}`;
+    const safeCountry = regulations.destinationCountry;
+    const defaultPet = Object.keys(regulations.regulationsByPetType)[0];
+    const petType = selectedPetType || defaultPet;
 
-    res.render('regulations/showCountry', {
+    const pageUrl = `https://www.petvoyage.ai/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(petType)}`;
+
+    const seoData = {
       regulations,
-      title: `Pet Travel Requirements for ${safeCountry}`,
-      metaDescription: `Explore pet travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
-      metaKeywords: `pet travel ${safeCountry}, import pets to ${safeCountry}, ${safeCountry} pet rules, pet documentation, dog travel, cat travel`,
-      ogTitle: `Pet Import Regulations for ${safeCountry}`,
-      ogDescription: `Get up-to-date pet import and export regulations for ${safeCountry}. Includes quarantine info, documents, and official sources.`,
-      ogUrl: req.originalUrl || `https://www.petvoyage.ai/country/${encodeURIComponent(safeCountry)}`,
+      selectedPetType: petType || '',
+      title: `Pet Travel Requirements for ${safeCountry} - ${petType}`,
+      metaDescription: `Explore ${petType} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
+      metaKeywords: `${safeCountry} pet travel ${petType}, import ${petType} ${safeCountry}, ${safeCountry} pet rules, travel with ${petType}, pet documentation ${safeCountry}`,
+      ogTitle: `Pet Import Regulations for ${safeCountry} - ${petType}`,
+      ogDescription: `Get pet import/export regulations for ${petType}s traveling to ${safeCountry}.`,
+      ogUrl: pageUrl,
       ogImage: '/images/pet-travel-map.jpg',
-      twitterTitle: `Bringing Pets to ${safeCountry}?`,
-      twitterDescription: `Learn the latest pet travel policies for ${safeCountry}, including entry requirements and official links.`,
-      twitterImage: '/images/pet-travel-map.jpg'
-    });
+      twitterTitle: `Bringing Your ${petType} to ${safeCountry}?`,
+      twitterDescription: `Learn the latest ${petType} travel requirements for ${safeCountry}.`
+    };
     
-      
-    console.log("[SEO] Rendering page with metadata:");
-    console.log("  Title:", `Pet Travel Regulations for ${safeCountry}`);
-    console.log("  Description:", `Find import/export rules for traveling with your  ${safeCountry}.`);
-    console.log("  Keywords:", `pet regulations ${safeCountry}, pet import/export rules`);
-
-
+    console.log("[SEO] Rendering showCountry with:", seoData);
+    
+    res.render('regulations/showCountry', seoData);
+    
   } catch (err) {
     console.error("[ERROR] Failed to fetch country regulation:", err);
     res.status(500).send("Server Error");
   }
 });
+
 
   
 
