@@ -58,7 +58,20 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.json()); // Enable JSON parsing for POST requests
 
-
+app.use((req, res, next) => {
+    const host = req.headers.host;
+    // Only redirect if it's not www and not localhost
+    if (
+      host &&
+      host === 'petvoyage.ai' &&
+      !host.startsWith('localhost')
+    ) {
+      return res.redirect(301, `https://www.petvoyage.ai${req.originalUrl}`);
+    }
+    next();
+  });
+  
+  
 // Session configuration using the MongoDB URI from .env
 const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'defaultSecret', // Use SESSION_SECRET from .env or fallback to 'defaultSecret'
@@ -160,16 +173,6 @@ app.get('/', (req, res) => {
 
 
 
-
-app.get('regulations/newSearch', (req, res) => {
-  
-    res.render('/regulations/newSearch', { currentPage: 'newSearch' });
-  });
-
-// Route for the sitemap
-app.get('/sitemap', (req, res) => {
-    res.render('sitemap'); // Render the sitemap view (e.g., sitemap.ejs)
-});
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
