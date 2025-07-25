@@ -48,6 +48,20 @@ module.exports.isLoggedIn = (req, res, next) => {
 //     next();
 //   };
   
+module.exports.redirectOldAirlineLinks = (req, res, next) => {
+    const oldFormatRegex = /^\/airlines\/([^\/]+)&Pet&Policy$/;
+    const match = req.url.match(oldFormatRegex);
+  
+    if (match) {
+      const slug = match[1];
+      const updatedUrl = `/airlines/${slug}`;
+      res.set('X-Robots-Tag', 'noindex'); // 🚫 Tell Google not to index this redirect
+      return res.redirect(301, updatedUrl);
+    }
+  
+    next();
+  };
+  
 
 
 
