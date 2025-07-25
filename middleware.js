@@ -34,19 +34,19 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 };
 // ✅ Redirect old &Pet&Policy URLs to the clean version
-module.exports.redirectOldAirlineLinks = (req, res, next) => {
-    const oldFormatRegex = /^\/airlines\/([^\/]+)&Pet&Policy$/;
-    const match = req.url.match(oldFormatRegex);
+// module.exports.redirectOldAirlineLinks = (req, res, next) => {
+//     const oldFormatRegex = /^\/airlines\/([^\/]+)&Pet&Policy$/;
+//     const match = req.url.match(oldFormatRegex);
   
-    if (match) {
-      const slug = match[1];
-      const updatedUrl = `/airlines/${slug}`;
-      console.log(`Redirecting old URL to clean format: ${req.url} -> ${updatedUrl}`);
-      return res.redirect(301, updatedUrl);
-    }
+//     if (match) {
+//       const slug = match[1];
+//       const updatedUrl = `/airlines/${slug}`;
+//       console.log(`Redirecting old URL to clean format: ${req.url} -> ${updatedUrl}`);
+//       return res.redirect(301, updatedUrl);
+//     }
   
-    next();
-  };
+//     next();
+//   };
   
 
 
