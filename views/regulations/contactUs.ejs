@@ -1,62 +1,126 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- Hero Banner -->
+<div class="bg-light py-5 text-center border-bottom">
+  <h1 class="fw-bold display-5">Personal Pet Travel Concierge</h1>
+  <p class="fs-5 text-muted">Let our experts handle your pet's journey — flights, documents, vets, and more.</p>
+</div>
+
+<!-- Navigation Strip (same as searchFlights) -->
+<div class="mt-4">
+  <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
+    <a href="/regulations/newSearch" class="btn btn-dark px-4 py-2 text-center">
+      <i class="bi bi-globe-americas d-block fs-3"></i>
+      <small>Country Policies</small>
+    </a>
+    <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2 text-center">
+      <i class="bi bi-airplane d-block fs-3"></i>
+      <small>Search Flights</small>
+    </a>
+    <a href="/regulations/airlineList" class="btn btn-outline-secondary px-4 py-2 text-center">
+      <i class="bi bi-card-list d-block fs-3"></i>
+      <small>Airline Policies</small>
+    </a>
+    <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2 text-center">
+      <i class="bi bi-hospital d-block fs-3"></i>
+      <small>Find a Vet</small>
+    </a>
+    <a href="/blog" class="btn btn-outline-secondary px-4 py-2 text-center">
+      <i class="bi bi-journal-text d-block fs-3"></i>
+      <small>Blog</small>
+    </a>
+  </div>
+</div>
+
+<!-- Main Content -->
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <!-- Contact Us Form Section (2/3 height on larger screens) -->
-        <div class="col-md-8 col-sm-12 contact-form-container">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <div class="card-body">
-                    <h1 class="text-center text-secondary-emphasis mb-4"><strong>Consultations Available!</strong></h1>
-                    <div class="consultation-form">
-                        <h2 class="text-center">Contact Us</h2>
-                        <form id="contact-form" action="/contact-us" method="POST">
-                            <div class="form-group">
-                                <label for="contact_name">Your Name</label>
-                                <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Enter your name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contact_email">Your Email</label>
-                                <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="Enter your email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contact_message">Your Message</label>
-                                <textarea class="form-control" id="contact_message" name="contact_message" rows="4" placeholder="Write your message here..." required></textarea>
-                            </div>
-                            <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary">Send Message</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <!-- Service Packages -->
+      <div class="row text-center mb-5">
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-lg h-100">
+            <div class="card-body">
+              <h4 class="text-primary">Essentials</h4>
+              <p class="text-muted small">✔ Airline Policy Summary<br>✔ Country Import Rules<br>✔ Pet Checklist (PDF)</p>
+              <p class="fw-bold text-secondary mb-0">Free</p>
             </div>
+          </div>
         </div>
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-lg h-100">
+            <div class="card-body">
+              <h4 class="text-primary">Premium</h4>
+              <p class="text-muted small">✔ Everything in Essentials<br>✔ Personalized Checklist<br>✔ Flight & Hotel Suggestions<br>✔ Email Support</p>
+              <p class="fw-bold text-secondary mb-0">$49 one-time</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-lg h-100">
+            <div class="card-body">
+              <h4 class="text-primary">VIP Concierge</h4>
+              <p class="text-muted small">✔ Everything in Premium<br>✔ Full Booking Assistance<br>✔ Vet Certificate Guidance<br>✔ Live Chat</p>
+              <p class="fw-bold text-secondary mb-0">$149 flat fee</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Concierge Contact Form -->
+      <div class="card bg-white shadow-lg border mb-5">
+        <div class="card-body">
+          <h2 class="text-center text-primary-emphasis mb-3">Start Your Concierge Request</h2>
+          <p class="text-center text-muted">Fill out the form and we’ll contact you within 24 hours with your personalized travel solution.</p>
 
-        
+          <form id="contact-form" action="/contact-us" method="POST">
+            <div class="form-group mt-3">
+              <label for="contact_name">Your Name</label>
+              <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Enter your name" required>
+            </div>
 
-<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-    (function(){
-        emailjs.init("UHaN3VH7ImUFuXgUm"); // Replace with your Public Key
-    })();
+            <div class="form-group mt-3">
+              <label for="contact_email">Your Email</label>
+              <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="Enter your email" required>
+            </div>
 
-    // Contact form submission with EmailJS
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+            <div class="form-group mt-3">
+              <label for="contact_message">Trip Details</label>
+              <textarea class="form-control" id="contact_message" name="contact_message" rows="4" placeholder="Tell us your pet type, origin, destination, and timeline..." required></textarea>
+            </div>
 
-        emailjs.sendForm('service_c5kaa3h', 'template_bag17hw', this) // Replace with your Service ID and Template ID
-            .then(function() {
-                console.log('SUCCESS!');
-                document.getElementById('contact-form').style.display = 'none'; // Hide the form
-                document.getElementById('success-message').style.display = 'block'; // Show the success message
-            }, function(error) {
-                console.log('FAILED...', error);
-                alert('Failed to send your message. Please try again later.');
-            });
-    });
+            <div class="form-group text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-lg px-5">Submit Request</button>
+            </div>
+          </form>
+
+          <div id="success-message" class="alert alert-success mt-4 text-center" style="display: none;">
+            🎉 Success! Your request has been submitted — our team will contact you shortly.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EmailJS Integration -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("UHaN3VH7ImUFuXgUm"); // Replace with your EmailJS Public Key
+  })();
+
+  document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    emailjs.sendForm('service_ltmu6l5', 'template_bag17hw', this)
+      .then(function() {
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('success-message').style.display = 'block';
+      }, function(error) {
+        alert('Message failed to send. Please try again.');
+      });
+  });
 </script>
-
-<!-- Styles -->
-<style>
-
-</style>
