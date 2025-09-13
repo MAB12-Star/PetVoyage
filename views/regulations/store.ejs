@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container py-4">
+  <h1 class="mb-3">Pet Travel Gear</h1>
+
+  <!-- Shopify collection mount point -->
+  <div id='collection-component-1757191107795'></div>
+</div>
+
+<!-- Shopify Buy Button snippet (unchanged) -->
+<script type="text/javascript">
+/*<![CDATA[*/
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) {
+    if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); }
+  } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: 'i7uk6k-mc.myshopify.com',
+      storefrontAccessToken: 'd0606ebb2672d9eb75e0da9409e16bf2',
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('collection', {
+        id: '320088408236',
+        node: document.getElementById('collection-component-1757191107795'),
+        moneyFormat: '%24%7B%7Bamount%7D%7D',
+        options: {/* your styles/options exactly as generated */}
+      });
+    });
+  }
+})();
+/*]]>*/
+</script>

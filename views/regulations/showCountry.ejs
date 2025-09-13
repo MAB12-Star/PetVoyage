@@ -67,7 +67,7 @@
 </div>
 <!-- Styled Regulation Summary Box -->
 <div class="container my-5">
-  <div style="display:flex; flex-direction:column; align-items:center; margin:20px 0;">
+  <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
     <a href="https://rentalcars.tpk.mx/14vE0Ui1" target="_blank" rel="noopener noreferrer">
       <img src="https://cdn.rcstatic.com/images/site_graphics/newsite/mobile/logos/rc-logo-small--white.svg" 
            alt="Save on Car Rentals with Rentalcars.com" 
@@ -105,7 +105,7 @@
 
   <!-- Per-Pet Regulation Details -->
   <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details]) => { %>
-    <div class="pet-regulation-section" data-pet="<%= pet %>" style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
+    <div class="pet-regulation-section" data-pet="<%= pet %>" style ="<%= pet === selectedPetType ? '' : 'display:none;' %>">
 
   
       <h3 class="text-primary text-center text-capitalize mb-4">
@@ -229,14 +229,16 @@
       </div>
     </div>
   <% }) %>
+
+<!-- Advertisement Section -->
 <br>
 <a href="https://www.pntrs.com/t/4-363006-373432-124479" 
-   rel="sponsored" 
-   style="display:block; margin:0 auto; width:980px;">
+  rel="sponsored" 
+  style="display:block; margin:0 auto; max-width:100%; text-align:center;">
   <img src="//www.pntrs.com/b/4-363006-373432-124479" 
-       border="0" width="980" height="120" 
-       title="Take a Food Journey Around the World!" 
-       alt="Take a Food Journey Around the World!">
+     style="width:100%; height:auto;" 
+     title="Take a Food Journey Around the World!" 
+     alt="Take a Food Journey Around the World!">
 </a>
 
 </div>

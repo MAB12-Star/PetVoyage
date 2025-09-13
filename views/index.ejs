@@ -1,101 +1,215 @@
 <% layout('layouts/boilerplate') %>
 
-
 <!-- SEO Meta Tags -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
-    <meta name="keywords" content="pet travel regulations, airline pet policies, pet import requirements, pet travel rules, pet policies by country, travel with pets, international pet travel, pet rules for airlines, pet import export rules, travel pet documents">
-    <meta name="author" content="PetVoyage">
-    <title>PetVoyage - Pet Travel Regulations and Airline Policies</title>
-    <meta property="og:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
-    <meta property="og:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
-    <meta property="og:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
-    <meta property="og:url" content="https://www.petvoyage.ai">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
-    <meta name="twitter:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
-    <meta name="twitter:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+  <meta name="keywords" content="pet travel regulations, airline pet policies, pet import requirements, pet travel rules, pet policies by country, travel with pets, international pet travel, pet rules for airlines, pet import export rules, travel pet documents">
+  <meta name="author" content="PetVoyage">
+  <title>PetVoyage - Pet Travel Regulations and Airline Policies</title>
+  <meta property="og:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
+  <meta property="og:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+  <meta property="og:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+  <meta property="og:url" content="https://www.petvoyage.ai">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PetVoyage - Pet Travel Regulations and Airline Policies">
+  <meta name="twitter:description" content="Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.">
+  <meta name="twitter:image" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
 </head>
 
-<div class="background-section">
-   <!-- Background Section -->
-</div>
-<!-- Hero Section -->
-<div class="bg-light py-5 text-center border-bottom">
-    <img
-    src="/images/PetVoyageLogo.png"
-    class="img-fluid rounded-top d-block mx-auto"
-    alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-    width="400"
-    height="400"
-/>
-  <h1 class="fw-bold display-5">Travel Smarter with Pets</h1>
-  <p class="fs-5 text-muted">Instantly explore pet policies by airline and country. Fly with peace of mind.</p>
+<!-- Hero + Side Panels Row -->
+<section class="bg-light py-5 border-bottom">
+  <div class="container-fluid px-lg-5">
+    <div class="row g-4 align-items-start">
 
- <!-- Navigation Strip -->
-<div class="mt-4">
-  <!-- Desktop Layout (unchanged) -->
-  <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
-    <a href="/getCountryRegulationList" class="btn btn-outline-secondary px-4 py-2 text-center">
-      <i class="bi bi-globe-americas d-block fs-3"></i>
-      <small>Country Policies</small>
-    </a>
-    <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2 text-center">
-      <i class="bi bi-airplane d-block fs-3"></i>
-      <small>Search Flights</small>
-    </a>
-    <a href="/regulations/airlineList" class="btn btn-outline-secondary px-4 py-2 text-center">
-      <i class="bi bi-card-list d-block fs-3"></i>
-      <small>Airline Policies</small>
-    </a>
-    <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2 text-center">
-      <i class="bi bi-hospital d-block fs-3"></i>
-      <small>Find a Vet</small>
-    </a>
-    <a href="/blog" class="btn btn-outline-secondary px-4 py-2 text-center">
-      <i class="bi bi-journal-text d-block fs-3"></i>
-      <small>Blog</small>
-    </a>
+      <!-- LEFT (DESKTOP): Blog + Tips -->
+      <aside class="col-lg-3 d-none d-lg-block">
+        <!-- Blog Card -->
+        <a href="/blog" class="text-decoration-none">
+          <div class="card h-100 border-0 shadow-sm mb-4">
+            <img src="/images/movetocdmx.jpg" class="card-img-top" alt="PetVoyage Blog preview" loading="lazy">
+            <div class="card-body">
+              <h6 class="text-muted mb-2">Featured on the Blog</h6>
+              <h5 class="card-title mb-2">How We Moved to Mexico City With Our Pets</h5>
+              <p class="card-text small text-muted mb-3">
+                Flight prep, airline choice, vet visits, and what actually worked the day we flew…
+              </p>
+              <span class="btn btn-outline-secondary btn-sm">Read the story</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Tips Card -->
+        <a href="/tips" class="text-decoration-none">
+          <div class="card h-100 border-0 shadow-sm">
+            <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
+            <div class="card-body">
+              <h6 class="text-muted mb-2">Featured Tip</h6>
+              <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
+              <p class="card-text small text-muted mb-3">
+                Quick and effective tips to make flying with your furry friend easier than ever…
+              </p>
+              <span class="btn btn-outline-secondary btn-sm">Read tips</span>
+            </div>
+          </div>
+        </a>
+      </aside>
+
+      <!-- CENTER -->
+      <div class="col-lg-6 text-center">
+        <img
+          src="/images/PetVoyageLogo.png"
+          class="img-fluid rounded-top d-block mx-auto mb-3"
+          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+          width="400"
+          height="400"
+        />
+        <h1 class="fw-bold display-5">Travel Smarter with Pets</h1>
+        <p class="fs-5 text-muted">Instantly explore pet policies by airline and country. Fly with peace of mind.</p>
+
+        <!-- Navigation Strip -->
+        <div class="mt-4">
+          <!-- Desktop buttons -->
+          <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
+            <a href="/getCountryRegulationList" class="btn btn-outline-secondary px-4 py-2 text-center">
+              <i class="bi bi-globe-americas d-block fs-3"></i>
+              <small>Country Policies</small>
+            </a>
+            <a href="/regulations/searchFlights" class="btn btn-outline-secondary px-4 py-2 text-center">
+              <i class="bi bi-airplane d-block fs-3"></i>
+              <small>Search Flights</small>
+            </a>
+            <a href="/regulations/airlineList" class="btn btn-outline-secondary px-4 py-2 text-center">
+              <i class="bi bi-card-list d-block fs-3"></i>
+              <small>Airline Policies</small>
+            </a>
+            <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2 text-center">
+              <i class="bi bi-hospital d-block fs-3"></i>
+              <small>Find a Vet</small>
+            </a>
+            <a href="/blog" class="btn btn-outline-secondary px-4 py-2 text-center">
+              <i class="bi bi-journal-text d-block fs-3"></i>
+              <small>Blog</small>
+            </a>
+          </div>
+            <!-- Mobile buttons (compact) -->
+            <div class="d-flex d-md-none justify-content-between text-center mt-3 px-2">
+              <div class="mobile-icon-group">
+                <a href="/getCountryRegulationList" class="square-icon btn btn-outline-secondary">
+                  <i class="bi bi-globe-americas fs-3"></i>
+                </a>
+                <small>Country</small>
+              </div>
+              <div class="mobile-icon-group">
+                <a href="/regulations/searchFlights" class="square-icon btn btn-outline-secondary">
+                  <i class="bi bi-airplane fs-3"></i>
+                </a>
+                <small>Flights</small>
+              </div>
+              <div class="mobile-icon-group">
+                <a href="/regulations/airlineList" class="square-icon btn btn-outline-secondary">
+                  <i class="bi bi-card-list fs-3"></i>
+                </a>
+                <small>Airlines</small>
+              </div>
+              <div class="mobile-icon-group">
+                <a href="/findAVet" class="square-icon btn btn-outline-secondary">
+                  <i class="bi bi-hospital fs-3"></i>
+                </a>
+                <small>Vet</small>
+              </div>
+              <div class="mobile-icon-group">
+                <a href="/blog" class="square-icon btn btn-outline-secondary">
+                  <i class="bi bi-journal-text fs-3"></i>
+                </a>
+                <small>Blog</small>
+              </div>
+            </div>
+
+            <div class="d-lg-none">
+              <!-- Blog & Tips -->
+              <div class="row g-3 mt-4">
+                <div class="col-12">
+                  <a href="/blog" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm">
+                      <img src="/images/movetocdmx.jpg" class="card-img-top" alt="PetVoyage Blog preview" loading="lazy">
+                      <div class="card-body">
+                        <h6 class="text-muted mb-2">Featured on the Blog</h6>
+                        <h5 class="card-title mb-2">How We Moved to Mexico City With Our Pets</h5>
+                        <p class="card-text small text-muted mb-3">Flight prep, airline choice, vet visits, and what actually worked the day we flew…</p>
+                        <span class="btn btn-outline-secondary btn-sm">Read the story</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+
+          <!-- SHOP CAROUSEL (appears right after buttons on all sizes) -->
+          <div class="shop-inline mt-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+              <h5 class="m-0 fw-bold">Top Must-Have Travel Products</h5>
+              <a href="https://petsvoyage.myshopify.com/collections/must-have-products-to-fly-with-your-pet" class="btn btn-outline-secondary btn-sm">View all</a>
+            </div>
+
+            <div class="shop-carousel">
+              <button class="shop-nav prev" aria-label="Previous">&#10094;</button>
+              <div class="shop-track">
+                <%- include('./partials/ads/dogFullCollections', {
+                  componentId: 'pv-inline-collection-home',
+                  collectionId: '320667189420',
+                  title: 'Top Must-Have Travel Products',
+                  viewAllHref: '/shop'
+                }) %>
+              </div>
+              <button class="shop-nav next" aria-label="Next">&#10095;</button>
+            </div>
+          </div>
+
+        
+
+          <!-- MOBILE STACK: Blog + Tips, then To-Do at bottom -->
+          <div class="d-lg-none">
+            <!-- Blog & Tips -->
+            <div class="row g-3 mt-4">
+
+
+              <div class="col-12">
+                <a href="/tips" class="text-decoration-none">
+                  <div class="card border-0 shadow-sm">
+                    <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
+                    <div class="card-body">
+                      <h6 class="text-muted mb-2">Featured Tip</h6>
+                      <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
+                      <p class="card-text small text-muted mb-3">Quick and effective tips to make flying with your furry friend easier than ever…</p>
+                      <span class="btn btn-outline-secondary btn-sm">Read tips</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- To-Do (mobile bottom) -->
+            <div class="card border-0 shadow-sm mt-4">
+              <div class="card-body p-3">
+                <%- include('./partials/toDoList') %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT (DESKTOP): To-Do -->
+      <aside class="col-lg-3 d-none d-lg-block">
+        <div class="card h-100 border-0 shadow-sm todo-card">
+          <div class="card-body p-3">
+            <%- include('./partials/toDoList') %>
+          </div>
+        </div>
+      </aside>
+
+    </div>
   </div>
-
-  <!-- Mobile Layout -->
-  <div class="d-flex d-md-none justify-content-between text-center mt-3 px-2">
-    <div class="mobile-icon-group">
-      <a href="/getCountryRegulationList"  class="square-icon btn btn-outline-secondary">
-        <i class="bi bi-globe-americas fs-3"></i>
-      </a>
-      <small>Country</small>
-    </div>
-    <div class="mobile-icon-group">
-      <a href="/regulations/searchFlights" class="square-icon btn btn-outline-secondary">
-        <i class="bi bi-airplane fs-3"></i>
-      </a>
-      <small>Flights</small>
-    </div>
-    <div class="mobile-icon-group">
-      <a href="/regulations/airlineList" class="square-icon btn btn-outline-secondary">
-        <i class="bi bi-card-list fs-3"></i>
-      </a>
-      <small>Airlines</small>
-    </div>
-    <div class="mobile-icon-group">
-      <a href="/findAVet" class="square-icon btn btn-outline-secondary">
-        <i class="bi bi-hospital fs-3"></i>
-      </a>
-      <small>Vet</small>
-    </div>
-    <div class="mobile-icon-group">
-      <a href="/blog" class="square-icon btn btn-outline-secondary">
-        <i class="bi bi-journal-text fs-3"></i>
-      </a>
-      <small>Blog</small>
-    </div>
-  </div>
-</div>
-
-
+</section>
 
 
 <!-- Floating AI Chat Button -->
@@ -111,13 +225,7 @@
       <form id="ask-question-form">
         <div class="form-group">
           <label for="user_question">Your Question</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="user_question" 
-            name="user_question" 
-            placeholder="Ask about pet regulations..." 
-            required>
+          <input type="text" class="form-control" id="user_question" name="user_question" placeholder="Ask about pet regulations..." required>
         </div>
         <div class="form-group text-center mt-3">
           <button type="submit" class="btn btn-primary">Submit</button>
@@ -131,7 +239,7 @@
   </div>
 </div>
 
-<!-- AI Chat Script -->
+<!-- Scripts -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const chatButton = document.getElementById('ai-chat-button');
@@ -141,7 +249,7 @@
     const aiAnswer = document.getElementById('ai-answer');
 
     chatButton.addEventListener('click', () => {
-      chatPopup.style.display = chatPopup.style.display === 'none' ? 'block' : 'none';
+      chatPopup.style.display = (chatPopup.style.display === 'none' || chatPopup.style.display === '') ? 'block' : 'none';
     });
 
     askQuestionForm.addEventListener('submit', async (event) => {
@@ -154,7 +262,6 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_question: userQuestion })
         });
-
         const result = await response.json();
         aiAnswerContainer.style.display = 'block';
         aiAnswer.textContent = result.answer;
@@ -166,7 +273,117 @@
     });
   });
 
-  $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip();
-  });
+  // Bootstrap tooltips
+  $(function () { $('[data-bs-toggle="tooltip"]').tooltip(); });
 </script>
+
+<!-- SHOP CAROUSEL JS (robust flattening) -->
+<script>
+  (function () {
+    // Find likely product cards inside any wrapper
+    function findProductCards(container) {
+      // common cases
+      let cards = container.querySelectorAll(
+        '[data-product-id], [data-product], [class*="product-card"], [class*="ProductCard"], a[href*="/products/"]'
+      );
+      if (cards.length) return Array.from(cards);
+  
+      // fallback: elements that contain an image + a buy/view button
+      cards = Array.from(container.querySelectorAll('*')).filter(el => {
+        const hasImg = el.querySelector('img');
+        const hasBtn = el.querySelector('button, .btn, a[href*="cart"], a[href*="/products/"]');
+        return hasImg && hasBtn && el.children.length > 0;
+      });
+      return cards;
+    }
+  
+    // Flatten Shopify structure by hoisting product cards to be direct children of the track
+    function hoistToTrack(track) {
+      // If already flattened, bail
+      const direct = findProductCards(track);
+      if (direct.length >= 2) return;
+  
+      // try single wrapper
+      if (track.children.length === 1) {
+        const only = track.firstElementChild;
+        const found = findProductCards(only);
+        if (found.length) {
+          track.replaceChildren(...found);
+          return;
+        }
+      }
+  
+      // try scanning descendants
+      const wrappers = Array.from(track.querySelectorAll('*')).filter(n => n.children && n.children.length);
+      for (const w of wrappers) {
+        const found = findProductCards(w);
+        if (found.length >= 2) {
+          track.replaceChildren(...found);
+          return;
+        }
+      }
+    }
+  
+    function initShopCarousel(root) {
+      const track = root.querySelector('.shop-track');
+      const prev  = root.querySelector('.shop-nav.prev');
+      const next  = root.querySelector('.shop-nav.next');
+      if (!track) return;
+  
+      // Ensure we run after Shopify inserts content (if async)
+      const finalize = () => {
+        hoistToTrack(track);
+        // mark slides (harmless if already flattened)
+        Array.from(track.children).forEach(el => el.classList.add('shop-slide'));
+  
+        const updateArrows = () => {
+          const canLeft  = track.scrollLeft > 5;
+          const canRight = track.scrollWidth - track.clientWidth - track.scrollLeft > 5;
+          if (prev) prev.style.visibility = canLeft  ? 'visible' : 'hidden';
+          if (next) next.style.visibility = canRight ? 'visible' : 'hidden';
+        };
+  
+        const scrollByAmt = dir => {
+          const amt = Math.round(track.clientWidth * 0.9);
+          track.scrollBy({ left: dir * amt, behavior: 'smooth' });
+          setTimeout(updateArrows, 250);
+        };
+  
+        prev && prev.addEventListener('click', () => scrollByAmt(-1));
+        next && next.addEventListener('click', () => scrollByAmt(1));
+        track.addEventListener('scroll', updateArrows);
+        new ResizeObserver(updateArrows).observe(track);
+  
+        // keyboard
+        track.tabIndex = 0;
+        track.addEventListener('keydown', e => {
+          if (e.key === 'ArrowLeft')  scrollByAmt(-1);
+          if (e.key === 'ArrowRight') scrollByAmt(1);
+        });
+  
+        updateArrows();
+      };
+  
+      // If content is empty now, watch for inserts then finalize once
+      const needObserve = track.querySelectorAll('*').length < 3;
+      if (needObserve) {
+        const mo = new MutationObserver((muts, obs) => {
+          if (track.querySelectorAll('img').length) {
+            obs.disconnect();
+            finalize();
+          }
+        });
+        mo.observe(track, { childList: true, subtree: true });
+        // also finalize after a short delay as a safety net
+        setTimeout(finalize, 1200);
+      } else {
+        finalize();
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.shop-carousel').forEach(initShopCarousel);
+    });
+  })();
+  </script>
+  

@@ -167,6 +167,82 @@
         </div>
 
         <div class="col-md-6 col-12 mb-3">
+          
+
+<!-- views/partials/ads/affiliateCarrier.ejs -->
+<% const mountId = typeof divId !== 'undefined' ? divId : 'product-component-1757554885803'; %>
+
+<div class="card mb-2 shadow-sm border border-warning">
+  <div class="card-body text-center">
+    <h5 class="card-title text-warning">🐶 Recommended Travel Carrier</h5>
+
+    <!-- Shopify will render the product here -->
+    <div id="<%= mountId %>" class="mx-auto"></div>
+
+    <p class="mt-2 text-muted small">
+      Purchasing through this link helps support PetVoyage at no extra cost to you. 💛
+    </p>
+  </div>
+</div>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) {
+    if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); }
+  } else { loadScript(); }
+
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.head || document.body).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: 'i7uk6k-mc.myshopify.com',
+      storefrontAccessToken: 'd0606ebb2672d9eb75e0da9409e16bf2',
+    });
+
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '8326844514476',
+        node: document.getElementById('<%= mountId %>'),
+        moneyFormat: '%24%7B%7Bamount%7D%7D',
+        options: {
+          product: {
+            // Make it fill the card instead of 25% width
+            styles: {
+              product: {
+                maxWidth: '100%',
+                marginLeft: '0',
+                marginBottom: '0'
+              }
+            },
+            text: { button: 'Add to cart' }
+          },
+          modalProduct: {
+            contents: { img: false, imgWithCarousel: true, button: false, buttonWithQuantity: true },
+            styles: { product: { maxWidth: '100%', marginLeft: '0', marginBottom: '0' } },
+            text: { button: 'Add to cart' }
+          },
+          productSet: { styles: { products: { marginLeft: '0' } } },
+          option: {},
+          cart: { text: { total: 'Subtotal', button: 'Checkout' } },
+          toggle: {}
+        }
+      });
+    });
+  }
+})();
+/*]]>*/
+</script>
+
+
+
           <!-- Amazon Affiliate Dog Carrier Ad -->
           <div class="card mb-4 shadow-sm border border-warning">
             <div class="card-body text-center">

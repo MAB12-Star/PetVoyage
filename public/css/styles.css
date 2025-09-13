@@ -594,8 +594,108 @@ gap: 1rem; /* Add space between icons */
     font-size: 0.85rem;
     white-space: nowrap;
   }
+
+  /* Match blog card look for To-Do */
+.todo-card {
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* keep scroll inside body */
+  }
   
+  /* Scrollable To-Do list area */
+  .todo-card .card-body {
+    flex: 1;
+    max-height: 100%;       /* fills available height */
+    overflow-y: auto;       /* add scroll if too tall */
+  }
   
+/* To-Do as card (matches blog) */
+.todo-card { border-radius: 1rem; display: flex; flex-direction: column; overflow: hidden; }
+.todo-card .card-body { flex: 1; max-height: 100%; overflow-y: auto; }
+.todo-card .card-body::-webkit-scrollbar { width: 6px; }
+.todo-card .card-body::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,.2); border-radius: 3px; }
+
+/* ====== To-Do card (unchanged) ====== */
+.todo-card{ border-radius:1rem; display:flex; flex-direction:column; overflow:hidden; }
+.todo-card .card-body{ flex:1; max-height:100%; overflow-y:auto; }
+.todo-card .card-body::-webkit-scrollbar{ width:6px; }
+.todo-card .card-body::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.2); border-radius:3px; }
+
+/* ====== Inline store frame ====== */
+.shop-inline{
+  border:3px solid #e7ecef;
+  border-radius:1rem;
+  background:#fff;
+  box-shadow:0 12px 28px rgba(0,0,0,.07);
+  padding:1rem;
+  overflow:visible;
+}
+
+/* ====== Carousel core ====== */
+.shop-carousel{ position:relative; }
+
+/* Key trick: flatten Shopify rows/cols so their children behave as direct flex items */
+.shop-track .row,
+.shop-track [class*="grid"],
+.shop-track [class*="Grid"],
+.shop-track [class*="col"],
+.shop-track [class*="columns"],
+.shop-track [class*="collection"],
+.shop-track [class*="product-grid"]{
+  display: contents !important;
+}
+
+/* One-line horizontal track */
+.shop-track{
+  display:flex;
+  flex-wrap:nowrap;               /* one row only */
+  gap:1rem;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:.5rem;
+}
+
+/* Every immediate child becomes a slide (JS will also add .shop-slide) */
+.shop-track > *{
+  flex:0 0 auto;
+  width:280px;                    /* card width */
+  scroll-snap-align:start;
+}
+@media (min-width:1200px){ .shop-track > *{ width:300px; } }
+@media (max-width:576px){  .shop-track > *{ width:85vw; } }
+
+/* Polish product cards regardless of the theme classes */
+.shop-track > * .card,
+.shop-track > * [class*="product"],
+.shop-track > * [class*="Product"]{
+  border-radius:.85rem !important;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+}
+
+/* Arrows */
+.shop-nav{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:42px; height:42px; border-radius:50%;
+  border:2px solid #e7ecef; background:#fff;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+  display:grid; place-items:center; cursor:pointer; z-index:1;
+}
+.shop-nav.prev{ left:-14px; }
+.shop-nav.next{ right:-14px; }
+.shop-nav:active{ transform:translateY(-50%) scale(.98); }
+
+/* Scrollbar styling */
+.shop-track::-webkit-scrollbar{ height:8px; }
+.shop-track::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.2); border-radius:4px; }
+
+
+      
+
+
+  
+
 
 
 
