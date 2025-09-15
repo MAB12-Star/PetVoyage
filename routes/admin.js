@@ -1,7 +1,7 @@
 // routes/admin.js
 const express = require('express');
 const router = express.Router();
-const Airline = require('../models/Airline');
+const Airline = require('../models/airline');
 const User = require('../models/User'); 
 const CountryPetRegulation = require('../models/countryPetRegulationList');
 
