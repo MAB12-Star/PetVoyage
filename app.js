@@ -28,6 +28,11 @@ const airlineList = require('./routes/airlineList');
 const countryRegulationListRoutes = require('./routes/countryRegulationList');
 const blog = require('./routes/blog');
 const findAVet = require('./routes/findAVet');
+// top with other routes
+const adminRoutes = require('./routes/admin');
+
+
+
 
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
 
@@ -36,6 +41,8 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', () => {
     console.log('Database Connected');
+    console.log('[MONGO] connecting to:', process.env.mongoKey.replace(/\/\/.*@/, '//<redacted>@'));
+
 });
 
 const app = express();
@@ -107,6 +114,8 @@ app.use('/', countryRegulationListRoutes);
 app.use(redirectOldAirlineLinks); // 🔁 Legacy redirect middleware
 app.use('/', airlineRoutes);
 app.use('/airlines', reviewsRoutes); // ✅ for nested reviews
+// ... after other app.use(...)
+app.use('/admin', adminRoutes);
 
 // 🗺 Sitemap route
 app.get('/siteMap.xml', (req, res) => {

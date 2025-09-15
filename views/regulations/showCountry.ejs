@@ -178,7 +178,39 @@
           </div>
         </div>
 
-        
+     
+
+<!-- Origin Information (country-level, filtered for this pet) -->
+<div class="col-md-6">
+  <div class="card border-start border-dark border-4 shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="fw-bold card-title text-dark"><i class="bi bi-cpu me-2"></i>Origin Requirements</h5>
+<div class="card-text">
+  <% if (originReqs && originReqs.length) { %>
+    <ul class="list-unstyled mb-0">
+      <% originReqs.forEach(function(or){ %>
+        <li class="mb-3">
+          <strong class="d-block"><%= or.key.replace(/-/g, ' ') %></strong>
+          <div class="mt-1"><%- or.details %></div>
+          <% if (or.appliesTo && or.appliesTo.length) { %>
+            <div class="mt-2">
+              <% or.appliesTo.forEach(function(p){ %>
+                <span class="badge bg-light text-dark border me-1"><%= p %></span>
+              <% }) %>
+            </div>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="text-muted mb-0">No origin-specific requirements for this pet.</p>
+  <% } %>
+</div>
+</div>  
+</div>
+</div>
+
+
 
         <!-- More Info -->
         <div class="col-12">

@@ -1,0 +1,1293 @@
+<% layout('layouts/boilerplate') %>
+
+<head>
+  <title>Admin · PetVoyage</title>
+  <meta name="robots" content="noindex">
+</head>
+
+<%  
+// Users tab locals
+if (typeof uq === 'undefined') uq = '';
+if (typeof upage === 'undefined') upage = 1;
+if (typeof upages === 'undefined') upages = 1;
+if (typeof users === 'undefined') users = [];
+%>
+
+
+<section class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12 col-xl-10 mx-auto">
+
+      <!-- Flash messages -->
+      <% if (success && success.length) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+      <% if (error && error.length) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+        <h1 class="h3 m-0">Admin</h1>
+        <a href="/" class="btn btn-outline-secondary btn-sm">← Back to site</a>
+      </div>
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link <%= tab==='airlines' ? 'active' : '' %>" href="/admin?tab=airlines">
+            Airlines
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= tab==='users' ? 'active' : '' %>" href="/admin?tab=users">
+            Users
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= tab==='countries' ? 'active' : '' %>" href="/admin?tab=countries">
+            Countries
+          </a>
+        </li>
+      </ul>
+      
+      <script>
+        document.getElementById('users-tab-link')?.addEventListener('click', () => {
+          window.location = '/admin?tab=users';
+        });
+        document.getElementById('airlines-tab-link')?.addEventListener('click', () => {
+          window.location = '/admin?tab=airlines';
+        });
+      </script>
+      
+      
+
+      <div class="tab-content border border-top-0 p-3 bg-white rounded-bottom shadow-sm">
+
+   <!-- AIRLINES TAB -->
+<div class="tab-pane fade <%= (tab==='airlines'?'show active':'') %>" id="airlines" role="tabpanel" aria-labelledby="airlines-tab">
+
+    <!-- Top bar: search + create -->
+    <form class="row gy-2 gx-2 align-items-center mb-3" method="get" action="/admin">
+      <input type="hidden" name="tab" value="airlines"/>
+  
+      <div class="col-sm-8 col-md-9">
+        <input
+          id="airlineSearch"
+          type="search"
+          class="form-control"
+          name="q"
+          list="airlineChoices"
+          value="<%= q || '' %>"
+          placeholder="Search or pick an airline (name, code, or slug)…"
+          autocomplete="off">
+        <datalist id="airlineChoices">
+          <% if (airlineChoices && airlineChoices.length) { %>
+            <% airlineChoices.forEach(a => { %>
+              <!-- Allow matching by name, code, or slug -->
+              <option value="<%= a.name %>"><%= a.airlineCode || '' %> <%= a.slug ? '· '+a.slug : '' %></option>
+              <% if (a.airlineCode) { %>
+                <option value="<%= a.airlineCode %>"><%= a.name %></option>
+              <% } %>
+              <% if (a.slug) { %>
+                <option value="<%= a.slug %>"><%= a.name %></option>
+              <% } %>
+            <% }) %>
+          <% } %>
+        </datalist>
+      </div>
+  
+      <div class="col-sm-4 col-md-3 d-flex gap-2">
+        <button class="btn btn-outline-secondary w-100">Search</button>
+        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                data-bs-target="#airlineModal" onclick="AdminAirlines.openCreate()">Create</button>
+      </div>
+    </form>
+  
+    <!-- Count -->
+    <p class="text-muted small mb-2"><%= total %> result<%= total===1?'':'s' %></p>
+  
+    <% /* ---- safe date formatter (avoids "Invalid Date") ---- */ %>
+    <%
+      function fmtDate(val) {
+        if (!val) return '';
+        const dt = new Date(val);
+        return isNaN(dt) ? '' : dt.toLocaleString();
+      }
+    %>
+  
+    <!-- Table -->
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Website</th>
+            <th>Pet Policy URL</th>
+            <th>In Cabin</th>
+            <th>In Cargo</th>
+            <th>Updated</th> <!-- NEW -->
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!airlines || airlines.length===0) { %>
+            <tr><td colspan="8" class="text-center text-muted py-5">No airlines found.</td></tr>
+          <% } else { %>
+            <% airlines.forEach(a => { %>
+              <tr>
+                <td>
+                  <strong><%= a.name %></strong><br>
+                  <small class="text-muted"><%= a.slug %></small>
+                </td>
+                <td><code><%= a.airlineCode %></code></td>
+                <td>
+                  <% if (a.airlineURL) { %>
+                    <a href="<%= a.airlineURL %>" target="_blank" rel="noopener">website</a>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (a.petPolicyURL) { %>
+                    <a href="<%= a.petPolicyURL %>" target="_blank" rel="noopener">policy</a>
+                  <% } %>
+                </td>
+                <td>
+                  <span class="badge <%= String(a.inCompartment).toLowerCase()==='yes' ? 'bg-success' : 'bg-secondary' %>">
+                    <%= a.inCompartment || 'no' %>
+                  </span>
+                </td>
+                <td>
+                  <span class="badge <%= String(a.inCargo).toLowerCase()==='yes' ? 'bg-success' : 'bg-secondary' %>">
+                    <%= a.inCargo || 'no' %>
+                  </span>
+                </td>
+                <td>
+                  <small class="text-muted">
+                    <%= fmtDate(a.updatedAt || a.timestamp || a.createdAt) || '—' %>
+                  </small>
+                </td>
+                <td class="text-end">
+                  <div class="btn-group">
+                    <!-- make sure this is NOT a submit -->
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            data-id="<%= a._id %>"
+                            onclick="AdminAirlines.openEdit('<%= a._id %>')">
+                      Edit
+                    </button>
+                    <form method="post"
+                          action="/admin/airlines/<%= a._id %>?_method=DELETE"
+                          onsubmit="return confirm('Delete <%= a.name %>?')">
+                      <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
+          <!-- Pagination -->
+          <% if (pages > 1) { %>
+            <nav aria-label="Airline pages" class="mt-3">
+              <ul class="pagination mb-0">
+                <% const makeLink = (p)=> `/admin?tab=airlines&q=${encodeURIComponent(q||'')}&page=${p}`; %>
+                <li class="page-item <%= page<=1?'disabled':'' %>">
+                  <a class="page-link" href="<%= makeLink(page-1) %>">Prev</a>
+                </li>
+                <% for (let p=1; p<=pages; p++) { %>
+                  <li class="page-item <%= p===page?'active':'' %>">
+                    <a class="page-link" href="<%= makeLink(p) %>"><%= p %></a>
+                  </li>
+                <% } %>
+                <li class="page-item <%= page>=pages?'disabled':'' %>">
+                  <a class="page-link" href="<%= makeLink(page+1) %>">Next</a>
+                </li>
+              </ul>
+            </nav>
+          <% } %>
+
+        </div>
+
+        <!-- USERS TAB -->
+<div class="tab-pane fade <%= (tab==='users'?'show active':'') %>" id="users" role="tabpanel" aria-labelledby="users-tab">
+
+    <!-- Search -->
+    <form class="row gy-2 gx-2 align-items-center mb-3" method="get" action="/admin">
+      <input type="hidden" name="tab" value="users"/>
+      <div class="col-sm-8 col-md-9">
+        <input type="text" class="form-control" name="uq" value="<%= uq || '' %>" placeholder="Search by name or email…">
+      </div>
+      <div class="col-sm-4 col-md-3 d-flex gap-2">
+        <button class="btn btn-outline-secondary w-100">Search</button>
+      </div>
+    </form>
+  
+    <p class="text-muted small mb-2"><%= (users && users.length) ? users.length : 0 %> result<%= users && users.length===1 ? '' : 's' %> (page <%= upage || 1 %> of <%= upages || 1 %>)</p>
+  
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead class="table-light">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th class="text-center">Favorites</th>
+          <th class="text-center">Saved Regs</th>
+          <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (!users || !users.length) { %>
+          <tr><td colspan="6" class="text-center text-muted py-5">No users found.</td></tr>
+        <% } else { %>
+          <% users.forEach(u => { %>
+            <tr>
+              <td><strong><%= u.displayName %></strong></td>
+              <td><a href="mailto:<%= u.email %>"><%= u.email %></a></td>
+              <td>
+                <span class="badge
+                 <%= u.role==='admin' ? 'bg-danger' : (u.role==='vendor' ? 'bg-warning text-dark' : 'bg-secondary') %>">
+                  <%= u.role || 'user' %>
+                </span>
+              </td>
+              <td class="text-center"><%= (u.favoriteAirlines && u.favoriteAirlines.length) || 0 %></td>
+              <td class="text-center"><%= (u.savedRegulations && u.savedRegulations.length) || 0 %></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-primary" onclick="AdminUsers.openEdit('<%= u._id %>')">Edit</button>
+              </td>
+            </tr>
+          <% }); %>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
+  
+    <% if (upages && upages > 1) { %>
+      <nav aria-label="User pages" class="mt-3">
+        <ul class="pagination mb-0">
+          <% const makeULink = (p)=> `/admin?tab=users&uq=${encodeURIComponent(uq||'')}&upage=${p}`; %>
+          <li class="page-item <%= (upage<=1)?'disabled':'' %>">
+            <a class="page-link" href="<%= makeULink(upage-1) %>">Prev</a>
+          </li>
+          <% for (let p=1; p<=upages; p++) { %>
+            <li class="page-item <%= p===upage?'active':'' %>">
+              <a class="page-link" href="<%= makeULink(p) %>"><%= p %></a>
+            </li>
+          <% } %>
+          <li class="page-item <%= (upage>=upages)?'disabled':'' %>">
+            <a class="page-link" href="<%= makeULink(upage+1) %>">Next</a>
+          </li>
+        </ul>
+      </nav>
+    <% } %>
+  </div>
+  
+  <!-- User Edit Modal -->
+  <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-scrollable">
+      <form class="modal-content" id="userForm" method="post" action="#">
+        <input type="hidden" name="_method" id="userFormMethod" value="PUT">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">Edit user</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Display Name</label>
+              <input class="form-control" name="displayName">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Email</label>
+              <input class="form-control" name="email" type="email">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Role</label>
+              <select class="form-select" name="role">
+                <option value="user">user</option>
+                <option value="vendor">vendor</option>
+                <option value="admin">admin</option>
+              </select>
+            </div>
+  
+            <!-- Optional: raw JSON editor for toDoList
+            <div class="col-12">
+              <label class="form-label">To-Do List (JSON)</label>
+              <textarea class="form-control" name="toDoListJson" rows="4" placeholder='{"To-Do": [...], "in-progress": [], "completed": []}'></textarea>
+            </div>
+            -->
+          </div>
+        </div>
+  
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+          <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+  const AdminUsers = (function() {
+    let modal, modalEl, form, methodInput, titleEl;
+  
+    function ensureModal() {
+      if (!modalEl) {
+        modalEl   = document.getElementById('userModal');
+        form      = document.getElementById('userForm');
+        methodInput = document.getElementById('userFormMethod');
+        titleEl   = document.getElementById('userModalLabel');
+      }
+      if (!window.bootstrap || !bootstrap.Modal) {
+        alert('Bootstrap JS missing.');
+        return false;
+      }
+      if (!modal) modal = new bootstrap.Modal(modalEl);
+      return true;
+    }
+  
+    function clearForm() {
+      form.reset();
+      // We only support edit for now
+    }
+  
+    function fillForm(data) {
+      const setVal = (name, val) => {
+        const el = form.querySelector(`[name="${name}"]`);
+        if (!el) return;
+        if (el.tagName === 'SELECT') {
+          Array.from(el.options).forEach(opt => opt.selected = (opt.value === (val || 'user')));
+        } else {
+          el.value = (val ?? '');
+        }
+      };
+      setVal('displayName', data.displayName);
+      setVal('email', data.email);
+      setVal('role', data.role || 'user');
+    }
+  
+    async function openEdit(id) {
+      if (!ensureModal()) return;
+      clearForm();
+      try {
+        const res = await fetch(`/admin/users/${id}`, { headers: { 'Accept': 'application/json' }});
+        if (!res.ok) { alert('Failed to load user'); return; }
+        const data = await res.json();
+        fillForm(data);
+        methodInput.value = 'PUT';
+        form.action = `/admin/users/${id}?_method=PUT`;
+        titleEl.textContent = `Edit: ${data.displayName || ''}`;
+        modal.show();
+      } catch (e) {
+        console.error(e);
+        alert('Error loading user.');
+      }
+    }
+  
+    return { openEdit };
+  })();
+  </script>
+  
+
+ <!-- COUNTRIES TAB -->
+<div class="tab-pane fade <%= (tab==='countries'?'show active':'') %>" id="countries" role="tabpanel" aria-labelledby="countries-tab">
+
+    <!-- Search + Create -->
+    <form class="row gy-2 gx-2 align-items-center mb-3" method="get" action="/admin">
+      <input type="hidden" name="tab" value="countries"/>
+      <div class="col-sm-8 col-md-9">
+        <input
+          type="search"
+          class="form-control"
+          name="cq"
+          value="<%= cq || '' %>"
+          placeholder="Search by destination country…"
+          autocomplete="off">
+      </div>
+      <div class="col-sm-4 col-md-3 d-flex gap-2">
+        <button class="btn btn-outline-secondary w-100">Search</button>
+        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                data-bs-target="#countryModal" onclick="AdminCountries.openCreate()">Create</button>
+      </div>
+    </form>
+  
+    <p class="text-muted small mb-2"><%= ctotal || 0 %> result<%= (ctotal===1)?'':'s' %></p>
+  
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Destination Country</th>
+            <th class="text-center">Pet Types</th>
+            <th class="text-center">Official Links</th>
+            <th>Updated</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!countries || !countries.length) { %>
+            <tr><td colspan="5" class="text-center text-muted py-5">No countries found.</td></tr>
+          <% } else { %>
+            <% countries.forEach(c => { %>
+              <tr>
+                <td><strong><%= c.destinationCountry %></strong></td>
+                <td class="text-center">
+                  <%= c.regulationsByPetType ? Object.keys(c.regulationsByPetType).length : 0 %>
+                </td>
+                <td class="text-center">
+                  <%= (c.officialLinks && c.officialLinks.length) || 0 %>
+                </td>
+                <td><small class="text-muted"><%= new Date(c.updatedAt || c.timestamp || c.createdAt).toLocaleString() %></small></td>
+                <td class="text-end">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                            onclick="AdminCountries.openEdit('<%= c._id %>')">Edit</button>
+                    <form method="post"
+                          action="/admin/countries/<%= c._id %>?_method=DELETE"
+                          onsubmit="return confirm('Delete <%= c.destinationCountry %>?')">
+                      <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  
+    <% if (cpages && cpages > 1) { %>
+      <nav aria-label="Country pages" class="mt-3">
+        <ul class="pagination mb-0">
+          <% const makeCLink = (p)=> `/admin?tab=countries&cq=${encodeURIComponent(cq||'')}&cpage=${p}`; %>
+          <li class="page-item <%= (cpage<=1)?'disabled':'' %>">
+            <a class="page-link" href="<%= makeCLink(cpage-1) %>">Prev</a>
+          </li>
+          <% for (let p=1; p<=cpages; p++) { %>
+            <li class="page-item <%= p===cpage?'active':'' %>">
+              <a class="page-link" href="<%= makeCLink(p) %>"><%= p %></a>
+            </li>
+          <% } %>
+          <li class="page-item <%= (cpage>=cpages)?'disabled':'' %>">
+            <a class="page-link" href="<%= makeCLink(cpage+1) %>">Next</a>
+          </li>
+        </ul>
+      </nav>
+    <% } %>
+  </div>
+  
+  <!-- Country Create/Edit Modal (dynamic pet types) -->
+<div class="modal fade" id="countryModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <form class="modal-content" id="countryForm" method="post" action="/admin/countries">
+      <input type="hidden" name="_method" id="countryFormMethod" value="POST">
+
+      <!-- hidden payloads the script fills before submit -->
+      <textarea name="regulationsJson" id="regulationsJson" class="d-none"></textarea>
+      <textarea name="originReqsJson"  id="originReqsJson"  class="d-none"></textarea>
+      <textarea name="officialLinksJson" id="officialLinksJson" class="d-none"></textarea>
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="countryModalLabel">Create Country Regulation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Destination Country *</label>
+            <input class="form-control" name="destinationCountry" required>
+          </div>
+
+          <!-- PET TYPE TABS + Add button -->
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <ul class="nav nav-tabs" id="petTabs" role="tablist"></ul>
+              <button type="button" class="btn btn-sm btn-outline-primary" id="addPetTypeBtn">+ Add pet type</button>
+            </div>
+            <div class="border border-top-0 p-3 rounded-bottom" id="petPanels"></div>
+          </div>
+
+          <!-- ORIGIN REQUIREMENTS -->
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between">
+              <h6 class="mb-2">Origin Requirements</h6>
+              <button type="button" class="btn btn-sm btn-outline-primary" id="addOriginReqBtn">Add requirement</button>
+            </div>
+            <div id="originReqList" class="vstack gap-2"></div>
+            <small class="text-muted">Examples of keys: <code>footAndMouthDisease</code>, <code>screwworm</code>, etc.</small>
+          </div>
+
+          <!-- OFFICIAL LINKS -->
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between">
+              <h6 class="mb-2">Official Links</h6>
+              <button type="button" class="btn btn-sm btn-outline-primary" id="addOfficialLinkBtn">Add link</button>
+            </div>
+            <div id="officialLinksList" class="vstack gap-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .mini-grid { display:grid; grid-template-columns: 1fr 1fr; gap:.5rem; }
+  .mini-grid-3 { display:grid; grid-template-columns: 1fr 1fr auto; gap:.5rem; }
+  .chip-row { display:flex; gap:.5rem; align-items:center; }
+  .chip-row input { flex:1; }
+  .btn-icon { padding:.3rem .45rem; line-height:1; }
+  .muted { color:#6c757d; font-size:.875rem; }
+  #petTabs .nav-item { position: relative; }
+  #petTabs .close-pet {
+    position:absolute; top:-6px; right:-8px; font-size:.75rem; border-radius:50%;
+    padding:.1rem .35rem; line-height:1; display:none;
+  }
+  #petTabs .nav-item.custom .close-pet { display:inline-block; }
+</style>
+
+<script>
+    const AdminCountries = (function(){
+      // Default types are protected (can't remove), custom ones are removable
+      const DEFAULTS = ['dog','cat','bird','reptile','other'];
+      let PETS = [];                 // start empty; seed in Create only
+      let KEYMAP = {};               // slug -> original DB key (to preserve casing)
+    
+      let modal, modalEl, form, methodInput, titleEl;
+      let petTabs, petPanelsEl, originReqList, officialLinksList;
+    
+      function ensureModal() {
+        if (!modalEl) {
+          modalEl    = document.getElementById('countryModal');
+          form       = document.getElementById('countryForm');
+          methodInput= document.getElementById('countryFormMethod');
+          titleEl    = document.getElementById('countryModalLabel');
+          petTabs    = document.getElementById('petTabs');
+          petPanelsEl= document.getElementById('petPanels');
+          originReqList = document.getElementById('originReqList');
+          officialLinksList = document.getElementById('officialLinksList');
+    
+          wireFormSubmit();
+    
+          document.getElementById('addOriginReqBtn').addEventListener('click', ()=> addOriginReqRow());
+          document.getElementById('addOfficialLinkBtn').addEventListener('click', ()=> addOfficialLinkRow());
+          document.getElementById('addPetTypeBtn').addEventListener('click', onAddPetType);
+        }
+        if (!window.bootstrap || !bootstrap.Modal) { alert('Bootstrap JS missing.'); return false; }
+        if (!modal) modal = new bootstrap.Modal(modalEl);
+        return true;
+      }
+    
+      // =========== Helpers =========== 
+      function cap(s){ return s ? s.slice(0,1).toUpperCase() + s.slice(1) : s; }
+      function slug(s){ return (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+      function isDefault(p){ return DEFAULTS.includes(p); }
+    
+      function seedDefaults(){
+        DEFAULTS.forEach(addPetTypeIfMissing);
+        selectPet(DEFAULTS[0]);
+      }
+    
+      function createPetTab(petKey, label){
+        const li = document.createElement('li');
+        li.className = 'nav-item' + (isDefault(petKey) ? '' : ' custom');
+    
+        const a = document.createElement('a');
+        a.className = 'nav-link' + (petTabs.childElementCount===0 ? ' active' : '');
+        a.href = 'javascript:void(0)';
+        a.dataset.pet = petKey;
+        a.textContent = label || cap(petKey);
+        a.addEventListener('click', ()=> selectPet(petKey));
+        li.appendChild(a);
+    
+        if (!isDefault(petKey)) {
+          const x = document.createElement('button');
+          x.type = 'button';
+          x.className = 'btn btn-outline-danger btn-icon close-pet';
+          x.innerHTML = '&times;';
+          x.title = 'Remove pet type';
+          x.addEventListener('click', (e)=> { e.stopPropagation(); removePetType(petKey); });
+          li.appendChild(x);
+        }
+    
+        petTabs.appendChild(li);
+      }
+    
+      function petPanelTemplate(pet){
+        const wrap = document.createElement('div');
+        wrap.className = 'pet-panel';
+        wrap.dataset.pet = pet;
+        wrap.style.display = (petPanelsEl.childElementCount===0?'block':'none');
+        wrap.innerHTML = `
+          <div class="mb-3">
+            <label class="form-label">Microchip (HTML allowed)</label>
+            <textarea class="form-control" rows="2" data-field="microchip"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">More Info (HTML allowed)</label>
+            <textarea class="form-control" rows="2" data-field="moreInfo"></textarea>
+          </div>
+    
+          <div class="mb-2 d-flex align-items-center justify-content-between">
+            <h6 class="m-0">Vaccinations</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-vax">Add vaccination</button>
+          </div>
+            <div class="vstack gap-2" data-list="vaccinations"></div>
+    
+          <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
+            <h6 class="m-0">Certifications</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-cert">Add certification</button>
+          </div>
+          <div class="vstack gap-2" data-list="certifications"></div>
+    
+          <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
+            <h6 class="m-0">Links</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-link">Add link</button>
+          </div>
+          <div class="vstack gap-2" data-list="links"></div>
+        `;
+        wrap.querySelector('[data-action="add-vax"]').addEventListener('click', ()=> addVaxRow(wrap));
+        wrap.querySelector('[data-action="add-cert"]').addEventListener('click', ()=> addCertRow(wrap));
+        wrap.querySelector('[data-action="add-link"]').addEventListener('click', ()=> addPetLinkRow(wrap));
+        petPanelsEl.appendChild(wrap);
+      }
+    
+      function vaxOrCertRow(kind, data={ name:'', description:'', requirements:[] }) {
+        const row = document.createElement('div');
+        row.className = 'border rounded p-2';
+        row.innerHTML = `
+          <div class="mini-grid-3">
+            <input type="text" class="form-control" placeholder="${kind} name (key)" value="${esc(data.name)}" data-name>
+            <input type="text" class="form-control" placeholder="Short description (HTML ok)" value="${esc(data.description)}" data-desc>
+            <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+          </div>
+        `;
+        row.querySelector('button').addEventListener('click', ()=> row.remove());
+        row.appendChild(reqListBlock(data.requirements || []));
+        return row;
+      }
+      function addVaxRow(panel, data){ panel.querySelector('[data-list="vaccinations"]').appendChild(vaxOrCertRow('Vaccine', data)); }
+      function addCertRow(panel, data){ panel.querySelector('[data-list="certifications"]').appendChild(vaxOrCertRow('Certificate', data)); }
+    
+      function reqListBlock(reqs=[]){
+        const frag = document.createElement('div');
+        frag.innerHTML = `
+          <div class="muted mb-1">Requirements</div>
+          <div class="vstack gap-1" data-reqs></div>
+          <button type="button" class="btn btn-sm btn-outline-secondary mt-1" data-add-req>Add requirement</button>
+        `;
+        const list = frag.querySelector('[data-reqs]');
+        reqs.forEach(r => list.appendChild(requirementRow(r)));
+        frag.querySelector('[data-add-req]').addEventListener('click', ()=> list.appendChild(requirementRow('')));
+        return frag;
+      }
+      function requirementRow(val=''){
+        const div = document.createElement('div');
+        div.className = 'chip-row';
+        div.innerHTML = `
+          <input type="text" class="form-control" placeholder="Requirement…" value="${esc(val)}">
+          <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>`;
+        div.querySelector('button').addEventListener('click', ()=> div.remove());
+        return div;
+      }
+    
+      function petLinkRow(data={name:'', url:''}){
+        const row = document.createElement('div');
+        row.className = 'mini-grid-3';
+        row.innerHTML = `
+          <input type="text" class="form-control" placeholder="Link name" value="${esc(data.name)}">
+          <input type="url"  class="form-control" placeholder="https://…" value="${esc(data.url)}">
+          <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+        `;
+        row.querySelector('button').addEventListener('click', ()=> row.remove());
+        return row;
+      }
+      function addPetLinkRow(panel, data){ panel.querySelector('[data-list="links"]').appendChild(petLinkRow(data)); }
+    
+      function addOriginReqRow(data={ key:'', appliesTo:[], details:'' }){
+        const row = document.createElement('div');
+        row.className = 'border rounded p-2';
+        row.innerHTML = `
+          <div class="mini-grid">
+            <input type="text" class="form-control" placeholder="Requirement key (e.g., footAndMouthDisease)" value="${esc(data.key)}" data-key>
+            <div data-applies>
+              <div class="muted mb-1">Applies to</div>
+            </div>
+          </div>
+          <div class="mt-2 mini-grid-3" style="grid-template-columns: 1fr auto auto">
+            <textarea class="form-control" rows="2" placeholder="Details…">${esc(data.details)}</textarea>
+            <button type="button" class="btn btn-outline-danger btn-icon ms-2" title="Remove">&times;</button>
+          </div>
+        `;
+        row.querySelector('button').addEventListener('click', ()=> row.remove());
+        originReqList.appendChild(row);
+        renderAppliesToCheckboxes(row.querySelector('[data-applies]'), data.appliesTo || []);
+      }
+    
+      function addOfficialLinkRow(data={name:'', url:''}) {
+        const row = document.createElement('div');
+        row.className = 'mini-grid-3';
+        row.innerHTML = `
+          <input type="text" class="form-control" placeholder="Link name" value="${esc(data.name)}">
+          <input type="url"  class="form-control" placeholder="https://…" value="${esc(data.url)}">
+          <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+        `;
+        row.querySelector('button').addEventListener('click', ()=> row.remove());
+        officialLinksList.appendChild(row);
+      }
+    
+      // =========== Tabs / Pet add/remove ===========
+    
+      function addPetTypeIfMissing(rawKey){
+        const key = slug(rawKey);
+        if (!key) return;
+        if (petTabs.querySelector(`.nav-link[data-pet="${key}"]`)) return;
+    
+        PETS.push(key);
+        KEYMAP[key] = rawKey;
+        createPetTab(key, cap(rawKey));
+        petPanelTemplate(key);
+        appendCheckboxToOriginRows(key);
+      }
+    
+      function onAddPetType(){
+        const name = prompt('New pet type name (e.g., Ferret, Tortoise):');
+        if (!name) return;
+        const key = slug(name);
+        if (!key) return alert('Please enter a valid name.');
+        if (petTabs.querySelector(`.nav-link[data-pet="${key}"]`)) return alert('That pet type already exists.');
+        addPetTypeIfMissing(name);
+        selectPet(key);
+      }
+    
+      function removePetType(key){
+        key = slug(key);
+        if (isDefault(key)) return;
+        const tab = petTabs.querySelector(`.nav-link[data-pet="${key}"]`);
+        if (tab) tab.parentElement.remove();
+        const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${key}"]`);
+        if (panel) panel.remove();
+        PETS = PETS.filter(p => p !== key);
+        delete KEYMAP[key];
+        originReqList.querySelectorAll('[data-applies]').forEach(holder => {
+          const box = holder.querySelector(`input[type="checkbox"][value="${key}"]`);
+          if (box) box.parentElement.remove();
+        });
+        const first = petTabs.querySelector('.nav-link');
+        if (first) selectPet(first.dataset.pet);
+      }
+    
+      function selectPet(key){
+        petTabs.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.pet===key));
+        petPanelsEl.querySelectorAll('.pet-panel').forEach(pp => pp.style.display = (pp.dataset.pet===key?'block':'none'));
+      }
+    
+      function appendCheckboxToOriginRows(key){
+        originReqList.querySelectorAll('[data-applies]').forEach(holder => {
+          if (holder.querySelector(`input[value="${key}"]`)) return;
+          holder.appendChild(checkboxLabel(key, false));
+        });
+      }
+      function renderAppliesToCheckboxes(holder, checked){
+        const checkedSlugs = new Set((checked||[]).map(v => (v||'').toString().toLowerCase()));
+        holder.innerHTML = '<div class="muted mb-1">Applies to</div>';
+        PETS.forEach(p => holder.appendChild(checkboxLabel(p, checkedSlugs.has(p))));
+      }
+      function checkboxLabel(value, isChecked){
+        const lbl = document.createElement('label'); lbl.className = 'me-2';
+        lbl.innerHTML = `<input type="checkbox" value="${value}" ${isChecked?'checked':''}> ${cap(KEYMAP[value] || value)}`;
+        return lbl;
+      }
+    
+      // =========== Serialize / Fill ===========
+    
+      function buildPayload(){
+        const regs = {};
+        petPanelsEl.querySelectorAll('.pet-panel').forEach(panel => {
+          const key = panel.dataset.pet;                // slug
+          const dbKey = KEYMAP[key] || key;             // original casing if we have it
+    
+          const microchip = panel.querySelector('[data-field="microchip"]').value.trim();
+          const moreInfo  = panel.querySelector('[data-field="moreInfo"]').value.trim();
+    
+          const vaccinations = {};
+          panel.querySelectorAll('[data-list="vaccinations"] > .border').forEach(row => {
+            const name = row.querySelector('[data-name]').value.trim();
+            const description = row.querySelector('[data-desc]').value.trim();
+            const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')].map(i=>i.value.trim()).filter(Boolean);
+            if (name) vaccinations[name] = { description, requirements };
+          });
+    
+          const certifications = {};
+          panel.querySelectorAll('[data-list="certifications"] > .border').forEach(row => {
+            const name = row.querySelector('[data-name]').value.trim();
+            const description = row.querySelector('[data-desc]').value.trim();
+            const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')].map(i=>i.value.trim()).filter(Boolean);
+            if (name) certifications[name] = { description, requirements };
+          });
+    
+          const links = [...panel.querySelectorAll('[data-list="links"] > .mini-grid-3')].map(row => {
+            const name = row.children[0].value.trim();
+            const url  = row.children[1].value.trim();
+            return (name && url) ? { name, url } : null;
+          }).filter(Boolean);
+    
+          if (microchip || moreInfo || Object.keys(vaccinations).length || Object.keys(certifications).length || links.length) {
+            regs[dbKey] = { microchip, moreInfo, vaccinations, certifications, links };
+          }
+        });
+    
+        const origins = {};
+        originReqList.querySelectorAll('.border.rounded').forEach(row => {
+          const key = row.querySelector('[data-key]').value.trim();
+          const details = row.querySelector('textarea').value.trim();
+          const appliesTo = [...row.querySelectorAll('input[type="checkbox"]:checked')].map(c=>c.value);
+          if (key) origins[key] = { appliesTo, details };
+        });
+    
+        const officialLinks = [...officialLinksList.querySelectorAll('.mini-grid-3')].map(row => {
+          const name = row.children[0].value.trim();
+          const url  = row.children[1].value.trim();
+          return (name && url) ? { name, url } : null;
+        }).filter(Boolean);
+    
+        document.getElementById('regulationsJson').value   = JSON.stringify(regs);
+        document.getElementById('originReqsJson').value    = JSON.stringify(origins);
+        document.getElementById('officialLinksJson').value = JSON.stringify(officialLinks);
+      }
+    
+      function wireFormSubmit(){ form.addEventListener('submit', buildPayload); }
+    
+      function clearForm(){
+        form.reset();
+        methodInput.value = 'POST';
+        form.action = '/admin/countries';
+        titleEl.textContent = 'Create Country Regulation';
+    
+        originReqList.innerHTML = '';
+        officialLinksList.innerHTML = '';
+        petTabs.innerHTML = '';
+        petPanelsEl.innerHTML = '';
+        PETS = [];
+        KEYMAP = {};
+      }
+    
+      function fillPetPanel(pet, data){
+        const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${pet}"]`);
+        if (!panel || !data) return;
+        panel.querySelector('[data-field="microchip"]').value = data.microchip || '';
+        panel.querySelector('[data-field="moreInfo"]').value  = data.moreInfo  || '';
+    
+        const vax = data.vaccinations || {};
+        Object.keys(vax).forEach(name => addVaxRow(panel, { name, description: vax[name].description || '', requirements: vax[name].requirements || [] }));
+        const certs = data.certifications || {};
+        Object.keys(certs).forEach(name => addCertRow(panel, { name, description: certs[name].description || '', requirements: certs[name].requirements || [] }));
+        (data.links || []).forEach(l => addPetLinkRow(panel, l));
+      }
+    
+      async function openEdit(id){
+        if (!ensureModal()) return;
+        clearForm();
+        try {
+          const res = await fetch(`/admin/countries/${id}`, { headers: { 'Accept': 'application/json' } });
+          if (!res.ok) { alert('Failed to load country'); return; }
+          const data = await res.json();
+    
+          form.querySelector('[name="destinationCountry"]').value = data.destinationCountry || '';
+    
+          // Add keys exactly as in DB first (preserve casing)
+          const regs = data.regulationsByPetType || {};
+          const keys = Object.keys(regs);
+          keys.forEach(k => addPetTypeIfMissing(k));
+          // Then fill panels using slug to target the DOM
+          keys.forEach(k => fillPetPanel(slug(k), regs[k]));
+    
+          const origins = data.originRequirements || {};
+          Object.keys(origins).forEach(k => {
+            addOriginReqRow({ key: k, appliesTo: origins[k].appliesTo || [], details: origins[k].details || '' });
+          });
+    
+          (data.officialLinks || []).forEach(l => addOfficialLinkRow(l));
+    
+          methodInput.value = 'PUT';
+          form.action = `/admin/countries/${id}?_method=PUT`;
+          titleEl.textContent = `Edit: ${data.destinationCountry || ''}`;
+    
+          if (keys.length) selectPet(slug(keys[0])); else seedDefaults();
+          modal.show();
+        } catch (e) {
+          console.error(e); alert('Error loading country.');
+        }
+      }
+    
+      function openCreate(){
+        if (!ensureModal()) return;
+        clearForm();
+        seedDefaults();
+        modal.show();
+      }
+    
+      function esc(s=''){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    
+      return { openEdit, openCreate };
+    })();
+    </script>
+    
+
+</section>
+
+<!-- Create/Edit Modal (place at bottom of page) -->
+<div class="modal fade" id="airlineModal" tabindex="-1" aria-labelledby="airlineModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <form class="modal-content" id="airlineForm" method="post" action="/admin/airlines">
+      <input type="hidden" name="_method" id="airlineFormMethod" value="POST">
+      <div class="modal-header">
+        <h5 class="modal-title" id="airlineModalLabel">Create Airline</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Name *</label>
+            <input class="form-control" name="name" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">IATA Code *</label>
+            <input class="form-control" name="airlineCode" maxlength="3" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Slug</label>
+            <input class="form-control" name="slug" placeholder="auto if blank">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Website</label>
+            <input class="form-control" name="airlineURL" placeholder="https://...">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Pet Policy URL</label>
+            <input class="form-control" name="petPolicyURL" placeholder="https://...">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Logo URL</label>
+            <input class="form-control" name="logo" placeholder="https://...">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Microchip?</label>
+            <select class="form-select" name="microchip">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Health Certificate?</label>
+            <select class="form-select" name="healthCertificate">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Service Animals Allowed?</label>
+            <select class="form-select" name="serviceAnimals">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Emotional Support Animals?</label>
+            <select class="form-select" name="esAnimals">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">In Cabin?</label>
+            <select class="form-select" name="inCompartment">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">In Cargo?</label>
+            <select class="form-select" name="inCargo">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Pet Policy Summary</label>
+            <textarea class="form-control" name="PetPolicySummary" rows="2"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Improved Policy Summary (HTML)</label>
+            <textarea class="form-control" name="ImprovedPetPolicySummary" rows="3"></textarea>
+          </div>
+
+          <!-- Animals & details -->
+          <div class="col-md-6">
+            <label class="form-label">Allowed in Cabin (Animals)</label>
+            <select class="form-select" name="inCompartmentAnimals" multiple>
+              <option>Cat</option><option>Dog</option><option>Bird</option><option>Reptile</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Allowed in Cargo (Animals)</label>
+            <select class="form-select" name="inCargoAnimals" multiple>
+              <option>Cat</option><option>Dog</option><option>Bird</option><option>Reptile</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Cabin Details</label>
+            <textarea class="form-control" name="inCompartmentDetails" rows="2"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Cargo Details</label>
+            <textarea class="form-control" name="inCargoDetails" rows="2"></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Dangerous Breeds?</label>
+            <select class="form-select" name="dangerousBreeds">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+            <small class="text-muted">If yes, fill list below.</small>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Brachycephalic Restricted?</label>
+            <select class="form-select" name="brachycephalic">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+            <small class="text-muted">If yes, fill list below.</small>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Dangerous Breed List</label>
+            <textarea class="form-control" name="dangerousBreedList" rows="2"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Brachycephalic Breed List</label>
+            <textarea class="form-control" name="brachycephalicBreedList" rows="2"></textarea>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Carrier (Cargo) Details</label>
+            <textarea class="form-control" name="carrierCargoDetails" rows="2"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Carrier (Cabin) Details</label>
+            <textarea class="form-control" name="carrierCompartmentDetails" rows="2"></textarea>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">ESA Details</label>
+            <textarea class="form-control" name="esaDetails" rows="2"></textarea>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Health Vaccinations</label>
+            <select class="form-select" name="healthVaccinations" multiple>
+              <option>Rabies</option>
+              <option>Internal/External parasites</option>
+              <option>Distemper</option>
+              <option>Adenovirus</option>
+              <option>Parvovirus</option>
+              <option>Parainfluenza</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+    (function(){
+      const input = document.getElementById('airlineSearch');
+      if (input) {
+        input.addEventListener('change', function(){
+          // submit as soon as the user picks a datalist option
+          if (this.form) this.form.submit();
+        });
+      }
+    })();
+  </script>
+  
+<script>
+    const AdminAirlines = (function(){
+      let modal, modalEl, form, methodInput, titleEl;
+  
+      const YES_NO_FIELDS = [
+        'microchip',
+        'healthCertificate',
+        'serviceAnimals',
+        'esAnimals',
+        'inCompartment',
+        'inCargo',
+        'dangerousBreeds',
+        'brachycephalic'
+      ];
+  
+      function normalizeYesNo(v) {
+        if (v === true) return 'yes';
+        if (v === false) return 'no';
+        if (typeof v === 'string') {
+          const s = v.trim().toLowerCase();
+          if (['yes','y','true','1'].includes(s)) return 'yes';
+          if (['no','n','false','0'].includes(s)) return 'no';
+        }
+        return v; // return as-is if unknown
+      }
+  
+      function ensureModal() {
+        if (!modalEl) {
+          modalEl = document.getElementById('airlineModal');
+          form = document.getElementById('airlineForm');
+          methodInput = document.getElementById('airlineFormMethod');
+          titleEl = document.getElementById('airlineModalLabel');
+        }
+        if (!window.bootstrap || !bootstrap.Modal) {
+          console.error('Bootstrap Modal missing. Include bootstrap.bundle.min.js');
+          alert('Editor unavailable: missing Bootstrap JS.');
+          return false;
+        }
+        if (!modal) modal = new bootstrap.Modal(modalEl);
+        return true;
+      }
+  
+      function clearForm() {
+        form.reset();
+        methodInput.value = 'POST';
+        form.action = '/admin/airlines';
+        titleEl.textContent = 'Create Airline';
+      }
+  
+      function setControlValue(el, value) {
+        if (!el) return;
+  
+        // yes/no normalization for single selects
+        if (el.tagName === 'SELECT' && !el.multiple && YES_NO_FIELDS.includes(el.name)) {
+          value = normalizeYesNo(value);
+        }
+  
+        if (el.tagName === 'SELECT' && el.multiple) {
+          const arr = Array.isArray(value) ? value : [];
+          Array.from(el.options).forEach(opt => {
+            opt.selected = arr.includes(opt.value);
+          });
+          return;
+        }
+  
+        // If undefined/null, leave the control alone (prevents overwriting with blank)
+        if (value === undefined || value === null) return;
+  
+        el.value = value;
+      }
+  
+      function fillForm(data) {
+        const fields = [
+          'name','airlineCode','slug','airlineURL','petPolicyURL','logo',
+          'microchip','healthCertificate','serviceAnimals','esAnimals',
+          'inCompartment','inCargo',
+          'PetPolicySummary','ImprovedPetPolicySummary',
+          'inCompartmentAnimals','inCargoAnimals',
+          'inCompartmentDetails','inCargoDetails',
+          'dangerousBreeds','brachycephalic',
+          'dangerousBreedList','brachycephalicBreedList',
+          'carrierCargoDetails','carrierCompartmentDetails',
+          'esaDetails','healthVaccinations'
+        ];
+  
+        fields.forEach(name => {
+          const el = form.querySelector(`[name="${name}"]`);
+          if (!el) return;
+          setControlValue(el, data[name]);
+        });
+      }
+  
+      async function openEdit(id) {
+        if (!ensureModal()) return;
+        clearForm();
+  
+        try {
+          const res = await fetch(`/admin/airlines/${id}`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!res.ok) {
+            console.error('Fetch failed', res.status);
+            alert('Could not load airline for edit.');
+            return;
+          }
+          const data = await res.json();
+  
+          fillForm(data);
+  
+          // method-override (hidden + query param)
+          methodInput.value = 'PUT';
+          form.action = `/admin/airlines/${id}?_method=PUT`;
+  
+          titleEl.textContent = `Edit Airline: ${data.name || ''}`;
+          modal.show();
+        } catch (e) {
+          console.error(e);
+          alert('Unexpected error loading airline.');
+        }
+      }
+  
+      function openCreate() {
+        if (!ensureModal()) return;
+        clearForm();
+  
+        // For CREATE, give useful defaults:
+        YES_NO_FIELDS.forEach(name => {
+          const el = form.querySelector(`[name="${name}"]`);
+          if (el) el.value = 'no';
+        });
+        ['inCompartmentAnimals','inCargoAnimals','healthVaccinations'].forEach(name => {
+          const el = form.querySelector(`[name="${name}"]`);
+          if (el && el.tagName === 'SELECT' && el.multiple) {
+            Array.from(el.options).forEach(opt => opt.selected = false);
+          }
+        });
+  
+        modal.show();
+      }
+  
+      return { openEdit, openCreate };
+    })();
+  </script>

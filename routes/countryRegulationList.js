@@ -30,51 +30,96 @@ router.get('/getCountryRegulationList', async (req, res) => {
 });
 
   
-
 router.get('/country/:country', async (req, res) => {
   try {
     const country = req.params.country;
-    const selectedPetType = req.query.petType;
+    const selectedPetTypeRaw = req.query.petType || '';
 
     const regulations = await CountryRegulation.findOne({ destinationCountry: country }).lean();
-
     if (!regulations) return res.status(404).send('Country regulations not found.');
 
+    // --- helpers ---
+    const slugKey = s => String(s || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    // Strip any transient keys (your existing cleanup)
     if (typeof regulations.regulationsByPetType === 'object') {
       regulations.regulationsByPetType = Object.fromEntries(
         Object.entries(regulations.regulationsByPetType).filter(([key]) => !key.startsWith('$_'))
       );
     }
 
-    const safeCountry = regulations.destinationCountry;
-    const defaultPet = Object.keys(regulations.regulationsByPetType)[0];
-    const petType = selectedPetType || defaultPet;
+    // Build a slug->originalKey map so we can select by pretty names or slugs
+    const petEntries = Object.entries(regulations.regulationsByPetType || {});
+    if (petEntries.length === 0) {
+      return res.status(404).send('No pet types available for this country.');
+    }
+    const petSlugToKey = {};
+    petEntries.forEach(([k]) => { petSlugToKey[slugKey(k)] = k; });
 
-    const pageUrl = `https://www.petvoyage.ai/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(petType)}`;
+    // Resolve requested pet; fall back to first
+    const requestedSlug = slugKey(selectedPetTypeRaw) || slugKey(petEntries[0][0]);
+    const petKey = petSlugToKey[requestedSlug] || petEntries[0][0];
+
+    // Per-pet details for your cards
+    const details = regulations.regulationsByPetType[petKey] || {};
+
+    // Filter origin requirements by appliesTo (match on slug)
+    const originReqs = [];
+    const allOrigin = regulations.originRequirements || {};
+    for (const [key, val] of Object.entries(allOrigin)) {
+      const list = Array.isArray(val.appliesTo) ? val.appliesTo.map(slugKey) : [];
+      const applies = list.length === 0 || list.includes(slugKey(petKey));
+      if (applies) {
+        originReqs.push({
+          key,
+          details: val.details || '',
+          appliesTo: list
+        });
+      }
+    }
+
+    const safeCountry = regulations.destinationCountry;
+    const pageUrl = `https://www.petvoyage.ai/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(petKey)}`;
 
     const seoData = {
       regulations,
-      selectedPetType: petType || '',
-      title: `Pet Travel Requirements for ${safeCountry} - ${petType}`,
-      metaDescription: `Explore ${petType} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
-      metaKeywords: `${safeCountry} pet travel ${petType}, import ${petType} ${safeCountry}, ${safeCountry} pet rules, travel with ${petType}, pet documentation ${safeCountry}`,
-      ogTitle: `Pet Import Regulations for ${safeCountry} - ${petType}`,
-      ogDescription: `Get pet import/export regulations for ${petType}s traveling to ${safeCountry}.`,
+      // for UI controls (tabs/dropdowns)
+      petTypes: petEntries.map(([k]) => ({ key: k, slug: slugKey(k) })),
+      selectedPetType: petKey,
+
+      // NEW: what your EJS cards need
+      details,
+      originReqs,
+
+      title: `Pet Travel Requirements for ${safeCountry} - ${petKey}`,
+      metaDescription: `Explore ${petKey} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
+      metaKeywords: `${safeCountry} pet travel ${petKey}, import ${petKey} ${safeCountry}, ${safeCountry} pet rules, travel with ${petKey}, pet documentation ${safeCountry}`,
+      ogTitle: `Pet Import Regulations for ${safeCountry} - ${petKey}`,
+      ogDescription: `Get pet import/export regulations for ${petKey}s traveling to ${safeCountry}.`,
       ogUrl: pageUrl,
       ogImage: '/images/pet-travel-map.jpg',
-      twitterTitle: `Bringing Your ${petType} to ${safeCountry}?`,
-      twitterDescription: `Learn the latest ${petType} travel requirements for ${safeCountry}.`
+      twitterTitle: `Bringing Your ${petKey} to ${safeCountry}?`,
+      twitterDescription: `Learn the latest ${petKey} travel requirements for ${safeCountry}.`
     };
-    
-    console.log("[SEO] Rendering showCountry with:", seoData);
-    
+
+    console.log("[SEO] Rendering showCountry with:", {
+      country: safeCountry,
+      selectedPetType: petKey,
+      petTypes: seoData.petTypes.map(p => p.key),
+      originReqsCount: originReqs.length
+    });
+
     res.render('regulations/showCountry', seoData);
-    
   } catch (err) {
     console.error("[ERROR] Failed to fetch country regulation:", err);
     res.status(500).send("Server Error");
   }
 });
+
 
 
   
