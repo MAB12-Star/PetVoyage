@@ -283,52 +283,100 @@ document.addEventListener("click", function (e) {
 </div>
 
 
-  <!-- Airline Cards -->
-  <div class="row" id="airlineList">
-    <% airlines.forEach(airline => { %>
-      <div 
-        class="col-md-6 col-lg-4 mb-4 airline-card"
-        data-incompartment="<%= typeof airline.inCompartment === 'string' && airline.inCompartment.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-incargo="<%= typeof airline.inCargo === 'string' && airline.inCargo.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-petshipping="<%= typeof airline.petShipping === 'string' && airline.petShipping.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-serviceanimals="<%= typeof airline.serviceAnimals === 'string' && airline.serviceAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-esanimals="<%= typeof airline.esAnimals === 'string' && airline.esAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-brachycephalic="<%= typeof airline.brachycephalic === 'string' && airline.brachycephalic.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-dangerous="<%= typeof airline.dangerousBreeds === 'string' && airline.dangerousBreeds.toLowerCase() === 'no' ? 'true' : 'false' %>"
-      >
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title fw-bold fs-4">
-              <div class="col-md-3 position-relative">
-                <% if (airline.logo) { %>
-                  <img src="<%= airline.logo %>" 
-                       alt="<%= airline.name %> Logo" 
-                       class="img-fluid rounded-start airline-logo float-start me-3 mb-3">
-                <% } else { %>
-                  <i class="fa fa-plane fa-3x" aria-hidden="true"></i>
-                <% } %>
-              </div>
-              <span><%= airline.name %> Pet Travel Policy</span>
-            </h5>
-            
-            
-            <p class="card-text small">
-              <%= airline.name %> allows pets to travel 
-              <%= airline.inCompartment === 'Yes' ? 'in the cabin' : '' %>
-              <%= airline.inCompartment === 'Yes' && airline.inCargo === 'Yes' ? ' and ' : '' %>
-              <%= airline.inCargo === 'Yes' ? 'in the cargo hold' : '' %>.
-              <%= airline.petShipping === 'Yes' ? ' They also offer pet shipping services.' : '' %>
-              <%= airline.serviceAnimals === 'Yes' ? ' Service animals are permitted.' : '' %>
-              <%= airline.esAnimals === 'Yes' ? ' ESA animals may be accepted under certain conditions.' : '' %>
-            </p>
-            
-            <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">View Policy</a>
-          </div>
+ 
+<!-- Airline Cards -->
+<% let uniqueAirlineIndex = 0; %>
+<div class="row" id="airlineList">
+  <% airlines.forEach(airline => { %>
+    <div 
+      class="col-md-6 col-lg-4 mb-4 airline-card"
+      data-incompartment="<%= typeof airline.inCompartment === 'string' && airline.inCompartment.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+      data-incargo="<%= typeof airline.inCargo === 'string' && airline.inCargo.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+      data-petshipping="<%= typeof airline.petShipping === 'string' && airline.petShipping.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+      data-serviceanimals="<%= typeof airline.serviceAnimals === 'string' && airline.serviceAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+      data-esanimals="<%= typeof airline.esAnimals === 'string' && airline.esAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+      data-brachycephalic="<%= typeof airline.brachycephalic === 'string' && airline.brachycephalic.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+      data-dangerous="<%= typeof airline.dangerousBreeds === 'string' && airline.dangerousBreeds.toLowerCase() === 'no' ? 'true' : 'false' %>"
+    >
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title fw-bold fs-4">
+            <div class="col-md-3 position-relative">
+              <% if (airline.logo) { %>
+                <img src="<%= airline.logo %>" 
+                     alt="<%= airline.name %> Logo" 
+                     class="img-fluid rounded-start airline-logo float-start me-3 mb-3">
+              <% } else { %>
+                <i class="fa fa-plane fa-3x" aria-hidden="true"></i>
+              <% } %>
+            </div>
+            <span><%= airline.name %> Pet Travel Policy</span>
+          </h5>
+
+          <p class="card-text small">
+            <%= airline.name %> allows pets to travel 
+            <%= airline.inCompartment === 'Yes' ? 'in the cabin' : '' %>
+            <%= airline.inCompartment === 'Yes' && airline.inCargo === 'Yes' ? ' and ' : '' %>
+            <%= airline.inCargo === 'Yes' ? 'in the cargo hold' : '' %>.
+            <%= airline.petShipping === 'Yes' ? ' They also offer pet shipping services.' : '' %>
+            <%= airline.serviceAnimals === 'Yes' ? ' Service animals are permitted.' : '' %>
+            <%= airline.esAnimals === 'Yes' ? ' ESA animals may be accepted under certain conditions.' : '' %>
+          </p>
+
+          <% if (airline.inCompartmentAnimals && airline.inCompartmentAnimals.length > 0) { %>
+            <div class="">
+              <p class="card-text">In Compartment Option:<strong> <%= airline.inCompartmentAnimals.join(", ") %></strong></p>
+            </div>
+            <% } %>
+          
+          
+          <% if (airline.inCargoAnimals && airline.inCargoAnimals.length > 0) { %>
+            <div class="">
+              <p class="card-text">In Cargo Option:<strong> <%= airline.inCargoAnimals.join(", ") %></strong></p>
+            </div>
+            <% } %>
+
+            <% if (airline.petShipping !== undefined) { %>
+                <div class="">
+                  <p class="card-text">Pet Shipping Available:<strong> <%= airline.petShipping %></strong></p>
+                </div>
+              <% } %>
+              
+            <p class="card-text">Microchip Required:<strong> <%= airline.microchip %></strong></p>
+            <p class="card-text">HealthCertificate Required:<strong> <%= airline.healthCertificate %></strong></p>
+            <p class="card-text">Health Vaccinations Needed:<strong> <%= airline.healthVaccinations.join(", ") %></strong></p>
+
+          <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">View Policy</a>
         </div>
       </div>
-    <% }) %>
-  </div>
+    </div>
+
+    <% 
+      // After each airline, possibly insert an ad tile
+      uniqueAirlineIndex++; 
+      if (uniqueAirlineIndex % 2 === 0) { 
+        const adPartials = [
+      
+          '../partials/ads/taxiAd',
+          '../partials/ads/conciergeAd',
+        ];
+        const randomAd = adPartials[Math.floor(Math.random() * adPartials.length)];
+    %>
+      <!-- Mobile-only in-grid ad (full width on mobile) -->
+      <div class="col-12 mb-4 d-md-none ad-tile">
+        <%- include(randomAd, { uid: 'm-' + uniqueAirlineIndex, placement: 'grid-mobile' }) %>
+      </div>
+
+      <% if (uniqueAirlineIndex % 6 === 0) { %>
+        <!-- Desktop/tablet in-grid ad (same column sizing as cards) -->
+        <div class="col-md-6 col-lg-4 mb-4 d-none d-md-block ad-tile">
+          <%- include(randomAd, { uid: 'd-' + uniqueAirlineIndex, placement: 'grid-desktop' }) %>
+        </div>
+      <% } %>
+    <% } %>
+  <% }) %>
 </div>
+
 <div class="row mb-4 justify-content-center">
   <div class="col-md-12 text-center">
     <div class="d-flex flex-wrap justify-content-center gap-3" id="filter-icons">

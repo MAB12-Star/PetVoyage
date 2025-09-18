@@ -1,0 +1,282 @@
+<%
+  // Safe fallbacks without shadowing passed locals
+  var _uid       = (typeof uid !== 'undefined' && uid) ? uid : Math.random().toString(36).slice(2, 8);
+  var _placement = (typeof placement !== 'undefined' && placement) ? placement : 'right-rail';
+  var _pageUrl   = (typeof pageUrl !== 'undefined' && pageUrl) ? pageUrl : '';
+%>
+
+<!-- Pet Concierge Ad -->
+<div class="card shadow-sm border-0 mb-3 concierge-ad" id="concierge-ad-<%= _uid %>">
+  <div class="card-body text-center">
+    <div class="text-muted small mb-1">Sponsored</div>
+    <img src="/images/petConcierge.png"
+         alt="Pet Travel Concierge"
+         class="img-fluid mb-2"
+         style="max-height:160px;object-fit:contain">
+    <h5 class="card-title mb-1">Pet Travel Concierge</h5>
+    <p class="card-text small text-muted mb-3">
+      Full-service help with flights, paperwork, and ground transport.
+    </p>
+    <button type="button"
+            class="btn btn-primary w-100"
+            data-bs-toggle="modal"
+            data-bs-target="#conciergeAdModal-<%= _uid %>">
+      Request Concierge Help
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="conciergeAdModal-<%= _uid %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form class="modal-content" id="concierge-ad-form-<%= _uid %>">
+      <div class="modal-header">
+        <h5 class="modal-title">Pet Travel Concierge Request</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- hidden/meta fields sent to EmailJS -->
+        <input type="hidden" name="subject" value="Pet Concierge Request via PetVoyage">
+        <input type="hidden" name="request_type" value="concierge">
+        <input type="hidden" name="ad_placement" value="<%= _placement %>">
+        <input type="hidden" name="page_url" value="<%= _pageUrl %>">
+
+        <!-- Contact -->
+        <fieldset class="mb-3">
+          <legend class="h6 mb-2">Your Info</legend>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <label class="form-label">Name</label>
+              <input class="form-control" name="name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input class="form-control" type="email" name="email" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone (optional)</label>
+              <input class="form-control" type="tel" name="phone">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Trip -->
+        <fieldset class="mb-3">
+          <legend class="h6 mb-2">Trip Details</legend>
+          <div class="row g-2">
+            <div class="col-md-4">
+              <label class="form-label">Trip type</label>
+              <select class="form-select" name="trip_type" id="trip-type-<%= _uid %>">
+                <option value="one-way">One-way</option>
+                <option value="round-trip">Round trip</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">From (city/airport)</label>
+              <input class="form-control" name="from_location" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">To (city/airport)</label>
+              <input class="form-control" name="to_location" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Depart date & time</label>
+              <input class="form-control" type="datetime-local" name="depart_dt" required>
+            </div>
+            <div class="col-md-6" id="return-wrap-<%= _uid %>" style="display:none">
+              <label class="form-label">Return date & time</label>
+              <input class="form-control" type="datetime-local" name="return_dt">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Airline preference (optional)</label>
+              <input class="form-control" name="airline_pref">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Passengers (optional)</label>
+              <input class="form-control" type="number" name="passengers" min="1" step="1" placeholder="1">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Pet -->
+        <fieldset class="mb-3">
+          <legend class="h6 mb-2">Pet Details</legend>
+          <div class="row g-2">
+            <div class="col-md-4">
+              <label class="form-label">Pet type</label>
+              <select class="form-select" name="pet_type" required>
+                <option>Dog</option>
+                <option>Cat</option>
+                <option>Bird</option>
+                <option>Reptile</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Breed (optional)</label>
+              <input class="form-control" name="pet_breed">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Pet name (optional)</label>
+              <input class="form-control" name="pet_name">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Pet count</label>
+              <input class="form-control" type="number" name="pet_count" min="1" step="1" value="1" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Weight</label>
+              <div class="input-group">
+                <input class="form-control" type="number" name="pet_weight_value" min="0" step="0.1" required>
+                <select class="form-select" name="pet_weight_unit">
+                  <option>kg</option>
+                  <option>lb</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Crate size</label>
+              <select class="form-select" name="crate_size">
+                <option value="">Select…</option>
+                <option>Small (S)</option>
+                <option>Medium (M)</option>
+                <option>Large (L)</option>
+                <option>XL (500)</option>
+                <option>Giant (700)</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Service animal?</label>
+              <select class="form-select" name="service_animal">
+                <option>No</option>
+                <option>Yes</option>
+              </select>
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Special considerations (brachycephalic, young, etc.)</label>
+              <input class="form-control" name="pet_special">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Services -->
+        <fieldset class="mb-3">
+          <legend class="h6 mb-2">Services Needed</legend>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="svc_documents" id="svc-docs-<%= _uid %>">
+                <label class="form-check-label" for="svc-docs-<%= _uid %>">Paperwork & compliance guidance</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="svc_vet" id="svc-vet-<%= _uid %>">
+                <label class="form-check-label" for="svc-vet-<%= _uid %>">Vet health certificate coordination</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="svc_customs" id="svc-customs-<%= _uid %>">
+                <label class="form-check-label" for="svc-customs-<%= _uid %>">Customs / import permit help</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="svc_ground" id="svc-ground-<%= _uid %>">
+                <label class="form-check-label" for="svc-ground-<%= _uid %>">Door-to-door ground transport</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="svc_meet" id="svc-meet-<%= _uid %>">
+                <label class="form-check-label" for="svc-meet-<%= _uid %>">Airport meet & greet / handoff</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="svc_boarding" id="svc-boarding-<%= _uid %>">
+                <label class="form-check-label" for="svc-boarding-<%= _uid %>">Boarding / layover care</label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="mb-2">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" rows="3" name="message" placeholder="Anything else we should know?"></textarea>
+        </div>
+
+        <div class="alert alert-success d-none" id="concierge-ad-success-<%= _uid %>">
+          Thanks! We received your request and will contact you shortly.
+        </div>
+        <div class="alert alert-danger d-none" id="concierge-ad-error-<%= _uid %>">
+          Message failed to send. Please try again.
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+        <button class="btn btn-primary" type="submit">Send Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Load EmailJS once globally
+  function initEmailJS() {
+    if (!window.__emailjsReady && window.emailjs) {
+      emailjs.init("UHaN3VH7ImUFuXgUm"); // your EmailJS public key
+      window.__emailjsReady = true;
+    }
+  }
+  if (!window.emailjs) {
+    var s = document.createElement('script');
+    s.src = "https://cdn.emailjs.com/dist/email.min.js";
+    s.onload = initEmailJS;
+    document.head.appendChild(s);
+  } else {
+    initEmailJS();
+  }
+
+  // Round-trip return date toggle
+  var tripSel = document.getElementById('trip-type-<%= _uid %>');
+  var retWrap = document.getElementById('return-wrap-<%= _uid %>');
+  function toggleReturn() {
+    retWrap.style.display = (tripSel.value === 'round-trip') ? '' : 'none';
+  }
+  tripSel.addEventListener('change', toggleReturn);
+  toggleReturn();
+
+  // Form send
+  var form   = document.getElementById('concierge-ad-form-<%= _uid %>');
+  var okBox  = document.getElementById('concierge-ad-success-<%= _uid %>');
+  var errBox = document.getElementById('concierge-ad-error-<%= _uid %>');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var btn = form.querySelector('button[type="submit"]');
+    var old = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = 'Sending…';
+
+    function doSend() {
+      // Reuse your existing EmailJS service/template IDs
+      emailjs.sendForm('service_ltmu6l5', 'template_bag17hw', form)
+        .then(function() {
+          okBox.classList.remove('d-none');
+          errBox.classList.add('d-none');
+          form.reset();
+          toggleReturn(); // reset return visibility
+        })
+        .catch(function() {
+          errBox.classList.remove('d-none');
+          okBox.classList.add('d-none');
+        })
+        .finally(function() {
+          btn.disabled = false; btn.innerHTML = old;
+        });
+    }
+    if (window.__emailjsReady) doSend();
+    else setTimeout(doSend, 400);
+  });
+})();
+</script>

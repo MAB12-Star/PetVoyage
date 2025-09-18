@@ -1,0 +1,141 @@
+<%
+  // Safe fallbacks without shadowing passed locals
+  var _uid       = (typeof uid !== 'undefined' && uid) ? uid : Math.random().toString(36).slice(2, 8);
+  var _placement = (typeof placement !== 'undefined' && placement) ? placement : 'right-rail';
+  var _pageUrl   = (typeof pageUrl !== 'undefined' && pageUrl) ? pageUrl : '';
+%>
+
+<!-- Taxi Service Ad -->
+<div class="card shadow-sm border-0 mb-3 taxi-ad" id="taxi-ad-<%= _uid %>">
+  <div class="card-body text-center">
+    <div class="text-muted small mb-1">Sponsored</div>
+    <img src="/images/taxiserviceAd.png"
+         alt="Pet-friendly airport taxi"
+         class="img-fluid mb-2"
+         style="max-height:160px;object-fit:contain">
+    <h5 class="card-title mb-1">Pet-Friendly Airport Taxi</h5>
+    <p class="card-text small text-muted mb-3">
+      Book a safe, pet-approved ride to or from the airport.
+    </p>
+    <button type="button"
+            class="btn btn-warning w-100"
+            data-bs-toggle="modal"
+            data-bs-target="#taxiAdModal-<%= _uid %>">
+      Request Pickup
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="taxiAdModal-<%= _uid %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="taxi-ad-form-<%= _uid %>">
+      <div class="modal-header">
+        <h5 class="modal-title">Request Airport Taxi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- hidden/meta fields sent to EmailJS -->
+        <input type="hidden" name="subject" value="Airport Taxi Request via PetVoyage">
+        <input type="hidden" name="ad_placement" value="<%= _placement %>">
+        <input type="hidden" name="page_url" value="<%= _pageUrl %>">
+
+        <div class="mb-2">
+          <label class="form-label">Your name</label>
+          <input class="form-control" name="name" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Email</label>
+          <input class="form-control" type="email" name="email" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Phone (optional)</label>
+          <input class="form-control" type="tel" name="phone">
+        </div>
+
+        <div class="row">
+          <div class="col-12 mb-2">
+            <label class="form-label">Pickup location / city</label>
+            <input class="form-control" name="pickup_location" required>
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Pickup date & time</label>
+            <input class="form-control" type="datetime-local" name="pickup_dt" required>
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Airline / flight #</label>
+            <input class="form-control" name="flight">
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label">Notes (pets, crates, etc.)</label>
+          <textarea class="form-control" rows="3" name="message"></textarea>
+        </div>
+
+        <div class="alert alert-success d-none" id="taxi-ad-success-<%= _uid %>">
+          Thanks! We received your request and will contact you shortly.
+        </div>
+        <div class="alert alert-danger d-none" id="taxi-ad-error-<%= _uid %>">
+          Message failed to send. Please try again.
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+        <button class="btn btn-primary" type="submit">Send Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  function initEmailJS() {
+    if (!window.__emailjsReady && window.emailjs) {
+      emailjs.init("UHaN3VH7ImUFuXgUm"); // your EmailJS public key
+      window.__emailjsReady = true;
+    }
+  }
+
+  if (!window.emailjs) {
+    var s = document.createElement('script');
+    s.src = "https://cdn.emailjs.com/dist/email.min.js";
+    s.onload = initEmailJS;
+    document.head.appendChild(s);
+  } else {
+    initEmailJS();
+  }
+
+  var form   = document.getElementById('taxi-ad-form-<%= _uid %>');
+  var okBox  = document.getElementById('taxi-ad-success-<%= _uid %>');
+  var errBox = document.getElementById('taxi-ad-error-<%= _uid %>');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var btn = form.querySelector('button[type="submit"]');
+    var old = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = 'Sending…';
+
+    function doSend() {
+      emailjs.sendForm('service_ltmu6l5', 'template_bag17hw', form)
+        .then(function() {
+          okBox.classList.remove('d-none');
+          errBox.classList.add('d-none');
+          form.reset();
+        })
+        .catch(function() {
+          errBox.classList.remove('d-none');
+          okBox.classList.add('d-none');
+        })
+        .finally(function() {
+          btn.disabled = false; btn.innerHTML = old;
+        });
+    }
+
+    if (window.__emailjsReady) doSend();
+    else setTimeout(doSend, 400);
+  });
+})();
+</script>

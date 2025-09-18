@@ -291,12 +291,15 @@
                         
                                 <% displayedAirlines.add(airline); %>
                                 <% uniqueAirlineIndex++; %>
-                                <% if (uniqueAirlineIndex % 3 === 0) { %>
+                                <% if (uniqueAirlineIndex % 2 === 0) { %>
                                   <% 
                                     const adPartials = [
                                       '../partials/ads/petCarrier',
                                       '../partials/ads/calmingOil',
-                                      '../partials/ads/petCarrierCat',
+                                      '../partials/ads/taxiAd',
+                                      '../partials/ads/conciergeAd',
+                                   
+                                     
                          
                                     ];
                                     const randomAd = adPartials[Math.floor(Math.random() * adPartials.length)];
@@ -316,8 +319,10 @@
         </div>
         <div class="col-md-4 d-none d-md-block">
           <%- include('../partials/ads/petCarrier') %>
+          <%- include('../partials/ads/taxiAd') %>   
           <%- include('../partials/ads/calmingOil') %>
-          <%- include('../partials/ads/petCarrierCat') %>
+          <%- include('../partials/ads/conciergeAd') %>
+        
         
           <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
             <%- include('../partials/toDoList') %>
