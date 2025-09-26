@@ -91,6 +91,10 @@
       <small>Blog</small>
     </a>
   </div>
+  <div class="container py-4">
+    <%- include('partials/chatGPTIndex', { idSuffix: 'home' }) %>
+  </div>
+
 
   <!-- Mobile nav buttons (compact) -->
   <div class="d-flex d-md-none justify-content-between text-center mt-3 px-2">
@@ -198,6 +202,7 @@
   <div class="sticky-lg-top" style="top:1.5rem">
     <div class="card border-0 shadow-sm">
       <div class="card-body p-3">
+
         <%- include('./partials/toDoList') %>
       </div>
     </div>
@@ -210,32 +215,7 @@
 
 
 
-<!-- Floating AI Chat Button -->
-<button id="ai-chat-button" class="btn btn-primary rounded-circle" data-bs-toggle="tooltip" title="Press here to ask AI" style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
-  <i class="bi bi-stars fs-1"></i> 
-</button>
 
-<!-- AI Chat Pop-out Form -->
-<div id="ai-chat-popup" class="ai-chat-popup" style="position: fixed; bottom: 90px; right: 20px; z-index: 999; display: none;">
-  <div class="card border-secondary shadow-lg p-3 bg-white rounded" style="width: 350px;">
-    <div class="card-body">
-      <h4 class="text-center text-secondary-emphasis mb-4"><strong>Ask Pet AI</strong></h4>
-      <form id="ask-question-form">
-        <div class="form-group">
-          <label for="user_question">Your Question</label>
-          <input type="text" class="form-control" id="user_question" name="user_question" placeholder="Ask about pet regulations..." required>
-        </div>
-        <div class="form-group text-center mt-3">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-      <div id="ai-answer-container" class="ai-answer-container mt-4" style="display: none;">
-        <h5 class="text-secondary"><strong>AI's Answer:</strong></h5>
-        <div id="ai-answer" class="ai-answer border p-2 rounded bg-light"></div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Scripts -->
 <script>

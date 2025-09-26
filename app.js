@@ -30,6 +30,8 @@ const blog = require('./routes/blog');
 const findAVet = require('./routes/findAVet');
 // top with other routes
 const adminRoutes = require('./routes/admin');
+const aiRoutes = require('./routes/ai');
+
 
 
 
@@ -56,13 +58,28 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // 🔁 SEO Redirect from non-www to www
+// 1) Let Express trust X-Forwarded-* from Nginx/ALB
+app.set('trust proxy', true);
+
+// 2) Normalize scheme + host to a single canonical: https://www.petvoyage.ai
 app.use((req, res, next) => {
-    const host = req.headers.host;
-    if (host === 'petvoyage.ai') {
-        return res.redirect(301, `https://www.petvoyage.ai${req.originalUrl}`);
-    }
-    next();
+  const desiredHost = 'www.petvoyage.ai';
+  const isHttps = req.secure || (req.headers['x-forwarded-proto'] === 'https');
+  const host = req.headers.host;
+
+  if (!isHttps || host !== desiredHost) {
+    return res.redirect(301, `https://${desiredHost}${req.originalUrl}`);
+  }
+  next();
 });
+
+// 3) Provide a guaranteed-HTTPS canonical URL to all views
+app.use((req, res, next) => {
+  res.locals.safeOgUrl = `https://www.petvoyage.ai${req.originalUrl}`;
+  next();
+});
+
+  
 
 // 📦 Session config
 const sessionConfig = {
@@ -98,6 +115,7 @@ app.use((req, res, next) => {
 app.use(toDoListMiddleware);
 
 // 🛣 Routes
+app.use('/ai', aiRoutes); // AI route near the top
 app.use('/', auth);
 app.use('/auth', auth);
 app.use('/regulations', regulations);

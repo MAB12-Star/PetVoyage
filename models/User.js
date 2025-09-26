@@ -2,11 +2,25 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+/** Sub-doc: saved itineraries shown on the user's dashboard */
+const SavedItinerarySchema = new Schema({
+  airlineId:    { type: Schema.Types.ObjectId, ref: 'Airline' },
+  airlineName:  String,
+  airlineCode:  String,
+  airlineSlug:  String,
+  petPolicyURL: String,
+  country:      String,
+  petType:      String,
+  html:         String,  // server-rendered itinerary HTML
+  hash:         String,  // for dedupe (airline+country+petType)
+  createdAt:    { type: Date, default: Date.now }
+}, { _id: true });
+
 const userSchema = new mongoose.Schema({
   googleId: { type: String, required: true, unique: true },
   displayName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-
+  savedItineraries: { type: [SavedItinerarySchema], default: [] },
   // NEW
   role: {
     type: String,
@@ -25,6 +39,8 @@ const userSchema = new mongoose.Schema({
     petPolicySummary: String,
     slug: String,
   }],
+
+ 
 
   toDoList: {
     type: Map,
@@ -47,5 +63,7 @@ const userSchema = new mongoose.Schema({
     },
   },
 }, { timestamps: true });
+
+
 
 module.exports = mongoose.model('User', userSchema);

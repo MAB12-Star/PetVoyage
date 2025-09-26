@@ -5,6 +5,9 @@ const Regulation = require('../models/regulation');
 const { isLoggedIn } = require('../middleware');
 const Airline = require('../models/airline');
 const { saveCurrentUrl } = require('../middleware');
+// routes/favorites.js (top with other requires)
+const crypto = require('crypto');
+
 
 
 router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, res) => {
@@ -160,6 +163,84 @@ router.post('/saveToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
         return res.status(500).json({ message: 'Something went wrong' });
     }
 });
+
+
+
+// POST /favorites/saveItinerary
+router.post('/saveItinerary', saveCurrentUrl, isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const {
+      airlineId, airlineCode, airlineName, airlineSlug, petPolicyURL,
+      country, petType, html
+    } = req.body || {};
+
+    if (!country || !petType || !html || (!airlineId && !airlineCode && !airlineName)) {
+      return res.status(400).json({ message: 'Missing fields (country, petType, html, airline).' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+
+    // Prefer id/code lookup for canonical airline info if possible
+    let airlineDoc = null;
+    if (airlineId) airlineDoc = await Airline.findById(airlineId);
+    else if (airlineCode) airlineDoc = await Airline.findOne({ airlineCode: String(airlineCode).toUpperCase() });
+
+    const aName = airlineDoc?.name || airlineName || '';
+    const aCode = airlineDoc?.airlineCode || airlineCode || '';
+    const aSlug = airlineDoc?.slug || airlineSlug || '';
+    const aURL  = airlineDoc?.petPolicyURL || petPolicyURL || '';
+
+    // Dedupe by a simple hash (airline + country + petType)
+    const hash = crypto.createHash('sha1')
+      .update(`${aCode}|${aSlug}|${country}|${petType}`)
+      .digest('hex');
+
+    const exists = user.savedItineraries.some(i => i.hash === hash);
+    if (exists) {
+      return res.status(200).json({ message: 'Itinerary already saved.' });
+    }
+
+    user.savedItineraries.push({
+      airlineId: airlineDoc?._id || null,
+      airlineName: aName,
+      airlineCode: aCode,
+      airlineSlug: aSlug,
+      petPolicyURL: aURL,
+      country,
+      petType,
+      html,
+      hash
+    });
+
+    await user.save();
+    return res.status(200).json({ message: 'Itinerary saved to your dashboard.' });
+  } catch (err) {
+    console.error('saveItinerary error:', err);
+    return res.status(500).json({ message: 'Something went wrong. Please try again.' });
+  }
+});
+
+// DELETE /favorites/itinerary/:itineraryId
+router.delete('/itinerary/:itineraryId', isLoggedIn, async (req, res) => {
+  try {
+    const { itineraryId } = req.params;
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+
+    user.savedItineraries = user.savedItineraries.filter(i => String(i._id) !== String(itineraryId));
+    await user.save();
+
+    req.flash('success', 'Itinerary removed from your profile');
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.error('delete itinerary error:', err);
+    req.flash('error', 'Could not remove the itinerary');
+    res.redirect('/dashboard');
+  }
+});
+
 
 
 // // Route to delete a saved regulation from user's profile

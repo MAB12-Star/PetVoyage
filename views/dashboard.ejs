@@ -12,7 +12,50 @@
             <hr>
         </div>
     </div>
-
+    <div class="row mt-5">
+        <div class="col-12">
+          <div class="card shadow-lg p-4 border-secondary rounded">
+            <h5 class="text-secondary-emphasis"><strong>Here are your saved itineraries:</strong></h5>
+      
+            <% if (user.savedItineraries && user.savedItineraries.length > 0) { %>
+              <div class="accordion mt-4" id="savedItinsAccordion">
+                <% user.savedItineraries.forEach(function(it, idx) { %>
+                  <div class="accordion-item mb-3 shadow-sm border rounded">
+                    <h2 class="accordion-header" id="head-<%= it._id %>">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#body-<%= it._id %>" aria-expanded="false" aria-controls="body-<%= it._id %>">
+                        <div class="w-100 d-flex justify-content-between align-items-center">
+                          <div>
+                            <strong><%= it.petType %></strong> •
+                            <%= it.airlineName %><% if (it.airlineCode) { %> (<%= it.airlineCode %>)<% } %> →
+                            <%= it.country %>
+                            <small class="text-muted ms-2"><%= new Date(it.createdAt).toLocaleDateString() %></small>
+                          </div>
+                          <form action="/favorites/itinerary/<%= it._id %>?_method=DELETE" method="POST" class="ms-2">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                              <i class="fas fa-trash-alt"></i> DELETE
+                            </button>
+                          </form>
+                        </div>
+                      </button>
+                    </h2>
+                    <div id="body-<%= it._id %>" class="accordion-collapse collapse" aria-labelledby="head-<%= it._id %>"
+                         data-bs-parent="#savedItinsAccordion">
+                      <div class="accordion-body">
+                        <!-- Saved HTML is trusted server output you generated; if any user input can leak in, sanitize before saving -->
+                        <%- it.html %>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <p class="text-muted mt-3 mb-0">You have not saved any itineraries yet.</p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      
     <!-- Saved Country and Airline Regulations Section -->
     <div class="row mt-5">
         <!-- Saved Country Regulations -->
