@@ -57,27 +57,30 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.json());
 
-// 🔁 SEO Redirect from non-www to www
-// 1) Let Express trust X-Forwarded-* from Nginx/ALB
-app.set('trust proxy', true);
+// 🔁 Canonical + HTTPS normalization (put BEFORE routes)
+app.set('trust proxy', true); // so req.secure honors X-Forwarded-Proto
 
-// 2) Normalize scheme + host to a single canonical: https://www.petvoyage.ai
+// 1) Enforce https + www
 app.use((req, res, next) => {
   const desiredHost = 'www.petvoyage.ai';
-  const isHttps = req.secure || (req.headers['x-forwarded-proto'] === 'https');
-  const host = req.headers.host;
-
-  if (!isHttps || host !== desiredHost) {
+  const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  if (!isHttps || req.headers.host !== desiredHost) {
     return res.redirect(301, `https://${desiredHost}${req.originalUrl}`);
   }
   next();
 });
 
-// 3) Provide a guaranteed-HTTPS canonical URL to all views
+// 2) Provide a guaranteed absolute URL to views (and strip tracking params)
 app.use((req, res, next) => {
-  res.locals.safeOgUrl = `https://www.petvoyage.ai${req.originalUrl}`;
+  const u = new URL(`https://www.petvoyage.ai${req.originalUrl}`);
+  for (const p of ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid']) {
+    u.searchParams.delete(p);
+  }
+  res.locals.safeOgUrl = u.toString(); // always defined
+  res.locals.ogUrl = null;             // defined so EJS never throws
   next();
 });
+
 
   
 
@@ -134,6 +137,7 @@ app.use('/', airlineRoutes);
 app.use('/airlines', reviewsRoutes); // ✅ for nested reviews
 // ... after other app.use(...)
 app.use('/admin', adminRoutes);
+
 
 // 🗺 Sitemap route
 app.get('/siteMap.xml', (req, res) => {
