@@ -9,7 +9,7 @@ const callbackURL = "http://www.petvoyage.ai/google/callback";
 
 
 
-//"http://www.petvoyage.ai/google/callback"
+
 //"http://localhost:3000/google/callback"
 //
 // Configure Google Strategy
