@@ -5,7 +5,7 @@ const User = require('../models/User');
 const router = express.Router();
 const { saveCurrentUrl, thisIsTheURL } = require('../middleware'); // Adjust the path as needed
 // Determine the callback URL dynamically based on the environment
-const callbackURL = "http://localhost:3000/google/callback";
+const callbackURL = "http://www.petvoyage.ai/google/callback";
 
 
 
