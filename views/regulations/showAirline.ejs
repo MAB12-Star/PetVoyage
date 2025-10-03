@@ -25,6 +25,8 @@
                             <input type="hidden" name="airlineName" value="<%= airline.name %>">
                             <input type="hidden" name="petPolicyURL" value="<%= airline.petPolicyURL %>">
                             <input type="hidden" name="petPolicySummary" value="<%= airline.ImprovedPetPolicySummary || '' %>">
+                            <input type="hidden" name="carrierCompartmentDetails" value="<%= airline.carrierCompartmentDetails || '' %>">
+                            <input type="hidden" name="carrierCargoDetails" value="<%= airline.carrierCargoDetails || '' %>">
                             <input type="hidden" name="slug" value="<%= airline.slug %>">
                             <button type="submit" class="btn btn-outline-danger float-end">
                                 <i class="fas fa-heart"></i> Save
@@ -79,15 +81,7 @@
                               </div>
                             </div>
                           
-                            <!-- Compartment Details Card -->
-                            <div class="col">
-                              <div class="card flight-card text-center shadow-sm h-100" data-bs-toggle="collapse" data-bs-target="#compartmentDetails">
-                                <div class="card-body d-flex flex-column justify-content-center">
-                                  <i class="bi bi-airplane display-6"></i>
-                                  <h6 class="card-title mt-2">Compartment Details</h6>
-                                </div>
-                              </div>
-                            </div>
+                           
                           
                             <!-- Carrier Details Card -->
                             <div class="col">
@@ -124,26 +118,16 @@
                               </div>
                             </div>
                           
-                            <!-- Compartment Details Panel -->
-                            <div id="compartmentDetails" class="collapse regulation-info">
-                              <div class="card card-body border-top">
-                                <p class="card-text">
-                                  <strong>Traveling In The Plane:</strong> <%-airline.inCompartmentDetails %>
-                                </p>
-                                <p class="card-text">
-                                  <strong>Traveling In Cargo:</strong> <%- airline.inCargoDetails %>
-                                </p>
-                              </div>
-                            </div>
+                            
                           
                             <!-- Carrier Details Panel -->
                             <div id="carrierDetails" class="collapse regulation-info">
                               <div class="card card-body border-top">
                                 <p class="card-text">
-                                  <strong>Compartment Carrier Details:</strong> <%- airline.inCompartmentDetails %>
+                                  <strong>Compartment Carrier Details:</strong> <%- airline.carrierCompartmentDetails %>
                                 </p>
                                 <p class="card-text">
-                                  <strong>In Cargo Carrier Details:</strong> <%= airline.inCargoDetails %>
+                                  <strong>In Cargo Carrier Details:</strong> <%= airline.carrierCargoDetails %>
                                 </p>
                               </div>
                             </div>

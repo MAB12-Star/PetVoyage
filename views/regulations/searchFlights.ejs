@@ -1,67 +1,19 @@
 <% layout('layouts/boilerplate') %>
 
 
-<div class="bg-light py-5 text-center border-bottom">
+<div class="bg-light py-2 text-center border-bottom">
+      <!-- Hero Section -->
+      <div class="bg-light py-lg-2 text-center border-bottom mt-1">
+        <img
+          src="/images/PetVoyageLogo.png"
+          class="img-fluid rounded-top d-block mx-auto"
+          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+          width="200" height="200"
+        />
     <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
     <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
 <div class="mt-4">
-    <!-- Desktop Layout (unchanged) -->
-    <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
-      <a href="/getCountryRegulationList" class="btn btn-outline-secondary px-4 py-2 text-center">
-        <i class="bi bi-globe-americas d-block fs-3"></i>
-        <small>Country Policies</small>
-      </a>
-      <a href="/regulations/searchFlights" class="btn btn-dark px-4 py-2 text-center">
-        <i class="bi bi-airplane d-block fs-3"></i>
-        <small>Search Flights</small>
-      </a>
-      <a href="/regulations/airlineList" class="btn btn-outline-secondary px-4 py-2 text-center">
-        <i class="bi bi-card-list d-block fs-3"></i>
-        <small>Airline Policies</small>
-      </a>
-      <a href="/findAVet" class="btn btn-outline-secondary px-4 py-2 text-center">
-        <i class="bi bi-hospital d-block fs-3"></i>
-        <small>Find a Vet</small>
-      </a>
-      <a href="/blog" class="btn btn-outline-secondary px-4 py-2 text-center">
-        <i class="bi bi-journal-text d-block fs-3"></i>
-        <small>Blog</small>
-      </a>
-    </div>
-  
-    <!-- Mobile Layout -->
-    <div class="d-flex d-md-none justify-content-between text-center mt-3 px-2">
-      <div class="mobile-icon-group">
-        <a href="/getCountryRegulationList"  class="square-icon btn btn-outline-secondary">
-          <i class="bi bi-globe-americas fs-3"></i>
-        </a>
-        <small>Country</small>
-      </div>
-      <div class="mobile-icon-group">
-        <a href="/regulations/searchFlights" class="square-icon btn btn-dark">
-          <i class="bi bi-airplane fs-3"></i>
-        </a>
-        <small>Flights</small>
-      </div>
-      <div class="mobile-icon-group">
-        <a href="/regulations/airlineList" class="square-icon btn btn-outline-secondary">
-          <i class="bi bi-card-list fs-3"></i>
-        </a>
-        <small>Airlines</small>
-      </div>
-      <div class="mobile-icon-group">
-        <a href="/findAVet" class="square-icon btn btn-outline-secondary">
-          <i class="bi bi-hospital fs-3"></i>
-        </a>
-        <small>Vet</small>
-      </div>
-      <div class="mobile-icon-group">
-        <a href="/blog" class="square-icon btn btn-outline-secondary">
-          <i class="bi bi-journal-text fs-3"></i>
-        </a>
-        <small>Blog</small>
-      </div>
-    </div>
+    <%- include('../partials/navigation') %>    
   </div>
 
 </div>

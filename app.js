@@ -37,6 +37,7 @@ const aiRoutes = require('./routes/ai');
 
 
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
+const e = require('connect-flash');
 
 mongoose.connect(process.env.mongoKey, {});
 const db = mongoose.connection;
@@ -57,31 +58,43 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.json());
 
-// 🔁 Canonical + HTTPS normalization (put BEFORE routes)
-app.set('trust proxy', true); // so req.secure honors X-Forwarded-Proto
+const IS_DEV  = process.env.NODE_ENV === 'development';
+const IS_PROD = process.env.NODE_ENV === 'production';
 
-// 1) Enforce https + www
+// Enforce canonical ONLY in prod
+if (IS_PROD) {
+  app.set('trust proxy', true); // only needed behind nginx/proxy in prod
+  app.use((req, res, next) => {
+    const desiredHost = process.env.CANONICAL_HOST || 'www.petvoyage.ai';
+    const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
+    if (!isHttps || req.headers.host !== desiredHost) {
+      return res.redirect(301, `https://${desiredHost}${req.originalUrl}`);
+    }
+    next();
+  });
+}
+
+// Always provide an absolute URL for templates (works in dev & prod)
 app.use((req, res, next) => {
-  const desiredHost = 'www.petvoyage.ai';
-  const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
-  if (!isHttps || req.headers.host !== desiredHost) {
-    return res.redirect(301, `https://${desiredHost}${req.originalUrl}`);
-  }
+  res.locals.safeOgUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  res.locals.ogUrl = null;
   next();
 });
 
-// 2) Provide a guaranteed absolute URL to views (and strip tracking params)
+
+
+// Minimal: build a URL for templates, no redirects
 app.use((req, res, next) => {
-  const u = new URL(`https://www.petvoyage.ai${req.originalUrl}`);
-  for (const p of ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid']) {
-    u.searchParams.delete(p);
-  }
-  res.locals.safeOgUrl = u.toString(); // always defined
-  res.locals.ogUrl = null;             // defined so EJS never throws
-  next();
-});
-
-
+    try {
+      const u = new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+      res.locals.safeOgUrl = u.toString();
+    } catch {
+      res.locals.safeOgUrl = 'https://localhost:4000/';
+    }
+    res.locals.ogUrl = null;
+    next();
+  });
+  
   
 
 // 📦 Session config
@@ -171,8 +184,9 @@ app.get('/dashboard', async (req, res) => {
 
 // 🏠 Home
 app.get('/', (req, res) => {
-    res.render('index', { ogUrl: 'https://www.petvoyage.ai/' }); // Canonical
-});
+    res.render('index');
+  });
+  
 
 // ❌ 404 Handler
 app.all('*', (req, res, next) => {
@@ -187,6 +201,6 @@ app.use((err, req, res, next) => {
 });
 
 // 🚀 Start Server
-app.listen(3000, () => {
-    console.log('Serving on port 3000');
+app.listen(4000, () => {
+    console.log('Serving on port 4000');
 });

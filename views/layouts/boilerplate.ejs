@@ -10,8 +10,8 @@
     const safeOgTitle = (typeof ogTitle !== 'undefined' ? ogTitle : safeTitle);
     const safeOgDescription = (typeof ogDescription !== 'undefined' ? ogDescription : safeMetaDescription);
   
-    // IMPORTANT: don't shadow res.locals.safeOgUrl.
-    // Build one "computedOgUrl" with robust fallbacks:
+  //  IMPORTANT: don't shadow res.locals.safeOgUrl.
+   // Build one "computedOgUrl" with robust fallbacks:
     const computedOgUrl =
       (typeof ogUrl !== 'undefined' && ogUrl) ? ogUrl :
       (typeof safeOgUrl !== 'undefined' && safeOgUrl) ? safeOgUrl :
