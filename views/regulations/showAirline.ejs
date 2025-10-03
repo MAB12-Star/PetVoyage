@@ -234,7 +234,8 @@
 
             <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
               <!-- NOTE: keep this route consistent with your POST route -->
-              <form action="/airlines/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+              <form action="/airlines/slug/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+
                 <button class="btn btn-sm btn-danger">Delete</button>
               </form>
             <% } %>

@@ -11,7 +11,7 @@ const callbackURL = "http://www.petvoyage.ai/google/callback";
 
 
 //"http://localhost:3000/google/callback"
-//
+//"http://www.petvoyage.ai/google/callback"
 // Configure Google Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.passportClientId,

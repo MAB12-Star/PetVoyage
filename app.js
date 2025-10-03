@@ -89,7 +89,7 @@ app.use((req, res, next) => {
       const u = new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
       res.locals.safeOgUrl = u.toString();
     } catch {
-      res.locals.safeOgUrl = 'https://localhost:4000/';
+      res.locals.safeOgUrl = 'https://localhost:3000/';
     }
     res.locals.ogUrl = null;
     next();
@@ -201,6 +201,6 @@ app.use((err, req, res, next) => {
 });
 
 // 🚀 Start Server
-app.listen(4000, () => {
-    console.log('Serving on port 4000');
+app.listen(3000, () => {
+    console.log('Serving on port 3000');
 });
