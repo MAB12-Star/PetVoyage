@@ -178,83 +178,85 @@
             </div>
           </div>
 
-            <div class="card">
-                <div class="card-body">
-                  <form class="mb-3 validated-form" id="reviewForm"
-                  action="/airlines/<%= airline.slug %>/reviews"
-                  method="POST" novalidate>
-                        <h2>Leave A Review</h2>
-                        <fieldset class="starability-basic">
-                            <input type="radio" id="rate1" name="review[rating]" value="1" />
-                            <label for="rate1">1 star</label>
-                            <input type="radio" id="rate2" name="review[rating]" value="2" />
-                            <label for="rate2">2 stars</label>
-                            <input type="radio" id="rate3" name="review[rating]" value="3" checked /> <!-- Default 3 stars -->
-                            <label for="rate3">3 stars</label>
-                            <input type="radio" id="rate4" name="review[rating]" value="4" />
-                            <label for="rate4">4 stars</label>
-                            <input type="radio" id="rate5" name="review[rating]" value="5" />
-                            <label for="rate5">5 stars</label>
-                        </fieldset>
-                        <textarea class="form-control" name="review[body]" placeholder="Write your review here..." required></textarea>
-                        <button class="btn btn-success mt-2" onclick="return validateReviewForm()">Submit Review</button>
-                    </form>
-                    
-        
-                   
-        
-                    <h2>Reviews</h2>
-                    <% if (airline.reviews.length > 0) { %>
-                        <% airline.reviews.forEach(review => { %>
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                  
-                                    <p class="text-muted">
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <% if (i <= review.rating) { %>
-                                                <i class="fas fa-star" style="color: #ffae00;"></i>
-                                            <% } else { %>
-                                                <i class="far fa-star" style="color: #ffae00;"></i>
-                                            <% } %>
-                                        <% } %>
-                                    </p>
-                                    <% if (review.author) { %>
-                                        <p><strong></strong> <%= review.body %></p>
-                                    
-                                    <% } %>
-                                    <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
-                                      <form action="/airlines/slug/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                    
-                                    <% } %>
-                                </div>
-                            </div>
-                        <% }); %>
-                    <% } else { %>
-                        <p>No reviews yet. Be the first to leave a review!</p>
-                    <% } %>
-                </div>
-            </div>
-          
+  <div class="card">
+  <div class="card-body">
+    <form class="mb-3 validated-form" id="reviewForm"
+          action="/airlines/<%= airline.slug %>/reviews"
+          method="POST" novalidate>
+      <h2>Leave A Review</h2>
+
+      <fieldset class="starability-basic">
+        <input type="radio" id="rate1" name="review[rating]" value="1" />
+        <label for="rate1">1 star</label>
+        <input type="radio" id="rate2" name="review[rating]" value="2" />
+        <label for="rate2">2 stars</label>
+        <input type="radio" id="rate3" name="review[rating]" value="3" checked />
+        <label for="rate3">3 stars</label>
+        <input type="radio" id="rate4" name="review[rating]" value="4" />
+        <label for="rate4">4 stars</label>
+        <input type="radio" id="rate5" name="review[rating]" value="5" />
+        <label for="rate5">5 stars</label>
+      </fieldset>
+
+      <div id="ratingError" class="text-danger small" style="display:none;">
+        Please select a rating.
+      </div>
+
+      <textarea class="form-control mt-2" name="review[body]" placeholder="Write your review here..." required></textarea>
+      <button class="btn btn-success mt-2" onclick="return validateReviewForm()">Submit Review</button>
+    </form>
+
+    <% /* ---------- Reviews ---------- */ %>
+    <% const reviews = (airline && airline.reviews) ? airline.reviews : []; %>
+
+    <h2>Reviews</h2>
+    <% if (reviews.length > 0) { %>
+      <% reviews.forEach(review => { %>
+        <div class="card mb-3">
+          <div class="card-body">
+
+            <p class="text-muted mb-2">
+              <% for (let i = 1; i <= 5; i++) { %>
+                <% if (i <= (review.rating || 0)) { %>
+                  <i class="fas fa-star" style="color:#ffae00;"></i>
+                <% } else { %>
+                  <i class="far fa-star" style="color:#ffae00;"></i>
+                <% } %>
+              <% } %>
+            </p>
+
+            <p class="mb-2">
+              <% if (review.author && (review.author.name || review.author.username)) { %>
+                <strong><%= review.author.name || review.author.username %>:</strong>
+              <% } %>
+              <%= review.body %>
+            </p>
+
+            <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
+              <!-- NOTE: keep this route consistent with your POST route -->
+              <form action="/airlines/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-sm btn-danger">Delete</button>
+              </form>
+            <% } %>
+
+          </div>
         </div>
-        <div class="mt-0">
-            <%- include('../partials/findVetC') %>
-        </div>
-        
-        <script>
-            // Validate the review form
-            function validateReviewForm() {
-                const ratingSelected = document.querySelector('input[name="review[rating]"]:checked');
-                const errorElement = document.getElementById('ratingError');
-        
-                if (!ratingSelected) {
-                    errorElement.style.display = 'block';
-                    return false; // Prevent form submission
-                } else {
-                    errorElement.style.display = 'none';
-                    return true;
-                }
-            }
-        </script>
-        
+      <% }); %>
+    <% } else { %>
+      <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  function validateReviewForm() {
+    const ratingSelected = document.querySelector('input[name="review[rating]"]:checked');
+    const errorElement = document.getElementById('ratingError');
+    if (!ratingSelected) {
+      errorElement.style.display = 'block';
+      return false;
+    }
+    errorElement.style.display = 'none';
+    return true;
+  }
+</script>
