@@ -1,66 +1,385 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- Header / Hero -->
+<header class="bg-light py-2 border-bottom" role="banner">
+  <div class="container text-center">
+    <img
+      src="/images/PetVoyageLogo.png"
+      class="img-fluid d-block mx-auto"
+      alt="PetVoyage Logo — pet travel regulations and stories"
+      width="200" height="200"
+      loading="eager" decoding="async"
+    />
+    <h1 class="fw-bold display-5">Pet Travel Stories from Real Flyers</h1>
+    <p class="fs-5 text-muted">Share and explore real flight stories with pets.</p>
 
-
-<div class="bg-light py-2 border-bottom">
-    <div class="container text-center">
-       <!-- Hero Section -->
-       <div class="bg-light py-2 text-center border-bottom mt-1">
-        <img
-          src="/images/PetVoyageLogo.png"
-          class="img-fluid rounded-top d-block mx-auto"
-          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-          width="200" height="200"
-        />
-      <h1 class="fw-bold display-5">Others Pet Travel Experiences</h1>
-      <p class="fs-5 text-muted">Community blog for everyone to share their experiences traveling abroad with their pets.</p>
-  
-     <!-- Navigation Strip -->
-  <div class="mt-4">
-
-
+    <nav class="mt-3" aria-label="Primary">
       <%- include('../partials/navigation') %>
-    
-  </div>
-  
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <div class="card-body">
-                    <h1>How My Family (and Our Pets) Made It to Mexico City: A Pet Travel Story</h1>
-                    <img src="/images/movetocdmx.jpg" alt="Pet family traveling to Mexico City" class="img-fluid" />
+    </nav>
 
-                    <p>After nine months of planning and navigating some unexpected setbacks, my family — which includes two dogs, a cat, and two humans — finally made it to Mexico City (CDMX)! This was a journey filled with learning, and I hope sharing my experience helps make someone else’s pet-travel adventure a little smoother.</p>
-
-                    <h2>Why We Chose Mexico</h2>
-                    <p>Mexico wasn’t just our destination for its vibrant culture, beautiful language, and incredible climate; it also happens to be one of the easier countries to import pets into. Knowing this, we felt more confident making it our first stop as we plan to continue traveling through Central America next year.</p>
-
-                    <h2>Flying with Pets: Why Volaris Was Our Airline</h2>
-                    <p>Coming from Sacramento, CA, Volaris was our only option for a direct flight to Mexico City. An added benefit? Volaris doesn’t require a health certificate for pets on their flights, saving us from the hassle and expense of getting certificates that cost around $300 per pet and are valid for only five days. This small detail made a big difference in our planning and budget.</p>
-
-                    <h2>Preparing for the Flight</h2>
-                    <p>Volaris’ pet policy is well-outlined on their website, and I didn’t encounter any surprises when we flew. However, I recommend visiting a Volaris counter before your flight to confirm everything is in order. Airline policies can change, and it’s always better to double-check.</p>
-
-                    <p>One notable issue was the carrier size listed for in-cabin pets. The website claims carriers must be no taller than 7.5 inches, but that’s an impractical dimension to find. I used a hard-sided carrier that was 10 inches tall, and it fit perfectly under the seat with my cat. Don’t be afraid to test a slightly larger carrier if it’s safe and fits the airline’s other requirements.</p>
-
-                    <h2>Medication for the Journey</h2>
-                    <p>My cat isn’t a fan of leaving the house, so my vet prescribed gabapentin for the flight. This medication was a lifesaver. It kept her calm and relaxed without the concerning side effects like slowed heart rate that some other medications might cause. I’ll definitely consider giving gabapentin to my dogs for our next flight based on how well it worked for my cat.</p>
-
-                    <h2>Helpful Tips for Traveling with Pets</h2>
-                    <p>Traveling with pets doesn’t have to be as stressful as it sounds. Here are some tips that made our journey easier:</p>
-                    <ul>
-                        <li><strong>Freeze Water for Fresh Hydration:</strong> By freezing water in advance, your pets will have access to cool, fresh water throughout the trip. Airlines do allow water and food for pets, so take advantage of this!</li>
-                        <li><strong>Test Your Carrier Dimensions:</strong> If you’re flying Volaris (or another airline), double-check the carrier dimensions in person. Online measurements aren’t always accurate.</li>
-                        <li><strong>Plan Ahead but Stay Flexible:</strong> While months of planning helped us feel prepared, flexibility was key in dealing with last-minute changes.</li>
-                    </ul>
-
-                    <h2>Final Thoughts</h2>
-                    <p>The entire process turned out to be much easier than I had feared during those stressful weeks leading up to the flight. I hope this information helps ease the stress for someone else embarking on a similar journey. If you’re traveling with pets, know that it’s possible to make it work — and it might not be as overwhelming as it seems.</p>
-
-                    <p>Now that we’re settling into life in CDMX, our next step is finalizing my temporary visa. This marks the beginning of a new chapter for us, and we’re excited to continue exploring Mexico and beyond!</p>
-                </div>
-            </div>
-        </div>
+    <div class="mt-4">
+      <% if (user) { %>
+        <a class="btn btn-primary" href="/blog/new" rel="nofollow">Write a story</a>
+      <% } else { %>
+        <a class="btn btn-outline-primary" href="/login" rel="nofollow">Sign in to write a story</a>
+      <% } %>
     </div>
-</div>
+  </div>
+</header>
+
+<main class="container mt-4" role="main" itemscope itemtype="https://schema.org/Blog">
+  <meta itemprop="name" content="PetVoyage Community Blog">
+  <meta itemprop="description" content="Community stories about flying with pets: tips, airline experiences, documents, and arrivals.">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Blog</li>
+    </ol>
+  </nav>
+
+  <%
+    // Build unique, sorted lists for filters from the current stories
+    const airlinesSet = new Set();
+    const countriesSet = new Set();
+    (stories || []).forEach(s => {
+      if (s.airline)  airlinesSet.add(String(s.airline).trim());
+      if (s.country)  countriesSet.add(String(s.country).trim());
+    });
+    const airlinesList = Array.from(airlinesSet).sort((a,b) => a.localeCompare(b));
+    const countriesList = Array.from(countriesSet).sort((a,b) => a.localeCompare(b));
+  %>
+
+  <div class="row">
+    <!-- Sidebar Filters + Browse Lists -->
+    <aside class="col-lg-3 mb-4" aria-label="Filters">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Filter stories</h2>
+
+          <div class="mb-3">
+            <label for="pv-search" class="form-label">Search title/summary</label>
+            <input id="pv-search" type="search" class="form-control" placeholder="Type to filter…">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Airline</label>
+            <select id="pv-airline" class="form-select">
+              <option value="">All airlines</option>
+              <% airlinesList.forEach(a => { %>
+                <option value="<%= a %>"><%= a %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Country</label>
+            <select id="pv-country" class="form-select">
+              <option value="">All countries</option>
+              <% countriesList.forEach(c => { %>
+                <option value="<%= c %>"><%= c %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- Active filter breadcrumbs -->
+          <div class="mb-2" id="pv-crumbs" aria-live="polite"></div>
+
+          <div class="d-flex gap-2 mb-2">
+            <button id="pv-clear" class="btn btn-outline-secondary btn-sm" type="button">Clear</button>
+          </div>
+
+          <hr class="my-3">
+
+          <!-- Browse by Airline -->
+          <h3 class="h6 mb-2">Browse by airline</h3>
+          <nav id="pv-browse-airlines" class="small" aria-label="Browse by airline">
+            <% if (airlinesList.length === 0) { %>
+              <p class="text-muted mb-2">No airline tags yet.</p>
+            <% } else { %>
+              <ul class="list-unstyled mb-3">
+                <% airlinesList.forEach(a => { %>
+                  <li class="mb-1">
+                    <a href="#" class="pv-link-airline" data-airline="<%= a %>"><%= a %></a>
+                  </li>
+                <% }) %>
+              </ul>
+            <% } %>
+          </nav>
+
+          <!-- Browse by Country -->
+          <h3 class="h6 mb-2">Browse by country</h3>
+          <nav id="pv-browse-countries" class="small" aria-label="Browse by country">
+            <% if (countriesList.length === 0) { %>
+              <p class="text-muted mb-0">No country tags yet.</p>
+            <% } else { %>
+              <ul class="list-unstyled mb-0">
+                <% countriesList.forEach(c => { %>
+                  <li class="mb-1">
+                    <a href="#" class="pv-link-country" data-country="<%= c %>"><%= c %></a>
+                  </li>
+                <% }) %>
+              </ul>
+            <% } %>
+          </nav>
+
+          <hr class="my-3">
+          <p class="small text-muted mb-0" id="pv-count"><%= (stories||[]).length %> stories</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Feed -->
+    <div class="col-lg-9">
+      <% if (!stories || !stories.length) { %>
+        <div class="alert alert-info" role="status">No stories yet. Be the first to post!</div>
+      <% } %>
+
+      <div id="pv-list">
+      <% (stories || []).forEach((story) => {
+          const slug = story.slug || story._id;
+          const url  = `/blog/${slug}`;
+          const publishedISO = new Date(story.createdAt).toISOString();
+          const publishedHuman = new Date(story.createdAt).toLocaleDateString();
+          const plain = (story.body || '').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+          const excerpt = plain.slice(0, 240);
+          const airlineAttr = (story.airline || '').trim();
+          const countryAttr = (story.country || '').trim();
+      %>
+        <article class="card border-secondary shadow p-4 mb-4 rounded-4 pv-card"
+                 itemscope itemtype="https://schema.org/BlogPosting"
+                 itemprop="blogPost"
+                 data-airline="<%= airlineAttr %>"
+                 data-country="<%= countryAttr %>"
+                 data-text="<%= (story.title + ' ' + (story.summary||'') + ' ' + excerpt).toLowerCase().replace(/"/g,'&quot;') %>">
+          <header>
+            <h2 class="fw-bold mb-1" itemprop="headline">
+              <a class="text-decoration-none" href="<%= url %>" itemprop="url"><%= story.title %></a>
+            </h2>
+            <div class="text-muted mb-3">
+              <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                by <span itemprop="name"><%= story.author?.displayName || 'Anonymous' %></span>
+              </span>
+              • <time itemprop="datePublished" datetime="<%= publishedISO %>"><%= publishedHuman %></time>
+          <!-- inside the <header> ... -->
+<% if (story.airline) { %>
+  •
+  <%
+    // Prefer resolved doc from the route, else fall back to a stored slug
+    const airlineHref =
+      (typeof airlineDoc !== 'undefined' && airlineDoc && airlineDoc.slug)
+        ? `/airlines/${airlineDoc.slug}`
+        : (story.airlineSlug ? `/airlines/${story.airlineSlug}` : '');
+  %>
+
+  <% if (airlineHref) { %>
+    <a href="<%= airlineHref %>"
+       class="badge text-bg-light border text-decoration-none d-inline-block"
+       aria-label="View airline pet policy for <%= (airlineDoc && airlineDoc.name) || story.airline %>">
+       <i class="bi bi-airplane"></i> <%= (airlineDoc && airlineDoc.name) || story.airline %>
+    </a>
+  <% } else { %>
+    <span class="badge text-bg-light border d-inline-block">
+      <i class="bi bi-airplane"></i> <%= story.airline %>
+    </span>
+  <% } %>
+<% } %>
+
+              <% if (story.country) { %>
+                • <span class="badge text-bg-light border">Country: <%= story.country %></span>
+              <% } %>
+            </div>
+          </header>
+
+          <% if (story.photos && story.photos[0]) { %>
+            <a href="<%= url %>" aria-label="Open story: <%= story.title %>">
+              <img
+                src="<%= story.photos[0].url %>"
+                class="img-fluid rounded-3 mb-3"
+                alt="<%= story.photos[0].alt || (story.title + ' — pet travel photo') %>"
+                loading="lazy" decoding="async" itemprop="image">
+            </a>
+          <% } %>
+
+          <p class="fs-6 text-body mb-3" itemprop="description">
+            <%= excerpt %><% if (plain.length > excerpt.length) { %>…<% } %>
+          </p>
+
+          <nav class="d-flex flex-wrap gap-2" aria-label="Post actions">
+            <a class="btn btn-outline-primary btn-sm" href="<%= url %>">Read full story</a>
+
+            <% if (user && String(user._id) === String(story.author?._id || story.author)) { %>
+              <a class="btn btn-outline-secondary btn-sm" href="/blog/<%= slug %>/edit" rel="nofollow">Edit</a>
+              <form method="post" action="/blog/<%= slug %>/delete"
+                    onsubmit="return confirm('Delete this story?');" class="d-inline">
+                <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+              </form>
+            <% } %>
+          </nav>
+
+          <meta itemprop="mainEntityOfPage" content="<%= 'https://www.petvoyage.ai' + url %>">
+          <% if (story.summary) { %><meta itemprop="abstract" content="<%= story.summary %>"><% } %>
+        </article>
+      <% }) %>
+      </div>
+    </div>
+  </div>
+
+  <!-- JSON-LD: Blog + ItemList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "PetVoyage Community Blog",
+    "description": "Community stories about flying with pets.",
+    "url": "https://www.petvoyage.ai/blog",
+    "blogPost": [
+      <% (stories || []).forEach(function(s, i){
+           const slug = s.slug || s._id;
+           const url = 'https://www.petvoyage.ai/blog/' + slug;
+           const plain = (s.body || '').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+           const excerpt = plain.slice(0, 240);
+           const img = (s.photos && s.photos[0] && ('https://www.petvoyage.ai' + s.photos[0].url)) || '';
+           const authorName = (s.author && s.author.displayName) ? s.author.displayName : 'Anonymous';
+      %><%= i ? ',' : '' %>{
+        "@type": "BlogPosting",
+        "headline": <%- JSON.stringify(s.title || '') %>,
+        "datePublished": "<%= new Date(s.createdAt).toISOString() %>",
+        "url": "<%= url %>",
+        "author": { "@type": "Person", "name": <%- JSON.stringify(authorName) %> },
+        "image": <%- JSON.stringify(img) %>,
+        "description": <%- JSON.stringify(excerpt) %>
+      }<% }); %>
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Pet Travel Stories",
+    "itemListElement": [
+      <% (stories || []).forEach(function(s, i){
+        const slug = s.slug || s._id;
+        const url  = 'https://www.petvoyage.ai/blog/' + slug;
+      %><%= i ? ',' : '' %>{
+        "@type": "ListItem",
+        "position": <%= i + 1 %>,
+        "url": "<%= url %>"
+      }<% }); %>
+    ]
+  }
+  </script>
+</main>
+
+<script>
+(() => {
+  const $list     = document.getElementById('pv-list');
+  const $cards    = Array.from($list?.querySelectorAll('.pv-card') || []);
+  const $search   = document.getElementById('pv-search');
+  const $airline  = document.getElementById('pv-airline');
+  const $country  = document.getElementById('pv-country');
+  const $clearBtn = document.getElementById('pv-clear');
+  const $count    = document.getElementById('pv-count');
+  const $crumbs   = document.getElementById('pv-crumbs');
+
+  function normalize(s){ return (s || '').toLowerCase().trim(); }
+
+  function renderCrumbs() {
+    const parts = [];
+    if ($airline && $airline.value) parts.push({type:'Airline', value: $airline.value, clear: () => {$airline.value='';} });
+    if ($country && $country.value) parts.push({type:'Country', value: $country.value, clear: () => {$country.value='';} });
+    if ($search && $search.value)   parts.push({type:'Search',  value: $search.value,  clear: () => {$search.value='';} });
+
+    if (!$crumbs) return;
+    if (parts.length === 0) { $crumbs.innerHTML = ''; return; }
+
+    const html = [
+      '<nav aria-label="Active filters"><span class="small me-2 text-muted">You’re viewing:</span>'
+    ].concat(parts.map(p => `
+      <span class="badge rounded-pill text-bg-light border me-1 mb-1">
+        ${p.type}: ${p.value}
+        <button type="button" class="btn btn-sm btn-link p-0 ms-1" aria-label="Clear ${p.type}" data-clear="${p.type}">×</button>
+      </span>
+    `)).concat('</nav>').join('');
+
+    $crumbs.innerHTML = html;
+
+    // Wire clear buttons
+    $crumbs.querySelectorAll('[data-clear]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const t = btn.getAttribute('data-clear');
+        if (t === 'Airline') parts.find(p=>p.type==='Airline').clear();
+        if (t === 'Country') parts.find(p=>p.type==='Country').clear();
+        if (t === 'Search')  parts.find(p=>p.type==='Search').clear();
+        applyFilters();
+      });
+    });
+  }
+
+  function applyFilters() {
+    const q  = normalize($search?.value);
+    const al = normalize($airline?.value);
+    const co = normalize($country?.value);
+
+    let visible = 0;
+
+    $cards.forEach(card => {
+      const cardAirline = normalize(card.getAttribute('data-airline'));
+      const cardCountry = normalize(card.getAttribute('data-country'));
+      const cardText    = normalize(card.getAttribute('data-text'));
+
+      const passSearch  = !q  || cardText.includes(q);
+      const passAirline = !al || cardAirline === al;
+      const passCountry = !co || cardCountry === co;
+
+      const show = passSearch && passAirline && passCountry;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    if ($count) $count.textContent = visible + ' ' + (visible === 1 ? 'story' : 'stories');
+    renderCrumbs();
+  }
+
+  // Sidebar link lists -> apply filter
+  document.querySelectorAll('.pv-link-airline').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const val = a.getAttribute('data-airline') || '';
+      if ($airline) $airline.value = val;
+      applyFilters();
+      // Smooth scroll to list
+      document.getElementById('pv-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  document.querySelectorAll('.pv-link-country').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const val = a.getAttribute('data-country') || '';
+      if ($country) $country.value = val;
+      applyFilters();
+      document.getElementById('pv-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  [$search, $airline, $country].forEach(el => {
+    if (!el) return;
+    el.addEventListener('input', applyFilters);
+    el.addEventListener('change', applyFilters);
+  });
+
+  if ($clearBtn) {
+    $clearBtn.addEventListener('click', () => {
+      if ($search)  $search.value = '';
+      if ($airline) $airline.value = '';
+      if ($country) $country.value = '';
+      applyFilters();
+    });
+  }
+
+  applyFilters();
+})();
+</script>

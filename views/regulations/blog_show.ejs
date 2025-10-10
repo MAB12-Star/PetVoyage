@@ -1,0 +1,127 @@
+<% layout('layouts/boilerplate') %>
+
+<%
+  // Helpers for SEO-safe values
+  const plainBody = String((story.body || '').replace(/<[^>]*>/g, ' ')).replace(/\s+/g,' ').trim();
+  const summary160 = plainBody.slice(0, 160);
+  const pageUrl = `/blog/${story.slug || story._id}`;
+  const cover = (story.photos && story.photos[0] && story.photos[0].url) ? story.photos[0].url : '/images/blog-banner.jpg';
+  const imgList = (story.photos || []).map(p => p.url).slice(0, 8);
+  const authorName = (story.author && story.author.displayName) ? story.author.displayName : 'Anonymous';
+  const publishedISO = new Date(story.createdAt).toISOString();
+  const updatedISO = new Date(story.updatedAt || story.createdAt).toISOString();
+%>
+
+<div class="container my-4">
+  <!-- Breadcrumb (helps internal linking + rich results) -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/blog">Blog</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= story.title %></li>
+    </ol>
+  </nav>
+
+  <!-- Main article -->
+  <article class="card border-secondary shadow p-4 rounded-4"
+           itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="mb-2">
+      <h1 class="fw-bold mb-1" itemprop="headline"><%= story.title %></h1>
+
+      <div class="text-muted mb-2">
+        by <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <span itemprop="name"><%= authorName %></span>
+        </span>
+        •
+        <time itemprop="datePublished" datetime="<%= publishedISO %>"><%= new Date(story.createdAt).toLocaleDateString() %></time>
+        <% if (updatedISO !== publishedISO) { %>
+          <span class="visually-hidden">, updated </span>
+          <meta itemprop="dateModified" content="<%= updatedISO %>">
+        <% } %>
+      <% if (story.airline) { %>
+  •
+  <% if (airlineDoc && airlineDoc.slug) { %>
+    <a href="/airlines/<%= airlineDoc.slug %>"
+       class="badge text-bg-light border text-decoration-none">
+      <i class="bi bi-airplane"></i> <%= airlineDoc.name %>
+    </a>
+  <% } else { %>
+    <span class="badge text-bg-light border"><%= story.airline %></span>
+  <% } %>
+<% } %>
+
+      </div>
+
+      <!-- Optional article meta block for scannability -->
+      <% if (story.route || story.country || story.petType) { %>
+        <ul class="list-inline small text-muted mb-0">
+          <% if (story.route) { %><li class="list-inline-item">Route: <span itemprop="about"><%= story.route %></span></li><% } %>
+          <% if (story.country) { %><li class="list-inline-item">Destination: <%= story.country %></li><% } %>
+          <% if (story.petType) { %><li class="list-inline-item">Pet: <%= story.petType %></li><% } %>
+        </ul>
+      <% } %>
+
+      <meta itemprop="mainEntityOfPage" content="<%= pageUrl %>">
+      <meta itemprop="image" content="<%= cover %>">
+      <meta itemprop="description" content="<%= summary160 %>">
+      <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="PetVoyage">
+        <meta itemprop="logo" content="https://www.petvoyage.ai/images/PetVoyageLogo.png">
+      </span>
+    </header>
+
+    <% if (story.photos && story.photos.length) { %>
+      <section class="row g-3 mb-3" aria-label="Story photos">
+        <% story.photos.forEach(p => { %>
+          <div class="col-6 col-md-4">
+            <figure class="mb-0">
+              <a href="<%= p.url %>" target="_blank" rel="noopener">
+                <img src="<%= p.url %>" class="img-fluid rounded-3" alt="<%= p.alt || story.title %>" loading="lazy">
+              </a>
+              <% if (p.alt) { %><figcaption class="visually-hidden"><%= p.alt %></figcaption><% } %>
+            </figure>
+          </div>
+        <% }) %>
+      </section>
+    <% } %>
+
+    <!-- Body -->
+    <section class="fs-5" itemprop="articleBody">
+      <%- story.body %>
+    </section>
+
+    <!-- Simple prev/next internal links can be added later for stronger crawl paths -->
+
+    <footer class="mt-4 d-flex gap-2">
+      <a class="btn btn-outline-secondary" href="/blog" aria-label="Back to blog list">← Back to blog</a>
+      <% if (user && String(user._id) === String(story.author)) { %>
+        <a class="btn btn-primary" href="/blog/<%= story._id %>/edit">Edit</a>
+        <form action="/blog/<%= story._id %>/delete" method="post" class="d-inline"
+              onsubmit="return confirm('Delete this story?');">
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      <% } %>
+    </footer>
+  </article>
+</div>
+
+<!-- JSON-LD: BlogPosting -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": <%- JSON.stringify(story.title) %>,
+  "description": <%- JSON.stringify(summary160) %>,
+  "url": <%- JSON.stringify(pageUrl) %>,
+  "datePublished": <%- JSON.stringify(publishedISO) %>,
+  "dateModified": <%- JSON.stringify(updatedISO) %>,
+  "author": { "@type": "Person", "name": <%- JSON.stringify(authorName) %> },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PetVoyage",
+    "logo": { "@type": "ImageObject", "url": "https://www.petvoyage.ai/images/PetVoyageLogo.png" }
+  },
+  "image": <%- JSON.stringify(imgList.length ? imgList : [cover]) %>,
+  "mainEntityOfPage": { "@type": "WebPage", "@id": <%- JSON.stringify(pageUrl) %> }
+}
+</script>

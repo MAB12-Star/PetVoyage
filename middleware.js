@@ -62,6 +62,33 @@ module.exports.redirectOldAirlineLinks = (req, res, next) => {
     next();
   };
   
+// middleware/auth.js
+module.exports.ensureAuth = function ensureAuth(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) return next();
+  // Remember where they were going, then redirect to login
+  req.session.currentPage = req.originalUrl || '/blog';
+  return res.redirect('/login');
+};
+
+module.exports.ensureOwner = function ensureOwner(getDoc) {
+  return async (req, res, next) => {
+    try {
+      const doc = await getDoc(req);
+      if (!doc) return res.status(404).send('Not found');
+
+      const isOwner = doc.author && req.user && String(doc.author) === String(req.user._id);
+      if (!isOwner) return res.status(403).send('Forbidden');
+
+      req.storyDoc = doc;
+      next();
+    } catch (e) {
+      // Gracefully handle invalid ObjectId or similar casting problems
+      if (e && e.name === 'CastError') return res.status(404).send('Not found');
+      console.error('[ensureOwner] err', e);
+      return res.status(500).send('Server error');
+    }
+  };
+};
 
 
 

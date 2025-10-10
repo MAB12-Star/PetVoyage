@@ -131,6 +131,9 @@ app.use((req, res, next) => {
 app.use(toDoListMiddleware);
 
 // 🛣 Routes
+// in app.js/server.js
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
 app.use('/ai', aiRoutes); // AI route near the top
 app.use('/', auth);
 app.use('/auth', auth);

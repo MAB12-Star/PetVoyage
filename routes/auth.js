@@ -4,14 +4,15 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const router = express.Router();
 const { saveCurrentUrl, thisIsTheURL } = require('../middleware'); // Adjust the path as needed
-// Determine the callback URL dynamically based on the environment
-const callbackURL = "http://www.petvoyage.ai/google/callback";
+// auth.js (or wherever you configure Passport)
+const isProd = process.env.NODE_ENV === 'production';
 
+const callbackURL =
+  process.env.GOOGLE_CALLBACK_URL ||
+  (isProd
+    ? 'https://www.petvoyage.ai/google/callback'
+    : 'http://localhost:3000/google/callback');
 
-
-
-//"http://localhost:3000/google/callback"
-//"http://www.petvoyage.ai/google/callback"
 // Configure Google Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.passportClientId,
@@ -52,6 +53,7 @@ passport.deserializeUser((id, done) => {
         done(null, user);
     });
 });
+
 
 // Route to initiate Google authentication
 router.get('/google', (req, res, next) => {
