@@ -70,6 +70,17 @@ module.exports.ensureAuth = function ensureAuth(req, res, next) {
   return res.redirect('/login');
 };
 
+// middleware/index.js
+module.exports.ensureAdmin = function ensureAdmin(req, res, next) {
+  if (req.user && req.user.role === 'admin') return next();
+
+  // not an admin
+  if (req.xhr) return res.status(403).json({ error: 'Admins only' });
+  req.flash('error', 'Admins only.');
+  return res.redirect('/');  // or res.status(403).render('403') if you prefer
+};
+
+
 module.exports.ensureOwner = function ensureOwner(getDoc) {
   return async (req, res, next) => {
     try {

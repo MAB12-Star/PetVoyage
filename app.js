@@ -164,26 +164,41 @@ app.get('/siteMap.xml', (req, res) => {
 app.get('/sitemap', (req, res) => {
     res.render('sitemap'); // Render the sitemap view (e.g., sitemap.ejs)
 });
+// app.js (or wherever your routes live)
+const Review = require('./models/review');
+const Story  = require('./models/story'); // <-- use your actual Story model path/name
+
 // 👤 Dashboard
 app.get('/dashboard', async (req, res) => {
-    if (req.isAuthenticated()) {
-        try {
-            const user = await User.findById(req.user._id)
-                .populate('savedRegulations')
-                .populate('savedFlightRegulations')
-                .populate('favoriteAirlines');
+  if (!req.isAuthenticated()) {
+    req.flash('error', 'Please log in.');
+    return res.redirect('/login');
+  }
 
-            res.render('dashboard', { user });
-        } catch (error) {
-            console.error('Dashboard Error:', error);
-            req.flash('error', 'Unable to load your data.');
-            res.redirect('/');
-        }
-    } else {
-        req.flash('error', 'Please log in.');
-        res.redirect('/login');
-    }
+  try {
+    const user = await User.findById(req.user._id)
+      .populate('savedRegulations')
+      .populate('savedFlightRegulations')
+      .populate('favoriteAirlines');
+
+    // Fetch items the user owns
+    const myReviews = await Review.find({ author: req.user._id })
+      .sort({ createdAt: -1 })
+      .populate({ path: 'airline', select: 'name airlineCode slug' }) // optional, if you stored it
+      .lean();
+
+    const myStories = await Story.find({ author: req.user._id })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.render('dashboard', { user, myReviews, myStories });
+  } catch (error) {
+    console.error('Dashboard Error:', error);
+    req.flash('error', 'Unable to load your data.');
+    res.redirect('/');
+  }
 });
+
 
 // 🏠 Home
 app.get('/', (req, res) => {

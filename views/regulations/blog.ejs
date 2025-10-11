@@ -53,82 +53,99 @@
 
   <div class="row">
     <!-- Sidebar Filters + Browse Lists -->
-    <aside class="col-lg-3 mb-4" aria-label="Filters">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h2 class="h5 mb-3">Filter stories</h2>
+    <!-- Sidebar Filters + Browse Lists -->
+<aside class="col-lg-3 mb-4" aria-label="Filters">
 
-          <div class="mb-3">
-            <label for="pv-search" class="form-label">Search title/summary</label>
-            <input id="pv-search" type="search" class="form-control" placeholder="Type to filter…">
-          </div>
+  <!-- Mobile toggle button -->
+  <button
+    class="btn btn-outline-secondary w-100 d-lg-none mb-2"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#pv-filter-panel"
+    aria-expanded="false"
+    aria-controls="pv-filter-panel">
+    Filters
+  </button>
 
-          <div class="mb-3">
-            <label class="form-label">Airline</label>
-            <select id="pv-airline" class="form-select">
-              <option value="">All airlines</option>
-              <% airlinesList.forEach(a => { %>
-                <option value="<%= a %>"><%= a %></option>
-              <% }) %>
-            </select>
-          </div>
+  <!-- Collapsible panel on mobile; always visible on lg+ -->
+  <div id="pv-filter-panel" class="collapse d-lg-block">
+    <div class="card shadow-sm sticky-lg-top" style="top:1rem;">
+      <div class="card-body">
+        <h2 class="h5 mb-3 d-none d-lg-block">Filter stories</h2>
 
-          <div class="mb-3">
-            <label class="form-label">Country</label>
-            <select id="pv-country" class="form-select">
-              <option value="">All countries</option>
-              <% countriesList.forEach(c => { %>
-                <option value="<%= c %>"><%= c %></option>
-              <% }) %>
-            </select>
-          </div>
-
-          <!-- Active filter breadcrumbs -->
-          <div class="mb-2" id="pv-crumbs" aria-live="polite"></div>
-
-          <div class="d-flex gap-2 mb-2">
-            <button id="pv-clear" class="btn btn-outline-secondary btn-sm" type="button">Clear</button>
-          </div>
-
-          <hr class="my-3">
-
-          <!-- Browse by Airline -->
-          <h3 class="h6 mb-2">Browse by airline</h3>
-          <nav id="pv-browse-airlines" class="small" aria-label="Browse by airline">
-            <% if (airlinesList.length === 0) { %>
-              <p class="text-muted mb-2">No airline tags yet.</p>
-            <% } else { %>
-              <ul class="list-unstyled mb-3">
-                <% airlinesList.forEach(a => { %>
-                  <li class="mb-1">
-                    <a href="#" class="pv-link-airline" data-airline="<%= a %>"><%= a %></a>
-                  </li>
-                <% }) %>
-              </ul>
-            <% } %>
-          </nav>
-
-          <!-- Browse by Country -->
-          <h3 class="h6 mb-2">Browse by country</h3>
-          <nav id="pv-browse-countries" class="small" aria-label="Browse by country">
-            <% if (countriesList.length === 0) { %>
-              <p class="text-muted mb-0">No country tags yet.</p>
-            <% } else { %>
-              <ul class="list-unstyled mb-0">
-                <% countriesList.forEach(c => { %>
-                  <li class="mb-1">
-                    <a href="#" class="pv-link-country" data-country="<%= c %>"><%= c %></a>
-                  </li>
-                <% }) %>
-              </ul>
-            <% } %>
-          </nav>
-
-          <hr class="my-3">
-          <p class="small text-muted mb-0" id="pv-count"><%= (stories||[]).length %> stories</p>
+        <div class="mb-3">
+          <label for="pv-search" class="form-label">Search title/summary</label>
+          <input id="pv-search" type="search" class="form-control" placeholder="Type to filter…">
         </div>
+
+        <div class="mb-3">
+          <label class="form-label">Airline</label>
+          <select id="pv-airline" class="form-select">
+            <option value="">All airlines</option>
+            <% airlinesList.forEach(a => { %>
+              <option value="<%= a %>"><%= a %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Country</label>
+          <select id="pv-country" class="form-select">
+            <option value="">All countries</option>
+            <% countriesList.forEach(c => { %>
+              <option value="<%= c %>"><%= c %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- Active filter breadcrumbs -->
+        <div class="mb-2" id="pv-crumbs" aria-live="polite"></div>
+
+        <div class="d-flex gap-2 mb-2">
+          <button id="pv-clear" class="btn btn-outline-secondary btn-sm" type="button">Clear</button>
+        </div>
+
+        <hr class="my-3">
+
+        <!-- Browse by Airline -->
+        <h3 class="h6 mb-2">Browse by airline</h3>
+        <nav id="pv-browse-airlines" class="small" aria-label="Browse by airline">
+          <% if (airlinesList.length === 0) { %>
+            <p class="text-muted mb-2">No airline tags yet.</p>
+          <% } else { %>
+            <ul class="list-unstyled mb-3">
+              <% airlinesList.forEach(a => { %>
+                <li class="mb-1">
+                  <a href="#" class="pv-link-airline" data-airline="<%= a %>"><%= a %></a>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </nav>
+
+        <!-- Browse by Country -->
+        <h3 class="h6 mb-2">Browse by country</h3>
+        <nav id="pv-browse-countries" class="small" aria-label="Browse by country">
+          <% if (countriesList.length === 0) { %>
+            <p class="text-muted mb-0">No country tags yet.</p>
+          <% } else { %>
+            <ul class="list-unstyled mb-0">
+              <% countriesList.forEach(c => { %>
+                <li class="mb-1">
+                  <a href="#" class="pv-link-country" data-country="<%= c %>"><%= c %></a>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </nav>
+
+        <hr class="my-3">
+        <p class="small text-muted mb-0" id="pv-count"><%= (stories||[]).length %> stories</p>
       </div>
-    </aside>
+    </div>
+  </div>
+</aside>
+
 
     <!-- Feed -->
     <div class="col-lg-9">
@@ -273,6 +290,31 @@
   }
   </script>
 </main>
+
+<script>
+(function(){
+  const panel = document.getElementById('pv-filter-panel');
+
+  function isMobile() { return window.matchMedia('(max-width: 991.98px)').matches; } // Bootstrap lg breakpoint
+  function closePanelIfMobile() {
+    if (!panel || !isMobile()) return;
+    const inst = bootstrap?.Collapse.getOrCreateInstance(panel, { toggle: false });
+    inst?.hide();
+  }
+
+  // Close after using selects, search, clear, or browse links
+  ['pv-airline','pv-country','pv-search','pv-clear'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const evt = (id === 'pv-search') ? 'change' : 'click';
+    el.addEventListener(evt, closePanelIfMobile);
+  });
+
+  document.querySelectorAll('.pv-link-airline, .pv-link-country').forEach(a => {
+    a.addEventListener('click', closePanelIfMobile);
+  });
+})();
+</script>
 
 <script>
 (() => {

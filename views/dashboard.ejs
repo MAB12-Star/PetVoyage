@@ -1,155 +1,338 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="container mt-5">
-    <!-- Centered Header Section -->
-    <div class="row justify-content-center">
-        <div class="col-md-8 text-center">
-            <h3 class="text-center text-secondary-emphasis mb-4"><strong> Welcome to Your Dashboard</strong></h3>
-            <h5 class="text-center text-secondary mb-4">Hello, <%= user.displayName %>!</h5>
-            <p cl><strong>Email:</strong> <%= user.email %></p>
-            <a href="/toDoList" class="btn btn-primary mt-3">View To-Do List</a>
+<%
+  // ---------- counts for badges ----------
+  const counts = {
+    reviews:            (myReviews || []).length,
+    posts:              (myStories || []).length,
+    itins:              (user?.savedItineraries || []).length,
+    countryRegs:        (user?.savedRegulations || []).length,
+    flightRegs:         (user?.savedFlightRegulations || []).length,
+    favAirlines:        (user?.favoriteAirlines || []).length
+  };
+  const flightTotal = counts.flightRegs + counts.favAirlines;
 
-            <hr>
-        </div>
+  // small helpers
+  const fmtDate = (d) => {
+    try { return new Date(d).toLocaleString(); } catch { return ''; }
+  };
+%>
+
+<style>
+  /* Keep accordion bodies compact with internal scrolling */
+  .scroll-section {
+    max-height: 340px;     /* ~ "a few" items visible; tweak as you like */
+    overflow: auto;
+  }
+
+  /* Slightly taller on larger screens */
+  @media (min-width: 992px) {
+    .scroll-section { max-height: 420px; }
+  }
+
+  /* Tighter list-group spacing inside cards */
+  .list-group-item { border-radius: .5rem; }
+</style>
+
+<div class="container mt-5">
+  <!-- Header -->
+  <div class="row justify-content-center">
+    <div class="col-md-10 text-center">
+      <h3 class="text-secondary-emphasis mb-2"><strong>Welcome to Your Dashboard</strong></h3>
+      <h5 class="text-secondary mb-2">Hello, <%= user.displayName %>!</h5>
+      <p class="mb-2"><strong>Email:</strong> <%= user.email %></p>
+      <a href="/toDoList" class="btn btn-primary mt-2">View To-Do List</a>
+      <hr class="mt-4">
     </div>
-    <div class="row mt-5">
-        <div class="col-12">
-          <div class="card shadow-lg p-4 border-secondary rounded">
-            <h5 class="text-secondary-emphasis"><strong>Here are your saved itineraries:</strong></h5>
-      
-            <% if (user.savedItineraries && user.savedItineraries.length > 0) { %>
-              <div class="accordion mt-4" id="savedItinsAccordion">
-                <% user.savedItineraries.forEach(function(it, idx) { %>
-                  <div class="accordion-item mb-3 shadow-sm border rounded">
-                    <h2 class="accordion-header" id="head-<%= it._id %>">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#body-<%= it._id %>" aria-expanded="false" aria-controls="body-<%= it._id %>">
-                        <div class="w-100 d-flex justify-content-between align-items-center">
-                          <div>
-                            <strong><%= it.petType %></strong> •
-                            <%= it.airlineName %><% if (it.airlineCode) { %> (<%= it.airlineCode %>)<% } %> →
-                            <%= it.country %>
-                            <small class="text-muted ms-2"><%= new Date(it.createdAt).toLocaleDateString() %></small>
+  </div>
+
+         <%- include('./partials/navigation') %>
+
+         <br>
+
+  <!-- Two-column layout: left = Your Content, right = Your Saves -->
+  <div class="row g-4">
+    <!-- LEFT: Your Content (Reviews + Blog Posts) -->
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-lg border-secondary rounded">
+        <div class="card-body">
+          <h5 class="text-secondary-emphasis mb-3"><strong>Your Content</strong></h5>
+
+          <div class="accordion" id="contentAccordion">
+            <!-- My Reviews -->
+            <div class="accordion-item mb-3 border rounded">
+              <h2 class="accordion-header" id="acc-reviews-head">
+                <button class="accordion-button collapsed d-flex align-items-center gap-2" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc-reviews-body"
+                        aria-expanded="false" aria-controls="acc-reviews-body">
+                  <span>My Reviews</span>
+                  <span class="badge bg-secondary"><%= counts.reviews %></span>
+                </button>
+              </h2>
+              <div id="acc-reviews-body" class="accordion-collapse collapse"
+                   aria-labelledby="acc-reviews-head" data-bs-parent="#contentAccordion">
+                <div class="accordion-body p-3">
+                  <% if (myReviews && myReviews.length) { %>
+                    <div class="list-group scroll-section">
+                      <% myReviews.forEach(r => { const a = r.airline || {}; %>
+                        <div class="list-group-item mb-3 shadow-sm border rounded">
+                          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                            <div>
+                              <div class="mb-1">
+                                <span class="badge bg-warning text-dark"><%= r.rating %>/5</span>
+                                <% if (a.slug) { %>
+                                  <a class="ms-2 small text-decoration-none" href="/airlines/<%= a.slug %>">
+                                    <i class="bi bi-airplane"></i> <%= a.name || a.airlineCode %>
+                                  </a>
+                                <% } %>
+                                <small class="text-muted ms-2"><%= fmtDate(r.updatedAt || r.createdAt) %></small>
+                              </div>
+                              <p class="mb-2"><%- (r.body || '').replace(/\n/g,'<br>') %></p>
+                            </div>
+                            <div class="d-flex gap-2">
+                              <% if (a.slug) { %>
+                                <a href="/airlines/<%= a.slug %>/reviews/<%= r._id %>/edit" class="btn btn-outline-primary btn-sm">Edit</a>
+                                <form action="/airlines/slug/<%= a.slug %>/reviews/<%= r._id %>?_method=DELETE"
+                                      method="POST" onsubmit="return confirm('Delete this review?');">
+                                  <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                </form>
+                              <% } %>
+                            </div>
                           </div>
-                          <form action="/favorites/itinerary/<%= it._id %>?_method=DELETE" method="POST" class="ms-2">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                              <i class="fas fa-trash-alt"></i> DELETE
-                            </button>
-                          </form>
                         </div>
-                      </button>
-                    </h2>
-                    <div id="body-<%= it._id %>" class="accordion-collapse collapse" aria-labelledby="head-<%= it._id %>"
-                         data-bs-parent="#savedItinsAccordion">
-                      <div class="accordion-body">
-                        <!-- Saved HTML is trusted server output you generated; if any user input can leak in, sanitize before saving -->
-                        <%- it.html %>
-                      </div>
+                      <% }) %>
                     </div>
-                  </div>
-                <% }) %>
+                  <% } else { %>
+                    <p class="text-muted mb-0">You haven’t written any reviews yet.</p>
+                  <% } %>
+                </div>
               </div>
-            <% } else { %>
-              <p class="text-muted mt-3 mb-0">You have not saved any itineraries yet.</p>
-            <% } %>
-          </div>
+            </div>
+
+            <!-- My Blog Posts -->
+            <div class="accordion-item border rounded">
+              <h2 class="accordion-header" id="acc-posts-head">
+                <button class="accordion-button collapsed d-flex align-items-center gap-2" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc-posts-body"
+                        aria-expanded="false" aria-controls="acc-posts-body">
+                  <span>My Blog Posts</span>
+                  <span class="badge bg-secondary"><%= counts.posts %></span>
+                </button>
+              </h2>
+              <div id="acc-posts-body" class="accordion-collapse collapse"
+                   aria-labelledby="acc-posts-head" data-bs-parent="#contentAccordion">
+                <div class="accordion-body p-3">
+                  <% if (myStories && myStories.length) { %>
+                    <div class="list-group scroll-section">
+                      <% myStories.forEach(s => { const slug = s.slug || s._id; %>
+                        <div class="list-group-item mb-3 shadow-sm border rounded">
+                          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                            <div>
+                              <h6 class="mb-1">
+                                <a class="text-decoration-none" href="/blog/<%= slug %>"><%= s.title || '(Untitled post)' %></a>
+                              </h6>
+                              <small class="text-muted"><%= fmtDate(s.createdAt || Date.now()) %></small>
+                              <% if (s.summary) { %>
+                                <p class="mb-0 mt-2 text-muted"><%= s.summary %></p>
+                              <% } %>
+                            </div>
+                            <div class="d-flex gap-2">
+                              <a href="/blog/<%= slug %>/edit" class="btn btn-outline-primary btn-sm">Edit</a>
+                              <form action="/blog/<%= slug %>/delete?_method=DELETE" method="POST"
+                                    onsubmit="return confirm('Delete this post?');">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      <% }) %>
+                    </div>
+                  <% } else { %>
+                    <p class="text-muted mb-0">You haven’t published any posts yet.</p>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div><!-- /accordion -->
         </div>
       </div>
-      
-    <!-- Saved Country and Airline Regulations Section -->
-    <div class="row mt-5">
-        <!-- Saved Country Regulations -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-lg p-4 border-secondary rounded">
-                <h5 class="text-secondary-emphasis"><strong>Here are your saved country regulations:</strong></h5>
-
-                <% if (user.savedRegulations.length > 0) { %>
-                    <ul class="list-group mt-4">
-                        <% user.savedRegulations.forEach(regulation => { %>
-                            <li class="list-group-item mb-3 shadow-sm border rounded">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div>
-                                             <!-- Form to delete the saved regulation -->
-                                    <form class="mb-auto" action="/favorites/<%= regulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
-                                            <i class="fas fa-trash-alt"></i> DELETE
-                                        </button>
-                                    </form>
-                                        <strong>Description:</strong> <%- regulation.description%><br>
-                                        <strong>Link:</strong> <a href="<%= regulation.link %>" target="_blank" class="text-decoration-none">View Regulation</a>
-                                    </div>
-                                   
-                                </div>
-                                </div>
-                            </li>
-                        <% }) %>
-                    </ul>
-                <% } else { %>
-                    <p class="text-muted">You have not saved any regulations yet.</p>
-                <% } %>
-            </div>
-        </div>
-
-        <!-- Saved Airline Regulations -->
-       
-        
-
-<!-- Include Font Awesome CDN for the icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<div class="col-md-6">
-    <div class="card shadow-lg p-4 border-secondary rounded">
-        <h5 class="text-secondary-emphasis"><strong>Here are your saved airline regulations:</strong></h5>
-        
-        <!-- Check if there are any savedFlightRegulations or favoriteAirlines -->
-        <% if (user.savedFlightRegulations.length > 0 || user.favoriteAirlines.length > 0) { %>
-            <ul class="list-group mt-4">
-                
-                <!-- Render savedFlightRegulations -->
-                <% user.savedFlightRegulations.forEach(airlineRegulation => { %>
-                    <li class="list-group-item mb-3 shadow-sm border rounded">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>Airline Code:</strong> <%= airlineRegulation.name %><br>
-                                <strong>Regulation Link:</strong> 
-                                <a href="<%= airlineRegulation.petPolicyURL %>" target="_blank" class="text-decoration-none">View Regulation</a>
-                            </div>
-                            <!-- Form to delete the saved regulation -->
-                            <form action="/favorites/deleteFlight/<%= airlineRegulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i> DELETE
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                <% }) %>
-                
-                <!-- Render favoriteAirlines -->
-                <% user.favoriteAirlines.forEach(favoriteAirline => { %>
-                    <li class="list-group-item mb-3 shadow-sm border rounded">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>Airline Name:</strong> <%= favoriteAirline.airlineName %><br>
-                                <strong>Link to Airline Page:</strong> 
-                                <a href="<%= favoriteAirline.link %>" target="_blank" class="text-decoration-none">Visit Airline</a><br>
-                                <strong>Pet Policy:</strong> 
-                                <a href="<%= favoriteAirline.petPolicyURL %>" target="_blank" class="text-decoration-none">View Pet Policy</a><br>
-  
-                            </div>
-                            <!-- Form to delete the favorite airline -->
-                            <form action="/favorites/deleteAirline/<%= favoriteAirline.airlineId %>?_method=DELETE" method="POST" style="margin: 0;">
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i> DELETE
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                <% }) %>
-                
-                
-            </ul>
-        <% } else { %>
-            <p class="text-muted">You have not saved any airline regulations or favorite airlines yet.</p>
-        <% } %>
     </div>
+
+    <!-- RIGHT: Your Saves (Itins + Country Regs + Airline Regs/Favorites) -->
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-lg border-secondary rounded">
+        <div class="card-body">
+          <h5 class="text-secondary-emphasis mb-3"><strong>Your Saves</strong></h5>
+
+          <div class="accordion" id="savesAccordion">
+            <!-- Saved Itineraries -->
+            <div class="accordion-item mb-3 border rounded">
+              <h2 class="accordion-header" id="acc-itins-head">
+                <button class="accordion-button collapsed d-flex align-items-center gap-2" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc-itins-body"
+                        aria-expanded="false" aria-controls="acc-itins-body">
+                  <span>Saved Itineraries</span>
+                  <span class="badge bg-secondary"><%= counts.itins %></span>
+                </button>
+              </h2>
+              <div id="acc-itins-body" class="accordion-collapse collapse"
+                   aria-labelledby="acc-itins-head" data-bs-parent="#savesAccordion">
+                <div class="accordion-body p-3">
+                  <% if (user.savedItineraries && user.savedItineraries.length > 0) { %>
+                    <div class="scroll-section">
+                      <div class="accordion" id="savedItinsAccordion">
+                        <% user.savedItineraries.forEach(function(it) { %>
+                          <div class="accordion-item mb-3 shadow-sm border rounded">
+                            <h2 class="accordion-header" id="head-<%= it._id %>">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                      data-bs-target="#body-<%= it._id %>" aria-expanded="false" aria-controls="body-<%= it._id %>">
+                                <div class="w-100 d-flex justify-content-between align-items-center">
+                                  <div>
+                                    <strong><%= it.petType %></strong> •
+                                    <%= it.airlineName %><% if (it.airlineCode) { %> (<%= it.airlineCode %>)<% } %> →
+                                    <%= it.country %>
+                                    <small class="text-muted ms-2"><%= new Date(it.createdAt).toLocaleDateString() %></small>
+                                  </div>
+                                  <form action="/favorites/itinerary/<%= it._id %>?_method=DELETE" method="POST" class="ms-2">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                      <i class="fas fa-trash-alt"></i> DELETE
+                                    </button>
+                                  </form>
+                                </div>
+                              </button>
+                            </h2>
+                            <div id="body-<%= it._id %>" class="accordion-collapse collapse" aria-labelledby="head-<%= it._id %>"
+                                  data-bs-parent="#savedItinsAccordion">
+                              <div class="accordion-body">
+                                <%- it.html %>
+                              </div>
+                            </div>
+                          </div>
+                        <% }) %>
+                      </div>
+                    </div>
+                  <% } else { %>
+                    <p class="text-muted mb-0">You have not saved any itineraries yet.</p>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+
+            <!-- Saved Country Regulations -->
+            <div class="accordion-item mb-3 border rounded">
+              <h2 class="accordion-header" id="acc-cregs-head">
+                <button class="accordion-button collapsed d-flex align-items-center gap-2" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc-cregs-body"
+                        aria-expanded="false" aria-controls="acc-cregs-body">
+                  <span>Saved Country Regulations</span>
+                  <span class="badge bg-secondary"><%= counts.countryRegs %></span>
+                </button>
+              </h2>
+              <div id="acc-cregs-body" class="accordion-collapse collapse"
+                   aria-labelledby="acc-cregs-head" data-bs-parent="#savesAccordion">
+                <div class="accordion-body p-3">
+                  <% if (user.savedRegulations && user.savedRegulations.length > 0) { %>
+                    <ul class="list-group mt-2 scroll-section">
+                      <% user.savedRegulations.forEach(regulation => { %>
+                        <li class="list-group-item mb-3 shadow-sm border rounded">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <strong>Description:</strong> <%- regulation.description %><br>
+                              <strong>Link:</strong>
+                              <a href="<%= regulation.link %>" target="_blank" class="text-decoration-none">View Regulation</a>
+                            </div>
+                            <form action="/favorites/<%= regulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
+                              <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> DELETE
+                              </button>
+                            </form>
+                          </div>
+                        </li>
+                      <% }) %>
+                    </ul>
+                  <% } else { %>
+                    <p class="text-muted mb-0">You have not saved any regulations yet.</p>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+
+            <!-- Saved Airline Regulations & Favorites -->
+            <div class="accordion-item border rounded">
+              <h2 class="accordion-header" id="acc-aregs-head">
+                <button class="accordion-button collapsed d-flex align-items-center gap-2 flex-wrap" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#acc-aregs-body"
+                        aria-expanded="false" aria-controls="acc-aregs-body">
+                  <span>Saved Airline Regulations & Favorites</span>
+                  <span class="badge bg-secondary"><%= flightTotal %></span>
+                  <span class="badge bg-light text-dark border">Regs: <%= counts.flightRegs %></span>
+                  <span class="badge bg-light text-dark border">Favs: <%= counts.favAirlines %></span>
+                </button>
+              </h2>
+              <div id="acc-aregs-body" class="accordion-collapse collapse"
+                   aria-labelledby="acc-aregs-head" data-bs-parent="#savesAccordion">
+                <div class="accordion-body p-3">
+                  <% if ((user.savedFlightRegulations && user.savedFlightRegulations.length) || (user.favoriteAirlines && user.favoriteAirlines.length)) { %>
+                    <ul class="list-group mt-2 scroll-section">
+                      <!-- savedFlightRegulations -->
+                      <% (user.savedFlightRegulations || []).forEach(airlineRegulation => { %>
+                        <li class="list-group-item mb-3 shadow-sm border rounded">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <strong>Airline:</strong> <%= airlineRegulation.name %><br>
+                              <strong>Pet Policy:</strong>
+                              <a href="<%= airlineRegulation.petPolicyURL %>" target="_blank" class="text-decoration-none">View Regulation</a>
+                            </div>
+                            <form action="/favorites/deleteFlight/<%= airlineRegulation._id %>?_method=DELETE" method="POST" style="margin: 0;">
+                              <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> DELETE
+                              </button>
+                            </form>
+                          </div>
+                        </li>
+                      <% }) %>
+
+                      <!-- favoriteAirlines -->
+                      <% (user.favoriteAirlines || []).forEach(fav => { %>
+                        <li class="list-group-item mb-3 shadow-sm border rounded">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <strong>Airline:</strong> <%= fav.airlineName %><% if (fav.airlineCode) { %> (<%= fav.airlineCode %>)<% } %><br>
+                              <% if (fav.link) { %>
+                                <strong>Airline Page:</strong>
+                                <a href="<%= fav.link %>" target="_blank" class="text-decoration-none">Visit</a><br>
+                              <% } %>
+                              <% if (fav.petPolicyURL) { %>
+                                <strong>Pet Policy:</strong>
+                                <a href="<%= fav.petPolicyURL %>" target="_blank" class="text-decoration-none">View Pet Policy</a>
+                              <% } %>
+                            </div>
+                            <form action="/favorites/deleteAirline/<%= fav.airlineId %>?_method=DELETE" method="POST" style="margin: 0;">
+                              <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> DELETE
+                              </button>
+                            </form>
+                          </div>
+                        </li>
+                      <% }) %>
+                    </ul>
+                  <% } else { %>
+                    <p class="text-muted mb-0">You have not saved any airline regulations or favorite airlines yet.</p>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div><!-- /accordion -->
+        </div>
+      </div>
+    </div>
+  </div><!-- /row -->
 </div>
+<div>
+
+</div>
+
+     <br>
+
+<!-- (Optional) Font Awesome for trash icon if not already loaded globally -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

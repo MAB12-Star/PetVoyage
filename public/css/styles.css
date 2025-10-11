@@ -694,6 +694,11 @@ gap: 1rem; /* Add space between icons */
       
 .ad-tile .card { height: 100%; margin-bottom: 0 !important; }
 
+
+  @media (min-width: 992px) {
+    .sticky-lg-top { top: 1rem !important; }
+  }
+  
   
 
 
