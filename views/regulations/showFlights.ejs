@@ -182,7 +182,8 @@
                                                 </div>
                                                 <h5 class="card-title">
                                                     <a href="/airlines/<%= airlineSlug %>&Pet&Policy" class="text-primary text-decoration-none">
-                                                        <%= airlineNamesMap[airline] || 'Unknown Airline' %>
+                                                        <%= (airlineNamesMap && airlineNamesMap[airline]) ? airlineNamesMap[airline] : airline %>
+
                                                     </a> 
                                                     <span style="font-size: 0.8rem;"><%= flightType %></span>
                                                 </h5>

@@ -699,6 +699,28 @@ gap: 1rem; /* Add space between icons */
     .sticky-lg-top { top: 1rem !important; }
   }
   
+  /* Keep overall container wide */
+@media (min-width: 1200px) {
+  .container-xxl { max-width: 1440px; }
+}
+
+/* Make sidebars sticky */
+.sticky-col { position: sticky; top: 88px; }
+
+/* Sidebar cards: allow wider content */
+.sidebar-card { max-width: 420px; margin-left: auto; margin-right: auto; }
+@media (min-width: 1400px) { /* a little wider on very large screens is OK too */
+  .sidebar-card { max-width: 440px; }
+}
+
+/* Image helper */
+.object-fit-cover { object-fit: cover; }
+
+/* Don’t over-tighten center padding */
+@media (min-width: 1200px) {
+  .card-body.p-lg-5 { padding: 2.25rem !important; }
+}
+
   
 
 

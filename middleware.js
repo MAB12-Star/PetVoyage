@@ -1,4 +1,74 @@
 const User = require('./models/User'); 
+
+// middleware/randomReview.js
+const Review  = require('./models/review');
+
+// middleware/featuredStory.js
+const Story = require('./models/story');
+
+module.exports.attachFeaturedStory = async (req, res, next) => {
+  try {
+    const [doc] = await Story.aggregate([
+      { $match: { title: { $exists: true, $ne: '' } } },
+      { $sample: { size: 1 } },
+      { $project: { title: 1, slug: 1, summary: 1, body: 1, photos: { $slice: ['$photos', 1] } } }
+    ]);
+    res.locals.favStory = doc || null;
+  } catch (e) {
+    console.error('[attachFeaturedStory] failed:', e);
+    res.locals.favStory = null;
+  }
+  next();
+};
+
+
+module.exports.attachRandomReview = async function attachRandomReview(req, res, next) {
+  try {
+    const [doc] = await Review.aggregate([
+      { $match: { airline: { $exists: true, $ne: null } } }, // only reviews that link to an airline
+      { $sample: { size: 1 } },
+      {
+        $lookup: {
+          from: 'airlines',
+          localField: 'airline',
+          foreignField: '_id',
+          as: 'airline'
+        }
+      },
+      { $unwind: '$airline' }, // now safe to require an airline
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author'
+        }
+      },
+      { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          body: 1,
+          rating: 1,
+          createdAt: 1,
+          'airline._id': 1,
+          'airline.slug': 1,
+          'airline.name': 1,
+          'airline.airlineCode': 1,
+          'author.displayName': 1
+        }
+      }
+    ]);
+
+    res.locals.favReview = doc || null;
+    next();
+  } catch (e) {
+    console.error('[attachRandomReview] failed:', e);
+    res.locals.favReview = null;
+    next();
+  }
+};
+
+
 module.exports.saveCurrentUrl = (req, res, next) => {
     console.log('saveCurrentUrl middleware is running');
 

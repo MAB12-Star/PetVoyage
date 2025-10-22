@@ -32,6 +32,12 @@ const findAVet = require('./routes/findAVet');
 const adminRoutes = require('./routes/admin');
 const aiRoutes = require('./routes/ai');
 
+const { attachRandomReview } = require('./middleware');
+const { attachFeaturedStory } = require('./middleware');
+
+
+
+
 
 
 
@@ -132,6 +138,8 @@ app.use(toDoListMiddleware);
 
 // 🛣 Routes
 // in app.js/server.js
+app.use(attachRandomReview); 
+app.use(attachFeaturedStory);
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/ai', aiRoutes); // AI route near the top
@@ -153,6 +161,9 @@ app.use('/', airlineRoutes);
 app.use('/airlines', reviewsRoutes); // ✅ for nested reviews
 // ... after other app.use(...)
 app.use('/admin', adminRoutes);
+app.use('/uploads', express.static('uploads'));
+
+
 
 
 // 🗺 Sitemap route

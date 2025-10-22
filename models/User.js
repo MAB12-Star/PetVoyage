@@ -16,6 +16,13 @@ const SavedItinerarySchema = new Schema({
   createdAt:    { type: Date, default: Date.now }
 }, { _id: true });
 
+/** Sub-doc: uploaded documents (e.g., rabies certificate) */
+const UploadedDocSchema = new Schema({
+  name: String,
+  url: String,               // file path or Cloudinary/S3 URL
+  uploadedAt: { type: Date, default: Date.now },
+}, { _id: true });
+
 const userSchema = new mongoose.Schema({
   googleId: { type: String, required: true, unique: true },
   displayName: { type: String, required: true },
@@ -40,29 +47,22 @@ const userSchema = new mongoose.Schema({
     slug: String,
   }],
 
- 
+  // Users' uploaded travel docs (e.g., rabies certificate)
+  uploadedDocs: { type: [UploadedDocSchema], default: [] },
 
   toDoList: {
     type: Map,
     of: [String],
     default: {
       "To-Do": [
-        "Research your destination country's pet import requirements",
-        "Get your pet's crate or carrier and start working on acclimation",
-        "Schedule a visit to see your veterinarian",
-        "Check airline or roadway routes",
-        "Research pet-friendly hotels and services",
-        "Get your pet's supplies",
-        "Schedule a trip to the groomer",
-        "Check airline or roadway routes",
-        "Research Pet Friendly Hotels and Services",
-        "Get your pet's supplies"
+        
       ],
       "in-progress": [],
       "completed": [],
     },
   },
 }, { timestamps: true });
+
 
 
 

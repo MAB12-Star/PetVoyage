@@ -10,9 +10,6 @@ const { isLoggedIn } = require('../middleware');
 const { saveCurrentUrl } = require('../middleware');
 
 
-router.get('/searchFlights', catchAsync((req, res) => {
-    res.render('regulations/searchFlights'); // Correct view name
-}));
 
 const getRegulations = async (originCountry, destinationCountry, petTypeName) => {
     try {

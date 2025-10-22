@@ -1,0 +1,78 @@
+<%
+// views/partials/favReview.ejs
+// Expects: res.locals.favReview (or pass { favReview } when including)
+// Safety + helpers:
+const R = typeof favReview !== 'undefined' ? favReview : null;
+function clampStars(n){
+  n = Math.round(Number(n || 0));
+  if (n < 1) return 1;
+  if (n > 5) return 5;
+  return n;
+}
+function shortHtml(txt, max=220){
+  const s = String(txt || '')
+              .replace(/\s+/g, ' ')
+              .trim();
+  return s.length > max ? (s.slice(0, max) + '…') : s;
+}
+%>
+
+<div class="card shadow-sm border-0 rounded-3">
+  <div class="card-body">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+      <h6 class="m-0 fw-bold">Featured Review</h6>
+
+      <% if (R && R.airline) { %>
+        <div class="small text-nowrap">
+          <% if (R.airline.slug) { %>
+            <a class="badge text-bg-light border text-decoration-none"
+               href="/airlines/<%= R.airline.slug %>">
+              <i class="bi bi-airplane"></i>
+              <%= R.airline.name || R.airline.airlineCode %>
+            </a>
+          <% } else { %>
+            <span class="badge text-bg-light border">
+              <i class="bi bi-airplane"></i>
+              <%= R.airline.name || R.airline.airlineCode %>
+            </span>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+
+    <% if (!R) { %>
+      <p class="text-muted mb-3">No reviews yet — be the first to write one!</p>
+      <a class="btn btn-outline-primary btn-sm" href="/blog/new" rel="nofollow">Share a story</a>
+    <% } else { %>
+      <!-- Stars (uses your stars.css) -->
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <div class="starability-result"
+             data-rating="<%= clampStars(R.rating) %>"
+             aria-label="Rated <%= clampStars(R.rating) %> out of 5">
+        </div>
+        <span class="text-muted small"><%= clampStars(R.rating) %>/5</span>
+      </div>
+
+      <!-- Review body (shortened) -->
+      <p class="mb-2"><%- shortHtml(R.body, 260).replace(/\n/g,'<br>') %></p>
+
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 small text-muted">
+        <div>
+          <% if (R.author && R.author.displayName) { %>
+            by <span class="text-body-secondary"><%= R.author.displayName %></span>
+          <% } %>
+          • <time datetime="<%= new Date(R.createdAt).toISOString() %>">
+              <%= new Date(R.createdAt).toLocaleDateString() %>
+            </time>
+        </div>
+
+        <% if (R.airline && R.airline.slug) { %>
+          <a class="text-decoration-none" href="/airlines/<%= R.airline.slug %>">
+            Read more
+            <span aria-hidden="true">→</span>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>

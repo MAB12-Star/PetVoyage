@@ -1,0 +1,41 @@
+<%
+// Expects: res.locals.favStory (or pass { favStory } in include)
+// Helpers
+const S = typeof favStory !== 'undefined' ? favStory : null;
+
+function hrefFor(story){
+  if (!story) return '/blog';
+  return '/blog/' + (story.slug || story._id);
+}
+function pickImg(story){
+  if (story && Array.isArray(story.photos) && story.photos[0]) {
+    return story.photos[0].thumbUrl || story.photos[0].url;
+  }
+  return '/images/movetocdmx.jpg'; // fallback
+}
+function altFor(story){
+  if (story && Array.isArray(story.photos) && story.photos[0] && story.photos[0].alt) {
+    return story.photos[0].alt;
+  }
+  return (story && story.title) ? `${story.title} — PetVoyage Blog` : 'PetVoyage Blog preview';
+}
+function excerpt(story, n=140){
+  if (!story) return 'Flight prep, airline choice, vet visits, and what actually worked the day we flew…';
+  const src = (story.summary && story.summary.trim())
+    ? story.summary
+    : String(story.body || '').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+  return src.length > n ? (src.slice(0, n) + '…') : src;
+}
+%>
+
+<a href="<%= hrefFor(S) %>" class="text-decoration-none">
+  <div class="card h-100 border-0 shadow-sm mb-4">
+    <img src="<%= pickImg(S) %>" class="card-img-top" alt="<%= altFor(S) %>" loading="lazy" decoding="async">
+    <div class="card-body">
+      <h6 class="text-muted mb-2">Featured on the Blog</h6>
+      <h5 class="card-title mb-2"><%= (S && S.title) ? S.title : 'How We Moved to Mexico City With Our Pets' %></h5>
+      <p class="card-text small text-muted mb-3"><%= excerpt(S, 160) %></p>
+      <span class="btn btn-outline-secondary btn-sm">Read the story</span>
+    </div>
+  </div>
+</a>

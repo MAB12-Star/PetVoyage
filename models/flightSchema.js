@@ -7,7 +7,12 @@ const flightSchema = new mongoose.Schema({
     airlineCodes: [String],
     airlineNamesMap: Object,
     flightTypeMap: Object,
-    createdAt: { type: Date, default: Date.now, expires: '30d' } // Set TTL index to expire after 24 hours
+    createdAt: { type: Date, default: Date.now, expires: '30d' }, // Set TTL index to expire after 24 hours
+    slug: { type: String, unique: true },
+    originName: String,
+    destinationName: String,
+
+
 });
 
 module.exports = mongoose.model('Flight', flightSchema);

@@ -1,55 +1,107 @@
 <% layout('layouts/boilerplate') %>
 
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <div class="card-body">
-                    <div class="bg-light py-lg-2 text-center border-bottom mt-1">
-                        <img
-                          src="/images/PetVoyageLogo.png"
-                          class="img-fluid rounded-top d-block mx-auto"
-                          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-                          width="200" height="200"
-                        />  
-                    <!-- Hero Section -->
-                    <h1 class="text-center text-primary-emphasis mb-4"><strong>Welcome to Pet Voyage!</strong></h1>
-                    
-                        <%- include('../partials/navigation') %>
-             
-                    <div class="image-row d-flex justify-content-center mb-4">
-                        <img src="/images/carriers.jpg" alt="Pet carriers" class="img-fluid rounded dynamic-image shadow-lg me-3">
-                        <img src="/images/backpack_cat.jpg" alt="Cat in a backpack carrier" class="img-fluid rounded dynamic-image shadow-lg me-3">
-                        <img src="/images/family.jpg" alt="Family traveling with pets" class="img-fluid rounded dynamic-image shadow-lg">
-                    </div>
-              
-
-                    <p class="lead text-center text-muted">
-                        Pet Voyage is a labor of love, designed to make traveling with your pets seamless and enjoyable. Whether you're embarking on a new adventure or revisiting favorite destinations, we help you navigate the complexities of pet travel with ease.
-                    </p>
-                    
-                    <!-- Content Section -->
-                    <div class="content-section">
-                        <p class="lead text-center text-secondary">
-                            This journey began when I decided to immerse myself in a new culture, with my three beloved pets in tow. Leaving them behind was never an option. However, navigating the process of flying with pets was overwhelming, involving countless hours of research and planning.
-                        </p>
-                        <p class="lead text-center text-secondary">
-                            See my <a href="/tips" class="text-dark fw-bold">Tips & Tricks Section</a> for valuable insights and lessons learned along the way.
-                        </p>
-                        <p class="lead text-center text-secondary">
-                            After flying with my pets half a dozen times, I’ve gained invaluable experience and tips. While the process has become less stressful, it still presents challenges. That’s why I created Pet Voyage: to guide you through your pet travel adventures.
-                        </p>
-                        <p class="lead text-center text-secondary">
-                            Whether you're embarking on your first trip or your tenth, I hope this site makes your journey unforgettable—for both you and your furry companions. See my <a href="/blog" class="text-dark fw-bold">Blog: Moving to Mexico</a> with my 2 dogs and cat.
-                        </p>
-                    </div>
-
-                   
-                </div>
-            </div>
-        </div>
+<section class="bg-light py-5 border-bottom">
+  <div class="container-fluid px-lg-5">
+    <div class="row g-4 align-items-start">
+     <!-- LEFT SIDEBAR -->
+<aside class="col-lg-3 d-none d-lg-block">
+  <div class="sidebar-card">
+    <%- include('../partials/favBlog') %>
+  </div>
+  <div class="card border-0 shadow-sm mt-4 ad-slot sidebar-card" aria-label="Advertisement">
+    <div class="card-body text-center py-5">
+      <small class="text-muted">Ad space (300×250 / 300×600)</small>
     </div>
-</div>
+  </div>
+</aside>
 
+      <!-- MAIN CONTENT -->
+      <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+          <div class="card-body p-4 p-lg-5">
+            <div class="text-center mb-3">
+              <img
+                src="/images/PetVoyageLogo.png"
+                class="img-fluid d-block mx-auto"
+                alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+                width="180" height="180" loading="eager" decoding="async"
+              />
+            </div>
 
+            <h1 class="text-center text-primary-emphasis mb-3 fw-bold">Welcome to Pet Voyage!</h1>
+
+            <nav class="mb-4" aria-label="Primary">
+              <%- include('../partials/navigation') %>
+            </nav>
+
+            <!-- Three responsive images -->
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-sm-4">
+                <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm">
+                  <img src="/images/carriers.jpg" alt="Pet carriers" class="w-100 h-100 object-fit-cover" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm">
+                  <img src="/images/backpack_cat.jpg" alt="Cat in a backpack carrier" class="w-100 h-100 object-fit-cover" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm">
+                  <img src="/images/family.jpg" alt="Family traveling with pets" class="w-100 h-100 object-fit-cover" loading="lazy" decoding="async">
+                </div>
+              </div>
+            </div>
+
+            <p class="lead text-center text-muted">
+              Pet Voyage is a labor of love, designed to make traveling with your pets seamless and enjoyable.
+              Whether you're embarking on a new adventure or revisiting favorite destinations, we help you navigate
+              the complexities of pet travel with ease.
+            </p>
+
+            <div class="content-section mt-4">
+              <p class="lead text-secondary">
+                This journey began when I decided to immerse myself in a new culture, with my three beloved pets in tow.
+                Leaving them behind was never an option. However, navigating the process of flying with pets was
+                overwhelming, involving countless hours of research and planning.
+              </p>
+              <p class="lead text-secondary">
+                See my <a href="/tips" class="text-dark fw-bold">Tips &amp; Tricks Section</a> for valuable insights and lessons learned along the way.
+              </p>
+              <p class="lead text-secondary mb-0">
+                After flying with my pets half a dozen times, I’ve gained invaluable experience and tips. While the
+                process has become less stressful, it still presents challenges. That’s why I created Pet Voyage:
+                to guide you through your pet travel adventures. Visit the
+                <a href="/blog" class="text-dark fw-bold">Blog</a> to read how we moved to Mexico with our two dogs and cat.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR (desktop only) -->
+      <aside class="col-lg-3 d-none d-lg-block">
+          <div class="sidebar-card">
+        <% if (typeof favReview !== 'undefined') { %>
+          <div class="card border-0 shadow-sm rounded-3 mb-4 sidebar-card">
+            <div class="card-header bg-white border-0 pt-3">
+              <h6 class="mb-0 text-muted">Featured Review</h6>
+            </div>
+            <div class="card-body">
+              <%- include('../partials/favReview') %>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- Ad slot (right) -->
+        <div class="card border-0 shadow-sm ad-slot sidebar-card" aria-label="Advertisement">
+          <div class="card-body text-center py-5">
+            <small class="text-muted">Ad space (300×250 / 300×600)</small>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  </div>
+  </div>
+</section>
