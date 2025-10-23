@@ -1,150 +1,437 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="container mt-2">
-    
-    <div class="row">
-        <!-- To-Do Section -->
-        <h2 class="alert-heading text-primary-emphasis text-center"><strong> Manage Your Pet Travel Here</strong></h2>
-        <hr>
-        <div class="alert alert-info mt-2" role="alert">
-         
-            <P>
-                <strong>Manage Your Tasks:</strong> Simply drag a task to update its status. For example, move a task from <strong>"To-Do"</strong> to <strong>"In Progress"</strong> when you're working on it, or from <strong>"In Progress"</strong> to <strong>"Completed"</strong> when you're finished.
-            </P>
-        </div>
-        
-           
-        <div class="col-md-4">
-            
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <h3 class="text-primary">To-Do</h3>
-                <ul id="To-Do" class="task-list border p-3 rounded">
-                    <% (toDoList["To-Do"] || []).forEach(task => { %>
-                        <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="To-Do">
-                            <%= task %>
-                        </div>
-                    <% }) %>
-                </ul>
-            </div>
-        </div>
+  <h2 class="alert-heading text-primary-emphasis text-center"><strong>Manage Your Pet Travel Here</strong></h2>
+  <hr>
 
-        <!-- In Progress Section -->
-        <div class="col-md-4">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <h3 class="text-info">In Progress</h3>
-                <ul id="in-progress" class="task-list border p-3 rounded">
-                    <% (toDoList["in-progress"] || []).forEach(task => { %>
-                        <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="in-progress">
-                            <%= task %>
-                        </div>
-                    <% }) %>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Completed Section -->
-        <div class="col-md-4">
-            <div class="card border-secondary shadow-lg p-3 mb-5 bg-white rounded">
-                <h3 class="text-success">Completed</h3>
-                <ul id="completed" class="task-list border p-3 rounded">
-                    <% (toDoList["completed"] || []).forEach(task => { %>
-                        <div class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item" draggable="true" data-task="<%= task %>" data-section="completed">
-                            <%= task %>
-                        </div>
-                    <% }) %>
-                </ul>
-            </div>
-        </div>
+  <% if (isAuthenticated) { %>
+    <div class="alert alert-info mt-2" role="alert">
+      <p class="mb-0">
+        <strong>Manage Your Tasks:</strong> Drag tasks between <strong>To-Do</strong>, <strong>In Progress</strong>, and <strong>Completed</strong>.
+        Changes save automatically.
+      </p>
     </div>
+  <% } else { %>
+    <div class="alert alert-warning mt-2 text-center" role="alert">
+      <h5 class="mb-2"><strong>New Feature! ✅</strong></h5>
+      <p class="mb-0">Want to save your progress? <a href="/login" class="btn btn-sm btn-primary ms-1">Log in</a> with your Gmail.</p>
+    </div>
+  <% } %>
+
+  <% if (isAuthenticated) { %>
+    <form id="add-task-form" class="d-flex my-3" autocomplete="off">
+      <input type="text" id="new-task" class="form-control me-2" placeholder="Add a new task..." required>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  <% } %>
+
+  <%
+    const todo = Array.isArray(toDoList?.["To-Do"]) ? toDoList["To-Do"] : [];
+    const inprog = Array.isArray(toDoList?.["in-progress"]) ? toDoList["in-progress"] : [];
+    const done = Array.isArray(toDoList?.["completed"]) ? toDoList["completed"] : [];
+    const total = todo.length + done.length;
+    const pct = total ? Math.round((done.length / total) * 100) : 0;
+  %>
+  <div class="progress mb-3">
+    <div id="progress-bar" class="progress-bar bg-success" role="progressbar"
+         style="width:<%= pct %>%"
+         aria-valuenow="<%= done.length %>"
+         aria-valuemin="0" aria-valuemax="<%= total %>">
+      <span><%= done.length %>/<%= total %> Done</span>
+    </div>
+  </div>
+
+ 
+
+  <div class="row g-3">
+    <!-- To-Do -->
+    <div class="col-md-4">
+      <div class="card border-secondary shadow-lg p-3 bg-white rounded">
+        <h3 class="text-primary">To-Do</h3>
+        <ul id="To-Do" class="task-list border p-3 rounded list-unstyled min-vh-25" data-section="To-Do">
+        <% todo.forEach(task => { %>
+  <li class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item"
+      draggable="true"
+      data-task="<%= task %>"
+      data-section="To-Do">
+    
+    <div class="row align-items-center">
+      <!-- Task text column -->
+      <div class="col-10">
+        <span class="task-text d-block"><%- task %></span>
+      </div>
+
+      <!-- Delete button column -->
+      <% if (isAuthenticated) { %>
+      <div class="col-2 text-end">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-danger delete-task-btn"
+          data-task="<%= task %>"
+          data-section="To-Do"
+          title="Delete">
+          &times;
+        </button>
+      </div>
+      <% } %>
+    </div>
+
+  </li>
+<% }) %>
+
+        </ul>
+      </div>
+    </div>
+
+    <!-- In Progress -->
+<div class="col-md-4">
+  <div class="card border-secondary shadow-lg p-3 bg-white rounded">
+    <h3 class="text-info">In Progress</h3>
+    <ul id="in-progress" class="task-list border p-3 rounded list-unstyled min-vh-25" data-section="in-progress">
+      <% inprog.forEach(task => { %>
+        <li class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item"
+            draggable="true" data-task="<%= task %>" data-section="in-progress">
+          
+          <div class="row align-items-center">
+            <!-- Task text -->
+            <div class="col-10">
+              <span class="task-text d-block"><%- task %></span>
+            </div>
+
+            <!-- Delete button -->
+            <% if (isAuthenticated) { %>
+            <div class="col-2 text-end">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger delete-task-btn"
+                data-task="<%= task %>"
+                data-section="in-progress"
+                title="Delete">
+                &times;
+              </button>
+            </div>
+            <% } %>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
 </div>
 
-<div id="auth-status" data-authenticated="<%= isAuthenticated %>"></div>
+
+  <!-- Completed -->
+<div class="col-md-4">
+  <div class="card border-secondary shadow-lg p-3 bg-white rounded">
+    <h3 class="text-success">Completed</h3>
+    <ul id="completed" class="task-list border p-3 rounded list-unstyled min-vh-25" data-section="completed">
+      <% done.forEach(task => { %>
+        <li class="card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item"
+            draggable="true" data-task="<%= task %>" data-section="completed">
+          
+          <div class="row align-items-center">
+            <!-- Task text -->
+            <div class="col-10">
+              <span class="task-text d-block"><%- task %></span>
+            </div>
+
+            <!-- Delete button -->
+            <% if (isAuthenticated) { %>
+            <div class="col-2 text-end">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger delete-task-btn"
+                data-task="<%= task %>"
+                data-section="completed"
+                title="Delete">
+                &times;
+              </button>
+            </div>
+            <% } %>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
 
 
+
+
+ <div id="auth-status" data-authenticated="<%= !!isAuthenticated %>"></div>
+
+<% if (isAuthenticated) { %>
+  <!-- Upload + Documents Section -->
+  <div class="card border-secondary shadow-lg p-3 bg-white rounded mt-4">
+    <h3 class="text-primary-emphasis">Uploaded Pet Travel Documents</h3>
+    <hr>
+
+    <!-- Upload Form -->
+    <form action="/toDoList/uploadDoc" method="POST" enctype="multipart/form-data" class="mb-4">
+      <div class="row g-2">
+        
+        <div class="col-md-6">
+          <label for="doc" class="form-label fw-bold">Select File</label>
+          <input type="file" name="doc" id="doc" class="form-control" required>
+        </div>
+        
+      </div>
+      <button class="btn btn-success btn-sm mt-3">Upload</button>
+    </form>
+
+    <% if (user && Array.isArray(user.uploadedDocs) && user.uploadedDocs.length) { %>
+      <h5 class="mt-3">My Documents:</h5>
+      <div class="card border-0 shadow-sm p-3 bg-light rounded">
+        <ul class="list-group border rounded">
+          <% user.uploadedDocs.forEach(doc => { %>
+            <li class="list-group-item d-flex align-items-center justify-content-between border-0 border-bottom">
+              <div class="d-flex align-items-center">
+                <!-- Thumbnail or Icon -->
+                <% if (doc.url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) { %>
+                  <img src="<%= doc.url %>" alt="Document thumbnail"
+                       class="img-thumbnail me-3"
+                       style="width: 70px; height: 70px; object-fit: cover;">
+                <% } else { %>
+                  <i class="bi bi-file-earmark-text text-secondary fs-3 me-3"></i>
+                <% } %>
+
+                <!-- Custom or Original File Name -->
+                <a href="<%= doc.url %>" target="_blank" rel="noopener"
+                   class="text-decoration-none fw-semibold text-dark">
+                  <%= doc.name || doc.original || 'Untitled Document' %>
+                </a>
+              </div>
+
+              <!-- Delete button -->
+              <button type="button"
+                      class="btn btn-sm btn-outline-danger delete-doc-btn ms-2"
+                      data-url="<%= doc.url %>" title="Delete">
+                &times;
+              </button>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } else { %>
+      <div class="alert alert-secondary mt-3 mb-0">No documents uploaded yet.</div>
+    <% } %>
+  </div>
+<% } %>
+
+
+<div class="mb-4">
+    <!-- Recommended Section -->
+<section class="mt-1">
+  <div class="card border-secondary shadow-lg p-3 bg-white rounded">
+    <h4 class="text-center text-primary-emphasis mb-3">Recommended Next Steps</h4>
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+      <a href="/flights/searchFlights" class="btn btn-outline-info">Book Flights</a>
+      <a href="/blog" class="btn btn-outline-secondary">Read Pet Travel Tips</a>
+      <a href="https://petsvoyage.myshopify.com/" class="btn btn-outline-success">Shop Pet Travel Gear</a>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- Add Task -->
 <script>
-    const isAuthenticated = document.getElementById('auth-status').dataset.authenticated === 'true';
-    console.log('isAuthenticated at script start:', isAuthenticated);
-
-    document.querySelectorAll('.task-list').forEach(list => {
-        list.addEventListener('dragover', (e) => e.preventDefault());
-
-        list.addEventListener('drop', async (e) => {
-            e.preventDefault();
-
-            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-            const task = data.task;
-            const fromSection = data.section;
-            const toSection = e.currentTarget.id;
-
-           
-
-            if (!task || !fromSection || !toSection) {
-                return alert('Invalid drag-and-drop data.');
-            }
-
-            if (isAuthenticated) {
-                try {
-                    const response = await fetch('/toDoList/update', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ task, fromSection, toSection }),
-                    });
-
-                    if (response.ok) {
-                        const updatedToDoList = await response.json();
-                        updateToDoLists(updatedToDoList);
-                    } else {
-                        console.error('Failed to update task on server.');
-                    }
-                } catch (error) {
-                    console.error('Error during drop:', error);
-                }
-            } else {
-                alert('Please log in to save your progress.');
-            }
+  (function () {
+    const addForm = document.getElementById('add-task-form');
+    if (!addForm) return;
+    addForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const inp = document.getElementById('new-task');
+      const task = inp.value.trim();
+      if (!task) return;
+      try {
+        const res = await fetch('/toDoList/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ task }),
         });
-    });
-
-    // Add shadow effect when dragging a task
-    document.querySelectorAll('.task-item').forEach(item => {
-        item.addEventListener('dragstart', (e) => {
-            const taskData = {
-                task: e.target.dataset.task,
-                section: e.target.dataset.section,
-            };
-            e.dataTransfer.setData('text/plain', JSON.stringify(taskData));
-
-            // Add shadow effect
-            e.target.classList.add('dragging');
-        });
-
-        item.addEventListener('dragend', (e) => {
-            // Remove shadow effect
-            e.target.classList.remove('dragging');
-        });
-    });
-
-    function updateToDoLists(toDoList) {
-        const sections = { "To-Do": "To-Do", "in-progress": "in-progress", "completed": "completed" };
-        for (const [section, id] of Object.entries(sections)) {
-            const list = document.getElementById(id);
-            list.innerHTML = '';
-            (toDoList[section] || []).forEach(task => {
-                const item = document.createElement('div');
-                item.className = 'card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item';
-                item.draggable = true;
-                item.dataset.task = task;
-                item.dataset.section = section;
-                item.textContent = task;
-                item.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', JSON.stringify({ task, section }));
-                    e.target.classList.add('dragging');
-                });
-                item.addEventListener('dragend', (e) => {
-                    e.target.classList.remove('dragging');
-                });
-                list.appendChild(item);
-            });
+        if (res.ok) {
+          appendTask('To-Do', task);
+          inp.value = '';
+          recalcProgress();
         }
+      } catch (err) { console.error('Error adding task:', err); }
+    });
+  })();
+</script>
+
+<!-- Drag & Drop + Save + Delete -->
+<script>
+  (function () {
+    const isAuthenticated = document.getElementById('auth-status').dataset.authenticated === 'true';
+
+    // DnD targets
+    document.querySelectorAll('.task-list').forEach(list => {
+      list.addEventListener('dragover', e => e.preventDefault());
+      list.addEventListener('drop', async e => {
+        e.preventDefault();
+        const json = e.dataTransfer.getData('text/plain');
+        if (!json) return;
+        const { task, section: fromSection } = JSON.parse(json);
+        const toSection = e.currentTarget.getAttribute('data-section');
+        if (!task || !fromSection || !toSection || fromSection === toSection) return;
+
+        moveTaskDOM(task, fromSection, toSection);
+
+        if (isAuthenticated) {
+          try {
+            const res = await fetch('/toDoList/update', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ task, fromSection, toSection }),
+            });
+            if (!res.ok) console.error('Failed to update task on server.');
+          } catch (err) { console.error('Update failed:', err); }
+        } else {
+          alert('Please log in to save your progress.');
+        }
+      });
+    });
+
+    // Make items draggable (and protect delete button clicks)
+    enableDragOnItems(document);
+
+    // Delete task (event delegation)
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.delete-task-btn');
+      if (!btn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!isAuthenticated) {
+        return alert('Please log in to delete tasks.');
+      }
+
+      const task = btn.dataset.task;
+      const section = btn.dataset.section;
+      if (!task || !section) return;
+
+      // Remove from DOM first for snappy UI
+      const list = document.getElementById(section);
+      const el = list && list.querySelector(`.task-item[data-task="${cssEscape(task)}"][data-section="${cssEscape(section)}"]`);
+      if (el) el.remove();
+      recalcProgress();
+
+      try {
+        const res = await fetch('/toDoList/deleteTask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ task, section }),
+        });
+        if (!res.ok) console.error('Failed to delete task on server.');
+      } catch (err) {
+        console.error('Delete task failed:', err);
+      }
+    });
+
+    // Delete document buttons
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.delete-doc-btn');
+      if (!btn) return;
+
+      e.preventDefault();
+      if (!isAuthenticated) {
+        return alert('Please log in to delete documents.');
+      }
+
+      const url = btn.dataset.url;
+      if (!url) return;
+
+      // Optimistic remove
+      const li = btn.closest('li');
+      if (li) li.remove();
+
+      try {
+        const res = await fetch('/toDoList/deleteDoc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+        if (!res.ok) console.error('Failed to delete document on server.');
+      } catch (err) {
+        console.error('Delete document failed:', err);
+      }
+    });
+
+    // ---- helpers ----
+    function enableDragOnItems(root) {
+      root.querySelectorAll('.task-item').forEach(item => {
+        item.addEventListener('dragstart', e => {
+          // If starting drag from the delete button, cancel
+          if (e.target.closest('.delete-task-btn')) {
+            e.preventDefault();
+            return;
+          }
+          const data = { task: e.currentTarget.dataset.task, section: e.currentTarget.dataset.section };
+          e.dataTransfer.setData('text/plain', JSON.stringify(data));
+          e.currentTarget.classList.add('dragging');
+        });
+        item.addEventListener('dragend', e => e.currentTarget.classList.remove('dragging'));
+      });
     }
+
+    function appendTask(section, task) {
+      const list = document.getElementById(section);
+      const li = document.createElement('li');
+      li.className = 'card border-dark shadow-sm p-2 mb-2 bg-light rounded task-item d-flex justify-content-between align-items-center';
+      li.setAttribute('draggable', 'true');
+      li.dataset.task = task;
+      li.dataset.section = section;
+
+      const span = document.createElement('span');
+      span.className = 'me-2';
+      span.textContent = task;
+
+      li.appendChild(span);
+
+      const isAuth = document.getElementById('auth-status').dataset.authenticated === 'true';
+      if (isAuth) {
+        const del = document.createElement('button');
+        del.className = 'btn btn-sm btn-outline-danger delete-task-btn';
+        del.setAttribute('data-task', task);
+        del.setAttribute('data-section', section);
+        del.setAttribute('title', 'Delete');
+        del.textContent = '×';
+        li.appendChild(del);
+      }
+
+      list.appendChild(li);
+      enableDragOnItems(list);
+    }
+
+    function moveTaskDOM(task, from, to) {
+      const fromList = document.getElementById(from);
+      const toList = document.getElementById(to);
+      if (!fromList || !toList) return;
+
+      const el = fromList.querySelector(`.task-item[data-task="${cssEscape(task)}"]`);
+      if (!el) return;
+
+      el.dataset.section = to;
+      toList.appendChild(el);
+      recalcProgress();
+    }
+
+    function recalcProgress() {
+      const todo = document.querySelectorAll('#To-Do .task-item').length;
+      const completed = document.querySelectorAll('#completed .task-item').length;
+      const total = todo + completed;
+      const pct = total ? Math.round((completed / total) * 100) : 0;
+
+      const bar = document.getElementById('progress-bar');
+      bar.style.width = pct + '%';
+      bar.setAttribute('aria-valuenow', completed);
+      bar.setAttribute('aria-valuemax', total);
+      bar.textContent = `${completed}/${total} Done`;
+    }
+
+    function cssEscape(str) {
+      return str.replace(/["\\]/g, '\\$&');
+    }
+  })();
 </script>

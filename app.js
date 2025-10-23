@@ -80,6 +80,8 @@ if (IS_PROD) {
   });
 }
 
+
+
 // Always provide an absolute URL for templates (works in dev & prod)
 app.use((req, res, next) => {
   res.locals.safeOgUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
@@ -125,13 +127,24 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 🌐 Globals
+// 🔐 Auth
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 🌐 View locals (available in ALL templates)
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user || null;
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
+  const isAuthFn = (req.isAuthenticated && typeof req.isAuthenticated === 'function')
+    ? req.isAuthenticated()
+    : false;
+
+  res.locals.user = req.user || null;                 // <— use this in partials
+  res.locals.currentUser = res.locals.user;           // (kept for your existing templates)
+  res.locals.isAuthenticated = !!isAuthFn;            // <— also use in partials
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
 });
+
 
 // 🧠 Middleware
 app.use(toDoListMiddleware);
@@ -162,6 +175,7 @@ app.use('/airlines', reviewsRoutes); // ✅ for nested reviews
 // ... after other app.use(...)
 app.use('/admin', adminRoutes);
 app.use('/uploads', express.static('uploads'));
+
 
 
 

@@ -1,111 +1,132 @@
 <% layout('layouts/boilerplate') %>
 
+<!-- Hero -->
+<div class="bg-light py-lg-2 text-center border-bottom mt-1">
+  <img
+    src="/images/PetVoyageLogo.png"
+    class="img-fluid rounded-top d-block mx-auto"
+    alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+    width="200" height="200"
+  />
+  <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
+  <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
 
-<div class="bg-light py-2 text-center border-bottom">
-      <!-- Hero Section -->
-      <div class="bg-light py-lg-2 text-center border-bottom mt-1">
-        <img
-          src="/images/PetVoyageLogo.png"
-          class="img-fluid rounded-top d-block mx-auto"
-          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-          width="200" height="200"
-        />
-    <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
-    <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
-<div class="mt-4">
-    <%- include('../partials/navigation') %>    
+  <div class="mt-4">
+    <%- include('../partials/navigation') %>
   </div>
-
 </div>
+
 <div class="container mt-5">
-    <div class="row justify-content-center mb-5">
-       
+  <!-- One row, two columns -->
+  <div class="row justify-content-center mb-5">
+    <!-- Main content -->
+    <div class="col-lg-8">
+      <div class="card bg-white shadow-lg mb-3 border">
+        <div class="card-body">
+          <h2 class="text-center text-primary-emphasis mb-4"><strong>Search for Flights</strong></h2>
+          <p>
+            Still looking for the perfect airline to transport you and your pet? Locate flights available to your destination.
+            Check out our <a href="/tips" target="_blank" rel="noopener noreferrer">Tips Section</a> for our suggestions
+            regarding picking an airline.
+          </p>
 
-        <div class="col-md-8">
-            <div class="card bg-white shadow-lg mb-3 border">
-                <h2 class="text-center text-primary-emphasis mb-4"><strong>Search for Flights</strong></h2>
-                <p>Still looking for the perfect airline to transport you and your pet? Locate flights available to your destination. Check out our <a href="/tips" target="_blank" rel="noopener noreferrer">Tips Section</a> for our suggestions regarding picking an airline.</p>
-                <form class="validated-form" action="/flights/searchFlights" method="POST">
-                    <!-- Display user's current location -->
-                    <div class="form-group mb-3">
-                        <label for="currentLocation">Your Current Location</label>
-                        <input type="text" id="currentLocation" class="form-control" placeholder="Detecting your location... If you are flying from another city please type it">
-                    </div>
-
-                    <!-- Map Container -->
-                    <div id="map" class="border mt-3" style="height: 400px; width: 100%;"></div>
-
-                    <!-- Dropdown for selecting nearby airports -->
-                    <div class="form-group mt-4">
-                        <label for="airport">Select Airport Near You</label>
-                        <select name="airport" id="airport" class="form-control" required>
-                            <option value="">Choose an airport</option>
-                        </select>
-                    </div>
-
-                    <!-- Search box for destination -->
-                    <div class="form-group mt-4">
-                        <label for="destination">Enter Destination</label>
-                        <input type="text" name="destination" id="destination" class="form-control" placeholder="Enter destination city/airport" required>
-                    </div>
-
-                    <!-- Dropdown for selecting destination airports -->
-                    <div class="form-group mt-4">
-                        <label for="destinationLocation">Choose Destination Airport</label>
-                        <select id="destinationLocation" class="form-control" required>
-                            <option value="">Select an airport...</option>
-                        </select>
-                    </div>
-
-                    <!-- Hidden input fields for lat, lng, and selected airports -->
-                    <input type="hidden" id="currentLat" name="currentLat" value="">
-                    <input type="hidden" id="currentLng" name="currentLng" value="">
-                    <input type="hidden" id="selectedAirport" name="selectedAirport" value="">
-                    <input type="hidden" id="selectedAirportLat" name="selectedAirportLat" value="">
-                    <input type="hidden" id="selectedAirportLng" name="selectedAirportLng" value="">
-                    <input type="hidden" id="selectedDestinationAirport" name="selectedDestinationAirport" value="">
-                    <input type="hidden" id="selectedDestinationLat" name="selectedDestinationLat" value="">
-                    <input type="hidden" id="selectedDestinationLng" name="selectedDestinationLng" value="">
-
-                    
-                    <div class="d-grid gap-2 mt-3 gap-3">
-                     
-                    
-                        <button id="searchBtn" type="submit" class="btn btn-outline-dark">Search Flights</button>
-
-                        
-                        </div>
-                   
-                      
-                       
-                       
-                       
-                    </div>
-                    <div id="loadingSpinner" class="text-center my-4" style="display: none;">
-                        <div class="spinner-border text-primary" role="status">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Searching for flights...</p>
-                      </div>
-                      
-                </form>
+          <form class="validated-form" action="/flights/searchFlights" method="POST">
+            <!-- Current location -->
+            <div class="form-group mb-3">
+              <label for="currentLocation">Your Current Location</label>
+              <input type="text" id="currentLocation" class="form-control"
+                     placeholder="Detecting your location... If you are flying from another city please type it">
             </div>
-         
-                <aside class="col-lg-4 d-none d-lg-block">
-                <%- include('../partials/ads/taxiAd') %>    
-                <%- include('../partials/favReview') %>    
-                <br>
-                <div class="sticky-lg-top" style="top:1.5rem">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body p-3">
-                <%- include('../partials/toDoList') %>
-             </aside>
-                </div>
-                </div>
+
+            <!-- Map -->
+            <div id="map" class="border mt-3" style="height: 400px; width: 100%;"></div>
+
+            <!-- Nearby airport -->
+            <div class="form-group mt-4">
+              <label for="airport">Select Airport Near You</label>
+              <select name="airport" id="airport" class="form-control" required>
+                <option value="">Choose an airport</option>
+              </select>
             </div>
+
+            <!-- Destination search -->
+            <div class="form-group mt-4">
+              <label for="destination">Enter Destination</label>
+              <input type="text" name="destination" id="destination" class="form-control"
+                     placeholder="Enter destination city/airport" required>
+            </div>
+
+            <!-- Destination airport -->
+            <div class="form-group mt-4">
+              <label for="destinationLocation">Choose Destination Airport</label>
+              <!-- added name so it submits if needed -->
+              <select id="destinationLocation" name="destinationLocation" class="form-control" required>
+                <option value="">Select an airport...</option>
+              </select>
+            </div>
+
+            <!-- Hidden fields -->
+            <input type="hidden" id="currentLat" name="currentLat" value="">
+            <input type="hidden" id="currentLng" name="currentLng" value="">
+
+            <input type="hidden" id="selectedAirport" name="selectedAirport" value="">
+            <input type="hidden" id="selectedAirportLat" name="selectedAirportLat" value="">
+            <input type="hidden" id="selectedAirportLng" name="selectedAirportLng" value="">
+
+            <input type="hidden" id="selectedDestinationAirport" name="selectedDestinationAirport" value="">
+            <input type="hidden" id="selectedDestinationLat" name="selectedDestinationLat" value="">
+            <input type="hidden" id="selectedDestinationLng" name="selectedDestinationLng" value="">
+
+            <div class="d-grid gap-2 mt-3">
+              <button id="searchBtn" type="submit" class="btn btn-outline-dark">Search Flights</button>
+            </div>
+
+            <!-- Inline loader -->
+            <div id="loadingSpinner" class="text-center my-4" style="display: none;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Searching for flights...</p>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+
+    <!-- Right rail / aside -->
+    <aside class="col-lg-4 d-none d-lg-block">
+      <div class="sticky-lg-top" style="top:1.5rem;">
+        <div class="mb-3">
+          <%- include('../partials/ads/taxiAd') %>
+        </div>
+
+        <div class="mb-3">
+          <%- include('../partials/favReview') %>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-3">
+            <%- include('../partials/toDoList') %>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
 </div>
+
+<!-- Full-screen loading overlay (outside container so it covers the whole page) -->
+<div id="loadingOverlay"
+     style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(255,255,255,0.9);z-index:9999;
+            backdrop-filter:blur(3px);text-align:center;">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+    <div class="spinner-border text-primary" role="status" style="width:4rem;height:4rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 fs-5 text-primary">Searching for flights…</p>
+  </div>
+</div>
+
 
 <!-- Include Google Maps Script with API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
@@ -293,4 +314,27 @@
         });
     }
     </script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector('form[action="/flights/searchFlights"]');
+  const overlay = document.getElementById("loadingOverlay");
+
+  if (form && overlay) {
+    form.addEventListener("submit", function () {
+      // ✅ Show overlay immediately with fade-in
+      overlay.style.display = "block";
+      overlay.classList.add("show");
+
+      // Disable all form controls to prevent duplicate clicks
+      form.querySelectorAll("button, input, select").forEach(el => el.disabled = true);
+    });
+  }
+});
+</script>
+
+
+
     

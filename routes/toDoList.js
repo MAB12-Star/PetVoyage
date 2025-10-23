@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
+
+function ensureToDoSections(user) {
+  if (!user.toDoList) user.toDoList = new Map();
+  if (!user.toDoList.has("To-Do")) user.toDoList.set("To-Do", []);
+  if (!user.toDoList.has("in-progress")) user.toDoList.set("in-progress", []);
+  if (!user.toDoList.has("completed")) user.toDoList.set("completed", []);
+}
+
 // Default checklist structure
 const STARTER_LIST = {
   "To-Do": [
@@ -17,17 +25,21 @@ const STARTER_LIST = {
 
 // GET To-Do List Page
 // routes/toDoList.js
+// routes/toDoList.js
 router.get('/', async (req, res) => {
-  let toDoListForView = STARTER_LIST; // default for guests
+  let toDoListForView = STARTER_LIST;
 
   if (req.isAuthenticated()) {
     try {
       const user = await User.findById(req.user._id);
       if (!user) {
-        return res.render('regulations/toDoList', { toDoList: STARTER_LIST, isAuthenticated: false });
+        return res.render('regulations/toDoList', {
+          toDoList: STARTER_LIST,
+          isAuthenticated: false,
+          user: null,                    // ✅ add this
+        });
       }
 
-      // Safely read Map (Map vs plain object)
       const m = user.toDoList;
       const saved = {
         "To-Do": (m?.get ? m.get("To-Do") : m?.["To-Do"]) || [],
@@ -40,7 +52,6 @@ router.get('/', async (req, res) => {
         (saved["in-progress"]?.length || 0) +
         (saved["completed"]?.length || 0) === 0;
 
-      // First login with empty list? Seed from defaults and persist.
       if (isEmpty) {
         user.toDoList = new Map(Object.entries(STARTER_LIST));
         await user.save();
@@ -48,13 +59,24 @@ router.get('/', async (req, res) => {
       } else {
         toDoListForView = saved;
       }
+
+      return res.render('regulations/toDoList', {
+        toDoList: toDoListForView,
+        isAuthenticated: true,
+        user,                           // ✅ add this
+      });
+
     } catch (error) {
       console.error('Error fetching user to-do list:', error);
-      toDoListForView = STARTER_LIST;
     }
   }
 
-  res.render('regulations/toDoList', { toDoList: toDoListForView, isAuthenticated: req.isAuthenticated() });
+  // guest render
+  res.render('regulations/toDoList', {
+    toDoList: toDoListForView,
+    isAuthenticated: req.isAuthenticated(),
+    user: req.user || null,            // ✅ add this
+  });
 });
 
 
@@ -101,6 +123,7 @@ router.post('/update', async (req, res) => {
 });
 
 // Add a task
+// Add a task
 router.post('/add', async (req, res) => {
   if (!req.isAuthenticated()) return res.status(401).json({ error: 'Unauthorized' });
   const { task } = req.body;
@@ -108,16 +131,81 @@ router.post('/add', async (req, res) => {
 
   try {
     const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    if (!user.toDoList) user.toDoList = new Map();
+    if (!user.toDoList.has('To-Do')) user.toDoList.set('To-Do', []);
+    if (!user.toDoList.has('in-progress')) user.toDoList.set('in-progress', []);
+    if (!user.toDoList.has('completed')) user.toDoList.set('completed', []);
+
     const list = user.toDoList.get('To-Do') || [];
     list.push(task);
     user.toDoList.set('To-Do', list);
     await user.save();
-    res.sendStatus(200);
+
+    res.status(200).json(Object.fromEntries(user.toDoList)); // ✅ return updated list
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to add task' });
   }
 });
+
+
+
+// Delete a single task from a section
+router.post('/deleteTask', async (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ error: 'Unauthorized' });
+  const { task, section } = req.body;
+  if (!task || !section) return res.status(400).json({ error: 'Missing task or section' });
+
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    ensureToDoSections(user);
+    const list = user.toDoList.get(section) || [];
+    const idx = list.indexOf(task);
+    if (idx > -1) list.splice(idx, 1);
+    user.toDoList.set(section, list);
+
+    await user.save();
+    return res.status(200).json({ ok: true, toDoList: Object.fromEntries(user.toDoList) });
+  } catch (err) {
+    console.error('Error deleting task:', err);
+    res.status(500).json({ error: 'Failed to delete task' });
+  }
+});
+
+// Delete a single uploaded document by URL (or name)
+router.post('/deleteDoc', async (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ error: 'Unauthorized' });
+
+  const { url, name } = req.body; // prefer url since it's unique
+  if (!url && !name) return res.status(400).json({ error: 'Missing url or name' });
+
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!Array.isArray(user.uploadedDocs)) user.uploadedDocs = [];
+
+    const before = user.uploadedDocs.length;
+    user.uploadedDocs = user.uploadedDocs.filter(d => {
+      if (url) return d.url !== url;
+      return d.name !== name;
+    });
+
+    if (user.uploadedDocs.length === before) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    await user.save();
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Error deleting document:', err);
+    res.status(500).json({ error: 'Failed to delete document' });
+  }
+});
+
 
 // Reset to defaults
 router.post('/reset', async (req, res) => {
@@ -132,11 +220,15 @@ router.post('/reset', async (req, res) => {
     res.status(500).json({ error: 'Failed to reset' });
   }
 });
+
 // ======================
 // Document Upload Routes
 // ======================
 const multer = require('multer');
 const path = require('path');
+
+// Serve uploads if you haven't already:
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Configure Multer storage
 const storage = multer.diskStorage({
@@ -154,9 +246,24 @@ router.post('/uploadDoc', upload.single('doc'), async (req, res) => {
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ error: 'User not found' });
 
+    // Grab custom display name from the form
+    const rawName = (req.body.docName || '').trim();
+
+    // Fallback to original filename if custom name is empty
+    const displayName = rawName.length ? rawName : (req.file?.originalname || 'Untitled');
+
+    // (Optional) cap length to something reasonable
+    const safeName = displayName.slice(0, 120);
+
+    if (!Array.isArray(user.uploadedDocs)) user.uploadedDocs = [];
+
     user.uploadedDocs.push({
-      name: req.file.originalname,
-      url: `/uploads/docs/${req.file.filename}`,
+      name: safeName,                                 // the name you’ll show in the list
+      original: req.file?.originalname || safeName,   // keep original too (optional)
+      url: `/uploads/docs/${req.file.filename}`,      // where the file lives
+      // (Optional) store mime or uploadedAt:
+      // mime: req.file.mimetype,
+      // uploadedAt: new Date(),
     });
 
     await user.save();
@@ -166,6 +273,7 @@ router.post('/uploadDoc', upload.single('doc'), async (req, res) => {
     res.status(500).json({ error: 'Failed to upload document' });
   }
 });
+
 
 
 module.exports = router;
