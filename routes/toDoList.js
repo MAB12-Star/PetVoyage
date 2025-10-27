@@ -123,7 +123,7 @@ router.post('/update', async (req, res) => {
 });
 
 // Add a task
-// Add a task
+
 router.post('/add', async (req, res) => {
   if (!req.isAuthenticated()) return res.status(401).json({ error: 'Unauthorized' });
   const { task } = req.body;

@@ -194,7 +194,7 @@ module.exports.toDoListMiddleware = async (req, res, next) => {
         try {
             const user = await User.findById(req.user._id);
             if (user && user.toDoList) {
-                console.log('User toDoList from DB:', user.toDoList);
+               // console.log('User toDoList from DB:', user.toDoList);
                 toDoList = {
                     "To-Do": user.toDoList.get("To-Do") || [],
                     "in-progress": user.toDoList.get("in-progress") || [],
