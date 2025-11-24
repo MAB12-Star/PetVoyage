@@ -718,17 +718,18 @@ if (typeof users === 'undefined') users = [];
         return div;
       }
     
-      function petLinkRow(data={name:'', url:''}){
-        const row = document.createElement('div');
-        row.className = 'mini-grid-3';
-        row.innerHTML = `
-          <input type="text" class="form-control" placeholder="Link name" value="${esc(data.name)}">
-          <input type="url"  class="form-control" placeholder="https://…" value="${esc(data.url)}">
-          <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
-        `;
-        row.querySelector('button').addEventListener('click', ()=> row.remove());
-        return row;
-      }
+     function petLinkRow(data={name:'', url:''}){
+  const row = document.createElement('div');
+  row.className = 'mini-grid-3';
+  row.innerHTML = `
+    <input type="text" name="petLinkName" class="form-control" placeholder="Link name" value="${esc(data.name)}">
+    <input type="url" name="petLinkUrl" class="form-control" placeholder="https://…" value="${esc(data.url)}">
+    <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+  `;
+  row.querySelector('button').addEventListener('click', ()=> row.remove());
+  return row;
+}
+
       function addPetLinkRow(panel, data){ panel.querySelector('[data-list="links"]').appendChild(petLinkRow(data)); }
     
       function addOriginReqRow(data={ key:'', appliesTo:[], details:'' }){
@@ -752,16 +753,17 @@ if (typeof users === 'undefined') users = [];
       }
     
       function addOfficialLinkRow(data={name:'', url:''}) {
-        const row = document.createElement('div');
-        row.className = 'mini-grid-3';
-        row.innerHTML = `
-          <input type="text" class="form-control" placeholder="Link name" value="${esc(data.name)}">
-          <input type="url"  class="form-control" placeholder="https://…" value="${esc(data.url)}">
-          <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
-        `;
-        row.querySelector('button').addEventListener('click', ()=> row.remove());
-        officialLinksList.appendChild(row);
-      }
+  const row = document.createElement('div');
+  row.className = 'mini-grid-3';
+  row.innerHTML = `
+    <input type="text" name="officialLinkName" class="form-control" placeholder="Link name" value="${esc(data.name)}">
+    <input type="url" name="officialLinkUrl" class="form-control" placeholder="https://…" value="${esc(data.url)}">
+    <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+  `;
+  row.querySelector('button').addEventListener('click', ()=> row.remove());
+  officialLinksList.appendChild(row);
+}
+
     
       // =========== Tabs / Pet add/remove ===========
     
@@ -883,7 +885,9 @@ if (typeof users === 'undefined') users = [];
         document.getElementById('officialLinksJson').value = JSON.stringify(officialLinks);
       }
     
-      function wireFormSubmit(){ form.addEventListener('submit', buildPayload); }
+      function wireFormSubmit(){ form.addEventListener('submit', function(e) {
+  buildPayload(); // <-- makes sure JSON is inserted into hidden fields
+}); }
     
       function clearForm(){
         form.reset();

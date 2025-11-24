@@ -8,7 +8,7 @@
   <div class="mt-4">
     <!-- Desktop Layout -->
     <div class="d-none d-md-flex justify-content-center gap-3 flex-wrap desktop-icon-nav">
-      <a href="/getCountryRegulationList"  class="btn btn-dark px-4 py-2 text-center">
+      <a href="/getCountryRegulationList" class="btn btn-dark px-4 py-2 text-center">
         <i class="bi bi-globe-americas d-block fs-3"></i>
         <small>Country Policies</small>
       </a>
@@ -65,23 +65,10 @@
     </div>
   </div>
 </div>
+
 <!-- Styled Regulation Summary Box -->
 <div class="container my-5">
-  <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
-    <a href="https://rentalcars.tpk.mx/14vE0Ui1" target="_blank" rel="noopener noreferrer">
-      <img src="https://cdn.rcstatic.com/images/site_graphics/newsite/mobile/logos/rc-logo-small--white.svg" 
-           alt="Save on Car Rentals with Rentalcars.com" 
-           style="max-width:100%; height:auto; border:0;">
-    </a>
-    
-    <a href="https://rentalcars.tpk.mx/14vE0Ui1" 
-       target="_blank" rel="noopener noreferrer" 
-       style="margin-top:10px; text-decoration:none; background:#28a745; color:white; padding:10px 20px; border-radius:4px;">
-      Rent a Car Now & Save!
-    </a>
-    
-  </div>
-  
+
   <!-- Country Header -->
   <div class="text-center mb-4">
     <h2 class="fw-bold text-primary">
@@ -92,11 +79,11 @@
     <!-- Pet Types Label -->
     <p class="text-muted fw-semibold mb-2">Pet Types</p>
 
-    <!-- Pet Type Badges (Clickable Buttons) -->
+    <!-- Pet Type Selector -->
     <div class="d-flex flex-wrap justify-content-center gap-2" id="petTypeSelector">
-      <% Object.keys(regulations.regulationsByPetType || {}).forEach((type, i) => { %>
-        <button class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= type === selectedPetType ? 'active' : '' %>" data-pet="<%= type %>">
-
+      <% Object.keys(regulations.regulationsByPetType || {}).forEach(type => { %>
+        <button class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= type === selectedPetType ? 'active' : '' %>" 
+          data-pet="<%= type %>">
           <i class="bi bi-paw-fill me-1"></i><%= type %>
         </button>
       <% }) %>
@@ -105,38 +92,77 @@
 
   <!-- Per-Pet Regulation Details -->
   <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details]) => { %>
-    <div class="pet-regulation-section" data-pet="<%= pet %>" style ="<%= pet === selectedPetType ? '' : 'display:none;' %>">
+    <div class="pet-regulation-section" data-pet="<%= pet %>" style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
 
-  
-      <h3 class="text-primary text-center text-capitalize mb-4">
-        <i class="bi bi-paw-fill me-2"></i><%= pet %> Regulations
-      </h3>
+      <!-- Banner Ad Section -->
+      <% 
+        const petType = selectedPetType ? selectedPetType.toLowerCase() : '';
+        let imgSrc = '', titleText = '', linkUrl = '';
 
+        switch (petType) {
+          case 'dog': imgSrc = '/images/DogTravelCollectionV2.jpg'; titleText = 'Shop Dog Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/dog-travel'; break;
+          case 'cat': imgSrc = '/images/CatTravelCollection.jpg'; titleText = 'Shop Cat Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/cat-travel'; break;
+          case 'bird': imgSrc = '/images/BirdTravelCollection.jpg'; titleText = 'Shop Bird Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/bird-travel'; break;
+          default: imgSrc = '/images/OtherTravelCollection.jpg'; titleText = 'Shop Pet Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/other-travel';
+        }
+      %>
+
+      <% if (selectedPetType) { %>
+      <div class="card shadow-sm border border-warning overflow-hidden mb-5" style="border-radius: 12px;">
+        <div class="row align-items-center p-2">
+
+          <!-- Image -->
+          <div class="col-md-3 d-flex justify-content-center">
+            <img src="<%= imgSrc %>" alt="<%= titleText %>" 
+              style="width: 80%; max-width: 200px; border-radius: 12px;">
+          </div>
+
+          <!-- Text -->
+          <div class="col-md-6 d-flex flex-column justify-content-center text-md-start text-center">
+            <h3 class="fw-bold mb-3"><%= titleText %></h3>
+            <p class="text-muted mb-0">Find airline-approved carriers, travel crates, harnesses, medical kits, and everything you need for stress-free pet travel.</p>
+          </div>
+
+          <!-- Button -->
+          <div class="col-md-3 d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
+            <a href="<%= linkUrl %>" target="_blank" class="btn btn-primary fw-bold px-4 py-2">
+              Shop Now →
+            </a>
+          </div>
+
+        </div>
+      </div>
+      <% } %>
+
+      <!-- Regulation Content -->
       <div class="row gy-4">
 
         <!-- Vaccinations -->
         <div class="col-md-6">
           <div class="card border-start border-dark border-4 shadow-sm h-100">
             <div class="card-body">
-              <h5 class="fw-bold card-title text-dark"><i class="bi bi-shield-plus me-2"></i>Vaccinations</h5>
+              <h5><i class="bi bi-shield-plus me-2"></i>Vaccinations</h5>
+
               <% const vaccinationKeys = Object.keys(details?.vaccinations || {}); %>
               <% if (vaccinationKeys.length) { %>
                 <div class="mb-3 d-flex flex-wrap gap-2">
                   <% vaccinationKeys.forEach((key, j) => { %>
-                    <button class="btn btn-sm btn-outline-primary vac-btn <%= j === 0 ? 'active' : '' %>" data-target="vaccination-<%= pet %>-<%= key %>"><%= key %></button>
+                    <button class="btn btn-sm btn-outline-primary vac-btn <%= j === 0 ? 'active' : '' %>"
+                      data-target="vaccination-<%= pet %>-<%= key %>"><%= key %></button>
                   <% }) %>
                 </div>
+
                 <% vaccinationKeys.forEach((key, j) => { const vac = details.vaccinations[key]; %>
                   <div id="vaccination-<%= pet %>-<%= key %>" class="vaccination-detail" style="<%= j === 0 ? '' : 'display:none;' %>">
-                    <div class="mb-2"><strong>Description:</strong> <%- vac.description || "<p>Not specified.</p>" %></div>
+                    <div><strong>Description:</strong> <%- vac.description %></div>
                     <% if (vac.requirements?.length) { %>
-                      <ul>
-                        <% vac.requirements.forEach(req => { %><li><%- req %></li><% }) %>
-                      </ul>
+                      <ul><% vac.requirements.forEach(req => { %><li><%- req %></li><% }) %></ul>
                     <% } %>
                   </div>
                 <% }) %>
-              <% } else { %><p class="text-muted">Not specified.</p><% } %>
+              <% } else { %>
+                <p class="text-muted">Not specified.</p>
+              <% } %>
             </div>
           </div>
         </div>
@@ -145,25 +171,28 @@
         <div class="col-md-6">
           <div class="card border-start border-dark border-4 shadow-sm h-100">
             <div class="card-body">
-              <h5 class="fw-bold card-title text-dark"><i class="bi bi-patch-check-fill me-2"></i>Certifications</h5>
+              <h5><i class="bi bi-patch-check-fill me-2"></i>Certifications</h5>
+
               <% const certKeys = Object.keys(details?.certifications || {}); %>
               <% if (certKeys.length) { %>
                 <div class="mb-3 d-flex flex-wrap gap-2">
                   <% certKeys.forEach((key, j) => { %>
-                    <button class="btn btn-sm btn-outline-success cert-btn <%= j === 0 ? 'active' : '' %>" data-target="certification-<%= pet %>-<%= key %>"><%= key %></button>
+                    <button class="btn btn-sm btn-outline-success cert-btn <%= j === 0 ? 'active' : '' %>"
+                      data-target="certification-<%= pet %>-<%= key %>"><%= key %></button>
                   <% }) %>
                 </div>
+
                 <% certKeys.forEach((key, j) => { const cert = details.certifications[key]; %>
                   <div id="certification-<%= pet %>-<%= key %>" class="certification-detail" style="<%= j === 0 ? '' : 'display:none;' %>">
-                    <div class="mb-2"><strong>Description:</strong> <%- cert.description || "<p>Not specified.</p>" %></div>
+                    <div><strong>Description:</strong> <%- cert.description %></div>
                     <% if (cert.requirements?.length) { %>
-                      <ul>
-                        <% cert.requirements.forEach(req => { %><li><%- req %></li><% }) %>
-                      </ul>
+                      <ul><% cert.requirements.forEach(req => { %><li><%- req %></li><% }) %></ul>
                     <% } %>
                   </div>
                 <% }) %>
-              <% } else { %><p class="text-muted">Not specified.</p><% } %>
+              <% } else { %>
+                <p class="text-muted">Not specified.</p>
+              <% } %>
             </div>
           </div>
         </div>
@@ -172,113 +201,60 @@
         <div class="col-md-6">
           <div class="card border-start border-dark border-4 shadow-sm h-100">
             <div class="card-body">
-              <h5 class="fw-bold card-title text-dark"><i class="bi bi-cpu me-2"></i>Microchip</h5>
-              <div class="card-text"><%- details?.microchip || "<p>Not specified.</p>" %></div>
+              <h5><i class="bi bi-cpu me-2"></i>Microchip</h5>
+              <div><%- details?.microchip || "Not specified." %></div>
             </div>
           </div>
         </div>
 
-     
-
-<!-- Origin Information (country-level, filtered for this pet) -->
-<div class="col-md-6">
-  <div class="card border-start border-dark border-4 shadow-sm h-100">
-    <div class="card-body">
-      <h5 class="fw-bold card-title text-dark"><i class="bi bi-cpu me-2"></i>Origin Requirements</h5>
-<div class="card-text">
-  <% if (originReqs && originReqs.length) { %>
-    <ul class="list-unstyled mb-0">
-      <% originReqs.forEach(function(or){ %>
-        <li class="mb-3">
-          <strong class="d-block"><%= or.key.replace(/-/g, ' ') %></strong>
-          <div class="mt-1"><%- or.details %></div>
-          <% if (or.appliesTo && or.appliesTo.length) { %>
-            <div class="mt-2">
-              <% or.appliesTo.forEach(function(p){ %>
-                <span class="badge bg-light text-dark border me-1"><%= p %></span>
-              <% }) %>
-            </div>
-          <% } %>
-        </li>
-      <% }) %>
-    </ul>
-  <% } else { %>
-    <p class="text-muted mb-0">No origin-specific requirements for this pet.</p>
-  <% } %>
-</div>
-</div>  
-</div>
-</div>
-
-
-
-        <!-- More Info -->
-        <div class="col-12">
-          <div class="card border-start border-dark border-4 shadow-sm">
+        <!-- Origin Information -->
+        <div class="col-md-6">
+          <div class="card border-start border-dark border-4 shadow-sm h-100">
             <div class="card-body">
-              <h5 class="card-title text-secondary"><i class="bi bi-info-circle-fill me-2"></i>More Info</h5>
-              <div class="card-text"><%- details?.moreInfo || "<p>Not specified.</p>" %></div>
+              <h5><i class="bi bi-box-arrow-in-down me-2"></i>Origin Requirements</h5>
+              <div>
+                <% if (originReqs && originReqs.length) { %>
+                  <ul class="list-unstyled mb-0">
+                    <% originReqs.forEach(or => { %>
+                      <li class="mb-3">
+                        <strong><%= or.key.replace(/-/g, ' ') %></strong>
+                        <div class="mt-1"><%- or.details %></div>
+                      </li>
+                    <% }) %>
+                  </ul>
+                <% } else { %>
+                  <p class="text-muted">No origin-specific requirements for this pet.</p>
+                <% } %>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Import-Specific Links -->
-        <% if (Array.isArray(details?.links) && details.links.length > 0) { %>
-          <div class="col-12">
-            <div class="card bg-light shadow-sm border-0">
-              <div class="card-body">
-                <h5 class="card-title text-success"><i class="bi bi-journal-code me-2"></i>Import-Specific Links</h5>
-                <% details.links.forEach(link => { %>
-                  <% if (typeof link === 'object' && link.name && link.url) { %>
-                    <a href="<%= link.url %>" target="_blank" class="btn btn-outline-success mb-2 me-2"><%= link.name %></a>
-                  <% } else { %>
-                    <a href="<%= link %>" target="_blank" class="btn btn-outline-success mb-2 me-2">Visit Link</a>
-                  <% } %>
-                <% }) %>
-              </div>
-            </div>
-          </div>
-        <% } %>
+      </div><!-- end row -->
 
-        <!-- Official Links -->
-        <% if (Array.isArray(regulations?.officialLinks) && regulations.officialLinks.length > 0) { %>
-          <div class="col-12">
-            <div class="card bg-light shadow-sm border-0">
-              <div class="card-body">
-                <h5 class="card-title text-primary"><i class="bi bi-link-45deg me-2"></i>Official Source(s)</h5>
-                <% regulations.officialLinks.forEach(link => { %>
-                  <% if (typeof link === 'object' && link.name && link.url) { %>
-                    <a href="<%= link.url %>" target="_blank" class="btn btn-outline-primary mb-2 me-2"><%= link.name %></a>
-                  <% } else { %>
-                    <a href="<%= link %>" target="_blank" class="btn btn-outline-primary mb-2 me-2">Visit Source</a>
-                  <% } %>
-                <% }) %>
-              </div>
-            </div>
-          </div>
-        <% } %>
-
-      </div>
-    </div>
+    </div><!-- end pet regulation section -->
   <% }) %>
 
-<!-- Advertisement Section -->
-<br>
-<a href="https://www.pntrs.com/t/4-363006-373432-124479" 
-  rel="sponsored" 
-  style="display:block; margin:0 auto; max-width:100%; text-align:center;">
-  <img src="//www.pntrs.com/b/4-363006-373432-124479" 
-     style="width:100%; height:auto;" 
-     title="Take a Food Journey Around the World!" 
-     alt="Take a Food Journey Around the World!">
-</a>
 
+<!-- ===== EXPEDIA HOTEL BANNER (Bottom of Page) ===== -->
+<div class="container my-5">
+  <div class="text-center">
+
+    <!-- Expedia Script Ad -->
+    <script async src="https://tpemd.com/content?trs=361070&shmarker=582248&tab=H%2CFH%2CCA&background=1&overlay=000000&button_color=FFCB00&target=1&powered_by=true&campaign_id=594&promo_id=8682" charset="utf-8"></script>
+
+  </div>
 </div>
+
+
+
+
+</div><!-- end container -->
+
+<!-- JS: Pet switching -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const petButtons = document.querySelectorAll('.pet-type-btn');
-
-    petButtons.forEach(button => {
+    document.querySelectorAll('.pet-type-btn').forEach(button => {
       button.addEventListener('click', () => {
         const selectedPet = button.dataset.pet;
         const currentUrl = new URL(window.location.href);
@@ -286,45 +262,5 @@
         window.location.href = currentUrl.toString();
       });
     });
-
-    // Keep your existing cert-btn and vac-btn JS unchanged
   });
 </script>
-
-<!-- Toggle Logic -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const petButtons = document.querySelectorAll('.pet-type-btn');
-    const petSections = document.querySelectorAll('.pet-regulation-section');
-
-    petButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const selected = button.dataset.pet;
-        petSections.forEach(section => section.style.display = section.dataset.pet === selected ? 'block' : 'none');
-        petButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-      });
-    });
-
-    document.querySelectorAll('.vac-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const group = btn.dataset.target.split('-')[1];
-        document.querySelectorAll(`[id^="vaccination-${group}-"]`).forEach(el => el.style.display = 'none');
-        document.getElementById(btn.dataset.target).style.display = 'block';
-        btn.parentElement.querySelectorAll('.vac-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    document.querySelectorAll('.cert-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const group = btn.dataset.target.split('-')[1];
-        document.querySelectorAll(`[id^="certification-${group}-"]`).forEach(el => el.style.display = 'none');
-        document.getElementById(btn.dataset.target).style.display = 'block';
-        btn.parentElement.querySelectorAll('.cert-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-  });
-</script>
-

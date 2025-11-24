@@ -1,263 +1,221 @@
 <% layout('layouts/boilerplate') %>
-
-<!-- Stylesheets -->
 <link rel="stylesheet" href="/styleSheets/stars.css">
 
-
-
-<!-- ================= HERO + NAV STRIP (shared look) ================= -->
+<!-- ===== HERO ===== -->
 <div class="airline-hero py-5 text-center border-bottom">
   <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
-  <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
+  <p class="fs-5 text-muted">Select airline, view summary, explore sections, shop travel supplies.</p>
   <div class="mt-4">
     <%- include('../partials/navigation') %>
   </div>
 </div>
 
-<!-- ================= PAGE BODY ================= -->
 <div class="container my-5">
-  <div class="row g-4">
 
-    <!-- ================= LEFT COLUMN: Airline Overview ================= -->
-    <div class="col-md-6 col-12">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <div class="d-flex align-items-start justify-content-between mb-3">
-            <div class="d-flex align-items-center gap-3">
-              <div class="position-relative">
-                <% if (airline.logo) { %>
-                  <img src="<%= airline.logo %>" 
-     alt="<%= airline.name %> Logo" 
-     class="img-fluid airline-logo" 
-     style="max-height:60px;width:auto;object-fit:contain;">
+  <!-- ===== AIRLINE HEADER ===== -->
+  <div class="card shadow-sm mb-3 p-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+      <div class="d-flex align-items-center gap-3">
+        <% if (airline.logo) { %>
+          <img src="<%= airline.logo %>" alt="<%= airline.name %> Logo" style="max-height:60px;object-fit:contain;">
+        <% } %>
+        <h2 class="h4 m-0"><strong><%= airline.name %></strong></h2>
+      </div>
 
-                <% } else { %>
-                  <i class="fa fa-plane fa-2x" aria-hidden="true"></i>
-                <% } %>
-              </div>
-              <div>
-                <h2 class="h4 mb-1"><strong><%= airline.name || 'Unknown Airline' %></strong></h2>
-                <% if (airline.airlineCode) { %>
-                  <span class="badge text-bg-dark">Code: <%= airline.airlineCode %></span>
+      <!-- Save Button -->
+      <form method="POST" action="/favorites/saveAirlineToFavorites">
+        <input type="hidden" name="airlineId" value="<%= airline._id %>">
+        <button type="submit" class="btn btn-outline-danger fw-semibold">
+          <i class="fas fa-heart me-1"></i> Save
+        </button>
+      </form>
+    </div>
+
+    <!-- Quick Stats Badges -->
+    <div class="mt-3 d-flex flex-wrap gap-2">
+      <% if (airline.inCompartmentAnimals?.length) { %>
+        <span class="badge text-bg-secondary">In Compartment: <strong><%= airline.inCompartmentAnimals.join(', ') %></strong></span>
+      <% } %>
+      <% if (airline.inCargoAnimals?.length) { %>
+        <span class="badge text-bg-secondary">In Cargo: <strong><%= airline.inCargoAnimals.join(', ') %></strong></span>
+      <% } %>
+      <% if (airline.petShipping !== undefined) { %>
+        <span class="badge text-bg-secondary">Pet Shipping: <strong><%= airline.petShipping %></strong></span>
+      <% } %>
+      <% if (airline.microchip !== undefined) { %>
+        <span class="badge text-bg-light border">Microchip: <strong><%= airline.microchip %></strong></span>
+      <% } %>
+      <% if (airline.healthCertificate !== undefined) { %>
+        <span class="badge text-bg-light border">Health Certificate: <strong><%= airline.healthCertificate %></strong></span>
+      <% } %>
+      <% if (airline.healthVaccinations?.length) { %>
+        <span class="badge text-bg-light border">Vaccinations: <strong><%= airline.healthVaccinations.join(', ') %></strong></span>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- ===== TOP DOG SHOPIFY AD ===== -->
+<div class="card shadow-sm border border-warning overflow-hidden mb-4" 
+     style="border-radius: 12px; background-color: #eaf6ff;">
+  <div class="row align-items-center p-3">
+    <div class="col-md-3 text-center">
+      <img src="/images/DogTravelCollectionV2.jpg" alt="Dog Travel Supplies" 
+           class="img-fluid rounded" style="max-width:200px;">
+    </div>
+    <div class="col-md-6 text-md-start text-center">
+      <h3 class="fw-bold mb-2">Shop Dog Travel Supplies</h3>
+      <p class="text-muted mb-0">Carriers, crates, harnesses, travel kits, medical bags — stress-free travel for dogs.</p>
+    </div>
+    <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
+      <a href="https://petsvoyage.myshopify.com/collections/dog-travel" target="_blank" 
+         class="btn btn-primary fw-bold px-4 py-2">Shop Now →</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ===== SECTION NAV BUTTONS ===== -->
+  <div class="row text-center g-3 mb-4">
+    <div class="col-2"><a href="#summary"><div class="card shadow-sm p-3"><i class="bi bi-info-circle"></i><h6>Summary</h6></div></a></div>
+    <div class="col-2"><a href="#health"><div class="card shadow-sm p-3"><i class="bi bi-heart-pulse"></i><h6>Health</h6></div></a></div>
+    <div class="col-2"><a href="#restrictions"><div class="card shadow-sm p-3"><i class="bi bi-exclamation-triangle"></i><h6>Restrictions</h6></div></a></div>
+    <div class="col-2"><a href="#support"><div class="card shadow-sm p-3"><i class="bi bi-paw-fill"></i><h6>Support</h6></div></a></div>
+    <div class="col-2"><a href="#carrier"><div class="card shadow-sm p-3"><i class="bi bi-truck"></i><h6>Carrier</h6></div></a></div>
+    <div class="col-2"><a href="#reviews"><div class="card shadow-sm p-3"><i class="bi bi-chat-dots"></i><h6>Reviews</h6></div></a></div>
+  </div>
+
+  <!-- ===== SUMMARY (2 Column Layout) ===== -->
+  <div id="summary" class="row my-5">
+    <div class="col-lg-8 col-md-7">
+      <div class="card p-4 shadow-sm h-100">
+        <h3 class="mb-3">
+          <i class="bi bi-info-circle-fill me-2 text-primary"></i>Pet Policy Summary
+        </h3>
+        <div>
+          <%- airline.ImprovedPetPolicySummary || 'Pet policy summary not available.' %>
+        </div>
+      </div>
+    </div>
+
+   <!-- 🔁 Randomized Square Ad Spot -->
+<div class="col-lg-4 col-md-5 mt-4 mt-md-0">
+  <% 
+    const adPartials = [
+      '../partials/ads/taxiAd',
+      '../partials/ads/conciergeAd',
+   
+    ];
+    const randomAd = adPartials[Math.floor(Math.random() * adPartials.length)];
+  %>
+  <div class="card p-3 shadow-sm h-100 text-center">
+    <%- include(randomAd) %>
+  </div>
+</div>
+
+
+  <!-- ===== 2x2 SECTIONS ===== -->
+  <div class="row gy-4">
+    <section id="health" class="col-md-6">
+      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
+        <h5><i class="bi bi-heart-pulse me-2"></i>Health Requirements</h5>
+        <p><strong>Microchip:</strong> <%- airline.microchip || "Not specified." %></p>
+        <p><strong>Health Certificate:</strong> <%- airline.healthCertificate || "Not specified." %></p>
+        <p><strong>Vaccinations:</strong> <%- airline.healthVaccinations?.join(', ') || "Not specified." %></p>
+      </div>
+    </section>
+
+    <section id="restrictions" class="col-md-6">
+      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
+        <h5><i class="bi bi-exclamation-triangle me-2"></i>Restrictions</h5>
+        <p><strong>Brachycephalic Breeds:</strong> <%- airline.brachycephalicBreedList || "Not specified." %></p>
+        <p><strong>Dangerous Breeds:</strong> <%- airline.dangerousBreedList || "Not specified." %></p>
+      </div>
+    </section>
+
+    <section id="support" class="col-md-6">
+      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
+        <h5><i class="bi bi-paw me-2"></i>Support Animals</h5>
+        <p><strong>Service Animals:</strong> <%- airline.serviceAnimalDetails || "Not specified." %></p>
+        <p><strong>Emotional Support:</strong> <%- airline.esaDetails || "Not specified." %></p>
+      </div>
+    </section>
+
+    <section id="carrier" class="col-md-6">
+      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
+        <h5><i class="bi bi-truck me-2"></i>Carrier Details</h5>
+        <p><strong>Compartment:</strong> <%- airline.carrierCompartmentDetails || "Not specified." %></p>
+        <p><strong>Cargo:</strong> <%- airline.carrierCargoDetails || "Not specified." %></p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== REVIEWS ===== -->
+  <section id="reviews" class="mt-5">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2>Reviews</h2>
+
+        <!-- Review Form -->
+        <form class="validated-form mb-3" method="POST" action="/airlines/<%= airline.slug %>/reviews">
+          <fieldset class="starability-basic">
+            <% for (let i = 1; i <= 5; i++) { %>
+              <input type="radio" id="rate<%= i %>" name="review[rating]" value="<%= i %>" />
+              <label for="rate<%= i %>"><%= i %> star</label>
+            <% } %>
+          </fieldset>
+          <textarea class="form-control mt-2" name="review[body]" placeholder="Write your review..." required></textarea>
+          <button class="btn btn-success mt-2">Submit Review</button>
+        </form>
+
+        <% const reviews = airline.reviews || []; %>
+        <% if (reviews.length) { %>
+          <% reviews.forEach(review => { %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <p class="text-muted mb-2">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <i class="<%= i <= review.rating ? 'fas' : 'far' %> fa-star" style="color:#ffae00;"></i>
+                  <% } %>
+                </p>
+                <p class="mb-2">
+                  <strong><%= review.author?.name || review.author?.username || '' %></strong>: 
+                  <%= review.body %>
+                </p>
+                <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
+                  <form method="POST" action="/airlines/slug/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                  </form>
                 <% } %>
               </div>
             </div>
-
-            <!-- Save to Favorites -->
-            <form class="saveAirlineForm" method="POST" action="/favorites/saveAirlineToFavorites">
-              <input type="hidden" name="airlineId" value="<%= airline._id %>">
-              <input type="hidden" name="link" value="<%= link %>">
-              <input type="hidden" name="airlineCode" value="<%= airline.airlineCode %>">
-              <input type="hidden" name="airlineName" value="<%= airline.name %>">
-              <input type="hidden" name="petPolicyURL" value="<%= airline.petPolicyURL %>">
-              <input type="hidden" name="petPolicySummary" value="<%= airline.ImprovedPetPolicySummary || '' %>">
-              <input type="hidden" name="carrierCompartmentDetails" value="<%= airline.carrierCompartmentDetails || '' %>">
-              <input type="hidden" name="carrierCargoDetails" value="<%= airline.carrierCargoDetails || '' %>">
-              <input type="hidden" name="slug" value="<%= airline.slug %>">
-              <button type="submit" class="btn btn-outline-danger btn-save">
-                <i class="fas fa-heart me-1"></i> Save
-              </button>
-            </form>
-          </div>
-
-          <!-- Actions -->
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <% if (airline.petPolicyURL) { %>
-              <a href="<%= airline.petPolicyURL %>" target="_blank" rel="noopener" class="btn btn-info">
-                <i class="bi bi-link-45deg me-1"></i> View Pet Policy
-              </a>
-            <% } %>
-          </div>
-
-          <div class="alert-container"></div>
-
-          <!-- Quick Facts as badges -->
-          <div class="mb-3">
-            <% if (Array.isArray(airline.inCompartmentAnimals) && airline.inCompartmentAnimals.length) { %>
-              <span class="badge text-bg-secondary fact-badge">In Compartment: <strong><%= airline.inCompartmentAnimals.join(', ') %></strong></span>
-            <% } %>
-            <% if (Array.isArray(airline.inCargoAnimals) && airline.inCargoAnimals.length) { %>
-              <span class="badge text-bg-secondary fact-badge">In Cargo: <strong><%= airline.inCargoAnimals.join(', ') %></strong></span>
-            <% } %>
-            <% if (airline.petShipping !== undefined && airline.petShipping !== null) { %>
-              <span class="badge text-bg-secondary fact-badge">Pet Shipping: <strong><%= airline.petShipping %></strong></span>
-            <% } %>
-            <% if (airline.microchip !== undefined && airline.microchip !== null) { %>
-              <span class="badge text-bg-light border fact-badge">Microchip: <strong><%= airline.microchip %></strong></span>
-            <% } %>
-            <% if (airline.healthCertificate !== undefined && airline.healthCertificate !== null) { %>
-              <span class="badge text-bg-light border fact-badge">Health Certificate: <strong><%= airline.healthCertificate %></strong></span>
-            <% } %>
-            <% if (Array.isArray(airline.healthVaccinations) && airline.healthVaccinations.length) { %>
-              <span class="badge text-bg-light border fact-badge">Vaccinations: <strong><%= airline.healthVaccinations.join(', ') %></strong></span>
-            <% } %>
-          </div>
-
-          <!-- Cards: Support/Carrier/Restrictions (now act as jump links) -->
-<div class="row g-3">
-  <div class="col-4">
-    <div class="card flight-card border-dark text-center shadow-sm h-100 position-relative">
-      <div class="card-body d-flex flex-column justify-content-center">
-        <i class="bi bi-paw display-6"></i>
-        <h6 class="card-title mt-2">Support Animals</h6>
-      </div>
-      <a href="#support-animals" class="stretched-link" aria-label="Jump to Support Animals"></a>
-    </div>
-  </div>
-  <div class="col-4">
-    <div class="card flight-card border-dark text-center shadow-sm h-100 position-relative">
-      <div class="card-body d-flex flex-column justify-content-center">
-        <i class="bi bi-truck display-6"></i>
-        <h6 class="card-title mt-2">Carrier Details</h6>
-      </div>
-      <a href="#carrier-details" class="stretched-link" aria-label="Jump to Carrier Details"></a>
-    </div>
-  </div>
-  <div class="col-4">
-    <div class="card flight-card border-dark text-center shadow-sm h-100 position-relative">
-      <div class="card-body d-flex flex-column justify-content-center">
-        <i class="bi bi-exclamation-triangle display-6"></i>
-        <h6 class="card-title mt-2">Restrictions</h6>
-      </div>
-      <a href="#restrictions" class="stretched-link" aria-label="Jump to Restrictions"></a>
-    </div>
-  </div>
-</div>
-
-<!-- Policy Summary Box (kept) -->
-<% if (airline.ImprovedPetPolicySummary) { %>
-  <div class="card border-start border-dark mt-3">
-    <div class="card-body">
-      <h5 class="card-title text-secondary"><i class="bi bi-info-circle-fill me-2"></i>Pet Policy Summary</h5>
-      <div class="card-text"><%- airline.ImprovedPetPolicySummary %></div>
-    </div>
-  </div>
-<% } %>
-
-<!-- Detailed Sections (always visible, anchor targets) -->
-<section id="support-animals" class="mt-3">
-  <div class="card card-body border-dark border-top">
-    <h5 class="mb-2"><i class="bi bi-paw me-2"></i>Support Animal Details</h5>
-    <p class="card-text"><strong>Service Animals:</strong> <%- airline.serviceAnimalDetails || 'Not specified.' %></p>
-    <p class="card-text"><strong>Emotional Support Animals:</strong> <%- airline.esaDetails || 'Not specified.' %></p>
-  </div>
-</section>
-
-<section id="carrier-details" class="mt-3">
-  <div class="card card-body border-dark border-top">
-    <h5 class="mb-2"><i class="bi bi-truck me-2"></i>Carrier Details</h5>
-    <p class="card-text"><strong>Compartment Carrier Details:</strong> <%- airline.carrierCompartmentDetails || 'Not specified.' %></p>
-    <p class="card-text"><strong>In Cargo Carrier Details:</strong> <%- airline.carrierCargoDetails || 'Not specified.' %></p>
-  </div>
-</section>
-
-<section id="restrictions" class="mt-3">
-  <div class="card card-body border-dark border-top">
-    <h5 class="mb-2"><i class="bi bi-exclamation-triangle me-2"></i>Restrictions</h5>
-    <p class="card-text"><strong>Brachycephalic Breeds:</strong> <%- airline.brachycephalicBreedList || 'Not specified.' %></p>
-    <p class="card-text"><strong>Dangerous Breeds List:</strong> <%- airline.dangerousBreedList || 'Not specified.' %></p>
-  </div>
-</section>
-
-        </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
+        <% } %>
       </div>
     </div>
+  </section>
 
-    <!-- ================= RIGHT COLUMN: Ads + Reviews ================= -->
-    <div class="col-md-6 col-12">
-      <!-- Affiliate Card -->
-
-      <div>
-    <%- include('../partials/ads/catBackPack.ejs') %>
-  </div>
-      <div class="card mb-4 shadow-sm border border-warning">
-        <div class="card-body text-center">
-          <h5 class="card-title text-warning">🐶 Recommended Travel Carrier</h5>
-          <a href="https://amzn.to/4eLSDY7" target="_blank" rel="noopener noreferrer">
-            <img src="https://m.media-amazon.com/images/I/81GSowmJ+gL._AC_SX679_.jpg" alt="Soft Dog Travel Carrier" class="img-fluid rounded mb-3" style="max-height: 200px;">
-          </a>
-          <p class="card-text">Hard-Sided Pet Travel Carrier – Airline approved for cargo, great ventilation, keeps pets secure and comfortable during flights.</p>
-          <a href="https://amzn.to/4eLSDY7" class="btn btn-warning btn-sm" target="_blank" rel="noopener noreferrer">🛍️ Buy on Amazon</a>
-          <p class="mt-2 text-muted small">Purchasing through this link helps support PetVoyage at no extra cost to you. 💛</p>
-        </div>
+  <!-- ===== CAT AD AT BOTTOM ===== -->
+  <div class="card shadow-sm border border-warning overflow-hidden mb-4 mt-4" style="border-radius: 12px;">
+    <div class="row align-items-center p-3">
+      <div class="col-md-3 text-center">
+        <img src="/images/CatTravelCollection.jpg" alt="Cat Travel Supplies" class="img-fluid rounded" style="max-width:200px;">
       </div>
-
-
-
-      <!-- Reviews -->
-      <div class="card">
-        <div class="card-body">
-          <form class="mb-3 validated-form" id="reviewForm" action="/airlines/<%= airline.slug %>/reviews" method="POST" novalidate>
-            <h2>Leave A Review</h2>
-            <fieldset class="starability-basic">
-              <input type="radio" id="rate1" name="review[rating]" value="1" />
-              <label for="rate1">1 star</label>
-              <input type="radio" id="rate2" name="review[rating]" value="2" />
-              <label for="rate2">2 stars</label>
-              <input type="radio" id="rate3" name="review[rating]" value="3" checked />
-              <label for="rate3">3 stars</label>
-              <input type="radio" id="rate4" name="review[rating]" value="4" />
-              <label for="rate4">4 stars</label>
-              <input type="radio" id="rate5" name="review[rating]" value="5" />
-              <label for="rate5">5 stars</label>
-            </fieldset>
-            <div id="ratingError" class="text-danger small" style="display:none;">Please select a rating.</div>
-            <textarea class="form-control mt-2" name="review[body]" placeholder="Write your review here..." required></textarea>
-            <button class="btn btn-success mt-2" onclick="return validateReviewForm()">Submit Review</button>
-          </form>
-
-          <% const reviews = (airline && airline.reviews) ? airline.reviews : []; %>
-          <h2>Reviews</h2>
-          <% if (reviews.length > 0) { %>
-            <% reviews.forEach(review => { %>
-              <div class="card mb-3">
-                <div class="card-body">
-                  <p class="text-muted mb-2">
-                    <% for (let i = 1; i <= 5; i++) { %>
-                      <% if (i <= (review.rating || 0)) { %>
-                        <i class="fas fa-star" style="color:#ffae00;"></i>
-                      <% } else { %>
-                        <i class="far fa-star" style="color:#ffae00;"></i>
-                      <% } %>
-                    <% } %>
-                  </p>
-                  <p class="mb-2">
-                    <% if (review.author && (review.author.name || review.author.username)) { %>
-                      <strong><%= review.author.name || review.author.username %>:</strong>
-                    <% } %>
-                    <%= review.body %>
-                  </p>
-                  <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
-                    <form action="/airlines/slug/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                      <button class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                  <% } %>
-                </div>
-              </div>
-            <% }); %>
-          <% } else { %>
-            <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
-          <% } %>
-        </div>
+      <div class="col-md-6 text-md-start text-center">
+        <h3 class="fw-bold mb-2">Shop Cat Travel Supplies</h3>
+        <p class="text-muted mb-0">Carriers, calming oils, seat boosters, backpacks — stress-free cat travel.</p>
       </div>
-
-      <!-- Advertisement Banner -->
-      <div class="mt-4 text-center">
-        <a href="https://www.pntrs.com/t/4-363006-373432-124479" rel="sponsored" style="display:block; margin:0 auto; max-width:100%; text-align:center;">
-          <img src="//www.pntrs.com/b/4-363006-373432-124479" style="width:100%; height:auto;" title="Take a Food Journey Around the World!" alt="Take a Food Journey Around the World!">
-        </a>
+      <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
+        <a href="https://petsvoyage.myshopify.com/collections/cat-travel" target="_blank" class="btn btn-primary fw-bold px-4 py-2">Shop Now →</a>
       </div>
     </div>
-
   </div>
+
 </div>
 
 <script>
-  function validateReviewForm() {
-    const ratingSelected = document.querySelector('input[name="review[rating]"]:checked');
-    const errorElement = document.getElementById('ratingError');
-    if (!ratingSelected) { errorElement.style.display = 'block'; return false; }
-    errorElement.style.display = 'none';
-    return true;
-  }
+function validateReviewForm() {
+  return !!document.querySelector('input[name="review[rating]"]:checked');
+}
 </script>

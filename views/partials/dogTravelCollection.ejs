@@ -1,0 +1,120 @@
+<div class="shopify-product-carousel container my-4">
+  <h3 class="mb-3 shopify-collection-title"><%= title %></h3>
+
+  <div class="carousel-wrapper position-relative d-flex align-items-center">
+    <button class="carousel-btn left btn btn-light">&#8249;</button>
+    <div id="<%= containerId %>" class="carousel-track-wrapper w-100 overflow-hidden"></div>
+    <button class="carousel-btn right btn btn-light">&#8250;</button>
+  </div>
+</div>
+
+<style>
+  .carousel-wrapper {
+    position: relative;
+  }
+  .carousel-btn {
+    position: absolute;
+    top: 40%;
+    z-index: 10;
+    background-color: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0 10px;
+    height: 100%;
+    opacity: 0.7;
+    transition: 0.3s;
+  }
+  .carousel-btn.left { left: 0; }
+  .carousel-btn.right { right: 0; }
+</style>
+
+<script>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+
+  if (window.ShopifyBuy && window.ShopifyBuy.UI) {
+    ShopifyBuyInit();
+  } else {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    document.head.appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: 'i7uk6k-mc.myshopify.com',
+      storefrontAccessToken: 'd0606ebb2672d9eb75e0da9409e16bf2',
+    });
+
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('collection', {
+        id: '<%= collectionId %>',
+        node: document.getElementById('<%= containerId %>'),
+        moneyFormat: '%24%7B%7Bamount%7D%7D',
+        options: {
+          product: {
+            buttonDestination: 'modal',
+            text: { button: 'View' },
+            styles: {
+              product: {
+                'max-width': '100%',
+                'min-width': '100%',
+                'box-shadow': '0 4px 16px rgba(0,0,0,0.10)',
+                'border-radius': '14px',
+                'margin': '0 auto',
+                'padding': '10px',
+                'font-family': 'Poppins, sans-serif',
+                'text-align': 'center',
+              },
+              button: {
+                "border-radius": "16px",
+                "font-weight": "600",
+              },
+            },
+          },
+          productSet: {
+            styles: {
+              products: {
+                "display": "flex",
+                "flex-wrap": "nowrap",
+                "overflow": "hidden",
+                "scroll-behavior": "smooth"
+              }
+            }
+          },
+          modalProduct: {
+            text: { button: "Add to Cart" },
+            styles: { button: { "border-radius": "16px" } }
+          },
+        }
+      });
+    });
+  }
+})();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new MutationObserver(() => {
+    const products = document.querySelector('.shopify-buy__products');
+    if (products) {
+      [...products.children].forEach((el) => {
+        el.style.minWidth = "100%";
+        el.style.scrollSnapAlign = "start";
+      });
+
+      const left = document.querySelector('.carousel-btn.left');
+      const right = document.querySelector('.carousel-btn.right');
+
+      right.onclick = () => products.scrollBy({ left: products.clientWidth, behavior: 'smooth' });
+      left.onclick = () => products.scrollBy({ left: -products.clientWidth, behavior: 'smooth' });
+
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
