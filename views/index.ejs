@@ -56,119 +56,156 @@
         </a>
       </aside>
 
-<!-- CENTER -->
-<div class="col-lg-6 text-center">
-  <img
-    src="/images/PetVoyageLogo.png"
-    class="img-fluid rounded-top d-block mx-auto mb-3"
-    alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-    width="400"
-    height="400"
-  />
-  <h1 class="fw-bold display-5">Travel Smarter with Pets</h1>
-  <p class="fs-5 text-muted">Instantly explore pet policies by airline and country. Fly with peace of mind.</p>
+      <!-- CENTER -->
+      <div class="col-lg-6 text-center">
+        <img
+          src="/images/PetVoyageLogo.png"
+          class="img-fluid rounded-top d-block mx-auto mb-3"
+          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+          width="400"
+          height="400"
+        />
+        <h1 class="fw-bold display-5">Travel Smarter with Pets</h1>
+        <p class="fs-5 text-muted">Instantly explore pet policies by airline and country. Fly with peace of mind.</p>
 
-  <div>
-    <%- include('./partials/navigation') %>
-  </div>
+        <div>
+          <%- include('./partials/navigation') %>
+        </div>
 
-  <div class="container py-4">
-    <%- include('partials/chatGPTIndex', { idSuffix: 'home' }) %>
-  </div>
-  <!-- Full-screen loading overlay (outside container so it covers the whole page) -->
-  <div id="loadingOverlay"
-      style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-              background:rgba(255,255,255,0.9);z-index:9999;
-              backdrop-filter:blur(3px);text-align:center;">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-      <div class="spinner-border text-primary" role="status" style="width:4rem;height:4rem;">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p class="mt-3 fs-5 text-primary">Searching for regulations…</p>
-    </div>
-  </div>
+        <div class="container py-4">
+          <%- include('partials/chatGPTIndex', { idSuffix: 'home' }) %>
+        </div>
 
- 
+        <!-- Full-screen loading overlay -->
+        <div id="loadingOverlay"
+            style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+                    background:rgba(255,255,255,0.9);z-index:9999;
+                    backdrop-filter:blur(3px);text-align:center;">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+            <div class="spinner-border text-primary" role="status" style="width:4rem;height:4rem;">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 fs-5 text-primary">Searching for regulations…</p>
+          </div>
+        </div>
 
-  <!-- MOBILE-ONLY: Blog + Tips + To-Do (all stacked) -->
-  <div class="d-lg-none">
-    <div class="row g-3 mt-4">
-      <div class="col-12">
-        <a href="/blog" class="text-decoration-none">
-          <div class="card border-0 shadow-sm">
-            <img src="/images/movetocdmx.jpg" class="card-img-top" alt="PetVoyage Blog preview" loading="lazy">
-            <div class="card-body">
-              <h6 class="text-muted mb-2">Featured on the Blog</h6>
-              <h5 class="card-title mb-2">How We Moved to Mexico City With Our Pets</h5>
-              <p class="card-text small text-muted mb-3">Flight prep, airline choice, vet visits, and what actually worked the day we flew…</p>
-              <span class="btn btn-outline-secondary btn-sm">Read the story</span>
+        <!-- MOBILE-ONLY: Blog Card -->
+        <div class="d-lg-none">
+          <div class="row g-3 mt-4">
+            <div class="col-12">
+              <a href="/blog" class="text-decoration-none">
+                <div class="card border-0 shadow-sm">
+                  <img src="/images/movetocdmx.jpg" class="card-img-top" alt="PetVoyage Blog preview" loading="lazy">
+                  <div class="card-body">
+                    <h6 class="text-muted mb-2">Featured on the Blog</h6>
+                    <h5 class="card-title mb-2">How We Moved to Mexico City With Our Pets</h5>
+                    <p class="card-text small text-muted mb-3">Flight prep, airline choice, vet visits, and what actually worked the day we flew…</p>
+                    <span class="btn btn-outline-secondary btn-sm">Read the story</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>  
+        </div>
+
+        <!-- SHOP CAROUSEL -->
+        <div class="shop-inline mt-4">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <h5 class="m-0 fw-bold">Top Must-Have Travel Products</h5>
+            <a href="https://petsvoyage.myshopify.com/collections/must-have-products-to-fly-with-your-pet" class="btn btn-outline-secondary btn-sm">View all</a>
+          </div>
+
+          <div class="shop-carousel">
+            <button class="shop-nav prev" aria-label="Previous">&#10094;</button>
+            <div class="shop-track">
+              <%- include('./partials/ads/dogFullCollections', {
+                componentId: 'pv-inline-collection-home',
+                collectionId: '320667189420',
+                title: 'Top Must-Have Travel Products',
+                viewAllHref: '/shop'
+              }) %>
+            </div>
+            <button class="shop-nav next" aria-label="Next">&#10095;</button>
+          </div>
+        </div>
+
+        <!-- MOBILE-ONLY: Tips + To-Do -->
+        <div class="d-lg-none">
+          <div class="row g-3 mt-4">
+            <div class="col-12">
+              <a href="/tips" class="text-decoration-none">
+                <div class="card border-0 shadow-sm">
+                  <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
+                  <div class="card-body">
+                    <h6 class="text-muted mb-2">Featured Tip</h6>
+                    <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
+                    <p class="card-text small text-muted mb-3">Quick and effective tips to make flying with your furry friend easier than ever…</p>
+                    <span class="btn btn-outline-secondary btn-sm">Read tips</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>  
+
+          <!-- MOBILE: Ad Card -->
+          <div class="mt-4">
+            <a href="https://petsvoyage.myshopify.com" class="text-decoration-none" target="_blank">
+              <div class="card border-0 shadow-sm">
+                <img src="/mnt/data/A_promotional_advertisement_in_digital_graphic_des.png" 
+                     class="card-img-top" 
+                     alt="Pet Travel Supplies" 
+                     loading="lazy">
+                <div class="card-body">
+                  <h6 class="text-muted mb-2">Shop Pet Travel Essentials</h6>
+                  <h5 class="card-title mb-2">Stress-Free Travel Starts Here</h5>
+                  <p class="card-text small text-muted mb-3">
+                    Airline-approved carriers, crates, harnesses, and TSA-friendly travel kits for your pet’s safe journey.
+                  </p>
+                  <span class="btn btn-primary btn-sm">Shop Now →</span>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- To-Do (mobile bottom) -->
+          <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-3">
+              <%- include('./partials/toDoList')%>
             </div>
           </div>
-        </a>
-      </div>
-    </div>  
-  </div>
+        </div>
+      </div><!-- /CENTER -->
 
-  <!-- SHOP CAROUSEL (visible on ALL sizes) -->
-  <div class="shop-inline mt-4">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <h5 class="m-0 fw-bold">Top Must-Have Travel Products</h5>
-      <a href="https://petsvoyage.myshopify.com/collections/must-have-products-to-fly-with-your-pet" class="btn btn-outline-secondary btn-sm">View all</a>
-    </div>
+      <!-- RIGHT (DESKTOP): Pet Supplies Ad + To-Do -->
+      <aside class="col-lg-3 d-none d-lg-block">
+        <div class="sticky-lg-top" style="top:1.5rem">
 
-    <div class="shop-carousel">
-      <button class="shop-nav prev" aria-label="Previous">&#10094;</button>
-      <div class="shop-track">
-        <%- include('./partials/ads/dogFullCollections', {
-          componentId: 'pv-inline-collection-home',
-          collectionId: '320667189420',
-          title: 'Top Must-Have Travel Products',
-          viewAllHref: '/shop'
-        }) %>
-      </div>
-      <button class="shop-nav next" aria-label="Next">&#10095;</button>
-    </div>
-  </div>
+          <!-- Pet Supplies Ad Card -->
+          <a href="https://petsvoyage.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.t.category=ap&sort_by=best-selling" class="text-decoration-none" target="_blank">
+            <div class="card h-100 border-0 shadow-sm mb-4">
+              <img src="/images/DogTravelCollectionV2.jpg" 
+                   class="card-img-top" 
+                   alt="Pet Travel Supplies" 
+                   loading="lazy">
+              <div class="card-body">
+                <h6 class="text-muted mb-2">Shop Pet Travel Essentials</h6>
+                <h5 class="card-title mb-2">Stress-Free Travel Starts Here</h5>
+                <p class="card-text small text-muted mb-3">
+                  Airline-approved carriers, crates, harnesses, travel medical kits, and more.
+                </p>
+                <span class="btn btn-primary btn-sm">Shop Now →</span>
+              </div>
+            </div>
+          </a>
 
-  <!-- MOBILE-ONLY: Blog + Tips + To-Do (all stacked) -->
-  <div class="d-lg-none">
-    <div class="row g-3 mt-4">
-      <div class="col-12">
-        <a href="/tips" class="text-decoration-none">
+          <!-- To-Do List Card -->
           <div class="card border-0 shadow-sm">
-            <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
-            <div class="card-body">
-              <h6 class="text-muted mb-2">Featured Tip</h6>
-              <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
-              <p class="card-text small text-muted mb-3">Quick and effective tips to make flying with your furry friend easier than ever…</p>
-              <span class="btn btn-outline-secondary btn-sm">Read tips</span>
+            <div class="card-body p-3">
+              <%- include('./partials/toDoList') %>
             </div>
           </div>
-        </a>
-      </div>
-    </div>  
-
-    <!-- To-Do (mobile bottom) -->
-    <div class="card border-0 shadow-sm mt-4">
-      <div class="card-body p-3">
-        <%- include('./partials/toDoList')%>
-
-      </div>
-    </div>
-  </div>
-</div><!-- /CENTER -->
-
-<!-- RIGHT (DESKTOP): To-Do -->
-<aside class="col-lg-3 d-none d-lg-block">
-  <div class="sticky-lg-top" style="top:1.5rem">
-    <div class="card border-0 shadow-sm">
-      <div class="card-body p-3">
-
-        <%- include('./partials/toDoList') %>
-      </div>
-    </div>
-  </div>
-</aside>
+        </div>
+      </aside>
 
     </div>
   </div>
