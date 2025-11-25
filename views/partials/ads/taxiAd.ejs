@@ -92,50 +92,72 @@
 
 <script>
 (function() {
-  function initEmailJS() {
-    if (!window.__emailjsReady && window.emailjs) {
-      emailjs.init("UHaN3VH7ImUFuXgUm"); // your EmailJS public key
-      window.__emailjsReady = true;
+  const PUBLIC_KEY = "UHaN3VH7ImUFuXgUm";
+  const SERVICE_ID = "service_ltmu6l5";
+  const TEMPLATE_ID = "template_bag17hw";
+
+  // Ensure EmailJS is fully loaded and initialized
+  function ensureEmailJS(callback) {
+    if (window.emailjs && window.__emailjsReady) {
+      callback();
+      return;
+    }
+
+    function init() {
+      if (!window.__emailjsReady) {
+        emailjs.init(PUBLIC_KEY);
+        window.__emailjsReady = true;
+        console.log("EmailJS initialized");
+      }
+      callback();
+    }
+
+    // Load script if not present
+    if (!window.emailjs) {
+      const s = document.createElement("script");
+      s.src = "https://cdn.emailjs.com/dist/email.min.js";
+      s.onload = init;
+      document.head.appendChild(s);
+    } else {
+      init();
     }
   }
 
-  if (!window.emailjs) {
-    var s = document.createElement('script');
-    s.src = "https://cdn.emailjs.com/dist/email.min.js";
-    s.onload = initEmailJS;
-    document.head.appendChild(s);
-  } else {
-    initEmailJS();
+  const formId = 'taxi-ad-form-<%= _uid %>';
+  const form = document.getElementById(formId);
+  const okBox = document.getElementById('taxi-ad-success-<%= _uid %>');
+  const errBox = document.getElementById('taxi-ad-error-<%= _uid %>');
+
+  if (!form) {
+    console.error("Taxi Ad form not found!", formId);
+    return;
   }
 
-  var form   = document.getElementById('taxi-ad-form-<%= _uid %>');
-  var okBox  = document.getElementById('taxi-ad-success-<%= _uid %>');
-  var errBox = document.getElementById('taxi-ad-error-<%= _uid %>');
-
-  form.addEventListener('submit', function(event) {
+  form.addEventListener("submit", function(event) {
     event.preventDefault();
-    var btn = form.querySelector('button[type="submit"]');
-    var old = btn.innerHTML;
-    btn.disabled = true; btn.innerHTML = 'Sending…';
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const oldBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "Sending…";
 
-    function doSend() {
-      emailjs.sendForm('service_ltmu6l5', 'template_bag17hw', form)
-        .then(function() {
-          okBox.classList.remove('d-none');
-          errBox.classList.add('d-none');
+    ensureEmailJS(function() {
+      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form)
+        .then(() => {
+          okBox.classList.remove("d-none");
+          errBox.classList.add("d-none");
           form.reset();
         })
-        .catch(function() {
-          errBox.classList.remove('d-none');
-          okBox.classList.add('d-none');
+        .catch((error) => {
+          console.error("Email send failed:", error);
+          errBox.classList.remove("d-none");
+          okBox.classList.add("d-none");
         })
-        .finally(function() {
-          btn.disabled = false; btn.innerHTML = old;
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = oldBtnText;
         });
-    }
-
-    if (window.__emailjsReady) doSend();
-    else setTimeout(doSend, 400);
+    });
   });
 })();
 </script>
+
