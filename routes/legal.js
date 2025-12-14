@@ -10,7 +10,7 @@ router.get('/privacy', (req, res) => {
 });
 
 // Data Deletion
-router.get('/data-deletion', (req, res) => {
+router.get('/dataDeletion', (req, res) => {
   res.render('legal/dataDeletion', {
     title: 'User Data Deletion | PetVoyage',
     metaDescription: 'Instructions for requesting deletion of your PetVoyage user data.'
