@@ -63,19 +63,11 @@ if (typeof users === 'undefined') users = [];
             Countries
           </a>
         </li>
-      </ul>
-      
-      <script>
-        document.getElementById('users-tab-link')?.addEventListener('click', () => {
-          window.location = '/admin?tab=users';
-        });
-        document.getElementById('airlines-tab-link')?.addEventListener('click', () => {
-          window.location = '/admin?tab=airlines';
-        });
-      </script>
-      
-      
+          <!-- ADD THIS 👇 -->
+        <li class="nav-item"><a class="nav-link <%= tab==='ads'?'active':'' %>" href="/admin?tab=ads">Ads</a></li>
 
+      </ul>
+    
       <div class="tab-content border border-top-0 p-3 bg-white rounded-bottom shadow-sm">
 
    <!-- AIRLINES TAB -->
@@ -557,6 +549,232 @@ if (typeof users === 'undefined') users = [];
     </form>
   </div>
 </div>
+
+  <!-- ADS TAB -->
+<div class="tab-pane fade <%= (tab === 'ads' ? 'show active' : '') %>" id="ads" role="tabpanel">
+  <h4 class="mt-2 mb-3">Ads</h4>
+
+  <!-- Search + Create -->
+  <form class="row gy-2 gx-2 align-items-center mb-3" method="GET" action="/admin">
+    <input type="hidden" name="tab" value="ads"/>
+    <div class="col-sm-8 col-md-9">
+      <input type="search" class="form-control" name="aq"
+             value="<%= aq || '' %>"
+             placeholder="Search ads by title…">
+    </div>
+    <div class="col-sm-4 col-md-3 d-flex gap-2">
+      <button class="btn btn-outline-secondary w-100">Search</button>
+      
+      <!-- FIXED: Call modal function instead of redirect -->
+      <button type="button" class="btn btn-primary w-100"
+              data-bs-toggle="modal"
+              onclick="AdminAds.openCreate()">Create</button>
+    </div>
+  </form>
+
+  <% if (ads && ads.length) { %>
+  <div class="table-responsive">
+    <table class="table align-middle table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Placement</th>
+          <th>Pages</th>
+          <th>Status</th>
+          <th>Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% ads.forEach(ad => { %>
+        <tr>
+          <td><%= ad.title %></td>
+          <td><%= ad.adType %></td>
+          <td><%= ad.placement %></td>
+          <td><%= (ad.pages || []).join(', ') %></td>
+          <td>
+            <% if (ad.active) { %>
+              <span class="badge bg-success">Active</span>
+            <% } else { %>
+              <span class="badge bg-secondary">Inactive</span>
+            <% } %>
+          </td>
+          <td><%= ad.updatedAt ? ad.updatedAt.toLocaleDateString() : '' %></td>
+          <td>
+            <div class="d-flex gap-2">
+              <!-- FIXED: correct edit handler -->
+              <button type="button" class="btn btn-sm btn-outline-primary"
+                      onclick="AdminAds.openEdit('<%= ad._id %>')">Edit</button>
+
+              <form method="POST" action="/admin/ads/<%= ad._id %>?_method=DELETE"
+                    onsubmit="return confirm('Delete this ad?')">
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav class="mt-3">
+    <ul class="pagination">
+      <% for (let i = 1; i <= apages; i++) { %>
+        <li class="page-item <%= i === apage ? 'active' : '' %>">
+          <a class="page-link" href="?tab=ads&aq=<%= aq %>&apage=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+
+  <% } else { %>
+    <p>No ads found.</p>
+  <% } %>
+</div>
+
+
+ <!-- === ADS CREATE / EDIT MODAL === -->
+<div class="modal fade" id="adModal" tabindex="-1" aria-labelledby="adModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <form class="modal-content" id="adForm" method="post" action="/admin/ads">
+      <input type="hidden" name="_method" id="adFormMethod" value="POST">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="adModalLabel">Create Ad</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3">
+
+          <!-- Title -->
+          <div class="col-md-6">
+            <label class="form-label">Title *</label>
+            <input class="form-control" name="title" required>
+          </div>
+
+          <!-- Ad Type -->
+          <div class="col-md-6">
+            <label class="form-label">Ad Type *</label>
+            <select class="form-select" name="adType" id="adType" required onchange="toggleAdFields()">
+              <option value="image">Image</option>
+              <option value="html">HTML Embed</option>
+              <option value="product">Product (Shopify/Affiliate)</option>
+            </select>
+          </div>
+
+          <!-- Placement Zones (Multiple Select) -->
+          <div class="col-12">
+            <label class="form-label">Placement Zones *</label>
+            <div class="d-flex flex-wrap gap-3">
+              <% const placements = ['header','sidebar','inline-grid-2','inline-grid-6','footer','custom-spot']; %>
+              <% placements.forEach(p => { %>
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" name="placements" value="<%= p %>">
+                  <%= p.replace('-', ' ').toUpperCase() %>
+                </label>
+              <% }) %>
+            </div>
+            <small class="text-muted">You can select multiple placements.</small>
+          </div>
+
+          <!-- Pages -->
+          <div class="col-12">
+            <label class="form-label">Pages (comma-separated)</label>
+            <input class="form-control" name="pages" placeholder="*, /airlineList, /regulations/*">
+            <small class="text-muted">Use * to show on all pages.</small>
+          </div>
+
+          <!-- Image and Link (Image or Product ad) -->
+          <div class="col-md-6 ad-field" id="imageUrlField" style="display:none;">
+            <label class="form-label">Image URL</label>
+            <input class="form-control" name="imageUrl" placeholder="https://...">
+          </div>
+
+          <div class="col-md-6 ad-field" id="linkUrlField" style="display:none;">
+            <label class="form-label">Target Link URL</label>
+            <input class="form-control" name="linkUrl" placeholder="https://...">
+          </div>
+
+          <!-- HTML Content -->
+          <div class="col-12 ad-field" id="htmlField" style="display:none;">
+            <label class="form-label">HTML / Embed Code</label>
+            <textarea class="form-control" name="content" rows="4" placeholder='<a href="..."><img src="..."></a>'></textarea>
+          </div>
+
+          <!-- Product Embed Code -->
+          <div class="col-12 ad-field" id="productField" style="display:none;">
+            <label class="form-label">Product Embed / Shopify Script</label>
+            <textarea class="form-control" name="productEmbed" rows="4" placeholder='<script src="https://buy-button.js"></script>'></textarea>
+          </div>
+
+          <!-- Active Toggle -->
+          <div class="col-12">
+            <label class="form-check-label d-flex align-items-center gap-2">
+              <input type="checkbox" class="form-check-input" name="active" value="true" checked>
+              Active
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+function toggleAdFields() {
+  const type = document.getElementById('adType').value;
+  document.querySelectorAll('.ad-field').forEach(el => el.style.display = 'none');
+
+  if (type === 'image') {
+    document.getElementById('imageUrlField').style.display = 'block';
+    document.getElementById('linkUrlField').style.display = 'block';
+  }
+  if (type === 'html') {
+    document.getElementById('htmlField').style.display = 'block';
+  }
+  if (type === 'product') {
+    document.getElementById('productField').style.display = 'block';
+  }
+}
+
+// Run on load for edit mode
+document.addEventListener('DOMContentLoaded', toggleAdFields);
+</script>
+
+
+<!-- === Show/Hide Fields Based on Ad Type === -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const adTypeSelect = document.getElementById('adTypeSelect');
+  const htmlField    = document.getElementById('htmlField');
+  const imageUrlField= document.getElementById('imageUrlField');
+  const linkUrlField = document.getElementById('linkUrlField');
+  const productIdField = document.getElementById('productIdField');
+
+  function toggleFields() {
+    const type = adTypeSelect.value;
+    htmlField.style.display = (type === 'html' || type === 'script') ? 'block' : 'none';
+    imageUrlField.style.display = (type === 'image' || type === 'product') ? 'block' : 'none';
+    productIdField.style.display = (type === 'product') ? 'block' : 'none';
+    linkUrlField.style.display = (type !== '') ? 'block' : 'none';
+  }
+
+  adTypeSelect.addEventListener('change', toggleFields);
+  toggleFields(); // run on load
+});
+</script>
+
+
 
 <style>
   .mini-grid { display:grid; grid-template-columns: 1fr 1fr; gap:.5rem; }
@@ -1304,3 +1522,55 @@ if (typeof users === 'undefined') users = [];
       return { openEdit, openCreate };
     })();
   </script>
+<script>
+const AdminAds = (function () {
+  let modal, modalEl, form, methodInput, titleEl;
+
+  function ensureModal() {
+    if (!modalEl) {
+      modalEl = document.getElementById('adModal');
+      form = document.getElementById('adForm');
+      methodInput = document.getElementById('adFormMethod');
+      titleEl = document.getElementById('adModalLabel');
+    }
+    if (!window.bootstrap || !bootstrap.Modal) return false;
+    if (!modal) modal = new bootstrap.Modal(modalEl);
+    return true;
+  }
+
+  function openCreate() {
+    if (!ensureModal()) return;
+    form.reset();
+    form.action = '/admin/ads';
+    methodInput.value = 'POST';
+    titleEl.textContent = 'Create Ad';
+    modal.show();
+  }
+
+  async function openEdit(id) {
+    if (!ensureModal()) return;
+    try {
+      const res = await fetch(`/admin/ads/${id}`, { headers: {'Accept': 'application/json'} });
+      const data = await res.json();
+
+      form.title.value = data.title || '';
+      form.adType.value = data.adType || '';
+      form.placement.value = data.placement || '';
+      form.pages.value = (data.pages || []).join(', ');
+      form.content.value = data.content || '';
+      form.active.checked = !!data.active;
+
+      form.action = `/admin/ads/${id}?_method=PUT`;
+      methodInput.value = 'PUT';
+      titleEl.textContent = `Edit Ad: ${data.title || ''}`;
+      modal.show();
+    } catch (e) {
+      alert('Error loading ad.');
+    }
+  }
+
+  return { openCreate, openEdit };
+})();
+</script>
+
+

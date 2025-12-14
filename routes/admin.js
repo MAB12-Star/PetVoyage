@@ -5,59 +5,49 @@ const router = express.Router();
 const Airline = require('../models/airline');
 const User = require('../models/User');
 const CountryPetRegulation = require('../models/countryPetRegulationList');
+const Ad = require('../models/ad');  // <-- 🔹 REQUIRED IMPORT
 
-const { ensureAuth } = require('../middleware'); // you already have this
+const { ensureAuth } = require('../middleware');
 
 const PAGE_SIZE = 12;
 const rxEscape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/* ───────────────────────── Admin-only gate ─────────────────────────
-   Everything under /admin requires:
-   - authenticated session
-   - req.user.role === 'admin'
--------------------------------------------------------------------- */
-router.use(ensureAuth); // must be logged in
+/* ───────────────────────── Admin-only gate ───────────────────────── */
+router.use(ensureAuth);
 router.use((req, res, next) => {
   if (req.user && req.user.role === 'admin') return next();
 
-  // Not an admin: either send 403 page or redirect.
-  // If you prefer redirect, swap the render for a redirect + flash.
   return res.status(403).render('regulations/admin', {
-    // render the same template so your page-level guard can show a friendly message
     user: req.user || null,
     tab: 'airlines',
-    // provide empty/fallback data so the template doesn't break
     airlines: [], airlineChoices: [], q: '', page: 1, pages: 1, total: 0,
     users: [], uq: '', upage: 1, upages: 1, utotal: 0,
     countries: [], cq: '', cpage: 1, cpages: 1, ctotal: 0,
+    ads: [], aq: '', apage: 1, apages: 1, atotal: 0,
     error: 'Admins only.',
     success: ''
   });
 });
 
 /* =========================
- *  GET /admin (tabs)
+ *  GET /admin (tabs handler)
  * ========================= */
 router.get('/', async (req, res, next) => {
   try {
     const tab = req.query.tab || 'airlines';
 
-    // ===== USERS TAB =====
+    /* ===== USERS TAB ===== */
     if (tab === 'users') {
-      const uq    = (req.query.uq || '').trim();
+      const uq = (req.query.uq || '').trim();
       const upage = Math.max(parseInt(req.query.upage || '1', 10), 1);
       const limit = 20;
-
-      const ufilter = {};
-      if (uq) {
-        ufilter.$or = [
-          { displayName: { $regex: uq, $options: 'i' } },
-          { email:       { $regex: uq, $options: 'i' } }
-        ];
-      }
+      
+      const ufilter = uq
+        ? { $or: [{ displayName: new RegExp(uq, 'i') }, { email: new RegExp(uq, 'i') }] }
+        : {};
 
       const utotal = await User.countDocuments(ufilter);
-      const upages = Math.max(Math.ceil(utotal / limit), 1);
+      const upages = Math.ceil(utotal / limit);
       const users = await User.find(ufilter)
         .sort({ createdAt: -1 })
         .skip((upage - 1) * limit)
@@ -67,27 +57,24 @@ router.get('/', async (req, res, next) => {
       return res.render('regulations/admin', {
         user: req.user,
         tab,
-        // airlines fallbacks
-        airlines: [], airlineChoices: [], q: '', page: 1, pages: 1, total: 0,
-        // users
         users, uq, upage, upages, utotal,
-        // countries fallbacks
+        airlines: [], airlineChoices: [], q: '', page: 1, pages: 1, total: 0,
         countries: [], cq: '', cpage: 1, cpages: 1, ctotal: 0,
+        ads: [], aq: '', apage: 1, apages: 1, atotal: 0,
         error: '', success: ''
       });
     }
 
-    // ===== COUNTRIES TAB =====
+    /* ===== COUNTRIES TAB ===== */
     if (tab === 'countries') {
-      const cq    = (req.query.cq || '').trim();
+      const cq = (req.query.cq || '').trim();
       const cpage = Math.max(parseInt(req.query.cpage || '1', 10), 1);
       const limit = 25;
 
-      const cfilter = {};
-      if (cq) cfilter.destinationCountry = { $regex: rxEscape(cq), $options: 'i' };
+      const cfilter = cq ? { destinationCountry: new RegExp(cq, 'i') } : {};
 
-      const ctotal   = await CountryPetRegulation.countDocuments(cfilter);
-      const cpages   = Math.max(Math.ceil(ctotal / limit), 1);
+      const ctotal = await CountryPetRegulation.countDocuments(cfilter);
+      const cpages = Math.ceil(ctotal / limit);
       const countries = await CountryPetRegulation.find(cfilter)
         .sort({ destinationCountry: 1 })
         .skip((cpage - 1) * limit)
@@ -97,56 +84,90 @@ router.get('/', async (req, res, next) => {
       return res.render('regulations/admin', {
         user: req.user,
         tab,
-        // airlines fallbacks
-        airlines: [], airlineChoices: [], q: '', page: 1, pages: 1, total: 0,
-        // users fallbacks
-        users: [], uq: '', upage: 1, upages: 1, utotal: 0,
-        // countries
         countries, cq, cpage, cpages, ctotal,
+        airlines: [], airlineChoices: [], q: '', page: 1, pages: 1, total: 0,
+        users: [], uq: '', upage: 1, upages: 1, utotal: 0,
+        ads: [], aq: '', apage: 1, apages: 1, atotal: 0,
         error: '', success: ''
       });
     }
 
-    // ===== AIRLINES TAB (default) =====
-    const q     = (req.query.q || '').trim();
-    const page  = Math.max(parseInt(req.query.page || '1', 10), 1);
+    /* ===== ADS TAB ===== */
+    if (tab === 'ads') {
+      const aq = (req.query.aq || '').trim();
+      const apage = Math.max(parseInt(req.query.apage || '1', 10), 1);
+      const limit = 25;
+
+      const afilter = aq ? { title: new RegExp(aq, 'i') } : {};
+
+      const atotal = await Ad.countDocuments(afilter);
+      const apages = Math.ceil(atotal / limit);
+      const ads = await Ad.find(afilter)
+        .sort({ updatedAt: -1 })
+        .skip((apage - 1) * limit)
+        .limit(limit)
+        .lean();
+
+      return res.render('regulations/admin', {
+  user: req.user,
+  tab,
+  ads, aq, apage, apages, atotal,
+  
+  // ADD THESE 👇 to prevent "q is not defined"
+  q: '', page: 1, pages: 1, total: 0,
+  airlineChoices: [], airlines: [],
+
+  // users fallback
+  users: [], uq: '', upage: 1, upages: 1, utotal: 0,
+  
+  // countries fallback
+  countries: [], cq: '', cpage: 1, cpages: 1, ctotal: 0,
+
+  error: '', success: ''
+});
+
+    }
+
+    /* ===== AIRLINES TAB (default) ===== */
+    const q = (req.query.q || '').trim();
+    const page = Math.max(parseInt(req.query.page || '1', 10), 1);
     const limit = 25;
 
-    const airlineChoices = await Airline
-      .find({}, { name: 1, airlineCode: 1, slug: 1 })
+    const airlineChoices = await Airline.find({}, { name: 1, airlineCode: 1, slug: 1 })
       .sort({ name: 1 })
       .lean();
 
-    const filter = {};
-    if (q) {
-      const rx = new RegExp(rxEscape(q), 'i');
-      filter.$or = [{ name: rx }, { airlineCode: rx }, { slug: rx }];
-    }
+    const filter = q
+      ? { $or: [{ name: new RegExp(q, 'i') }, { airlineCode: new RegExp(q, 'i') }, { slug: new RegExp(q, 'i') }] }
+      : {};
 
     const total = await Airline.countDocuments(filter);
+    const pages = Math.ceil(total / limit);
     const airlines = await Airline.find(filter)
       .sort({ name: 1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
 
-    const pages = Math.max(Math.ceil(total / limit), 1);
-
-    res.render('regulations/admin', {
+    return res.render('regulations/admin', {
       user: req.user,
       tab, q, page, pages, total,
       airlines,
       airlineChoices,
-      // users defaults
       users: [], uq: '', upage: 1, upages: 1, utotal: 0,
-      // countries defaults
       countries: [], cq: '', cpage: 1, cpages: 1, ctotal: 0,
+      ads: [], aq: '', apage: 1, apages: 1, atotal: 0,
       error: '', success: ''
     });
+
   } catch (err) {
     next(err);
   }
 });
+
+
+
+
 
 /* =========================
  *  AIRLINES CRUD
@@ -474,5 +495,107 @@ router.delete('/countries/:id', async (req, res, next) => {
     next(e);
   }
 });
+
+// ===== ADS TAB =====
+
+// CREATE Ad
+router.post('/ads', async (req, res, next) => {
+  try {
+    const {
+      title,
+      adType,
+      placements, // now array from checkboxes
+      imageUrl,
+      linkUrl,
+      content,  // html or product embed
+      pages,
+      active
+    } = req.body;
+
+    const ad = new Ad({
+      title,
+      adType,
+      placements: Array.isArray(placements) ? placements : [placements],
+      imageUrl: adType === 'image' ? imageUrl : undefined,
+      linkUrl: linkUrl || '',
+      content: adType !== 'image' ? content : undefined,
+      pages: pages
+        ? pages.split(',').map(p => p.trim()).filter(Boolean)
+        : ['*'],
+      active: active === 'on' || active === 'true'
+    });
+
+    await ad.save();
+    req.flash('success', `Ad "${ad.title}" created successfully.`);
+    res.redirect('/admin?tab=ads');
+  } catch (err) {
+    console.error('Error creating ad:', err);
+    next(err);
+  }
+});
+
+
+// FETCH single ad for edit modal (AJAX)
+router.get('/ads/:id', async (req, res, next) => {
+  try {
+    const ad = await Ad.findById(req.params.id).lean();
+    if (!ad) return res.status(404).json({ error: 'Ad not found' });
+    res.json(ad);
+  } catch (err) {
+    console.error('Error loading ad:', err);
+    next(err);
+  }
+});
+
+
+// UPDATE Ad
+router.put('/ads/:id', async (req, res, next) => {
+  try {
+    const {
+      title,
+      adType,
+      placements,
+      imageUrl,
+      linkUrl,
+      content,
+      pages,
+      active
+    } = req.body;
+
+    const updatedData = {
+      title,
+      adType,
+      placements: Array.isArray(placements) ? placements : [placements],
+      imageUrl: adType === 'image' ? imageUrl : undefined,
+      linkUrl: linkUrl || '',
+      content: adType !== 'image' ? content : undefined,
+      pages: pages
+        ? pages.split(',').map(p => p.trim()).filter(Boolean)
+        : ['*'],
+      active: active === 'on' || active === 'true'
+    };
+
+    await Ad.findByIdAndUpdate(req.params.id, updatedData, { runValidators: true });
+    req.flash('success', `Ad "${title}" updated.`);
+    res.redirect('/admin?tab=ads');
+  } catch (err) {
+    console.error('Error updating ad:', err);
+    next(err);
+  }
+});
+
+
+// DELETE Ad
+router.delete('/ads/:id', async (req, res, next) => {
+  try {
+    await Ad.findByIdAndDelete(req.params.id);
+    req.flash('success', 'Ad deleted.');
+    res.redirect('/admin?tab=ads');
+  } catch (err) {
+    console.error('Error deleting ad:', err);
+    next(err);
+  }
+});
+
 
 module.exports = router;

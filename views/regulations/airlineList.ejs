@@ -16,6 +16,7 @@
    <!-- Navigation Strip -->
    <div>
     <%- include('../partials/navigation') %>
+   
   </div>
 
 <!-- Filter Controls -->
@@ -302,31 +303,33 @@ document.addEventListener("click", function (e) {
       </div>
     </div>
 
-    <% 
-      // After each airline, possibly insert an ad tile
-      uniqueAirlineIndex++; 
-      if (uniqueAirlineIndex % 2 === 0) { 
-        const adPartials = [
-      
-          '../partials/ads/taxiAd',
-          '../partials/ads/conciergeAd',
-        ];
-        const randomAd = adPartials[Math.floor(Math.random() * adPartials.length)];
-    %>
-      <!-- Mobile-only in-grid ad (full width on mobile) -->
-      <div class="col-12 mb-4 d-md-none ad-tile">
-        <%- include(randomAd, { uid: 'm-' + uniqueAirlineIndex, placement: 'grid-mobile' }) %>
-      </div>
+   <% uniqueAirlineIndex++; %>
 
-      <% if (uniqueAirlineIndex % 6 === 0) { %>
-        <!-- Desktop/tablet in-grid ad (same column sizing as cards) -->
-        <div class="col-md-6 col-lg-4 mb-4 d-none d-md-block ad-tile">
-          <%- include(randomAd, { uid: 'd-' + uniqueAirlineIndex, placement: 'grid-desktop' }) %>
+<!-- Inline Grid Ad Placement (Mobile - after every 2 cards) -->
+<% if (uniqueAirlineIndex % 2 === 0 && pageAds && pageAds.length) { %>
+  <% pageAds
+      .filter(ad => ad.placement === 'inline-grid-2' && ad.active)
+      .forEach(ad => { %>
+        <div class="col-12 mb-4 d-md-none ad-tile">
+          <%- ad.content %>
         </div>
-      <% } %>
-    <% } %>
-  <% }) %>
-</div>
+  <% }); %>
+<% } %>
+
+<!-- Inline Grid Ad Placement (Desktop - after every 6 cards) -->
+<% if (uniqueAirlineIndex % 6 === 0 && pageAds && pageAds.length) { %>
+  <% pageAds
+      .filter(ad => ad.placement === 'inline-grid-6' && ad.active)
+      .forEach(ad => { %>
+        <div class="col-md-6 col-lg-4 mb-4 d-none d-md-block ad-tile">
+          <%- ad.content %>
+        </div>
+  <% }); %>
+<% } %>
+
+<% }); // <-- THIS closes airlines.forEach %>
+</div> <!-- This closes <div class="row" id="airlineList"> -->
+
 
 <div class="row mb-4 justify-content-center">
   <div class="col-md-12 text-center">

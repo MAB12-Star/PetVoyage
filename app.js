@@ -34,6 +34,8 @@ const aiRoutes = require('./routes/ai');
 
 const { attachRandomReview } = require('./middleware');
 const { attachFeaturedStory } = require('./middleware');
+const Ad = require('./models/ad');
+const legalRoutes = require('./routes/legal');
 
 
 
@@ -127,9 +129,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 🔐 Auth
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 // 🌐 View locals (available in ALL templates)
 app.use((req, res, next) => {
@@ -156,7 +156,7 @@ app.use(attachFeaturedStory);
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/ai', aiRoutes); // AI route near the top
-app.use('/', auth);
+//app.use('/', auth);
 app.use('/auth', auth);
 app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
@@ -175,6 +175,15 @@ app.use('/airlines', reviewsRoutes); // ✅ for nested reviews
 // ... after other app.use(...)
 app.use('/admin', adminRoutes);
 app.use('/uploads', express.static('uploads'));
+
+app.use(async (req, res, next) => {
+  const pathname = req.path;
+  const ads = await Ad.find({ active: true, pages: { $in: [pathname, '*'] } }).lean();
+  res.locals.pageAds = ads;
+  next();
+});
+
+app.use('/', legalRoutes);
 
 
 
@@ -223,7 +232,23 @@ app.get('/dashboard', async (req, res) => {
     res.redirect('/');
   }
 });
+app.use(async (req, res, next) => {
+  try {
+    const urlPath = req.path; 
 
+    const activeAds = await Ad.find({ active: true });
+
+    res.locals.pageAds = activeAds.filter(ad => 
+      ad.pages.includes('*') || ad.pages.includes(urlPath)
+    );
+
+    next();
+  } catch (error) {
+    console.error('Ad middleware error:', error);
+    res.locals.pageAds = [];
+    next();
+  }
+});
 
 // 🏠 Home
 app.get('/', (req, res) => {

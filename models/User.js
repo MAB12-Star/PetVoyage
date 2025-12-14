@@ -24,11 +24,14 @@ const UploadedDocSchema = new Schema({
 }, { _id: true });
 
 const userSchema = new mongoose.Schema({
-  googleId: { type: String, required: true, unique: true },
+  googleId: { type: String, unique: true, sparse: true },
+  facebookId: { type: String, unique: true, sparse: true },
+
   displayName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+
   savedItineraries: { type: [SavedItinerarySchema], default: [] },
-  // NEW
+
   role: {
     type: String,
     enum: ['user', 'vendor', 'admin'],
@@ -37,6 +40,7 @@ const userSchema = new mongoose.Schema({
 
   savedRegulations: [{ type: Schema.Types.ObjectId, ref: 'Regulation' }],
   savedFlightRegulations: [{ type: Schema.Types.ObjectId, ref: 'Airline' }],
+
   favoriteAirlines: [{
     airlineId: { type: Schema.Types.ObjectId, ref: 'Airline' },
     link: String,
@@ -47,16 +51,13 @@ const userSchema = new mongoose.Schema({
     slug: String,
   }],
 
-  // Users' uploaded travel docs (e.g., rabies certificate)
   uploadedDocs: { type: [UploadedDocSchema], default: [] },
 
   toDoList: {
     type: Map,
     of: [String],
     default: {
-      "To-Do": [
-        
-      ],
+      "To-Do": [],
       "in-progress": [],
       "completed": [],
     },
