@@ -169,7 +169,7 @@ router.get(
   '/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/auth/login' }),
   (req, res) => {
-    const redirectUrl = req.session.currentPage || '/dashboard';
+    const redirectUrl = req.redirectUrl || '/dashboard';
     delete req.session.currentPage;
     res.redirect(redirectUrl);
   }
