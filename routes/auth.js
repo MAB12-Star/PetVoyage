@@ -167,6 +167,7 @@ router.get('/facebook', (req, res, next) => {
 
 router.get(
   '/facebook/callback',
+  thisIsTheURL,
   passport.authenticate('facebook', { failureRedirect: '/auth/login' }),
   (req, res) => {
     const redirectUrl = req.redirectUrl || '/dashboard';
