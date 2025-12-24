@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const Regulation = require('../models/regulation');
+//const Regulation = require('../models/regulation');
 const { isLoggedIn } = require('../middleware');
 const Airline = require('../models/airline');
 const { saveCurrentUrl } = require('../middleware');
 // routes/favorites.js (top with other requires)
 const crypto = require('crypto');
+const CountryRegulation = require("../models/countryPetRegulationList"); 
+// (use the exact path/model you use in countryRegulationList.js)
+
 
 
 
@@ -132,36 +135,65 @@ router.post('/saveAirlineToProfile', saveCurrentUrl, isLoggedIn, async (req, res
 
 
 router.post('/saveToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
-    try {
-     
+  try {
+    const userId = req.user._id;
+    const { regulationId } = req.body;
 
-        const userId = req.user._id; // Get the logged-in user's ID
-        const { regulationId } = req.body; // Get the regulationId from the form
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
 
-
-        // Fetch the regulation by its ID
-        const regulation = await Regulation.findById(regulationId);
-        if (!regulation) {
-            return res.status(404).json({ message: 'Regulation not found' });
-        }
-
-        // Find the user and check if the regulation is already saved
-        const user = await User.findById(userId);
-        if (!user.savedRegulations.includes(regulationId)) {
-            user.savedRegulations.push(regulationId); // Add regulation to the user's saved list
-            await user.save(); // Save the updated user document
-
-            
-       
-            return res.status(200).json({ message: 'Regulation saved to your profile' });
-        } else {
-            console.log('Regulation already exists in the user profile');
-            return res.status(200).json({ message: 'Regulation is already saved to your profile' });
-        }
-    } catch (error) {
-        console.error('Error saving regulation:', error);
-        return res.status(500).json({ message: 'Something went wrong' });
+    if (!regulationId) {
+      if (wantsJson) return res.status(400).json({ ok: false, message: 'Missing regulationId' });
+      req.flash('error', 'Missing regulation.');
+      return res.redirect(req.get('referer') || '/dashboard');
     }
+
+    // ✅ IMPORTANT: look up in the COUNTRY collection, not Regulation
+    const regulation = await CountryRegulation.findById(regulationId).lean();
+    if (!regulation) {
+      if (wantsJson) return res.status(404).json({ ok: false, message: 'Country regulation not found' });
+      req.flash('error', 'Country regulation not found.');
+      return res.redirect(req.get('referer') || '/dashboard');
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      if (wantsJson) return res.status(404).json({ ok: false, message: 'User not found' });
+      req.flash('error', 'User not found.');
+      return res.redirect('/login');
+    }
+
+    user.savedRegulations = user.savedRegulations || [];
+    const already = user.savedRegulations.some(id => String(id) === String(regulationId));
+
+    if (!already) {
+      user.savedRegulations.push(regulationId);
+      await user.save();
+    }
+
+    // ✅ FORM submits should redirect back to the same page (no popup JSON)
+    if (!wantsJson) {
+      req.flash('success', already ? 'Already saved.' : 'Saved to your profile.');
+      return res.redirect(req.get('referer') || '/dashboard');
+    }
+
+    return res.status(200).json({
+      ok: true,
+      message: already ? 'Already saved.' : 'Saved to your profile.'
+    });
+  } catch (error) {
+    console.error('Error saving country regulation:', error);
+
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
+
+    if (wantsJson) return res.status(500).json({ ok: false, message: 'Something went wrong' });
+
+    req.flash('error', 'Something went wrong. Please try again.');
+    return res.redirect(req.get('referer') || '/dashboard');
+  }
 });
 
 

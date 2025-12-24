@@ -38,9 +38,13 @@ const userSchema = new mongoose.Schema({
     default: 'user'
   },
 
-  savedRegulations: [{ type: Schema.Types.ObjectId, ref: 'Regulation' }],
+  savedRegulations: [{
+  type: Schema.Types.ObjectId,
+  ref: 'CountryPetRegulation'   // ⬅️ NOT 'Regulation'
+}],
   savedFlightRegulations: [{ type: Schema.Types.ObjectId, ref: 'Airline' }],
-
+  savedStories: [{ type: Schema.Types.ObjectId, ref: 'Story' }], // optional name
+  favoriteStories: [{ type: Schema.Types.ObjectId, ref: 'Story' }], // ✅ add this
   favoriteAirlines: [{
     airlineId: { type: Schema.Types.ObjectId, ref: 'Airline' },
     link: String,
@@ -63,6 +67,8 @@ const userSchema = new mongoose.Schema({
     },
   },
 }, { timestamps: true });
+
+
 
 
 

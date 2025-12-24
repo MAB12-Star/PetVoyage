@@ -211,7 +211,8 @@ app.get('/dashboard', async (req, res) => {
 
   try {
     const user = await User.findById(req.user._id)
-      .populate('savedRegulations')
+       .populate('savedRegulations') 
+
       .populate('savedFlightRegulations')
       .populate('favoriteAirlines');
 

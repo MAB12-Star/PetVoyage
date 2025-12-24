@@ -7,6 +7,8 @@ const sharp = require('sharp');
 const Airline = require('../models/airline');
 const Story = require('../models/story');
 const { ensureAuth, ensureOwner } = require('../middleware');
+const { saveCurrentUrl } = require('../middleware');
+const { isLoggedIn } = require('../middleware');
 
 const router = express.Router();
 
@@ -57,12 +59,12 @@ const isObjectId = (s = '') => /^[0-9a-fA-F]{24}$/.test(String(s));
 
 const slugify = (s = '') =>
   s.toString()
-   .toLowerCase()
-   .trim()
-   .replace(/&/g, '-and-')
-   .replace(/[^a-z0-9]+/g, '-')
-   .replace(/^-+|-+$/g, '')
-   .slice(0, 80);
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, '-and-')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
 
 async function uniqueSlugFromTitle(title = '') {
   const base = slugify(title) || 'story';
@@ -94,16 +96,176 @@ async function findStoryByParam(req) {
   return Story.findOne(query);
 }
 
+// ✅ Auth middleware that matches your “banner” behavior for AJAX:
+// - if Accept: application/json (or xhr) => return 401 JSON with message (NO redirect)
+// - else => behave like normal (redirect to login)
+function ensureAuthJsonOrRedirect(req, res, next) {
+  if (req.user) return next();
+
+  const wantsJson =
+    (req.headers.accept && req.headers.accept.includes('application/json')) ||
+    req.xhr;
+
+  if (wantsJson) {
+    return res.status(401).json({ ok: false, message: 'You need to log in to do that' });
+  }
+
+  return res.redirect('/login');
+}
+
+/* =========================================================
+   ⚠️ IMPORTANT: Put specific/static routes BEFORE /:slugOrId
+   ========================================================= */
+
+/* =========================
+   SITEMAP (blog only)
+   ========================= */
+router.get('/sitemap.xml', async (req, res) => {
+  const origin = absoluteUrl(req, '/').replace(/\/$/, '');
+  const stories = await Story.find({}, 'slug updatedAt createdAt').sort({ updatedAt: -1 }).lean();
+
+  res.type('application/xml');
+  const urls = stories
+    .map(s => {
+      const loc = s.slug ? `${origin}/blog/${s.slug}` : `${origin}/blog/${s._id}`;
+      const lm = new Date(s.updatedAt || s.createdAt || Date.now()).toISOString();
+      return `
+    <url>
+      <loc>${loc}</loc>
+      <lastmod>${lm}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>`;
+    })
+    .join('');
+
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url><loc>${origin}/blog</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+    ${urls}
+  </urlset>`);
+});
+
+/* =========================
+   FAVORITES + COMMENTS (must be above /:slugOrId)
+   ========================= */
+
+// ✅ TOGGLE FAVORITE (AJAX or form POST)
+// - Logged out + AJAX => 401 JSON { ok:false, message:'You need to log in to do that' }  (NO redirect)
+// - Logged out + normal POST => redirects to /login
+// ✅ TOGGLE FAVORITE (same middleware pattern as your other favorites)
+router.post('/:id/favorite', saveCurrentUrl, isLoggedIn, async (req, res) => {
+  try {
+    const story = await findStoryByParam(req);
+    if (!story) {
+      const wantsJson =
+        (req.headers.accept && req.headers.accept.includes('application/json')) ||
+        req.xhr;
+      if (wantsJson) return res.status(404).json({ ok: false, message: 'Story not found' });
+      return res.status(404).send('Story not found');
+    }
+
+    const userId = String(req.user._id);
+    story.favoritedBy = story.favoritedBy || [];
+
+    const idx = story.favoritedBy.findIndex(u => String(u) === userId);
+
+    let favorited;
+    if (idx >= 0) {
+      story.favoritedBy.splice(idx, 1);
+      favorited = false;
+    } else {
+      story.favoritedBy.push(req.user._id);
+      favorited = true;
+    }
+
+    story.favoritesCount = story.favoritedBy.length;
+    await story.save();
+
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
+
+    if (wantsJson) {
+      return res.json({ ok: true, favorited, favoritesCount: story.favoritesCount });
+    }
+
+    // ✅ normal POST stays on same page
+    return res.redirect(req.get('referer') || '/blog');
+  } catch (e) {
+    console.error('[POST /blog/:id/favorite] err', e);
+    return res.status(500).json({ ok: false, message: 'Server error' });
+  }
+});
+
+
+// ✅ ADD COMMENT
+router.post('/:id/comments', ensureAuth, async (req, res) => {
+  try {
+    const story = await findStoryByParam(req);
+    if (!story) return res.status(404).send('Story not found');
+
+    const raw = (req.body.comment || '').trim();
+    if (!raw) return res.redirect(req.get('referer') || `/blog/${story.slug || story._id}`);
+
+    const clean = raw.slice(0, 2000);
+
+    if (!Array.isArray(story.comments)) story.comments = [];
+
+    story.comments.push({
+      user: req.user._id,
+      displayName: req.user.displayName || 'Anonymous',
+      body: clean
+    });
+
+    await story.save();
+    return res.redirect(`/blog/${story.slug || story._id}#comments`);
+  } catch (e) {
+    console.error('[POST /blog/:id/comments] err', e);
+    return res.status(500).send('Server error');
+  }
+});
+
+// ✅ DELETE COMMENT (comment author or story owner)
+router.post('/:id/comments/:commentId/delete', ensureAuth, async (req, res) => {
+  try {
+    const story = await findStoryByParam(req);
+    if (!story) return res.status(404).send('Story not found');
+
+    const comment = story.comments?.id?.(req.params.commentId);
+    if (!comment) return res.redirect(`/blog/${story.slug || story._id}`);
+
+    const isStoryOwner = String(story.author) === String(req.user._id);
+    const isCommentOwner = String(comment.user) === String(req.user._id);
+    if (!isStoryOwner && !isCommentOwner) return res.status(403).send('Forbidden');
+
+    comment.deleteOne();
+    await story.save();
+
+    return res.redirect(`/blog/${story.slug || story._id}#comments`);
+  } catch (e) {
+    console.error('[DELETE comment] err', e);
+    return res.status(500).send('Server error');
+  }
+});
+
 /* =========================
    BLOG INDEX (list)
    ========================= */
 router.get('/', async (req, res) => {
+  const userId = req.user?._id ? String(req.user._id) : null;
+
   const stories = await Story.find({})
     .populate('author', 'displayName email')
     .sort({ createdAt: -1 })
     .lean();
 
-  // Build a lookup from airline name -> slug (for linking on index if needed)
+  for (const s of stories) {
+    s.favoritesCount = s.favoritesCount ?? (s.favoritedBy?.length || 0);
+    s.commentsCount  = s.comments?.length || 0;
+    s.isFavorited    = userId ? (s.favoritedBy || []).some(u => String(u) === userId) : false;
+  }
+
   let airlineByName = {};
   try {
     const airlines = await Airline.find({}, 'name slug').lean();
@@ -130,7 +292,7 @@ router.get('/', async (req, res) => {
       'Stay updated with the latest tips and stories about traveling internationally with pets.',
     twitterImage: '/images/blog-banner.jpg',
     stories,
-    airlineByName,   // used by index EJS to link badges
+    airlineByName,
     user: req.user || null
   });
 });
@@ -144,7 +306,7 @@ router.get('/new', ensureAuth, async (req, res) => {
     res.render('regulations/blog_new', {
       user: req.user,
       story: {},
-      airlines, // critical for datalist
+      airlines,
       title: 'Share Your Pet Travel Story | PetVoyage Blog',
       metaDescription:
         'Post your own pet flight story with photos and tips to help other pet parents plan their trips.',
@@ -155,7 +317,7 @@ router.get('/new', ensureAuth, async (req, res) => {
     res.render('regulations/blog_new', {
       user: req.user,
       story: {},
-      airlines: [], // safe fallback
+      airlines: [],
       title: 'Share Your Pet Travel Story | PetVoyage Blog',
       metaDescription:
         'Post your own pet flight story with photos and tips to help other pet parents plan their trips.',
@@ -165,7 +327,193 @@ router.get('/new', ensureAuth, async (req, res) => {
 });
 
 /* =========================
-   SHOW: full story (slug or id)
+   CREATE STORY
+   ========================= */
+router.post('/new', ensureAuth, upload.array('photos', 6), async (req, res) => {
+  try {
+    const {
+      title,
+      body,
+      airline = '',
+      route = '',
+      routeFrom = '',
+      routeTo = '',
+      country = '',
+      summary = '',
+      petType = '',
+      petTypes = ''
+    } = req.body;
+
+    if (!title || !body) {
+      return res.status(400).send('Title and body are required.');
+    }
+
+    const slug = await uniqueSlugFromTitle(title);
+
+    const normalizedRoute = (routeFrom || routeTo)
+      ? `${routeFrom || ''}${routeFrom && routeTo ? ' → ' : ''}${routeTo || ''}`
+      : route;
+
+    const tags = (petTypes || '')
+      .split(',')
+      .map(s => s.trim().toLowerCase())
+      .filter(Boolean);
+
+    const photos = [];
+    const files = Array.isArray(req.files) ? req.files.slice(0, 6) : [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file || !file.buffer) continue;
+
+      const stamp = Date.now();
+      const safeBase = (file.originalname || 'photo')
+        .toLowerCase()
+        .replace(/\.[^.]+$/, '')
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-_]/g, '');
+      const baseNameNoExt = `${stamp}-${i}-${safeBase}`;
+
+      const out = await processImageBuffer(file.buffer, baseNameNoExt);
+      photos.push({
+        url: out.url,
+        thumbUrl: out.thumbUrl,
+        alt: title || 'Pet travel photo'
+      });
+    }
+
+    await Story.create({
+      title,
+      slug,
+      body,
+      airline,
+      route: normalizedRoute,
+      country,
+      summary,
+      petType,
+      petTypes: tags,
+      photos,
+      author: req.user._id
+    });
+
+    return res.redirect(`/blog/${slug}`);
+  } catch (e) {
+    console.error('[POST /blog/new] err', e);
+    return res.status(400).send('Could not create story');
+  }
+});
+
+/* =========================
+   EDIT STORY (form)
+   ========================= */
+router.get('/:id/edit', ensureAuth, ensureOwner(findStoryByParam), async (req, res, next) => {
+  try {
+    const story = req.storyDoc.toObject();
+
+    let airlines = [];
+    try {
+      airlines = await Airline.find({}, 'name slug').sort({ name: 1 }).lean();
+    } catch (e) {
+      console.warn('[blog edit] airlines fetch failed:', e.message);
+    }
+
+    res.render('regulations/blog_edit', {
+      user: req.user,
+      story,
+      airlines,
+      title: `Edit: ${story.title} | PetVoyage`,
+      metaDescription: 'Edit your pet travel story.',
+      ogUrl: absoluteUrl(req, `/blog/${story.slug || story._id}/edit`)
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/* =========================
+   UPDATE STORY
+   ========================= */
+router.post('/:id', ensureAuth, ensureOwner(findStoryByParam), upload.array('photos', 6), async (req, res) => {
+  try {
+    const {
+      title,
+      body,
+      airline = '',
+      route = '',
+      routeFrom = '',
+      routeTo = '',
+      country = '',
+      summary = '',
+      petType = '',
+      petTypes = ''
+    } = req.body;
+
+    const story = req.storyDoc;
+
+    if (!story.slug || story.slug.trim() === '') {
+      story.slug = await uniqueSlugFromTitle(title || story.title || 'story');
+    }
+
+    story.title   = title || story.title;
+    story.body    = body   || story.body;
+    story.airline = airline;
+    story.country = country;
+    story.summary = summary;
+    story.petType = petType;
+
+    const normalizedRoute = (routeFrom || routeTo)
+      ? `${routeFrom || ''}${routeFrom && routeTo ? ' → ' : ''}${routeTo || ''}`
+      : route;
+    story.route = normalizedRoute;
+
+    story.petTypes = (petTypes || '')
+      .split(',')
+      .map(s => s.trim().toLowerCase())
+      .filter(Boolean);
+
+    const files = Array.isArray(req.files) ? req.files : [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file || !file.buffer) continue;
+
+      const stamp = Date.now();
+      const safeBase = (file.originalname || 'photo')
+        .toLowerCase()
+        .replace(/\.[^.]+$/, '')
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-_]/g, '');
+      const baseNameNoExt = `${stamp}-${i}-${safeBase}`;
+
+      const out = await processImageBuffer(file.buffer, baseNameNoExt);
+      story.photos.push({
+        url: out.url,
+        thumbUrl: out.thumbUrl,
+        alt: story.title || 'Pet travel photo'
+      });
+    }
+
+    await story.save();
+    res.redirect(`/blog/${story.slug || story._id}`);
+  } catch (e) {
+    console.error('[POST /blog/:id] err', e);
+    res.status(400).send('Could not update story');
+  }
+});
+
+/* =========================
+   DELETE STORY
+   ========================= */
+router.post('/:id/delete', ensureAuth, ensureOwner(findStoryByParam), async (req, res) => {
+  try {
+    await req.storyDoc.deleteOne();
+    res.redirect('/blog');
+  } catch (e) {
+    console.error('[DELETE story] err', e);
+    res.status(400).send('Could not delete story');
+  }
+});
+
+/* =========================
+   SHOW: full story (slug or id)  (keep this near the bottom)
    ========================= */
 router.get('/:slugOrId', async (req, res) => {
   try {
@@ -174,9 +522,16 @@ router.get('/:slugOrId', async (req, res) => {
 
     const story = await Story.findOne(query)
       .populate('author', 'displayName email')
+      .populate('comments.user', 'displayName') // ✅ so show page can display names
       .lean();
 
     if (!story) return res.status(404).send('Story not found');
+
+    // ✅ compute per-user favorite info
+    const userId = req.user?._id ? String(req.user._id) : null;
+    story.favoritesCount = story.favoritesCount ?? (story.favoritedBy?.length || 0);
+    story.commentsCount  = story.comments?.length || 0;
+    story.isFavorited    = userId ? (story.favoritedBy || []).some(u => String(u) === userId) : false;
 
     // Resolve airline for linking
     let airlineDoc = null;
@@ -185,14 +540,12 @@ router.get('/:slugOrId', async (req, res) => {
         airlineDoc = await Airline.findOne({ slug: story.airlineSlug }, 'name slug').lean();
       }
       if (!airlineDoc && story.airline) {
-        // exact case-insensitive name match
         const esc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         airlineDoc = await Airline.findOne(
           { name: new RegExp(`^${esc(story.airline)}$`, 'i') },
           'name slug'
         ).lean();
       }
-      if (airlineDoc) console.log('[blog show] resolved airline:', airlineDoc);
     } catch (e) {
       console.warn('[blog show] airline lookup failed:', e.message);
     }
@@ -209,7 +562,7 @@ router.get('/:slugOrId', async (req, res) => {
 
     res.render('regulations/blog_show', {
       story,
-      airlineDoc,          // <-- used by EJS to link to /airlines/:slug
+      airlineDoc,
       user: req.user || null,
       title: `${story.title} | Pet Travel Story | PetVoyage`,
       metaDescription: metaDesc,
@@ -225,244 +578,6 @@ router.get('/:slugOrId', async (req, res) => {
     console.error('[GET /blog/:slugOrId] err', e);
     res.status(500).send('Server error');
   }
-});
-
-/* =========================
-   CREATE STORY
-   ========================= */
-router.post(
-  '/new',
-  ensureAuth,
-  upload.array('photos', 6),
-  async (req, res) => {
-    try {
-      const {
-        title,
-        body,                     // HTML from the editor
-        airline = '',
-        route = '',               // single-field route (optional)
-        routeFrom = '',           // split fields (optional)
-        routeTo = '',
-        country = '',
-        summary = '',
-        petType = '',
-        petTypes = ''             // comma-separated tags
-      } = req.body;
-
-      if (!title || !body) {
-        return res.status(400).send('Title and body are required.');
-      }
-
-      const slug = await uniqueSlugFromTitle(title);
-
-      // Build "SFO → CDMX" if split fields used
-      const normalizedRoute = (routeFrom || routeTo)
-        ? `${routeFrom || ''}${routeFrom && routeTo ? ' → ' : ''}${routeTo || ''}`
-        : route;
-
-      const tags = (petTypes || '')
-        .split(',')
-        .map(s => s.trim().toLowerCase())
-        .filter(Boolean);
-
-      // Images
-      const photos = [];
-      const files = Array.isArray(req.files) ? req.files.slice(0, 6) : [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (!file || !file.buffer) continue;
-
-        const stamp = Date.now();
-        const safeBase = (file.originalname || 'photo')
-          .toLowerCase()
-          .replace(/\.[^.]+$/, '')
-          .replace(/\s+/g, '-')
-          .replace(/[^a-z0-9\-_]/g, '');
-        const baseNameNoExt = `${stamp}-${i}-${safeBase}`;
-
-        const out = await processImageBuffer(file.buffer, baseNameNoExt);
-        photos.push({
-          url: out.url,
-          thumbUrl: out.thumbUrl,
-          alt: title || 'Pet travel photo'
-        });
-      }
-
-      await Story.create({
-        title,
-        slug,
-        body, // (consider sanitization if needed)
-        airline,
-        route: normalizedRoute,
-        country,
-        summary,
-        petType,
-        petTypes: tags,
-        photos,
-        author: req.user._id
-      });
-
-      return res.redirect(`/blog/${slug}`);
-    } catch (e) {
-      console.error('[POST /blog/new] err', e);
-      return res.status(400).send('Could not create story');
-    }
-  }
-);
-
-/* =========================
-   EDIT STORY (form)
-   ========================= */
-router.get(
-  '/:id/edit',
-  ensureAuth,
-  ensureOwner(findStoryByParam),
-  async (req, res, next) => {
-    try {
-      const story = req.storyDoc.toObject();
-
-      // minimal airline fields for datalist
-      let airlines = [];
-      try {
-        airlines = await Airline.find({}, 'name slug').sort({ name: 1 }).lean();
-      } catch (e) {
-        console.warn('[blog edit] airlines fetch failed:', e.message);
-      }
-
-      res.render('regulations/blog_edit', {
-        user: req.user,
-        story,
-        airlines, // datalist
-        title: `Edit: ${story.title} | PetVoyage`,
-        metaDescription: 'Edit your pet travel story.',
-        ogUrl: absoluteUrl(req, `/blog/${story.slug || story._id}/edit`)
-      });
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
-/* =========================
-   UPDATE STORY
-   ========================= */
-router.post(
-  '/:id',
-  ensureAuth,
-  ensureOwner(findStoryByParam),
-  upload.array('photos', 6),
-  async (req, res) => {
-    try {
-      const {
-        title,
-        body,
-        airline = '',
-        route = '',
-        routeFrom = '',
-        routeTo = '',
-        country = '',
-        summary = '',
-        petType = '',
-        petTypes = ''
-      } = req.body;
-
-      const story = req.storyDoc;
-
-      // Keep slug stable by default (better for SEO). If missing, generate one.
-      if (!story.slug || story.slug.trim() === '') {
-        story.slug = await uniqueSlugFromTitle(title || story.title || 'story');
-      }
-
-      // Update fields
-      story.title   = title || story.title;
-      story.body    = body   || story.body;
-      story.airline = airline;
-      story.country = country;
-      story.summary = summary;
-      story.petType = petType;
-
-      // Prefer split route fields if present
-      const normalizedRoute = (routeFrom || routeTo)
-        ? `${routeFrom || ''}${routeFrom && routeTo ? ' → ' : ''}${routeTo || ''}`
-        : route;
-      story.route = normalizedRoute;
-
-      story.petTypes = (petTypes || '')
-        .split(',')
-        .map(s => s.trim().toLowerCase())
-        .filter(Boolean);
-
-      // Append any new photos
-      const files = Array.isArray(req.files) ? req.files : [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const stamp = Date.now();
-        const safeBase = (file.originalname || 'photo')
-          .toLowerCase()
-          .replace(/\.[^.]+$/, '')
-          .replace(/\s+/g, '-')
-          .replace(/[^a-z0-9\-_]/g, '');
-        const baseNameNoExt = `${stamp}-${i}-${safeBase}`;
-        const out = await processImageBuffer(file.buffer, baseNameNoExt);
-        story.photos.push({
-          url: out.url,
-          thumbUrl: out.thumbUrl,
-          alt: story.title || 'Pet travel photo'
-        });
-      }
-
-      await story.save();
-      res.redirect(`/blog/${story.slug || story._id}`);
-    } catch (e) {
-      console.error('[POST /blog/:id] err', e);
-      res.status(400).send('Could not update story');
-    }
-  }
-);
-
-/* =========================
-   DELETE STORY
-   ========================= */
-router.post(
-  '/:id/delete',
-  ensureAuth,
-  ensureOwner(findStoryByParam),
-  async (req, res) => {
-    try {
-      await req.storyDoc.deleteOne();
-      res.redirect('/blog');
-    } catch (e) {
-      console.error('[DELETE story] err', e);
-      res.status(400).send('Could not delete story');
-    }
-  }
-);
-
-/* =========================
-   SITEMAP (blog only)
-   ========================= */
-router.get('/sitemap.xml', async (req, res) => {
-  const origin = absoluteUrl(req, '/').replace(/\/$/, '');
-  const stories = await Story.find({}, 'slug updatedAt createdAt').sort({ updatedAt: -1 }).lean();
-
-  res.type('application/xml');
-  const urls = stories.map(s => {
-    const loc = s.slug ? `${origin}/blog/${s.slug}` : `${origin}/blog/${s._id}`;
-    const lm  = new Date(s.updatedAt || s.createdAt || Date.now()).toISOString();
-    return `
-    <url>
-      <loc>${loc}</loc>
-      <lastmod>${lm}</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-    </url>`;
-  }).join('');
-
-  res.send(`<?xml version="1.0" encoding="UTF-8"?>
-  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url><loc>${origin}/blog</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
-    ${urls}
-  </urlset>`);
 });
 
 module.exports = router;

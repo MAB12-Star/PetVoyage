@@ -21,7 +21,7 @@
       <% if (user) { %>
         <a class="btn btn-primary" href="/blog/new" rel="nofollow">Write a story</a>
       <% } else { %>
-        <a class="btn btn-outline-primary" href="/login" rel="nofollow">Sign in to write a story</a>
+        <a class="btn btn-outline-primary" href="/auth/login" rel="nofollow">Sign in to write a story</a>
       <% } %>
     </div>
   </div>
@@ -183,18 +183,18 @@
 <% if (story.airline) { %>
   •
   <%
-    // Prefer resolved doc from the route, else fall back to a stored slug
-    const airlineHref =
-      (typeof airlineDoc !== 'undefined' && airlineDoc && airlineDoc.slug)
-        ? `/airlines/${airlineDoc.slug}`
-        : (story.airlineSlug ? `/airlines/${story.airlineSlug}` : '');
-  %>
+  const airlineKey = (story.airline || '').toLowerCase().trim();
+  const airlineSlug = (airlineByName && airlineByName[airlineKey]) ? airlineByName[airlineKey] : '';
+  const airlineHref = airlineSlug ? `/airlines/${airlineSlug}` : '';
+%>
+
 
   <% if (airlineHref) { %>
     <a href="<%= airlineHref %>"
        class="badge text-bg-light border text-decoration-none d-inline-block"
-       aria-label="View airline pet policy for <%= (airlineDoc && airlineDoc.name) || story.airline %>">
-       <i class="bi bi-airplane"></i> <%= (airlineDoc && airlineDoc.name) || story.airline %>
+       aria-label="View airline pet policy for <%= story.airline %>">
+<i class="bi bi-airplane"></i> <%= story.airline %>
+
     </a>
   <% } else { %>
     <span class="badge text-bg-light border d-inline-block">
@@ -223,17 +223,48 @@
             <%= excerpt %><% if (plain.length > excerpt.length) { %>…<% } %>
           </p>
 
-          <nav class="d-flex flex-wrap gap-2" aria-label="Post actions">
-            <a class="btn btn-outline-primary btn-sm" href="<%= url %>">Read full story</a>
+          <nav class="d-flex flex-wrap align-items-center gap-2" aria-label="Post actions">
+  <a class="btn btn-outline-primary btn-sm" href="<%= url %>">
+    Read full story
+  </a>
 
-            <% if (user && String(user._id) === String(story.author?._id || story.author)) { %>
-              <a class="btn btn-outline-secondary btn-sm" href="/blog/<%= slug %>/edit" rel="nofollow">Edit</a>
-              <form method="post" action="/blog/<%= slug %>/delete"
-                    onsubmit="return confirm('Delete this story?');" class="d-inline">
-                <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
-              </form>
-            <% } %>
-          </nav>
+  <!-- ✅ Favorite -->
+  <form class="d-inline pv-fav-form"
+        method="post"
+        action="/blog/<%= slug %>/favorite"
+        data-story-id="<%= slug %>">
+    <button type="submit"
+            class="btn btn-outline-danger btn-sm pv-fav-btn"
+            aria-pressed="<%= story.isFavorited ? 'true' : 'false' %>"
+            aria-label="<%= story.isFavorited ? 'Unfavorite' : 'Favorite' %> this story">
+      <i class="bi <%= story.isFavorited ? 'bi-heart-fill' : 'bi-heart' %>"></i>
+      <span class="pv-fav-count"><%= story.favoritesCount || 0 %></span>
+    </button>
+  </form>
+
+  <!-- ✅ Comments link -->
+  <a class="btn btn-outline-secondary btn-sm" href="<%= url %>#comments" aria-label="View comments">
+    <i class="bi bi-chat-dots"></i>
+    <%= story.commentsCount || 0 %>
+  </a>
+
+  <!-- ✅ Share -->
+  <button type="button"
+          class="btn btn-outline-secondary btn-sm pv-share-btn"
+          data-share-url="<%= 'https://www.petvoyage.ai' + url %>"
+          data-share-title="<%= (story.title || '').replace(/"/g,'&quot;') %>">
+    <i class="bi bi-share"></i> Share
+  </button>
+
+  <% if (user && String(user._id) === String(story.author?._id || story.author)) { %>
+    <a class="btn btn-outline-secondary btn-sm" href="/blog/<%= slug %>/edit" rel="nofollow">Edit</a>
+    <form method="post" action="/blog/<%= slug %>/delete"
+          onsubmit="return confirm('Delete this story?');" class="d-inline">
+      <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+    </form>
+  <% } %>
+</nav>
+
 
           <meta itemprop="mainEntityOfPage" content="<%= 'https://www.petvoyage.ai' + url %>">
           <% if (story.summary) { %><meta itemprop="abstract" content="<%= story.summary %>"><% } %>
@@ -243,52 +274,124 @@
     </div>
   </div>
 
-  <!-- JSON-LD: Blog + ItemList -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "PetVoyage Community Blog",
-    "description": "Community stories about flying with pets.",
-    "url": "https://www.petvoyage.ai/blog",
-    "blogPost": [
-      <% (stories || []).forEach(function(s, i){
-           const slug = s.slug || s._id;
-           const url = 'https://www.petvoyage.ai/blog/' + slug;
-           const plain = (s.body || '').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
-           const excerpt = plain.slice(0, 240);
-           const img = (s.photos && s.photos[0] && ('https://www.petvoyage.ai' + s.photos[0].url)) || '';
-           const authorName = (s.author && s.author.displayName) ? s.author.displayName : 'Anonymous';
-      %><%= i ? ',' : '' %>{
-        "@type": "BlogPosting",
-        "headline": <%- JSON.stringify(s.title || '') %>,
-        "datePublished": "<%= new Date(s.createdAt).toISOString() %>",
-        "url": "<%= url %>",
-        "author": { "@type": "Person", "name": <%- JSON.stringify(authorName) %> },
-        "image": <%- JSON.stringify(img) %>,
-        "description": <%- JSON.stringify(excerpt) %>
-      }<% }); %>
-    ]
-  }
-  </script>
+  <!-- JSON-LD: Blog -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "PetVoyage Community Blog",
+  "description": "Community stories about flying with pets.",
+  "url": "https://www.petvoyage.ai/blog",
+  "blogPost": [
+    <% (stories || []).forEach(function(s, i){
+         const slug = s.slug || s._id;
+         const url = 'https://www.petvoyage.ai/blog/' + slug;
+         const plain = (s.body || '').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+         const excerpt = plain.slice(0, 240);
+         const img = (s.photos && s.photos[0] && ('https://www.petvoyage.ai' + s.photos[0].url)) || '';
+         const authorName = (s.author && s.author.displayName) ? s.author.displayName : 'Anonymous';
+    %><%= i ? ',' : '' %>{
+      "@type": "BlogPosting",
+      "headline": <%- JSON.stringify(s.title || '') %>,
+      "datePublished": "<%= new Date(s.createdAt).toISOString() %>",
+      "url": "<%= url %>",
+      "author": { "@type": "Person", "name": <%- JSON.stringify(authorName) %> },
+      "image": <%- JSON.stringify(img) %>,
+      "description": <%- JSON.stringify(excerpt) %>
+    }<% }); %>
+  ]
+}
+</script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Pet Travel Stories",
-    "itemListElement": [
-      <% (stories || []).forEach(function(s, i){
-        const slug = s.slug || s._id;
-        const url  = 'https://www.petvoyage.ai/blog/' + slug;
-      %><%= i ? ',' : '' %>{
-        "@type": "ListItem",
-        "position": <%= i + 1 %>,
-        "url": "<%= url %>"
-      }<% }); %>
-    ]
-  }
-  </script>
+<!-- JSON-LD: ItemList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Pet Travel Stories",
+  "itemListElement": [
+    <% (stories || []).forEach(function(s, i){
+      const slug = s.slug || s._id;
+      const url  = 'https://www.petvoyage.ai/blog/' + slug;
+    %><%= i ? ',' : '' %>{
+      "@type": "ListItem",
+      "position": <%= i + 1 %>,
+      "url": "<%= url %>"
+    }<% }); %>
+  ]
+}
+</script>
+
+<!-- ✅ Favorites + Share (normal JS, NOT inside JSON-LD) -->
+<script>
+(() => {
+  // ✅ Favorite toggle (AJAX). Falls back to normal POST if fetch fails.
+  document.querySelectorAll('.pv-fav-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const btn = form.querySelector('.pv-fav-btn');
+      const countEl = form.querySelector('.pv-fav-count');
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          credentials: 'same-origin'
+        });
+
+        const ct = res.headers.get('content-type') || '';
+        // If not logged in, you’ll likely get HTML (redirect) not JSON
+        if (!ct.includes('application/json')) {
+          window.location.href = '/auth/login';
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Favorite failed');
+
+        const isFav = !!data.favorited;
+        btn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+        btn.setAttribute('aria-label', (isFav ? 'Unfavorite' : 'Favorite') + ' this story');
+
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('bi-heart', 'bi-heart-fill');
+          icon.classList.add(isFav ? 'bi-heart-fill' : 'bi-heart');
+        }
+
+        if (countEl) countEl.textContent = data.favoritesCount ?? 0;
+      } catch (err) {
+        form.submit(); // fallback
+      }
+    });
+  });
+
+  // ✅ Share
+  document.querySelectorAll('.pv-share-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const url = btn.getAttribute('data-share-url') || window.location.href;
+      const title = btn.getAttribute('data-share-title') || document.title;
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, url });
+          return;
+        }
+      } catch (_) {}
+
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.innerHTML = '<i class="bi bi-check2"></i> Copied';
+        setTimeout(() => { btn.innerHTML = '<i class="bi bi-share"></i> Share'; }, 1200);
+      } catch (_) {
+        window.prompt('Copy this link:', url);
+      }
+    });
+  });
+})();
+</script>
+
 </main>
 
 <script>
@@ -393,10 +496,10 @@
       const val = a.getAttribute('data-airline') || '';
       if ($airline) $airline.value = val;
       applyFilters();
-      // Smooth scroll to list
       document.getElementById('pv-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
   document.querySelectorAll('.pv-link-country').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -425,3 +528,4 @@
   applyFilters();
 })();
 </script>
+

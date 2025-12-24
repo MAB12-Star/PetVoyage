@@ -91,6 +91,18 @@
     <hr class="w-25 mx-auto opacity-75">
   <% } %>
 
+  <!-- Save Country Button (uses existing /favorites/saveToProfile route) -->
+<div class="text-center mt-3 mb-2">
+  <form method="POST" action="/favorites/saveToProfile" class="d-inline">
+  <input type="hidden" name="regulationId" value="<%= regulationId %>">
+  <button type="submit" class="btn btn-outline-danger fw-semibold">
+    <i class="fas fa-heart me-1"></i> Save
+  </button>
+</form>
+
+</div>
+
+
     <!-- Pet Types Label -->
     <p class="text-muted fw-semibold mb-2">Pet Types</p>
 

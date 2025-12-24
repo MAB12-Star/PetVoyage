@@ -3,8 +3,19 @@ const express = require('express');
 const router = express.Router();
 const CountryRegulation = require("../models/countryPetRegulationList");
 
+/* ---------------- Helpers ---------------- */
+function escapeRegex(str = '') {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function slugKey(s) {
+  return String(s || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
-
+/* ---------------- LIST PAGE ---------------- */
 router.get('/getCountryRegulationList', async (req, res) => {
   try {
     const countries = await CountryRegulation.find().distinct('destinationCountry');
@@ -29,34 +40,38 @@ router.get('/getCountryRegulationList', async (req, res) => {
   }
 });
 
-  
+/* ---------------- SHOW COUNTRY ---------------- */
 router.get('/country/:country', async (req, res) => {
   try {
-    const country = req.params.country;
+    // ✅ decode + trim to avoid mismatch from URL encoding
+    const rawParam = req.params.country || '';
+    const countryParam = decodeURIComponent(rawParam).trim();
+
     const selectedPetTypeRaw = req.query.petType || '';
 
-    const regulations = await CountryRegulation.findOne({ destinationCountry: country }).lean();
-    if (!regulations) return res.status(404).send('Country regulations not found.');
+    // ✅ case-insensitive exact match
+    const regulations = await CountryRegulation.findOne({
+      destinationCountry: new RegExp(`^${escapeRegex(countryParam)}$`, 'i')
+    }).lean();
 
-    // --- helpers ---
-    const slugKey = s => String(s || '')
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    if (!regulations) {
+      console.error("[ERROR] No regulations found for:", countryParam);
+      return res.status(404).send('Country regulations not found.');
+    }
 
     // Strip any transient keys (your existing cleanup)
-    if (typeof regulations.regulationsByPetType === 'object') {
+    if (typeof regulations.regulationsByPetType === 'object' && regulations.regulationsByPetType) {
       regulations.regulationsByPetType = Object.fromEntries(
         Object.entries(regulations.regulationsByPetType).filter(([key]) => !key.startsWith('$_'))
       );
     }
 
-    // Build a slug->originalKey map so we can select by pretty names or slugs
     const petEntries = Object.entries(regulations.regulationsByPetType || {});
     if (petEntries.length === 0) {
       return res.status(404).send('No pet types available for this country.');
     }
+
+    // Build a slug->originalKey map
     const petSlugToKey = {};
     petEntries.forEach(([k]) => { petSlugToKey[slugKey(k)] = k; });
 
@@ -65,18 +80,18 @@ router.get('/country/:country', async (req, res) => {
     const petKey = petSlugToKey[requestedSlug] || petEntries[0][0];
 
     // Per-pet details for your cards
-    const details = regulations.regulationsByPetType[petKey] || {};
+    const details = (regulations.regulationsByPetType && regulations.regulationsByPetType[petKey]) || {};
 
     // Filter origin requirements by appliesTo (match on slug)
     const originReqs = [];
     const allOrigin = regulations.originRequirements || {};
     for (const [key, val] of Object.entries(allOrigin)) {
-      const list = Array.isArray(val.appliesTo) ? val.appliesTo.map(slugKey) : [];
+      const list = Array.isArray(val?.appliesTo) ? val.appliesTo.map(slugKey) : [];
       const applies = list.length === 0 || list.includes(slugKey(petKey));
       if (applies) {
         originReqs.push({
           key,
-          details: val.details || '',
+          details: val?.details || '',
           appliesTo: list
         });
       }
@@ -87,11 +102,15 @@ router.get('/country/:country', async (req, res) => {
 
     const seoData = {
       regulations,
+
+      // ✅ IMPORTANT: send the Mongo _id so your Save button can POST it
+      regulationId: regulations._id,
+
       // for UI controls (tabs/dropdowns)
       petTypes: petEntries.map(([k]) => ({ key: k, slug: slugKey(k) })),
       selectedPetType: petKey,
 
-      // NEW: what your EJS cards need
+      // what your EJS cards need
       details,
       originReqs,
 
@@ -110,7 +129,8 @@ router.get('/country/:country', async (req, res) => {
       country: safeCountry,
       selectedPetType: petKey,
       petTypes: seoData.petTypes.map(p => p.key),
-      originReqsCount: originReqs.length
+      originReqsCount: originReqs.length,
+      regulationId: String(regulations._id)
     });
 
     res.render('regulations/showCountry', seoData);
@@ -119,9 +139,5 @@ router.get('/country/:country', async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
-
-
-  
 
 module.exports = router;

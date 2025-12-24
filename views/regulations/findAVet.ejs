@@ -1,212 +1,503 @@
 <% layout('layouts/boilerplate') %>
+
 <!-- Hero Section & Navigation -->
 <div class="bg-light py-2 text-center border-bottom">
-    <div class="bg-light py-lg-2 text-center border-bottom mt-1">
-        <img
-          src="/images/PetVoyageLogo.png"
-          class="img-fluid rounded-top d-block mx-auto"
-          alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-          width="200" height="200"
-        />
+  <div class="bg-light py-lg-2 text-center border-bottom mt-1">
+    <img
+      src="/images/PetVoyageLogo.png"
+      class="img-fluid rounded-top d-block mx-auto"
+      alt="PetVoyage Logo - Pet Travel Regulations and Policies"
+      width="200" height="200"
+      loading="eager" decoding="async"
+    />
     <h1 class="fw-bold display-5">Find A Vet Near You</h1>
     <p class="fs-5 text-muted">Prepare your friend for travel, make a vet appointment.</p>
 
-  <!-- Navigation Strip -->
-<div class="mt-4">
-    <%- include('../partials/navigation') %>
+    <!-- Navigation Strip -->
+    <div class="mt-4">
+      <%- include('../partials/navigation') %>
+    </div>
   </div>
 </div>
-<div class="container mt-5">
-<div class="card bg-white shadow-lg mb-3 border  ">
-  
-  <!-- Ad Banner -->         
-  <div class="text-center my-4">
-    <a href="https://www.pntrs.com/t/4-508466-373432-323316" 
-       rel="sponsored" 
-       style="display:block; margin:0 auto; max-width:100%; width:468px;">
-      <img src="//www.pntrs.com/b/4-508466-373432-323316" 
-            
-           style="max-width:100%; height:auto;" 
-           title="Logo 468x120" 
-           alt="Logo 468x120">
-    </a>
-  </div>
 
-        <div class="card-body">
-    <div class="row">
-        <h2 class="text-center text-primary-emphasis mb-3 mt-1"><strong>Find a Vet with Pet Travel Experience</strong></h2>
+<div class="container mt-5">
+  <div class="card bg-white shadow-lg mb-3 border">
+
+    <!-- Ad Banner -->
+    <div class="text-center my-4">
+      <a href="https://www.pntrs.com/t/4-508466-373432-323316"
+         rel="sponsored"
+         style="display:block; margin:0 auto; max-width:100%; width:468px;">
+        <img src="//www.pntrs.com/b/4-508466-373432-323316"
+             style="max-width:100%; height:auto;"
+             title="Logo 468x120"
+             alt="Logo 468x120">
+      </a>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <h2 class="text-center text-primary-emphasis mb-3 mt-1">
+          <strong>Find a Vet with Pet Travel Experience</strong>
+        </h2>
+
         <!-- Map on the left -->
         <div class="col-md-6">
-            <div id="vetMap" class="border rounded" style="height: 500px; width: 100%;"></div>
+          <div id="vetMap" class="border rounded" style="height: 500px; width: 100%;"></div>
+
+          <div class="small text-muted mt-2">
+            <span class="me-2"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d93025;"></span> Clinic</span>
+            <span class="me-2"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1a73e8;"></span> Selected</span>
+          </div>
         </div>
-        
+
         <!-- Search input and clinic details on the right -->
         <div class="col-md-6">
-            <div class="card shadow-lg p-4 border-secondary rounded">
-              
-                <p class="text-center">
-                    Enter your zip code to find veterinary clinics near you that can help with pet travel.
-                </p>
-                <form id="vetSearchForm" class="validated-form">
-                    <!-- Zip code input with a button -->
-                    <div class="input-group mb-3">
-                        <input type="text" id="zipCode" class="form-control" placeholder="Enter zip code" required>
-                        <button id="searchButton" class="btn btn-outline-secondary" type="button">
-                            <i class="bi bi-geo-alt"></i> Search
-                        </button>
-                    </div>
-                </form>
-                
-                <!-- Scrollable area for clinic details -->
-                <div class="mt-4">
-                    <h5>Nearby Clinics:</h5>
-                    <div id="clinicDetails" class="overflow-auto border rounded p-3" style="height: 300px;">
-                        <!-- Cards will be dynamically added here -->
-                        <p class="text-center text-muted">No clinics found. Enter a zip code to search.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-   let vetMap;
-const clinicDetailsContainer = document.getElementById('clinicDetails');
-const zipCodeInput = document.getElementById('zipCode');
-const searchButton = document.getElementById('searchButton');
+          <div class="card shadow-lg p-4 border-secondary rounded">
+            <p class="text-center">
+              Enter your zip code and choose what you need (international health certificate, domestic certificate, vaccinations).
+            </p>
 
-// Initialize the map
-function initVetMap(lat, lng) {
-    vetMap = new google.maps.Map(document.getElementById('vetMap'), {
-        center: { lat: lat, lng: lng },
-        zoom: 12
+            <form id="vetSearchForm" class="validated-form" onsubmit="return false;">
+              <!-- Zip code input with a button -->
+              <div class="input-group mb-3">
+                <input type="text" id="zipCode" class="form-control" placeholder="Enter zip code" required>
+                <button id="searchButton" class="btn btn-outline-secondary" type="button">
+                  <i class="bi bi-geo-alt"></i> Search
+                </button>
+              </div>
+
+              <!-- NEW: Service filters -->
+              <div class="mb-3">
+                <label class="form-label">What do you need?</label>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="svcInternational" checked>
+                  <label class="form-check-label" for="svcInternational">
+                    International health certificate (USDA / travel certificate)
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="svcDomestic" checked>
+                  <label class="form-check-label" for="svcDomestic">
+                    Domestic health certificate
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="svcVaccinations" checked>
+                  <label class="form-check-label" for="svcVaccinations">
+                    Vaccinations (rabies, core vaccines)
+                  </label>
+                </div>
+
+                <div class="form-text">
+                  These filters change the Google Places search query (best-effort; clinics may still require calling to confirm).
+                </div>
+              </div>
+
+              <!-- Optional: radius selector -->
+              <div class="mb-2">
+                <label class="form-label" for="radiusKm">Search radius</label>
+                <select class="form-select" id="radiusKm">
+                  <option value="5">5 km</option>
+                  <option value="10" selected>10 km</option>
+                  <option value="20">20 km</option>
+                  <option value="30">30 km</option>
+                </select>
+              </div>
+            </form>
+
+            <!-- Scrollable area for clinic details -->
+            <div class="mt-4">
+              <h5 class="d-flex justify-content-between align-items-center">
+                <span>Nearby Clinics:</span>
+                <span class="small text-muted" id="pv-count">0 results</span>
+              </h5>
+
+              <div id="clinicDetails" class="overflow-auto border rounded p-3" style="height: 300px;">
+                <p class="text-center text-muted">No clinics found. Enter a zip code to search.</p>
+              </div>
+
+              <div class="small text-muted mt-2">
+                Tip: Even if a clinic appears here, always confirm they can issue the specific certificate you need.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /row -->
+    </div><!-- /card-body -->
+  </div><!-- /card -->
+</div><!-- /container -->
+
+<script>
+  let vetMap;
+
+  const clinicDetailsContainer = document.getElementById('clinicDetails');
+  const zipCodeInput = document.getElementById('zipCode');
+  const searchButton = document.getElementById('searchButton');
+
+  const svcInternational = document.getElementById('svcInternational');
+  const svcDomestic      = document.getElementById('svcDomestic');
+  const svcVaccinations  = document.getElementById('svcVaccinations');
+  const radiusKmEl       = document.getElementById('radiusKm');
+  const countEl          = document.getElementById('pv-count');
+
+  // Markers + selection state
+  let markers = [];
+  let markerByPlaceId = new Map();
+  let selectedPlaceId = null;
+
+  // Save clinic data by place_id so we can sort/filter/highlight
+  let placesCache = new Map();
+
+  function kmToMeters(km) {
+    const n = Number(km);
+    return Number.isFinite(n) ? Math.round(n * 1000) : 10000;
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // Build a smarter query based on selected services
+  function buildVetQuery() {
+    const wantsIntl = !!svcInternational?.checked;
+    const wantsDom  = !!svcDomestic?.checked;
+    const wantsVax  = !!svcVaccinations?.checked;
+
+    // If nothing selected, default to general veterinary care
+    if (!wantsIntl && !wantsDom && !wantsVax) return 'veterinary clinic';
+
+    // Keyword hints for Places textSearch
+    const parts = ['veterinary clinic'];
+
+    // Intl: health certificate, travel certificate, USDA, international travel, export, APHIS
+    if (wantsIntl) parts.push('health certificate', 'travel certificate', 'international', 'USDA', 'APHIS');
+
+    // Domestic: health certificate, CVI, certificate of veterinary inspection
+    if (wantsDom) parts.push('health certificate', 'CVI', 'certificate of veterinary inspection');
+
+    // Vaccines
+    if (wantsVax) parts.push('vaccinations', 'rabies');
+
+    const uniq = Array.from(new Set(parts.map(p => String(p).trim()).filter(Boolean)));
+    return uniq.join(' ');
+  }
+
+  function clearMarkers() {
+    markers.forEach(m => m.setMap(null));
+    markers = [];
+    markerByPlaceId.clear();
+    selectedPlaceId = null;
+  }
+
+  function redIcon() {
+    // Strong, clear red dot
+    return {
+      url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+      scaledSize: new google.maps.Size(40, 40)
+    };
+  }
+
+  function blueIcon() {
+    return {
+      url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+      scaledSize: new google.maps.Size(42, 42)
+    };
+  }
+
+  function setSelected(placeId) {
+    selectedPlaceId = placeId;
+
+    // Reset all to red, selected to blue
+    markerByPlaceId.forEach((marker, pid) => {
+      marker.setIcon(pid === selectedPlaceId ? blueIcon() : redIcon());
+      marker.setZIndex(pid === selectedPlaceId ? 999 : 1);
     });
 
+    // Highlight the card
+    document.querySelectorAll('.pv-clinic-card').forEach(el => {
+      const pid = el.getAttribute('data-place-id');
+      if (!pid) return;
+      el.classList.toggle('border-primary', pid === selectedPlaceId);
+      el.classList.toggle('shadow', pid === selectedPlaceId);
+    });
+  }
+
+  function initVetMap(lat, lng) {
+    vetMap = new google.maps.Map(document.getElementById('vetMap'), {
+      center: { lat, lng },
+      zoom: 12
+    });
+
+    // Initial search
     fetchNearbyVetClinics(lat, lng);
-}
+  }
 
-// Fetch nearby veterinary clinics using Text Search
-function fetchNearbyVetClinics(lat, lng) {
-    const service = new google.maps.places.PlacesService(vetMap);
-    const request = {
-        query: 'veterinary_care',
-        location: new google.maps.LatLng(lat, lng),
-        radius: 30000 // 30 km search radius
-    };
-
-    // Clear existing clinic list
+  function renderCardsInDistanceOrder(results) {
+    // results: array of { placeId, name, address, phone, website, lat, lng, distanceMeters }
     clinicDetailsContainer.innerHTML = '';
 
-    service.textSearch(request, function (results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            results.forEach(function (place) {
-                console.log(`[DEBUG] Found Clinic: ${place.name} - Fetching details...`);
-                getClinicDetails(place.place_id); // Get full details
-            });
-        } else {
-            console.error("[ERROR] No clinics found or API request failed:", status);
-            clinicDetailsContainer.innerHTML = '<p class="text-center text-muted">No clinics found in this area.</p>';
-        }
-    });
-}
+    if (!results.length) {
+      clinicDetailsContainer.innerHTML =
+        '<p class="text-center text-muted">No clinics found in this area. Try a different zip code or adjust filters.</p>';
+      if (countEl) countEl.textContent = '0 results';
+      return;
+    }
 
-// Function to fetch clinic details (phone number, website, address)
-function getClinicDetails(placeId) {
+    if (countEl) countEl.textContent = `${results.length} result${results.length === 1 ? '' : 's'}`;
+
+    results.forEach((p, idx) => {
+      const miles = (p.distanceMeters / 1609.344);
+      const distLabel = Number.isFinite(miles) ? `${miles.toFixed(1)} mi` : '';
+
+      const safeName = escapeHtml(p.name || 'Clinic');
+      const safeAddr = escapeHtml(p.address || 'Address not available');
+
+      const websiteHtml = p.website
+        ? `<a href="${escapeHtml(p.website)}" target="_blank" rel="noopener">${escapeHtml(p.website)}</a>`
+        : 'No website available';
+
+      const phoneHtml = escapeHtml(p.phone || 'Phone not available');
+
+      const card = document.createElement('div');
+      card.className = 'card mb-3 p-2 pv-clinic-card';
+      card.setAttribute('data-place-id', p.placeId);
+
+      card.innerHTML = `
+        <div class="d-flex justify-content-between align-items-start">
+          <h5 class="card-title mb-1">${safeName}</h5>
+          <span class="badge text-bg-light border">${distLabel || '#' + (idx + 1)}</span>
+        </div>
+
+        <p class="card-text mb-1"><strong>Address:</strong> ${safeAddr}</p>
+        <p class="card-text mb-1"><strong>Phone:</strong> ${phoneHtml}</p>
+        <p class="card-text mb-2"><strong>Website:</strong> ${websiteHtml}</p>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <button type="button" class="btn btn-outline-primary btn-sm pv-select-btn">
+            <i class="bi bi-geo"></i> Show on map
+          </button>
+          <a class="btn btn-outline-secondary btn-sm"
+             href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((p.name || '') + ' ' + (p.address || ''))}"
+             target="_blank" rel="noopener">
+            <i class="bi bi-box-arrow-up-right"></i> Open in Google Maps
+          </a>
+        </div>
+      `;
+
+      // Card click -> highlight pin + pan
+      card.querySelector('.pv-select-btn')?.addEventListener('click', () => {
+        const marker = markerByPlaceId.get(p.placeId);
+        if (marker) {
+          vetMap.panTo(marker.getPosition());
+          vetMap.setZoom(Math.max(vetMap.getZoom(), 13));
+        }
+        setSelected(p.placeId);
+      });
+
+      // Also click anywhere on the card
+      card.addEventListener('click', (e) => {
+        // prevent triggering when clicking link
+        if (e.target && (e.target.closest('a'))) return;
+        const marker = markerByPlaceId.get(p.placeId);
+        if (marker) {
+          vetMap.panTo(marker.getPosition());
+          vetMap.setZoom(Math.max(vetMap.getZoom(), 13));
+        }
+        setSelected(p.placeId);
+      });
+
+      clinicDetailsContainer.appendChild(card);
+    });
+  }
+
+  // Fetch nearby veterinary clinics using Text Search
+  function fetchNearbyVetClinics(lat, lng) {
+    const service = new google.maps.places.PlacesService(vetMap);
+    const query = buildVetQuery();
+    const radiusMeters = kmToMeters(radiusKmEl?.value || 10);
+
+    const request = {
+      query,
+      location: new google.maps.LatLng(lat, lng),
+      radius: radiusMeters
+    };
+
+    // Reset UI + state
+    clearMarkers();
+    placesCache.clear();
+
+    clinicDetailsContainer.innerHTML =
+      `<p class="text-center text-muted">Searching for: <strong>${escapeHtml(query)}</strong> within <strong>${Math.round(radiusMeters/1000)} km</strong> ...</p>`;
+    if (countEl) countEl.textContent = 'Searching...';
+
+    service.textSearch(request, function (results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK && Array.isArray(results) && results.length) {
+        // Create markers immediately; details later
+        results.forEach(place => {
+          if (!place?.place_id || !place?.geometry?.location) return;
+
+          // Red pin
+          const marker = new google.maps.Marker({
+            map: vetMap,
+            position: place.geometry.location,
+            title: place.name || 'Clinic',
+            icon: redIcon()
+          });
+
+          markers.push(marker);
+          markerByPlaceId.set(place.place_id, marker);
+
+          // Marker click -> select + scroll to card (after cards render)
+          marker.addListener('click', () => {
+            setSelected(place.place_id);
+            document.querySelector(`.pv-clinic-card[data-place-id="${place.place_id}"]`)?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          });
+
+          // Fetch full details for cards + distance ordering
+          getClinicDetails(place.place_id, { centerLat: lat, centerLng: lng });
+        });
+      } else {
+        console.error('[ERROR] Places textSearch failed:', status);
+        clinicDetailsContainer.innerHTML =
+          '<p class="text-center text-muted">No clinics found in this area. Try a different zip code or adjust filters.</p>';
+        if (countEl) countEl.textContent = '0 results';
+      }
+    });
+  }
+
+  function haversineMeters(lat1, lon1, lat2, lon2) {
+    const toRad = (v) => (v * Math.PI) / 180;
+    const R = 6371000;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  // Fetch clinic details (phone number, website, address)
+  function getClinicDetails(placeId, ctx) {
     const service = new google.maps.places.PlacesService(vetMap);
     const request = {
-        placeId: placeId,
-        fields: ["name", "formatted_address", "formatted_phone_number", "international_phone_number", "website", "geometry"]
+      placeId,
+      fields: ["place_id","name","formatted_address","formatted_phone_number","international_phone_number","website","geometry"]
     };
 
     service.getDetails(request, function (place, status) {
-        console.log(`[DEBUG] Fetching details for Place ID: ${placeId}`);
+      if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+        const phoneNumber = place.formatted_phone_number || place.international_phone_number || "Phone not available";
+        const website = place.website || "";
 
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            console.log(`[DEBUG] Full Details for ${place.name}:`, place);
+        const pLat = place.geometry?.location?.lat?.();
+        const pLng = place.geometry?.location?.lng?.();
 
-            const phoneNumber = place.formatted_phone_number || place.international_phone_number || "Phone not available";
-            const website = place.website ? `<a href="${place.website}" target="_blank">${place.website}</a>` : "No website available";
+        const distanceMeters = (Number.isFinite(pLat) && Number.isFinite(pLng) && ctx)
+          ? haversineMeters(ctx.centerLat, ctx.centerLng, pLat, pLng)
+          : Number.POSITIVE_INFINITY;
 
-            console.log(`[DEBUG] Clinic: ${place.name}, Phone: ${phoneNumber}, Website: ${website}`);
+        placesCache.set(placeId, {
+          placeId,
+          name: place.name || 'Clinic',
+          address: place.formatted_address || '',
+          phone: phoneNumber,
+          website,
+          lat: pLat,
+          lng: pLng,
+          distanceMeters
+        });
 
-            // Add clinic details to UI
-            addClinicCard(place, phoneNumber, website);
-        } else {
-            console.error(`[ERROR] Failed to get details for Place ID: ${placeId} - Status: ${status}`);
+        // Re-render cards in distance order as details arrive
+        const sorted = Array.from(placesCache.values()).sort((a, b) => a.distanceMeters - b.distanceMeters);
+        renderCardsInDistanceOrder(sorted);
+
+        // If nothing selected yet, select the closest one
+        if (!selectedPlaceId && sorted.length) {
+          setSelected(sorted[0].placeId);
         }
+      } else {
+        console.error(`[ERROR] Failed to get details for Place ID: ${placeId} - Status: ${status}`);
+      }
     });
-}
+  }
 
-// Function to create and display clinic cards
-function addClinicCard(place, phone, website) {
-    const card = document.createElement('div');
-    card.className = 'card mb-3 p-2';
-
-    const address = place.formatted_address ? place.formatted_address : "Address not available";
-
-    card.innerHTML = `
-        <h5 class="card-title">${place.name}</h5>
-        <p class="card-text"><strong>Address:</strong> ${address}</p>
-        <p class="card-text"><strong>Phone:</strong> ${phone}</p>
-        <p class="card-text"><strong>Website:</strong> ${website}</p>
-    `;
-
-    clinicDetailsContainer.appendChild(card);
-}
-
-// Search clinics by zip code
-function searchByZipCode() {
+  // Search clinics by zip code
+  function searchByZipCode() {
     const zipCode = zipCodeInput.value.trim();
     if (!zipCode) {
-        alert('Please enter a zip code.');
-        return;
+      alert('Please enter a zip code.');
+      return;
     }
 
     const geocoder = new google.maps.Geocoder();
-    console.log('[DEBUG] Entered Zip Code:', zipCode);
 
     geocoder.geocode({ address: zipCode }, function (results, status) {
-        console.log('[DEBUG] Geocode Status:', status);
-        console.log('[DEBUG] Geocode Results:', results);
+      if (status === 'OK' && results.length > 0) {
+        const location = results[0].geometry.location;
+        const lat = location.lat();
+        const lng = location.lng();
 
-        if (status === 'OK' && results.length > 0) {
-            const location = results[0].geometry.location;
-            const lat = location.lat();
-            const lng = location.lng();
-
-            // Center map and fetch clinics
-            vetMap.setCenter({ lat, lng });
-            fetchNearbyVetClinics(lat, lng);
-        } else {
-            alert('Unable to find location. Please enter a valid zip code.');
-        }
+        vetMap.setCenter({ lat, lng });
+        fetchNearbyVetClinics(lat, lng);
+      } else {
+        alert('Unable to find location. Please enter a valid zip code.');
+      }
     });
-}
+  }
 
-// Handle search button click
-searchButton.addEventListener('click', searchByZipCode);
+  // Handle search button click
+  searchButton.addEventListener('click', searchByZipCode);
 
-// Detect user's location on page load
-navigator.geolocation.getCurrentPosition(
+  // Enter key triggers search
+  zipCodeInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      searchByZipCode();
+    }
+  });
+
+  // Re-run search when toggles/radius change (if map exists)
+  [svcInternational, svcDomestic, svcVaccinations, radiusKmEl].forEach(el => {
+    if (!el) return;
+    el.addEventListener('change', () => {
+      if (!vetMap) return;
+      const center = vetMap.getCenter();
+      if (!center) return;
+      fetchNearbyVetClinics(center.lat(), center.lng());
+    });
+  });
+
+  // Detect user's location on page load
+  navigator.geolocation.getCurrentPosition(
     function (position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        initVetMap(lat, lng);
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      initVetMap(lat, lng);
     },
     function () {
-        // Default location if geolocation fails
-        const defaultLat = 37.7749; // San Francisco latitude
-        const defaultLng = -122.4194; // San Francisco longitude
-        initVetMap(defaultLat, defaultLng);
+      // Default location if geolocation fails
+      const defaultLat = 37.7749;  // San Francisco latitude
+      const defaultLng = -122.4194; // San Francisco longitude
+      initVetMap(defaultLat, defaultLng);
     }
-);
-
+  );
 </script>
 
 <!-- Include Google Maps Script -->
-
-
-
-
-<!-- Include Google Maps Script -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places"></script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9pMTMgluQR2zPuGr3vbKplafuZpf22CI&libraries=places">
+</script>

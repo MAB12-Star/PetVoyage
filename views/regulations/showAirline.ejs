@@ -22,14 +22,14 @@
         <h2 class="h4 m-0"><strong><%= airline.name %></strong></h2>
       </div>
 
-      <!-- Save Button -->
-      <form method="POST" action="/favorites/saveAirlineToFavorites">
-        <input type="hidden" name="airlineId" value="<%= airline._id %>">
-        <button type="submit" class="btn btn-outline-danger fw-semibold">
-          <i class="fas fa-heart me-1"></i> Save
-        </button>
-      </form>
-    </div>
+        <!-- Save Button -->
+        <form method="POST" action="/favorites/saveAirlineToFavorites">
+          <input type="hidden" name="airlineId" value="<%= airline._id %>">
+          <button type="submit" class="btn btn-outline-danger fw-semibold">
+            <i class="fas fa-heart me-1"></i> Save
+          </button>
+        </form>
+      </div>
 
     <!-- Quick Stats Badges -->
     <div class="mt-3 d-flex flex-wrap gap-2">

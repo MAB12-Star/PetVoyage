@@ -7,6 +7,16 @@ const PhotoSchema = new mongoose.Schema({
   alt:      { type: String, default: '' }
 }, { _id: false });
 
+/* =========================
+   NEW: Comments subdocument
+   ========================= */
+const CommentSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  displayName: { type: String, default: 'Anonymous' }, // snapshot of display name
+  body: { type: String, required: true, trim: true, maxlength: 2000 },
+  createdAt: { type: Date, default: Date.now }
+}, { _id: true });
+
 const StorySchema = new mongoose.Schema({
   // Core
   title:       { type: String, required: true, trim: true, maxlength: 140 },
@@ -29,7 +39,15 @@ const StorySchema = new mongoose.Schema({
   authorName:  { type: String, default: '' }, // snapshot of display name (optional)
 
   // Soft metadata
-  likes:       { type: Number, default: 0 },
+  likes:       { type: Number, default: 0 }, // (legacy / optional)
+
+  /* =========================
+     NEW: Favorites + Comments
+     ========================= */
+  favoritedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true }],
+  favoritesCount: { type: Number, default: 0 },
+
+  comments: { type: [CommentSchema], default: [] },
 
   // SEO overrides (optional)
   metaTitle:       { type: String, default: '' },
@@ -48,31 +66,37 @@ function baseSlugify(s) {
     .replace(/\s+/g, '-');          // spaces → hyphens
 }
 
-/* ---------- Pre-save: ensure unique slug ---------- */
+/* ---------- Pre-save: ensure unique slug + keep favoritesCount accurate ---------- */
 StorySchema.pre('save', async function(next) {
-  // If no slug or title changed (new doc), compute a slug
-  if (!this.slug && this.title) {
-    const base = baseSlugify(this.title);
-    // Try base, then add short suffixes until unique
-    let candidate = base || 'story';
-    let n = 0;
+  try {
+    // If no slug (new doc), compute a slug
+    if (!this.slug && this.title) {
+      const base = baseSlugify(this.title);
+      let candidate = base || 'story';
+      let n = 0;
 
-    // If candidate is taken, append a short timestamp-ish suffix
-    while (await mongoose.models.Story.exists({ slug: candidate })) {
-      n += 1;
-      candidate = `${base}-${Date.now().toString(36)}${n > 1 ? '-' + n : ''}`;
+      while (await mongoose.models.Story.exists({ slug: candidate })) {
+        n += 1;
+        candidate = `${base}-${Date.now().toString(36)}${n > 1 ? '-' + n : ''}`;
+      }
+      this.slug = candidate;
     }
-    this.slug = candidate;
-  }
 
-  // If authorName is empty but we have a populated author, snapshot displayName if present
-  // (only if the doc is new or authorName missing)
-  if (!this.authorName && this.populated && this.populated('author')) {
-    const authorDoc = this.author;
-    if (authorDoc && authorDoc.displayName) this.authorName = authorDoc.displayName;
-  }
+    // Snapshot authorName if empty and author is populated
+    if (!this.authorName && this.populated && this.populated('author')) {
+      const authorDoc = this.author;
+      if (authorDoc && authorDoc.displayName) this.authorName = authorDoc.displayName;
+    }
 
-  next();
+    // Keep favoritesCount consistent
+    if (Array.isArray(this.favoritedBy)) {
+      this.favoritesCount = this.favoritedBy.length;
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 /* ---------- Indexes (basic blog search) ---------- */
@@ -84,5 +108,9 @@ StorySchema.index({
   weights: { title: 4, summary: 2, body: 1 },
   name: 'StoryTextIndex'
 });
+
+// Helpful indexes for sorting/filtering
+StorySchema.index({ createdAt: -1 });
+StorySchema.index({ favoritesCount: -1 });
 
 module.exports = mongoose.model('Story', StorySchema);

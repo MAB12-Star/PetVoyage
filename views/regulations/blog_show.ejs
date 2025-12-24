@@ -84,11 +84,96 @@
         <% }) %>
       </section>
     <% } %>
+<%
+  const favCount = story.favoritesCount || (story.favoritedBy ? story.favoritedBy.length : 0) || 0;
+  const isFav = !!story.isFavorited;
+  const shareAbs = 'https://www.petvoyage.ai' + pageUrl;
+%>
+
+<div class="d-flex flex-wrap gap-2 my-3 align-items-center">
+  <!-- ✅ Favorite -->
+  <button
+    class="btn btn-sm <%= isFav ? 'btn-primary' : 'btn-outline-primary' %> pv-fav-btn"
+    type="button"
+    data-story-id="<%= story.slug || story._id %>"
+    aria-pressed="<%= isFav ? 'true' : 'false' %>">
+    <i class="bi <%= isFav ? 'bi-heart-fill' : 'bi-heart' %>"></i>
+    <span class="pv-fav-count"><%= favCount %></span>
+    <span class="ms-1">Favorite</span>
+  </button>
+
+  <!-- ✅ Share -->
+  <button
+    class="btn btn-outline-secondary btn-sm pv-share-btn"
+    type="button"
+    data-share-url="<%= shareAbs %>"
+    data-share-title="<%= story.title.replace(/"/g,'&quot;') %>">
+    <i class="bi bi-share"></i> Share
+  </button>
+
+  <a class="btn btn-outline-secondary btn-sm" href="#comments">
+    <i class="bi bi-chat-dots"></i>
+    <%= (story.comments || []).length %> Comments
+  </a>
+</div>
 
     <!-- Body -->
     <section class="fs-5" itemprop="articleBody">
       <%- story.body %>
     </section>
+<section id="comments" class="mt-5">
+  <h2 class="h4 fw-bold mb-3">Comments</h2>
+
+  <% if (user) { %>
+    <form method="post" action="/blog/<%= story.slug || story._id %>/comments" class="mb-4">
+      <div class="mb-2">
+        <label for="comment" class="form-label">Add a comment</label>
+        <textarea id="comment" name="comment" class="form-control" rows="3" maxlength="2000" required></textarea>
+      </div>
+      <button class="btn btn-primary">Post comment</button>
+    </form>
+  <% } else { %>
+    <div class="alert alert-light border">
+      <a href="/auth/login">Sign in</a> to comment.
+    </div>
+  <% } %>
+
+  <% if (!story.comments || story.comments.length === 0) { %>
+    <p class="text-muted">No comments yet.</p>
+  <% } else { %>
+    <div class="list-group">
+      <% story.comments.slice().reverse().forEach(c => { %>
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="fw-semibold">
+                <%= (c.user && c.user.displayName) ? c.user.displayName : (c.displayName || 'Anonymous') %>
+                <span class="text-muted fw-normal small ms-2">
+                  <%= new Date(c.createdAt).toLocaleString() %>
+                </span>
+              </div>
+              <div class="mt-2" style="white-space:pre-wrap;">
+                <%= c.body %>
+              </div>
+            </div>
+
+            <% const canDelete = user && (
+                 String(story.author) === String(user._id) ||
+                 String(c.user?._id || c.user) === String(user._id)
+               ); %>
+
+            <% if (canDelete) { %>
+              <form method="post" action="/blog/<%= story.slug || story._id %>/comments/<%= c._id %>/delete"
+                    onsubmit="return confirm('Delete this comment?');">
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
 
     <!-- Simple prev/next internal links can be added later for stronger crawl paths -->
 
@@ -125,3 +210,71 @@
   "mainEntityOfPage": { "@type": "WebPage", "@id": <%- JSON.stringify(pageUrl) %> }
 }
 </script>
+<script>
+(() => {
+  const favBtn = document.querySelector('.pv-fav-btn');
+  if (favBtn) {
+    favBtn.addEventListener('click', async () => {
+      const storyId = favBtn.getAttribute('data-story-id');
+      try {
+        const res = await fetch(`/blog/${storyId}/favorite`, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.status === 401) {
+          window.location.href = '/auth/login';
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.ok) return;
+
+        const pressed = data.favorited;
+        favBtn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+        favBtn.classList.toggle('btn-primary', pressed);
+        favBtn.classList.toggle('btn-outline-primary', !pressed);
+
+        const icon = favBtn.querySelector('i.bi');
+        if (icon) {
+          icon.classList.toggle('bi-heart-fill', pressed);
+          icon.classList.toggle('bi-heart', !pressed);
+        }
+
+        const countEl = favBtn.querySelector('.pv-fav-count');
+        if (countEl) countEl.textContent = data.favoritesCount;
+      } catch (e) {
+        console.warn('favorite failed', e);
+      }
+    });
+  }
+
+  async function copyToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  const shareBtn = document.querySelector('.pv-share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      const url = shareBtn.getAttribute('data-share-url');
+      const title = shareBtn.getAttribute('data-share-title') || 'PetVoyage story';
+
+      if (navigator.share) {
+        try { await navigator.share({ title, url }); return; } catch {}
+      }
+
+      const ok = await copyToClipboard(url);
+      shareBtn.textContent = ok ? 'Link copied!' : 'Copy failed';
+      setTimeout(() => {
+        shareBtn.innerHTML = '<i class="bi bi-share"></i> Share';
+      }, 1200);
+    });
+  }
+})();
+</script>
+
