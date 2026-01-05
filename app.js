@@ -36,6 +36,14 @@ const { attachRandomReview } = require('./middleware');
 const { attachFeaturedStory } = require('./middleware');
 const Ad = require('./models/ad');
 const legalRoutes = require('./routes/legal');
+const { ensureAuth } = require('./middleware');
+const bcrypt = require('bcrypt');
+const accountRoutes = require('./routes/account');
+
+
+
+
+
 
 
 
@@ -184,8 +192,7 @@ app.use(async (req, res, next) => {
 });
 
 app.use('/', legalRoutes);
-
-
+app.use('/account', accountRoutes);
 
 
 
@@ -201,6 +208,96 @@ app.get('/sitemap', (req, res) => {
 // app.js (or wherever your routes live)
 const Review = require('./models/review');
 const Story  = require('./models/story'); // <-- use your actual Story model path/name
+
+
+// Update profile (name + email)
+app.post('/account/profile', ensureAuth, async (req, res) => {
+  try {
+    const { displayName, email } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      req.flash('error', 'User not found. Please log in again.');
+      return res.redirect('/auth/login');
+    }
+
+    if (displayName && displayName.trim()) {
+      user.displayName = displayName.trim();
+    }
+
+    if (email && email.trim() && email.trim().toLowerCase() !== user.email) {
+      const newEmail = email.trim().toLowerCase();
+      const existing = await User.findOne({ email: newEmail, _id: { $ne: user._id } });
+      if (existing) {
+        req.flash('error', 'That email is already in use by another account.');
+        return res.redirect('/dashboard');
+      }
+      user.email = newEmail;
+    }
+
+    await user.save();
+    req.flash('success', 'Profile updated.');
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.error('Profile update error:', err);
+    req.flash('error', 'Could not update profile.');
+    res.redirect('/dashboard');
+  }
+});
+
+// Change password
+app.post('/account/password', ensureAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      req.flash('error', 'User not found. Please log in again.');
+      return res.redirect('/auth/login');
+    }
+
+    if (!newPassword || !confirmPassword) {
+      req.flash('error', 'Please fill out all password fields.');
+      return res.redirect('/dashboard');
+    }
+
+    if (newPassword !== confirmPassword) {
+      req.flash('error', 'New passwords do not match.');
+      return res.redirect('/dashboard');
+    }
+
+    if (newPassword.length < 8) {
+      req.flash('error', 'New password must be at least 8 characters.');
+      return res.redirect('/dashboard');
+    }
+
+    // If they never had a password (OAuth-only), allow setting one
+    if (user.passwordHash) {
+      const ok = await bcrypt.compare(currentPassword || '', user.passwordHash);
+      if (!ok) {
+        req.flash('error', 'Current password is incorrect.');
+        return res.redirect('/dashboard');
+      }
+    } else {
+      // No existing password – but require currentPassword field?
+      // Optional: you can skip this check entirely for first-time set.
+      if (!currentPassword) {
+        req.flash('error', 'Enter your current password.');
+        return res.redirect('/dashboard');
+      }
+    }
+
+    user.passwordHash = await bcrypt.hash(newPassword, 12);
+    await user.save();
+
+    req.flash('success', 'Password updated.');
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.error('Password change error:', err);
+    req.flash('error', 'Could not change password.');
+    res.redirect('/dashboard');
+  }
+});
 
 // 👤 Dashboard
 app.get('/dashboard', async (req, res) => {

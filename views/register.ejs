@@ -1,0 +1,98 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg p-4 border-secondary rounded">
+
+        <div class="text-center">
+          <img
+            src="/images/PetVoyageLogo.png"
+            class="img-fluid rounded-top d-block mx-auto"
+            alt="PetVoyage Logo"
+            width="400"
+          />
+
+          <h2 class="mt-3 mb-3">Create your PetVoyage account</h2>
+
+          <% if (typeof messages !== 'undefined' && messages.error && messages.error.length) { %>
+            <div class="alert alert-danger">
+              <%= messages.error[0] %>
+            </div>
+          <% } %>
+        </div>
+
+        <form action="/auth/register" method="POST" class="mt-3">
+          <div class="mb-3">
+            <label for="displayName" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="displayName"
+              name="displayName"
+              required>
+          </div>
+
+          <div class="mb-3">
+            <label for="regEmail" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="regEmail"
+              name="email"
+              required
+              autocomplete="email">
+          </div>
+
+          <div class="mb-3">
+            <label for="regPassword" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="regPassword"
+              name="password"
+              required
+              minlength="8"
+              autocomplete="new-password">
+          </div>
+
+          <div class="mb-3">
+            <label for="regPassword2" class="form-label">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="regPassword2"
+              name="confirmPassword"
+              required
+              minlength="8"
+              autocomplete="new-password">
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">
+            Sign up
+          </button>
+        </form>
+
+        <hr class="mt-4">
+
+        <div class="text-center">
+          <p class="mb-2 text-muted">Or sign up with</p>
+          <a href="/auth/google" class="btn btn-outline-danger w-100 mb-2">
+            <i class="fab fa-google me-2"></i> Google
+          </a>
+          <a href="/auth/facebook" class="btn btn-outline-primary w-100">
+            <i class="fab fa-facebook-f me-2"></i> Facebook
+          </a>
+
+          <p class="mt-3 mb-0">
+            Already have an account?
+            <a href="/auth/login">Log in</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

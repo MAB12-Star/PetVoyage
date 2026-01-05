@@ -40,9 +40,19 @@
     <div class="col-md-10 text-center">
       <h3 class="text-secondary-emphasis mb-2"><strong>Welcome to Your Dashboard</strong></h3>
       <h5 class="text-secondary mb-2">Hello, <%= user.displayName %>!</h5>
-      <p class="mb-2"><strong>Email:</strong> <%= user.email %></p>
-      <a href="/toDoList" class="btn btn-primary mt-2">View To-Do List</a>
-      <hr class="mt-4">
+<p class="mb-2"><strong>Email:</strong> <%= user.email %></p>
+
+<div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+  <a href="/account/profile" class="btn btn-outline-secondary">
+    Profile Settings
+  </a>
+  <a href="/toDoList" class="btn btn-primary">
+    View To-Do List
+  </a>
+</div>
+
+<hr class="mt-4">
+
     </div>
   </div>
 

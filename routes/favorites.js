@@ -143,7 +143,7 @@ router.post('/saveToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
       (req.headers.accept && req.headers.accept.includes('application/json')) ||
       req.xhr;
 
-    if (!regulationId) {
+    if (!regulationId) {  
       if (wantsJson) return res.status(400).json({ ok: false, message: 'Missing regulationId' });
       req.flash('error', 'Missing regulation.');
       return res.redirect(req.get('referer') || '/dashboard');

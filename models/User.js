@@ -27,6 +27,8 @@ const userSchema = new mongoose.Schema({
   googleId: { type: String, unique: true, sparse: true },
   facebookId: { type: String, unique: true, sparse: true },
 
+   // 🔐 For local email/password users
+  passwordHash: { type: String },   // not required (OAuth users won't have it)
   displayName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
 

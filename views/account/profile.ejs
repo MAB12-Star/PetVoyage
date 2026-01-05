@@ -1,0 +1,158 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-secondary rounded">
+        <div class="card-body">
+          <h3 class="mb-3 text-secondary-emphasis">
+            <strong>Profile Settings</strong>
+          </h3>
+          <p class="text-muted mb-4">
+            Update your account information. As PetVoyage grows, more settings will show up here.
+          </p>
+
+          <form action="/account/profile" method="POST">
+            <!-- BASIC INFO -->
+            <div class="mb-3">
+              <label class="form-label">Display Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name="displayName"
+                value="<%= user.displayName || '' %>"
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                value="<%= user.email || '' %>"
+                required
+              >
+              <div class="form-text">
+                Used for login and account-related updates. We never share it publicly.
+              </div>
+            </div>
+
+            <!-- CONNECTED PROVIDERS -->
+            <% if (user.googleId || user.facebookId) { %>
+              <hr class="my-4">
+              <div class="mb-3">
+                <label class="form-label">Connected logins</label>
+                <div class="d-flex flex-wrap gap-2">
+                  <% if (user.googleId) { %>
+                    <span class="badge bg-danger-subtle border text-danger-emphasis">
+                      <i class="bi bi-google me-1"></i> Google
+                    </span>
+                  <% } %>
+                  <% if (user.facebookId) { %>
+                    <span class="badge bg-primary-subtle border text-primary-emphasis">
+                      <i class="bi bi-facebook me-1"></i> Facebook
+                    </span>
+                  <% } %>
+                </div>
+                <small class="text-muted d-block mt-1">
+                  Social logins are used for signing in. Changing your email here won’t break those connections.
+                </small>
+              </div>
+            <% } %>
+
+            <!-- PASSWORD SECTION -->
+            <hr class="my-4">
+
+            <h5 class="mb-3">Password</h5>
+
+            <% if (hasPassword) { %>
+              <p class="text-muted mb-3">
+                Change your password. You’ll use this when logging in with your email.
+              </p>
+
+              <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="currentPassword"
+                  autocomplete="current-password"
+                >
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="newPassword"
+                  autocomplete="new-password"
+                >
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="confirmPassword"
+                  autocomplete="new-password"
+                >
+              </div>
+            <% } else { %>
+              <p class="text-muted mb-3">
+                You currently sign in with Google or Facebook.
+                You can also set a password to log in directly with your email.
+              </p>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="newPassword"
+                  autocomplete="new-password"
+                >
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="confirmPassword"
+                  autocomplete="new-password"
+                >
+              </div>
+            <% } %>
+
+            <small class="text-muted d-block mb-3">
+              Use at least 8 characters. A mix of letters, numbers, and symbols is recommended.
+            </small>
+
+            <!-- FORM ACTIONS -->
+            <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2">
+              <a href="/dashboard" class="btn btn-outline-secondary">
+                ← Back to Dashboard
+              </a>
+              <button type="submit" class="btn btn-primary">
+                Save Changes
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <p class="small text-muted mt-3">
+        Need to delete your account or export your data?
+        Email us at <a href="mailto:admin@petvoyage.ai">admin@petvoyage.ai</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
