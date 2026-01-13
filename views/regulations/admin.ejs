@@ -195,7 +195,7 @@ if (typeof users === 'undefined') users = [];
         </tbody>
       </table>
     </div>
-  </div>
+  
   
 
           <!-- Pagination -->
@@ -868,10 +868,20 @@ document.addEventListener('DOMContentLoaded', function () {
             <label class="form-label">Microchip (HTML allowed)</label>
             <textarea class="form-control" rows="2" data-field="microchip"></textarea>
           </div>
-          <div class="mb-3">
-            <label class="form-label">More Info (HTML allowed)</label>
-            <textarea class="form-control" rows="2" data-field="moreInfo"></textarea>
+         
+
+          <!-- ✅ NEW More Info sections -->
+          <div class="mb-2 d-flex align-items-center justify-content-between">
+            <h6 class="m-0">More Info</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-more">Add more info item</button>
           </div>
+          <div class="vstack gap-2" data-list="moreInfo"></div>
+
+          <div class="mb-2 d-flex align-items-center justify-content-between">
+            <h6 class="m-0">Vaccinations</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-vax">Add vaccination</button>
+          </div>
+          <div class="vstack gap-2" data-list="vaccinations"></div>
     
           <div class="mb-2 d-flex align-items-center justify-content-between">
             <h6 class="m-0">Vaccinations</h6>
@@ -894,8 +904,30 @@ document.addEventListener('DOMContentLoaded', function () {
         wrap.querySelector('[data-action="add-vax"]').addEventListener('click', ()=> addVaxRow(wrap));
         wrap.querySelector('[data-action="add-cert"]').addEventListener('click', ()=> addCertRow(wrap));
         wrap.querySelector('[data-action="add-link"]').addEventListener('click', ()=> addPetLinkRow(wrap));
+        wrap.querySelector('[data-action="add-more"]').addEventListener('click', ()=> addMoreInfoRow(wrap));
+
         petPanelsEl.appendChild(wrap);
       }
+
+      function moreInfoRow(data={ name:'', description:'', requirements:[] }) {
+  const row = document.createElement('div');
+  row.className = 'border rounded p-2';
+  row.innerHTML = `
+    <div class="mini-grid-3">
+      <input type="text" class="form-control" placeholder="Section title (key)" value="${esc(data.name)}" data-name>
+      <input type="text" class="form-control" placeholder="Description (HTML ok)" value="${esc(data.description)}" data-desc>
+      <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+    </div>
+  `;
+  row.querySelector('button').addEventListener('click', ()=> row.remove());
+  row.appendChild(reqListBlock(data.requirements || []));
+  return row;
+}
+
+function addMoreInfoRow(panel, data){
+  panel.querySelector('[data-list="moreInfo"]').appendChild(moreInfoRow(data));
+}
+
     
       function vaxOrCertRow(kind, data={ name:'', description:'', requirements:[] }) {
         const row = document.createElement('div');
@@ -1055,7 +1087,17 @@ document.addEventListener('DOMContentLoaded', function () {
           const dbKey = KEYMAP[key] || key;             // original casing if we have it
     
           const microchip = panel.querySelector('[data-field="microchip"]').value.trim();
-          const moreInfo  = panel.querySelector('[data-field="moreInfo"]').value.trim();
+
+// ✅ NEW: More Info sections object (same structure as vax/cert)
+const moreInfo = {};
+panel.querySelectorAll('[data-list="moreInfo"] > .border').forEach(row => {
+  const name = row.querySelector('[data-name]').value.trim();
+  const description = row.querySelector('[data-desc]').value.trim();
+  const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')]
+    .map(i=>i.value.trim()).filter(Boolean);
+  if (name) moreInfo[name] = { description, requirements };
+});
+
     
           const vaccinations = {};
           panel.querySelectorAll('[data-list="vaccinations"] > .border').forEach(row => {
@@ -1079,9 +1121,16 @@ document.addEventListener('DOMContentLoaded', function () {
             return (name && url) ? { name, url } : null;
           }).filter(Boolean);
     
-          if (microchip || moreInfo || Object.keys(vaccinations).length || Object.keys(certifications).length || links.length) {
-            regs[dbKey] = { microchip, moreInfo, vaccinations, certifications, links };
-          }
+         if (
+  microchip ||
+  Object.keys(moreInfo).length ||
+  Object.keys(vaccinations).length ||
+  Object.keys(certifications).length ||
+  links.length
+) {
+  regs[dbKey] = { microchip, moreInfo, vaccinations, certifications, links };
+}
+
         });
     
         const origins = {};
@@ -1125,7 +1174,29 @@ document.addEventListener('DOMContentLoaded', function () {
         const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${pet}"]`);
         if (!panel || !data) return;
         panel.querySelector('[data-field="microchip"]').value = data.microchip || '';
-        panel.querySelector('[data-field="moreInfo"]').value  = data.moreInfo  || '';
+        // ✅ Normalize "moreInfo" so strings don't render as 0..N rows
+let mi = data.moreInfo;
+
+// If it's a legacy string, convert to a single section
+if (typeof mi === 'string') {
+  const s = mi.trim();
+  mi = s ? { General: { description: s, requirements: [] } } : {};
+}
+
+// If it's null/undefined or not an object, make it empty
+if (!mi || typeof mi !== 'object' || Array.isArray(mi)) {
+  mi = {};
+}
+
+Object.keys(mi).forEach(name => {
+  const entry = mi[name] || {};
+  addMoreInfoRow(panel, {
+    name,
+    description: entry.description || '',
+    requirements: Array.isArray(entry.requirements) ? entry.requirements : []
+  });
+});
+
     
         const vax = data.vaccinations || {};
         Object.keys(vax).forEach(name => addVaxRow(panel, { name, description: vax[name].description || '', requirements: vax[name].requirements || [] }));

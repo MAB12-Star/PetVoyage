@@ -278,16 +278,58 @@
 
 
         <!-- More Info -->
-        <% if (details?.moreInfo?.trim()) { %>
-          <div class="col-12">
-            <div class="card border-start border-dark border-4 shadow-sm">
-              <div class="card-body">
-                <h5 class="card-title text-secondary"><i class="bi bi-info-circle-fill me-2"></i>More Info</h5>
-                <div class="card-text"><%- details.moreInfo %></div>
-              </div>
+        <%
+  const mi = details?.moreInfo;
+
+  const miIsString = (typeof mi === 'string');
+  const miIsObject = (mi && typeof mi === 'object' && !Array.isArray(mi));
+
+  const miHasContent =
+    (miIsString && mi.trim().length > 0) ||
+    (miIsObject && Object.keys(mi).length > 0);
+%>
+
+<% if (miHasContent) { %>
+  <div class="col-12">
+    <div class="card border-start border-dark border-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title text-secondary">
+          <i class="bi bi-info-circle-fill me-2"></i>More Info
+        </h5>
+
+        <% if (miIsString) { %>
+          <!-- Legacy string -->
+          <div class="card-text"><%- mi %></div>
+
+        <% } else { %>
+          <!-- New object format -->
+          <% Object.entries(mi).forEach(([sectionName, entry]) => { 
+               const desc = entry?.description || '';
+               const reqs = Array.isArray(entry?.requirements) ? entry.requirements : [];
+          %>
+            <div class="mb-3">
+              <h6 class="fw-bold mb-1"><%= sectionName %></h6>
+
+              <% if (String(desc).trim()) { %>
+                <div class="card-text mb-2"><%- desc %></div>
+              <% } %>
+
+              <% if (reqs.length) { %>
+                <ul class="mb-0">
+                  <% reqs.filter(r => String(r).trim()).forEach(r => { %>
+                    <li><%= r %></li>
+                  <% }) %>
+                </ul>
+              <% } %>
             </div>
-          </div>
+          <% }) %>
         <% } %>
+
+      </div>
+    </div>
+  </div>
+<% } %>
+
 
         <!-- Import-Specific Links -->
         <% if (Array.isArray(details?.links) && details.links.some(link => link && (link.name || link.url))) { %>

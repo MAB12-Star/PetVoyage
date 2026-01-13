@@ -1,26 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const Airline = require('../models/airline');
-const Ad = require('../models/ad'); // Make sure this is added
+const Ad = require('../models/ad');
 
 router.get('/', async (req, res) => {
   try {
-    const airlines = await Airline.find({});
+    const page = parseInt(req.query.page, 10) || 1;
+    const perPage = parseInt(req.query.perPage, 10) || 12;
+    const safePerPage = perPage > 0 ? perPage : 12;
 
-    // Clean path for matching ads (removes query params like ?filter=...)
+    const filter = {};
+
+    const [airlines, totalAirlines] = await Promise.all([
+      Airline.find(filter)
+        .sort({ name: 1 })
+        .skip((page - 1) * safePerPage)
+        .limit(safePerPage)
+        .lean(),
+      Airline.countDocuments(filter)
+    ]);
+
+    const totalPages = Math.max(1, Math.ceil(totalAirlines / safePerPage));
+    const currentPage = Math.min(Math.max(page, 1), totalPages);
+
+    // path only (e.g. "/regulations/airlineList")
     const pathname = req.originalUrl ? req.originalUrl.split('?')[0] : '/regulations/airlineList';
+    // full URL (e.g. "http://localhost:3000/regulations/airlineList")
+    const fullUrl = `${req.protocol}://${req.get('host')}${pathname}`;
 
-    // Fetch ads where pages match this page OR wildcard (*)
     const pageAds = await Ad.find({
       active: true,
-      pages: { $in: [pathname, '*'] }
+      pages: { $in: [pathname, fullUrl, '*'] }
     }).lean();
+
+    // console.log('pageAds length:', pageAds.length); // debug if you want
 
     res.render('regulations/airlineList', {
       airlines,
-      pageAds,  // ⬅️ Crucial
-
-      // Metadata
+      pageAds,
+      currentPage,
+      totalPages,
+      perPage: safePerPage,
+      totalAirlines,
       title: 'Airlines That Accept Pets | PetVoyage',
       metaDescription: 'Browse airlines with pet travel options. Compare airline pet policies for in-cabin, cargo, and service animals.',
       metaKeywords: 'airline pet policy, fly with pets, pet cargo rules, in-cabin pets, service animal travel, ESA travel',

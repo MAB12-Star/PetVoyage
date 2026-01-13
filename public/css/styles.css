@@ -806,6 +806,53 @@ gap: 1rem; /* Add space between icons */
   z-index: 10;
 }
 
+  /* Airline cards – more compact, tile-like */
+  .airline-card .card {
+    border-radius: 1rem;
+    padding: 0;                 /* let card-body handle spacing */
+  }
+
+  .airline-card .card-body {
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .airline-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .airline-card .card-title {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .airline-card .card-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .airline-card .card-text {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .airline-logo {
+    max-width: 64px;
+    max-height: 32px;
+    object-fit: contain;
+  }
+
+  .airline-card .btn {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+
+
+
 
   
 

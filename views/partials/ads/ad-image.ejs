@@ -1,0 +1,12 @@
+<%
+// expects: ad.linkUrl, ad.imageUrl, ad.title
+%>
+<div class="my-3 ad-image-slot">
+  <a href="<%= ad.linkUrl %>" target="_blank" rel="noopener noreferrer" class="d-block">
+    <img
+      src="<%= ad.imageUrl %>"
+      alt="<%= ad.title || 'Advertisement' %>"
+      class="img-fluid rounded shadow-sm"
+    >
+  </a>
+</div>

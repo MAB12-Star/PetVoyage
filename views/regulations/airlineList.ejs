@@ -10,330 +10,388 @@
         alt="PetVoyage Logo - Pet Travel Regulations and Policies"
         width="200" height="200"
       />
-    <h1 class="fw-bold display-5">Browse Airlines</h1>
-    <p class="fs-5 text-muted">Filter airlines based on pet travel policies and select one to view details.</p>
+      <h1 class="fw-bold display-5">Browse Airlines</h1>
+      <p class="fs-5 text-muted">Filter airlines based on pet travel policies and select one to view details.</p>
 
-   <!-- Navigation Strip -->
-   <div>
-    <%- include('../partials/navigation') %>
-   
-  </div>
-
-<!-- Filter Controls -->
-<div class="container mt-4">
-  <h4>Filters</h4>
-
-  <!-- Desktop Filters -->
-  <div class="row mb-4 d-none d-md-block">
-    <div class="col-md-12 text-center">
-      <div class="btn-group flex-wrap" role="group">
-        <button class="btn btn-outline-secondary filter-btn" data-filter="all" data-bs-toggle="tooltip" title="View all airlines">Show All</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="incompartment" data-bs-toggle="tooltip" title="Animals allowed in cabin">In Compartment</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="incargo" data-bs-toggle="tooltip" title="Animals allowed in cargo">In Cargo</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals" data-bs-toggle="tooltip" title="Support animals recognized">Service Animals</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals" data-bs-toggle="tooltip" title="Emotional support animals recognized">ESA Allowed</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="petshipping" data-bs-toggle="tooltip" title="Provides pet shipping">Ships Pets</button>
-        <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous" data-bs-toggle="tooltip" title="Allows considered dangerous breeds">Dangerous Breeds Allowed</button>
-        
+      <!-- Navigation Strip -->
+      <div>
+        <%- include('../partials/navigation') %>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Mobile Filters -->
-<div class="row mb-4 d-md-none justify-content-center">
-  <div class="col-12 text-center">
-    <div class="d-flex flex-wrap justify-content-center gap-2" id="filter-icons">
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="all" title="View all airlines">
-        <i class="bi bi-ui-checks-grid fs-5 mb-1"></i>
-        <small>All</small>
-      </button>
+  <!-- Filter Controls -->
+  <div class="container mt-4">
+    <h4>Filters</h4>
 
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="incompartment" title="Animals allowed in cabin">
-        <span class="fs-4 mb-1">🪑</span>
-        <small>Cabin</small>
-      </button>
-
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="incargo" title="Animals allowed in cargo">
-        <span class="fs-4 mb-1">✈️</span>
-        <small>Cargo</small>
-      </button>
-
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="serviceanimals" title="Support animals recognized">
-        <span class="fs-4 mb-1">🐕</span>
-        <small>Support Animal</small>
-      </button>
-
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="esanimals" title="Emotional support animals recognized">
-        <span class="fs-4 mb-1">❤️</span>
-        <small>ESA</small>
-      </button>
-
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="petshipping" title="Provides pet shipping">
-        <i class="bi bi-send-check fs-5 mb-1"></i>
-        <small>Shipping</small>
-      </button>
-
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-              data-filter="dangerous" title="Allows considered dangerous breeds">
-        <i class="bi bi-exclamation-diamond fs-5 mb-1"></i>
-        <small>Dangerous Breeds</small>
-      </button>
+    <!-- Desktop Filters -->
+    <div class="row mb-4 d-none d-md-block">
+      <div class="col-md-12 text-center">
+        <div class="btn-group flex-wrap" role="group">
+          <button class="btn btn-outline-secondary filter-btn" data-filter="all" data-bs-toggle="tooltip" title="View all airlines">Show All</button>
+          <button class="btn btn-outline-secondary filter-btn" data-filter="incompartment" data-bs-toggle="tooltip" title="Animals allowed in cabin">In Compartment</button>
+          <button class="btn btn-outline-secondary filter-btn" data-filter="incargo" data-bs-toggle="tooltip" title="Animals allowed in cargo">In Cargo</button>
+          <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals" data-bs-toggle="tooltip" title="Support animals recognized">Service Animals</button>
+          <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals" data-bs-toggle="tooltip" title="Emotional support animals recognized">ESA Allowed</button>
+          <button class="btn btn-outline-secondary filter-btn" data-filter="petshipping" data-bs-toggle="tooltip" title="Provides pet shipping">Ships Pets</button>
+          <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous" data-bs-toggle="tooltip" title="Allows considered dangerous breeds">Dangerous Breeds Allowed</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<!-- Airline Autocomplete UI -->
-<div class="d-flex justify-content-center align-items-center mt-3 mb-4 flex-column">
-  <div class="input-group w-50 mb-2 position-relative">
-    <input type="text" id="airlineSearchInput" class="form-control" placeholder="Start typing an airline..." autocomplete="off">
-    <button class="btn btn-outline-primary" type="button" id="airlineSearchBtn">
-      <i class="bi bi-search"></i>
-    </button>
-    <ul id="suggestionList" class="list-group position-absolute w-100 shadow" style="z-index: 1000; top: 100%;"></ul>
+
+  <!-- Mobile Filters -->
+  <div class="row mb-4 d-md-none justify-content-center">
+    <div class="col-12 text-center">
+      <div class="d-flex flex-wrap justify-content-center gap-2" id="filter-icons">
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="all" title="View all airlines">
+          <i class="bi bi-ui-checks-grid fs-5 mb-1"></i>
+          <small>All</small>
+        </button>
+
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="incompartment" title="Animals allowed in cabin">
+          <span class="fs-4 mb-1">🪑</span>
+          <small>Cabin</small>
+        </button>
+
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="incargo" title="Animals allowed in cargo">
+          <span class="fs-4 mb-1">✈️</span>
+          <small>Cargo</small>
+        </button>
+
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="serviceanimals" title="Support animals recognized">
+          <span class="fs-4 mb-1">🐕</span>
+          <small>Support Animal</small>
+        </button>
+
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="esanimals" title="Emotional support animals recognized">
+          <span class="fs-4 mb-1">❤️</span>
+          <small>ESA</small>
+        </button>
+
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="petshipping" title="Provides pet shipping">
+          <i class="bi bi-send-check fs-5 mb-1"></i>
+          <small>Shipping</small>
+        </button>
+
+        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
+                data-filter="dangerous" title="Allows considered dangerous breeds">
+          <i class="bi bi-exclamation-diamond fs-5 mb-1"></i>
+          <small>Dangerous Breeds</small>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Hidden select and form -->
-  <form id="airlineSearchForm" class="d-none">
-    <select id="airlineSelect">
-      <% airlines.forEach(airline => { %>
-        <option value="/airlines/<%= airline.slug %>"><%= airline.name %></option>
-      <% }); %>
-    </select>
-    <button type="submit" id="goButton">Go</button>
-  </form>
-</div>
+  <!-- Airline Autocomplete UI -->
+  <div class="d-flex justify-content-center align-items-center mt-3 mb-4 flex-column">
+    <div class="input-group w-50 mb-2 position-relative">
+      <input type="text" id="airlineSearchInput" class="form-control" placeholder="Start typing an airline..." autocomplete="off">
+      <button class="btn btn-outline-primary" type="button" id="airlineSearchBtn">
+        <i class="bi bi-search"></i>
+      </button>
+      <ul id="suggestionList" class="list-group position-absolute w-100 shadow" style="z-index: 1000; top: 100%;"></ul>
+    </div>
 
-<script>
-  const input = document.getElementById("airlineSearchInput");
-  const select = document.getElementById("airlineSelect");
-  const suggestionList = document.getElementById("suggestionList");
-  const searchBtn = document.getElementById("airlineSearchBtn");
-  const cards = document.querySelectorAll(".airline-card");
-  const countDisplay = document.getElementById("filter-count");
+    <!-- Hidden select and form -->
+    <form id="airlineSearchForm" class="d-none">
+      <select id="airlineSelect">
+        <% airlines.forEach(airline => { %>
+          <option value="/airlines/<%= airline.slug %>"><%= airline.name %></option>
+        <% }); %>
+      </select>
+      <button type="submit" id="goButton">Go</button>
+    </form>
+  </div>
 
-  // Show autocomplete suggestions
-  function renderSuggestions(query) {
-    suggestionList.innerHTML = "";
-    if (!query) return;
+  <script>
+    const input = document.getElementById("airlineSearchInput");
+    const select = document.getElementById("airlineSelect");
+    const suggestionList = document.getElementById("suggestionList");
+    const searchBtn = document.getElementById("airlineSearchBtn");
 
-    Array.from(select.options).forEach(option => {
-      const name = option.text.toLowerCase();
-      if (name.includes(query)) {
-        const li = document.createElement("li");
-        li.className = "list-group-item list-group-item-action";
-        li.textContent = option.text;
-        li.addEventListener("click", () => {
-          input.value = option.text;
-          suggestionList.innerHTML = "";
-          filterCards(option.text.toLowerCase());
-        });
-        suggestionList.appendChild(li);
-      }
-    });
-  }
+    function filterCards(query) {
+      let visibleCount = 0;
+      document.querySelectorAll(".airline-card").forEach(col => {
+        const title = col.querySelector(".card-title");
+        if (!title) return;
 
-  // Filter visible airline cards based on input
-  function filterCards(query) {
-  let visibleCount = 0;
+        const airlineName = title.innerText.toLowerCase();
+        const match = airlineName.includes(query);
 
-  document.querySelectorAll(".airline-card").forEach(col => {
-    const title = col.querySelector(".card-title");
-    if (!title) return;
-
-    const airlineName = title.innerText.toLowerCase();
-    const match = airlineName.includes(query);
-
-    col.style.display = match ? "" : "none"; // Use "" not "block"
-    if (match) visibleCount++;
-  });
-
-  document.getElementById("filter-count").innerText =
-    visibleCount === 1 ? "Showing 1 airline" : `Showing ${visibleCount} airlines`;
-}
-
-// Live suggestions while typing
-input.addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  renderSuggestions(query);
-});
-
-// Click on a suggestion → redirect to pet policy page
-function renderSuggestions(query) {
-  suggestionList.innerHTML = "";
-  if (!query) return;
-
-  Array.from(select.options).forEach(option => {
-    const name = option.text.toLowerCase();
-    if (name.includes(query)) {
-      const li = document.createElement("li");
-      li.className = "list-group-item list-group-item-action";
-      li.textContent = option.text;
-
-      li.addEventListener("click", () => {
-        input.value = option.text;
-        suggestionList.innerHTML = "";
-
-        const slug = option.value.replace('/airlines/', '');
-        window.location.href = `/airlines/${slug}&Pet&Policy`;
+        col.style.display = match ? "" : "none";
+        if (match) visibleCount++;
       });
 
-      suggestionList.appendChild(li);
+      const countEl = document.getElementById("filter-count");
+      if (countEl) {
+        countEl.innerText = visibleCount === 1 ? "Showing 1 airline" : `Showing ${visibleCount} airlines`;
+      }
     }
-  });
-}
 
-// Search icon button filters visible cards
-searchBtn.addEventListener("click", function () {
-  const query = input.value.toLowerCase();
-  renderSuggestions(query);
-  filterCards(query);
-});
+    function renderSuggestions(query) {
+      suggestionList.innerHTML = "";
+      if (!query) return;
 
-// Enter key → redirect if exact match found
-input.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    const query = this.value.toLowerCase();
+      Array.from(select.options).forEach(option => {
+        const name = option.text.toLowerCase();
+        if (name.includes(query)) {
+          const li = document.createElement("li");
+          li.className = "list-group-item list-group-item-action";
+          li.textContent = option.text;
 
-    const match = Array.from(select.options).find(opt =>
-      opt.text.toLowerCase() === query
-    );
+          li.addEventListener("click", () => {
+            input.value = option.text;
+            suggestionList.innerHTML = "";
 
-    if (match) {
-      const slug = match.value.replace('/airlines/', '');
-      window.location.href = `/airlines/${slug}&Pet&Policy`;
-    } else {
-      filterCards(query); // fallback to filtering
+            const slug = option.value.replace('/airlines/', '');
+            window.location.href = `/airlines/${slug}&Pet&Policy`;
+          });
+
+          suggestionList.appendChild(li);
+        }
+      });
     }
-  }
-});
 
-// Hide suggestions on outside click
-document.addEventListener("click", function (e) {
-  if (!e.target.closest(".input-group")) {
-    suggestionList.innerHTML = "";
-  }
-});
+    input.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      renderSuggestions(query);
+    });
 
-</script>
+    searchBtn.addEventListener("click", function () {
+      const query = input.value.toLowerCase();
+      renderSuggestions(query);
+      filterCards(query);
+    });
 
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const query = this.value.toLowerCase();
 
+        const match = Array.from(select.options).find(opt =>
+          opt.text.toLowerCase() === query
+        );
 
+        if (match) {
+          const slug = match.value.replace('/airlines/', '');
+          window.location.href = `/airlines/${slug}&Pet&Policy`;
+        } else {
+          filterCards(query);
+        }
+      }
+    });
 
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".input-group")) {
+        suggestionList.innerHTML = "";
+      }
+    });
+  </script>
 
-  <!-- Count Display -->
+  <%
+    let startIndex = 0;
+    let endIndex = airlines.length;
+    if (typeof totalAirlines !== 'undefined' && typeof currentPage !== 'undefined' && typeof perPage !== 'undefined') {
+      if (totalAirlines > 0) {
+        startIndex = ((currentPage - 1) * perPage) + 1;
+        endIndex = Math.min(currentPage * perPage, totalAirlines);
+      } else {
+        startIndex = 0;
+        endIndex = 0;
+      }
+    }
+  %>
+
+  <div class="container mb-2">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+      <% if (typeof perPage !== 'undefined' && typeof currentPage !== 'undefined') { %>
+        <form id="perPageForm" method="get" class="d-flex align-items-center gap-2">
+          <label for="perPageSelect" class="mb-0 small">
+            Show
+          </label>
+          <select 
+            name="perPage" 
+            id="perPageSelect" 
+            class="form-select form-select-sm w-auto"
+            onchange="document.getElementById('perPageForm').submit()">
+            <option value="6"  <%= perPage === 6  ? 'selected' : '' %>>6</option>
+            <option value="12" <%= perPage === 12 ? 'selected' : '' %>>12</option>
+            <option value="24" <%= perPage === 24 ? 'selected' : '' %>>24</option>
+            <option value="48" <%= perPage === 48 ? 'selected' : '' %>>48</option>
+          </select>
+          <span class="small">per page</span>
+          <input type="hidden" name="page" value="1">
+        </form>
+      <% } %>
+
+      <% if (typeof totalAirlines !== 'undefined' && typeof currentPage !== 'undefined' && typeof perPage !== 'undefined') { %>
+        <p class="mb-0 small text-muted">
+          <% if (totalAirlines > 0) { %>
+            Showing <%= startIndex %>–<%= endIndex %> of <%= totalAirlines %> airlines
+          <% } else { %>
+            No airlines found
+          <% } %>
+        </p>
+      <% } %>
+    </div>
+  </div>
+
   <div class="text-center mb-3">
     <strong id="filter-count">Showing <%= airlines.length %> airlines</strong>
   </div>
+</div> <!-- closes bg-light header wrapper -->
 
-</div>
-
-
- 
 <!-- Airline Cards -->
-<% let uniqueAirlineIndex = 0; %>
-<div class="row" id="airlineList">
-  <% airlines.forEach(airline => { %>
-    <div 
-      class="col-md-6 col-lg-4 mb-4 airline-card"
-      data-incompartment="<%= typeof airline.inCompartment === 'string' && airline.inCompartment.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-      data-incargo="<%= typeof airline.inCargo === 'string' && airline.inCargo.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-      data-petshipping="<%= typeof airline.petShipping === 'string' && airline.petShipping.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-      data-serviceanimals="<%= typeof airline.serviceAnimals === 'string' && airline.serviceAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-      data-esanimals="<%= typeof airline.esAnimals === 'string' && airline.esAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-      data-brachycephalic="<%= typeof airline.brachycephalic === 'string' && airline.brachycephalic.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-      data-dangerous="<%= typeof airline.dangerousBreeds === 'string' && airline.dangerousBreeds.toLowerCase() === 'no' ? 'true' : 'false' %>"
-    >
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title fw-bold fs-4">
-            <div class="col-md-3 position-relative">
+<div class="container mt-3">
+  <% let uniqueAirlineIndex = 0; %>
+  <div class="row g-3" id="airlineList">
+    <% airlines.forEach(airline => { %>
+      <div 
+        class="col-12 col-sm-6 col-lg-4 col-xl-3 airline-card"
+        data-incompartment="<%= typeof airline.inCompartment === 'string' && airline.inCompartment.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-incargo="<%= typeof airline.inCargo === 'string' && airline.inCargo.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-petshipping="<%= typeof airline.petShipping === 'string' && airline.petShipping.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-serviceanimals="<%= typeof airline.serviceAnimals === 'string' && airline.serviceAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-esanimals="<%= typeof airline.esAnimals === 'string' && airline.esAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-brachycephalic="<%= typeof airline.brachycephalic === 'string' && airline.brachycephalic.toLowerCase() === 'yes' ? 'true' : 'false' %>"
+        data-dangerous="<%= typeof airline.dangerousBreeds === 'string' && airline.dangerousBreeds.toLowerCase() === 'no' ? 'true' : 'false' %>"
+      >
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="airline-card-header">
               <% if (airline.logo) { %>
                 <img src="<%= airline.logo %>" 
                      alt="<%= airline.name %> Logo" 
-                     class="img-fluid rounded-start airline-logo float-start me-3 mb-3">
+                     class="airline-logo">
               <% } else { %>
-                <i class="fa fa-plane fa-3x" aria-hidden="true"></i>
+                <i class="fa fa-plane fa-2x" aria-hidden="true"></i>
               <% } %>
-            </div>
-            <span><%= airline.name %> Pet Travel Policy</span>
-          </h5>
 
-          <p class="card-text small">
-            <%= airline.name %> allows pets to travel 
-            <%= airline.inCompartment === 'Yes' ? 'in the cabin' : '' %>
-            <%= airline.inCompartment === 'Yes' && airline.inCargo === 'Yes' ? ' and ' : '' %>
-            <%= airline.inCargo === 'Yes' ? 'in the cargo hold' : '' %>.
-            <%= airline.petShipping === 'Yes' ? ' They also offer pet shipping services.' : '' %>
-            <%= airline.serviceAnimals === 'Yes' ? ' Service animals are permitted.' : '' %>
-            <%= airline.esAnimals === 'Yes' ? ' ESA animals may be accepted under certain conditions.' : '' %>
-          </p>
-
-          <% if (airline.inCompartmentAnimals && airline.inCompartmentAnimals.length > 0) { %>
-            <div class="">
-              <p class="card-text">In Compartment Option:<strong> <%= airline.inCompartmentAnimals.join(", ") %></strong></p>
+              <div>
+                <h5 class="card-title"><%= airline.name %></h5>
+                <div class="card-subtitle text-muted">Pet Travel Policy</div>
+              </div>
             </div>
+
+            <p class="card-text">
+              <%= airline.name %> allows pets to travel 
+              <%= airline.inCompartment === 'Yes' ? 'in the cabin' : '' %>
+              <%= airline.inCompartment === 'Yes' && airline.inCargo === 'Yes' ? ' and ' : '' %>
+              <%= airline.inCargo === 'Yes' ? 'in the cargo hold' : '' %>.
+              <%= airline.petShipping === 'Yes' ? ' They also offer pet shipping services.' : '' %>
+              <%= airline.serviceAnimals === 'Yes' ? ' Service animals are permitted.' : '' %>
+              <%= airline.esAnimals === 'Yes' ? ' ESA animals may be accepted under certain conditions.' : '' %>
+            </p>
+
+            <% if (airline.inCompartmentAnimals && airline.inCompartmentAnimals.length > 0) { %>
+              <p class="card-text mb-1">
+                <strong>In Cabin:</strong> <%= airline.inCompartmentAnimals.join(", ") %>
+              </p>
             <% } %>
-          
-          
-          <% if (airline.inCargoAnimals && airline.inCargoAnimals.length > 0) { %>
-            <div class="">
-              <p class="card-text">In Cargo Option:<strong> <%= airline.inCargoAnimals.join(", ") %></strong></p>
-            </div>
+            
+            <% if (airline.inCargoAnimals && airline.inCargoAnimals.length > 0) { %>
+              <p class="card-text mb-1">
+                <strong>In Cargo:</strong> <%= airline.inCargoAnimals.join(", ") %>
+              </p>
             <% } %>
 
             <% if (airline.petShipping !== undefined) { %>
-                <div class="">
-                  <p class="card-text">Pet Shipping Available:<strong> <%= airline.petShipping %></strong></p>
-                </div>
-              <% } %>
-              
-            <p class="card-text">Microchip Required:<strong> <%= airline.microchip %></strong></p>
-            <p class="card-text">HealthCertificate Required:<strong> <%= airline.healthCertificate %></strong></p>
-            <p class="card-text">Health Vaccinations Needed:<strong> <%= airline.healthVaccinations.join(", ") %></strong></p>
+              <p class="card-text mb-1">
+                <strong>Pet Shipping:</strong> <%= airline.petShipping %>
+              </p>
+            <% } %>
 
-          <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">View Policy</a>
+            <p class="card-text mb-1">
+              <strong>Microchip Required:</strong> <%= airline.microchip %>
+            </p>
+
+            <p class="card-text mb-1">
+              <strong>Health Certificate:</strong> <%= airline.healthCertificate %>
+            </p>
+
+            <%
+              let vaccinationsList = [];
+              if (Array.isArray(airline.healthVaccinations)) {
+                vaccinationsList = airline.healthVaccinations;
+              } else if (typeof airline.healthVaccinations === 'string' && airline.healthVaccinations.trim() !== '') {
+                vaccinationsList = airline.healthVaccinations
+                  .split(',')
+                  .map(v => v.trim())
+                  .filter(v => v.length > 0);
+              }
+            %>
+            <% if (vaccinationsList.length > 0) { %>
+              <p class="card-text mb-1">
+                <strong>Vaccinations:</strong> <%= vaccinationsList.join(", ") %>
+              </p>
+            <% } %>
+
+            <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">
+              View Policy
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-   <% uniqueAirlineIndex++; %>
+      <% uniqueAirlineIndex++; %>
 
-<!-- Inline Grid Ad Placement (Mobile - after every 2 cards) -->
-<% if (uniqueAirlineIndex % 2 === 0 && pageAds && pageAds.length) { %>
-  <% pageAds
-      .filter(ad => ad.placement === 'inline-grid-2' && ad.active)
-      .forEach(ad => { %>
-        <div class="col-12 mb-4 d-md-none ad-tile">
-          <%- ad.content %>
-        </div>
-  <% }); %>
+      <!-- Inline Grid Ad Placement (Mobile - after every 2 cards) -->
+      <% if (uniqueAirlineIndex % 2 === 0 && pageAds && pageAds.length) { %>
+        <% pageAds
+            .filter(ad => ad.placements && ad.placements.includes('inline-grid-2') && ad.active)
+            .forEach(ad => { %>
+              <div class="col-12 mb-4 d-md-none ad-tile">
+                <%- include('../partials/ads/ad-' + ad.adType, { ad }) %>
+              </div>
+        <% }); %>
+      <% } %>
+
+      <!-- Inline Grid Ad Placement (Desktop - after every 6 cards) -->
+      <% if (uniqueAirlineIndex % 6 === 0 && pageAds && pageAds.length) { %>
+        <% pageAds
+            .filter(ad => ad.placements && ad.placements.includes('inline-grid-6') && ad.active)
+            .forEach(ad => { %>
+              <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-none d-md-block ad-tile">
+                <%- include('../partials/ads/ad-' + ad.adType, { ad }) %>
+              </div>
+        <% }); %>
+      <% } %>
+
+    <% }); // closes airlines.forEach %>
+  </div>
+</div> <!-- end container for airline grid -->
+
+<!-- Pagination controls -->
+<% if (typeof totalPages !== 'undefined' && totalPages > 1 && typeof currentPage !== 'undefined' && typeof perPage !== 'undefined') { %>
+  <nav aria-label="Airline pagination">
+    <ul class="pagination justify-content-center mt-4">
+      <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+        <a class="page-link" href="?page=<%= currentPage - 1 %>&perPage=<%= perPage %>">Previous</a>
+      </li>
+
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>&perPage=<%= perPage %>"><%= i %></a>
+        </li>
+      <% } %>
+
+      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+        <a class="page-link" href="?page=<%= currentPage + 1 %>&perPage=<%= perPage %>">Next</a>
+      </li>
+    </ul>
+  </nav>
 <% } %>
-
-<!-- Inline Grid Ad Placement (Desktop - after every 6 cards) -->
-<% if (uniqueAirlineIndex % 6 === 0 && pageAds && pageAds.length) { %>
-  <% pageAds
-      .filter(ad => ad.placement === 'inline-grid-6' && ad.active)
-      .forEach(ad => { %>
-        <div class="col-md-6 col-lg-4 mb-4 d-none d-md-block ad-tile">
-          <%- ad.content %>
-        </div>
-  <% }); %>
-<% } %>
-
-<% }); // <-- THIS closes airlines.forEach %>
-</div> <!-- This closes <div class="row" id="airlineList"> -->
-
 
 <div class="row mb-4 justify-content-center">
   <div class="col-md-12 text-center">
-    <div class="d-flex flex-wrap justify-content-center gap-3" id="filter-icons">
+    <div class="d-flex flex-wrap justify-content-center gap-3" id="filter-icons-bottom">
       <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
               data-filter="all" data-bs-toggle="tooltip" title="View all airlines">
         <i class="bi bi-grid-3x3-gap fs-4 mb-1"></i>
@@ -373,48 +431,41 @@ document.addEventListener("click", function (e) {
   </div>
 </div>
 
-
-
-<!-- Filter Script -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
       new bootstrap.Tooltip(tooltipTriggerEl);
     });
-  });
-</script>
 
-<script>
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+        const cards = document.querySelectorAll('.airline-card');
+        let visibleCount = 0;
 
-  document.querySelectorAll('.filter-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      const filter = button.dataset.filter;
-      const cards = document.querySelectorAll('.airline-card');
-      let visibleCount = 0;
+        if (filter === 'all') {
+          cards.forEach(card => {
+            card.style.display = 'block';
+            visibleCount++;
+          });
+        } else {
+          cards.forEach(card => {
+            const match = card.dataset[filter] === 'true';
+            card.style.display = match ? 'block' : 'none';
+            if (match) visibleCount++;
+          });
+        }
 
-      if (filter === 'all') {
-        cards.forEach(card => {
-          card.style.display = 'block';
-          visibleCount++;
-        });
-      } else {
-        cards.forEach(card => {
-          const match = card.dataset[filter] === 'true';
-          card.style.display = match ? 'block' : 'none';
-          if (match) visibleCount++;
-        });
-      }
+        const countText = visibleCount === 1 
+          ? 'Showing 1 airline' 
+          : `Showing ${visibleCount} airlines`;
+        const countEl = document.getElementById('filter-count');
+        if (countEl) countEl.innerText = countText;
 
-      // Update visible count
-      const countText = visibleCount === 1 
-        ? 'Showing 1 airline' 
-        : `Showing ${visibleCount} airlines`;
-      document.getElementById('filter-count').innerText = countText;
-
-      // Highlight selected filter
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-dark'));
-      button.classList.add('btn-dark');
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-dark'));
+        button.classList.add('btn-dark');
+      });
     });
   });
 </script>

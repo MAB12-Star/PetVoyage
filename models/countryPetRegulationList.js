@@ -18,7 +18,15 @@ const PetRegulationDetailSchema = new mongoose.Schema({
     default: {}
   },
   microchip: { type: String, default: "<p>Not specified.</p>" },
-  moreInfo: { type: String, default: "<p>Not specified.</p>" },
+  moreInfo: {
+  type: Map,
+  of: new mongoose.Schema({
+    description: { type: String, default: "<p>Not specified.</p>" },
+    requirements: { type: [String], default: [] }
+  }, { _id: false }),
+  default: {}
+},
+
   links: [
     {
       name: { type: String, required: true },
