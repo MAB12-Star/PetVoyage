@@ -348,8 +348,7 @@
             .filter(ad => ad.placements && ad.placements.includes('inline-grid-2') && ad.active)
             .forEach(ad => { %>
               <div class="col-12 mb-4 d-md-none ad-tile">
-                <%- include('../partials/ads/ad-' + ad.adType, { ad }) %>
-              </div>
+                <%- include('../partials/ads/ad-image', { ad }) %>              </div>
         <% }); %>
       <% } %>
 
@@ -359,8 +358,7 @@
             .filter(ad => ad.placements && ad.placements.includes('inline-grid-6') && ad.active)
             .forEach(ad => { %>
               <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-none d-md-block ad-tile">
-                <%- include('../partials/ads/ad-' + ad.adType, { ad }) %>
-              </div>
+                <%- include('../partials/ads/ad-image', { ad }) %>              </div>
         <% }); %>
       <% } %>
 

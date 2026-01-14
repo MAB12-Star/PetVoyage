@@ -39,6 +39,7 @@ const legalRoutes = require('./routes/legal');
 const { ensureAuth } = require('./middleware');
 const bcrypt = require('bcrypt');
 const accountRoutes = require('./routes/account');
+const { attachAds } = require('./middleware');
 
 
 
@@ -193,6 +194,7 @@ app.use(async (req, res, next) => {
 
 app.use('/', legalRoutes);
 app.use('/account', accountRoutes);
+app.use(attachAds);
 
 
 

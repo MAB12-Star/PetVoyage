@@ -3,6 +3,11 @@ const express = require('express');
 const router = express.Router();
 const CountryRegulation = require("../models/countryPetRegulationList");
 
+// ✅ Import your middleware FILE (not folder)
+// If your middleware is at: /middleware.js -> use "../middleware"
+// If your middleware is at: /middleware/index.js -> use "../middleware"
+const mw = require('../middleware'); // <-- CHANGE THIS PATH if needed
+
 /* ---------------- Helpers ---------------- */
 function escapeRegex(str = '') {
   return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -41,7 +46,14 @@ router.get('/getCountryRegulationList', async (req, res) => {
 });
 
 /* ---------------- SHOW COUNTRY ---------------- */
-router.get('/country/:country', async (req, res) => {
+/**
+ * ✅ Attach Ads middleware HERE so showCountry.ejs has:
+ *   - res.locals.getAd()
+ *   - res.locals.adsByPlacement
+ *
+ * If attachAds is not mounted, getAd will be undefined and nothing renders.
+ */
+router.get('/country/:country', mw.attachAds, async (req, res) => {
   try {
     // ✅ decode + trim to avoid mismatch from URL encoding
     const rawParam = req.params.country || '';
@@ -130,7 +142,11 @@ router.get('/country/:country', async (req, res) => {
       selectedPetType: petKey,
       petTypes: seoData.petTypes.map(p => p.key),
       originReqsCount: originReqs.length,
-      regulationId: String(regulations._id)
+      regulationId: String(regulations._id),
+
+      // ✅ Quick debug to confirm ads middleware ran
+      hasGetAd: typeof res.locals.getAd === 'function',
+      placements: Object.keys(res.locals.adsByPlacement || {})
     });
 
     res.render('regulations/showCountry', seoData);

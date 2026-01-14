@@ -492,6 +492,9 @@ router.put('/countries/:id', async (req, res, next) => {
       up.sourceLastModifiedNote = (req.body.sourceLastModifiedNote || '').trim();
     }
 
+      // ✅ ADD THIS LINE (DB "Updated" timestamp)
+    up.updatedAt = new Date();
+
     await CountryPetRegulation.findByIdAndUpdate(id, { $set: up }, { runValidators: true });
     req.flash('success', 'Country regulations updated.');
     res.redirect('/admin?tab=countries');

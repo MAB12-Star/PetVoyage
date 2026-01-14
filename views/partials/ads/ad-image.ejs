@@ -1,12 +1,44 @@
 <%
-// expects: ad.linkUrl, ad.imageUrl, ad.title
+/*
+Supports:
+- image ads
+- html ads
+- script / product ads
+
+Input:
+  include('ad-image', { ad })
+*/
+if (!ad) return;
 %>
-<div class="my-3 ad-image-slot">
-  <a href="<%= ad.linkUrl %>" target="_blank" rel="noopener noreferrer" class="d-block">
-    <img
-      src="<%= ad.imageUrl %>"
-      alt="<%= ad.title || 'Advertisement' %>"
-      class="img-fluid rounded shadow-sm"
+
+<div class="ad-image-slot my-3 d-flex justify-content-center align-items-center">
+  <% if (ad.adType === 'image') { %>
+
+    <a
+      href="<%= ad.linkUrl || '#' %>"
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      class="d-block text-center"
     >
-  </a>
+      <img
+        src="<%= ad.imageUrl %>"
+        alt="<%= ad.title || 'Advertisement' %>"
+        class="img-fluid rounded shadow-sm"
+        style="max-height:180px; object-fit:contain;"
+      >
+    </a>
+
+  <% } else if (ad.adType === 'html') { %>
+
+    <div class="w-100">
+      <%- ad.content || '' %>
+    </div>
+
+  <% } else if (ad.adType === 'script') { %>
+
+    <div class="w-100">
+      <%- ad.productEmbed || '' %>
+    </div>
+
+  <% } %>
 </div>

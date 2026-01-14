@@ -6,6 +6,9 @@ const Review  = require('./models/review');
 // middleware/featuredStory.js
 const Story = require('./models/story');
 
+const Ad = require('./models/ad'); // <-- adjust if your file name is Ad.js or ad.js
+
+
 module.exports.attachFeaturedStory = async (req, res, next) => {
   try {
     const [doc] = await Story.aggregate([
@@ -211,4 +214,115 @@ module.exports.toDoListMiddleware = async (req, res, next) => {
     next();
 };
 
+// -----------------------------
+// Helpers for Ad matching
+// -----------------------------
+
+function stripQuery(url = '') {
+  return String(url).split('?')[0];
+}
+
+function normalizeUrl(url = '') {
+  const u = stripQuery(String(url).trim());
+  return u.endsWith('/') && u.length > 1 ? u.slice(0, -1) : u;
+}
+
+function pageMatches(adPages, req) {
+  // If pages is blank, treat as "all pages"
+  if (!adPages) return true;
+
+  // Accept string (comma-separated) OR array
+  const pagesArr = Array.isArray(adPages)
+    ? adPages
+    : String(adPages)
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+  // If user put "*" anywhere -> all pages
+  if (pagesArr.includes('*')) return true;
+
+  // Compare against path + full URL variants
+  const reqPath = normalizeUrl(req.baseUrl + req.path);       // "/country/Albania"
+  const reqOrig = normalizeUrl(req.originalUrl);              // "/country/Albania?petType=Dog"
+  const reqNoQ  = normalizeUrl(stripQuery(req.originalUrl));  // "/country/Albania"
+
+  for (const raw of pagesArr) {
+    const p = normalizeUrl(raw);
+
+    // allow wildcard: "/country/*"
+    if (p.endsWith('*')) {
+      const prefix = normalizeUrl(p.slice(0, -1));
+      if (reqPath.startsWith(prefix) || reqNoQ.startsWith(prefix)) return true;
+      continue;
+    }
+
+    // allow a trailing slash entry to mean "startsWith"
+    if (raw.endsWith('/')) {
+      if (reqPath.startsWith(p) || reqNoQ.startsWith(p)) return true;
+      continue;
+    }
+
+    // allow storing full URLs OR just paths
+    if (p.startsWith('http')) {
+      // match by path portion only
+      // (so localhost vs prod doesn't break matching)
+      try {
+        const u = new URL(p);
+        const pathOnly = normalizeUrl(u.pathname);
+        if (reqPath === pathOnly || reqNoQ === pathOnly) return true;
+      } catch (_) {}
+    } else {
+      // exact path match
+      if (reqPath === p || reqNoQ === p || reqOrig === p) return true;
+    }
+  }
+
+  return false;
+}
+
+module.exports.attachAds = async (req, res, next) => {
+  try {
+    // ✅ YOUR ADMIN USES "active" BOOLEAN
+    const activeAds = await Ad.find({ active: true }).lean();
+
+    // ✅ Filter ads that match this page
+    const matching = activeAds.filter(ad => pageMatches(ad.pages, req));
+
+    // ✅ Group by each placement in "placements" array (or fallback)
+    const adsByPlacement = {};
+    for (const ad of matching) {
+      const placements = Array.isArray(ad.placements) && ad.placements.length
+        ? ad.placements
+        : (ad.placement ? [ad.placement] : []);
+
+      for (const place of placements) {
+        if (!place) continue;
+        if (!adsByPlacement[place]) adsByPlacement[place] = [];
+        adsByPlacement[place].push(ad);
+      }
+    }
+
+    res.locals.adsByPlacement = adsByPlacement;
+
+    res.locals.getAd = (placement) => {
+      const list = adsByPlacement[placement] || [];
+      if (!list.length) return null;
+      return list[Math.floor(Math.random() * list.length)];
+    };
+
+    res.locals.getAds = (placement) => adsByPlacement[placement] || [];
+
+    // ✅ temporary debug (remove after)
+    // console.log('[attachAds]', req.originalUrl, Object.keys(adsByPlacement));
+
+    next();
+  } catch (e) {
+    console.error('[attachAds] failed:', e);
+    res.locals.adsByPlacement = {};
+    res.locals.getAd = () => null;
+    res.locals.getAds = () => [];
+    next();
+  }
+};
 

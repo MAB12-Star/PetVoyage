@@ -81,11 +81,11 @@ const CountryPetRegulationSchema = new mongoose.Schema({
     ref: "country_pet_regulations"
   },
 
-  timestamp: {
-    type: Date,
-    default: Date.now
-  }
-});
+  // (optional) keep your timestamp if you want, but it becomes redundant:
+    timestamp: { type: Date, default: Date.now }
+  },
+  { timestamps: true }, // ✅ adds createdAt + updatedAt and maintains them
+);
 
 module.exports = mongoose.model(
   "CountryPetRegulation",
