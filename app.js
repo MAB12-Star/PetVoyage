@@ -157,7 +157,7 @@ app.use((req, res, next) => {
 
 // 🧠 Middleware
 app.use(toDoListMiddleware);
-
+app.use(attachAds);
 // 🛣 Routes
 // in app.js/server.js
 app.use(attachRandomReview); 
@@ -194,7 +194,7 @@ app.use(async (req, res, next) => {
 
 app.use('/', legalRoutes);
 app.use('/account', accountRoutes);
-app.use(attachAds);
+
 
 
 
