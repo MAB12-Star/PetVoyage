@@ -19,13 +19,7 @@
       </div>
     </div>
   </div>
-<div class="alert alert-warning small">
-  <pre class="mb-0">
-getAd: <%= (typeof getAd) %>
-pageAds: <%= (typeof pageAds) %>
-pageAdsCount: <%= (pageAds && pageAds.length) ? pageAds.length : 0 %>
-  </pre>
-</div>
+
 
   <!-- Filter Controls -->
   <div class="container mt-4">
@@ -350,24 +344,26 @@ pageAdsCount: <%= (pageAds && pageAds.length) ? pageAds.length : 0 %>
       <% uniqueAirlineIndex++; %>
 
       <!-- Inline Grid Ad Placement (Mobile - after every 2 cards) -->
-      <% if (uniqueAirlineIndex % 2 === 0 && pageAds && pageAds.length) { %>
-        <% pageAds
-            .filter(ad => ad.placements && ad.placements.includes('inline-grid-2') && ad.active)
-            .forEach(ad => { %>
-              <div class="col-12 mb-4 d-md-none ad-tile">
-                <%- include('../partials/ads/ad-image', { ad }) %>              </div>
-        <% }); %>
-      <% } %>
+      <% if (uniqueAirlineIndex % 2 === 0) { %>
+  <% const ad2 = (typeof getAd === 'function') ? getAd('inline-grid-2') : null; %>
+  <% if (ad2) { %>
+    <div class="col-12 mb-4 d-md-none ad-tile">
+      <%- include('../partials/ads/ad-image', { ad: ad2 }) %>
+    </div>
+  <% } %>
+<% } %>
+
 
       <!-- Inline Grid Ad Placement (Desktop - after every 6 cards) -->
-      <% if (uniqueAirlineIndex % 6 === 0 && pageAds && pageAds.length) { %>
-        <% pageAds
-            .filter(ad => ad.placements && ad.placements.includes('inline-grid-6') && ad.active)
-            .forEach(ad => { %>
-              <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-none d-md-block ad-tile">
-                <%- include('../partials/ads/ad-image', { ad }) %>              </div>
-        <% }); %>
-      <% } %>
+     <% if (uniqueAirlineIndex % 6 === 0) { %>
+  <% const ad6 = (typeof getAd === 'function') ? getAd('inline-grid-6') : null; %>
+  <% if (ad6) { %>
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-none d-md-block ad-tile">
+      <%- include('../partials/ads/ad-image', { ad: ad6 }) %>
+    </div>
+  <% } %>
+<% } %>
+
 
     <% }); // closes airlines.forEach %>
   </div>
