@@ -432,6 +432,10 @@ router.post('/countries', async (req, res, next) => {
       regulationsJson,
       originReqsJson,
       officialLinksJson,
+
+      // ✅ NEW
+      sourceLastModified,
+      sourceLastModifiedNote
     } = req.body;
 
     if (!destinationCountry || !destinationCountry.trim()) {
@@ -442,8 +446,12 @@ router.post('/countries', async (req, res, next) => {
     const doc = new CountryPetRegulation({
       destinationCountry: destinationCountry.trim(),
       regulationsByPetType: safeParse(regulationsJson, {}),
-      originRequirements:   safeParse(originReqsJson, {}),
-      officialLinks:        safeParse(officialLinksJson, []),
+      originRequirements: safeParse(originReqsJson, {}),
+      officialLinks: safeParse(officialLinksJson, []),
+
+      // ✅ NEW
+      sourceLastModified: sourceLastModified ? new Date(sourceLastModified) : null,
+      sourceLastModifiedNote: (sourceLastModifiedNote || '').trim()
     });
 
     await doc.save();
@@ -454,12 +462,13 @@ router.post('/countries', async (req, res, next) => {
   }
 });
 
-// PUT /admin/countries/:id → update
+
 router.put('/countries/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
 
     const up = {};
+
     if (req.body.destinationCountry && req.body.destinationCountry.trim()) {
       up.destinationCountry = req.body.destinationCountry.trim();
     }
@@ -473,6 +482,16 @@ router.put('/countries/:id', async (req, res, next) => {
       up.officialLinks = safeParse(req.body.officialLinksJson, []);
     }
 
+    // ✅ NEW
+    if ('sourceLastModified' in req.body) {
+      up.sourceLastModified = req.body.sourceLastModified
+        ? new Date(req.body.sourceLastModified)
+        : null;
+    }
+    if ('sourceLastModifiedNote' in req.body) {
+      up.sourceLastModifiedNote = (req.body.sourceLastModifiedNote || '').trim();
+    }
+
     await CountryPetRegulation.findByIdAndUpdate(id, { $set: up }, { runValidators: true });
     req.flash('success', 'Country regulations updated.');
     res.redirect('/admin?tab=countries');
@@ -480,6 +499,7 @@ router.put('/countries/:id', async (req, res, next) => {
     next(e);
   }
 });
+
 
 // DELETE /admin/countries/:id
 router.delete('/countries/:id', async (req, res, next) => {

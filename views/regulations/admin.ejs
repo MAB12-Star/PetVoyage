@@ -1,5 +1,12 @@
 <% layout('layouts/boilerplate') %>
-
+ <% /* ---- safe date formatter (avoids "Invalid Date") ---- */ %>
+    <%
+      function fmtDate(val) {
+        if (!val) return '';
+        const dt = new Date(val);
+        return isNaN(dt) ? '' : dt.toLocaleString();
+      }
+    %>
 <% if (!user || user.role !== 'admin') { %>
   <div class="container py-5">
     <h1 class="h4 mb-3">403 – Admins only</h1>
@@ -113,14 +120,7 @@ if (typeof users === 'undefined') users = [];
     <!-- Count -->
     <p class="text-muted small mb-2"><%= total %> result<%= total===1?'':'s' %></p>
   
-    <% /* ---- safe date formatter (avoids "Invalid Date") ---- */ %>
-    <%
-      function fmtDate(val) {
-        if (!val) return '';
-        const dt = new Date(val);
-        return isNaN(dt) ? '' : dt.toLocaleString();
-      }
-    %>
+   
   
     <!-- Table -->
     <div class="table-responsive">
@@ -450,7 +450,16 @@ if (typeof users === 'undefined') users = [];
                 <td class="text-center">
                   <%= (c.officialLinks && c.officialLinks.length) || 0 %>
                 </td>
-                <td><small class="text-muted"><%= new Date(c.updatedAt || c.timestamp || c.createdAt).toLocaleString() %></small></td>
+                <td>
+  <div class="small text-muted">
+    <div><strong>DB:</strong> <%= fmtDate(c.updatedAt || c.timestamp || c.createdAt) || '—' %></div>
+    <div><strong>Source:</strong> <%= fmtDate(c.sourceLastModified) || '—' %></div>
+    <% if (c.sourceLastModifiedNote) { %>
+      <div class="text-muted"><%= c.sourceLastModifiedNote %></div>
+    <% } %>
+  </div>
+</td>
+
                 <td class="text-end">
                   <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-primary"
@@ -499,6 +508,9 @@ if (typeof users === 'undefined') users = [];
       <textarea name="regulationsJson" id="regulationsJson" class="d-none"></textarea>
       <textarea name="originReqsJson"  id="originReqsJson"  class="d-none"></textarea>
       <textarea name="officialLinksJson" id="officialLinksJson" class="d-none"></textarea>
+      <input type="hidden" name="sourceLastModified" id="sourceLastModified">
+      <input type="hidden" name="sourceLastModifiedNote" id="sourceLastModifiedNote">
+
 
       <div class="modal-header">
         <h5 class="modal-title" id="countryModalLabel">Create Country Regulation</h5>
@@ -511,6 +523,18 @@ if (typeof users === 'undefined') users = [];
             <label class="form-label">Destination Country *</label>
             <input class="form-control" name="destinationCountry" required>
           </div>
+
+          <div class="col-md-6">
+          <label class="form-label">Last Modified (from source)</label>
+          <input type="date" class="form-control" id="sourceLastModifiedInput">
+          <small class="text-muted">Use the “Last updated” date shown on the official site.</small>
+        </div>
+
+        <div class="col-md-6">
+        <label class="form-label">Last Modified Note / Code</label>
+        <input type="text" class="form-control" id="sourceLastModifiedNoteInput" placeholder="Optional: page code / citation / note">
+      </div>
+
 
           <!-- PET TYPE TABS + Add button -->
           <div class="col-12">
@@ -792,467 +816,497 @@ document.addEventListener('DOMContentLoaded', function () {
 </style>
 
 <script>
-    const AdminCountries = (function(){
-      // Default types are protected (can't remove), custom ones are removable
-      const DEFAULTS = ['dog','cat','bird','reptile','other'];
-      let PETS = [];                 // start empty; seed in Create only
-      let KEYMAP = {};               // slug -> original DB key (to preserve casing)
-    
-      let modal, modalEl, form, methodInput, titleEl;
-      let petTabs, petPanelsEl, originReqList, officialLinksList;
-    
-      function ensureModal() {
-        if (!modalEl) {
-          modalEl    = document.getElementById('countryModal');
-          form       = document.getElementById('countryForm');
-          methodInput= document.getElementById('countryFormMethod');
-          titleEl    = document.getElementById('countryModalLabel');
-          petTabs    = document.getElementById('petTabs');
-          petPanelsEl= document.getElementById('petPanels');
-          originReqList = document.getElementById('originReqList');
-          officialLinksList = document.getElementById('officialLinksList');
-    
-          wireFormSubmit();
-    
-          document.getElementById('addOriginReqBtn').addEventListener('click', ()=> addOriginReqRow());
-          document.getElementById('addOfficialLinkBtn').addEventListener('click', ()=> addOfficialLinkRow());
-          document.getElementById('addPetTypeBtn').addEventListener('click', onAddPetType);
-        }
-        if (!window.bootstrap || !bootstrap.Modal) { alert('Bootstrap JS missing.'); return false; }
-        if (!modal) modal = new bootstrap.Modal(modalEl);
-        return true;
-      }
-    
-      // =========== Helpers =========== 
-      function cap(s){ return s ? s.slice(0,1).toUpperCase() + s.slice(1) : s; }
-      function slug(s){ return (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
-      function isDefault(p){ return DEFAULTS.includes(p); }
-    
-      function seedDefaults(){
-        DEFAULTS.forEach(addPetTypeIfMissing);
-        selectPet(DEFAULTS[0]);
-      }
-    
-      function createPetTab(petKey, label){
-        const li = document.createElement('li');
-        li.className = 'nav-item' + (isDefault(petKey) ? '' : ' custom');
-    
-        const a = document.createElement('a');
-        a.className = 'nav-link' + (petTabs.childElementCount===0 ? ' active' : '');
-        a.href = 'javascript:void(0)';
-        a.dataset.pet = petKey;
-        a.textContent = label || cap(petKey);
-        a.addEventListener('click', ()=> selectPet(petKey));
-        li.appendChild(a);
-    
-        if (!isDefault(petKey)) {
-          const x = document.createElement('button');
-          x.type = 'button';
-          x.className = 'btn btn-outline-danger btn-icon close-pet';
-          x.innerHTML = '&times;';
-          x.title = 'Remove pet type';
-          x.addEventListener('click', (e)=> { e.stopPropagation(); removePetType(petKey); });
-          li.appendChild(x);
-        }
-    
-        petTabs.appendChild(li);
-      }
-    
-      function petPanelTemplate(pet){
-        const wrap = document.createElement('div');
-        wrap.className = 'pet-panel';
-        wrap.dataset.pet = pet;
-        wrap.style.display = (petPanelsEl.childElementCount===0?'block':'none');
-        wrap.innerHTML = `
-          <div class="mb-3">
-            <label class="form-label">Microchip (HTML allowed)</label>
-            <textarea class="form-control" rows="2" data-field="microchip"></textarea>
-          </div>
-         
+const AdminCountries = (function(){
+  // Default types are protected (can't remove), custom ones are removable
+  const DEFAULTS = ['dog','cat','bird','reptile','other'];
+  let PETS = [];                 // start empty; seed in Create only
+  let KEYMAP = {};               // slug -> original DB key (to preserve casing)
 
-          <!-- ✅ NEW More Info sections -->
-          <div class="mb-2 d-flex align-items-center justify-content-between">
-            <h6 class="m-0">More Info</h6>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-more">Add more info item</button>
-          </div>
-          <div class="vstack gap-2" data-list="moreInfo"></div>
+  let modal, modalEl, form, methodInput, titleEl;
+  let petTabs, petPanelsEl, originReqList, officialLinksList;
 
-          <div class="mb-2 d-flex align-items-center justify-content-between">
-            <h6 class="m-0">Vaccinations</h6>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-vax">Add vaccination</button>
-          </div>
-          <div class="vstack gap-2" data-list="vaccinations"></div>
-    
-          <div class="mb-2 d-flex align-items-center justify-content-between">
-            <h6 class="m-0">Vaccinations</h6>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-vax">Add vaccination</button>
-          </div>
-            <div class="vstack gap-2" data-list="vaccinations"></div>
-    
-          <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
-            <h6 class="m-0">Certifications</h6>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-cert">Add certification</button>
-          </div>
-          <div class="vstack gap-2" data-list="certifications"></div>
-    
-          <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
-            <h6 class="m-0">Links</h6>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-link">Add link</button>
-          </div>
-          <div class="vstack gap-2" data-list="links"></div>
-        `;
-        wrap.querySelector('[data-action="add-vax"]').addEventListener('click', ()=> addVaxRow(wrap));
-        wrap.querySelector('[data-action="add-cert"]').addEventListener('click', ()=> addCertRow(wrap));
-        wrap.querySelector('[data-action="add-link"]').addEventListener('click', ()=> addPetLinkRow(wrap));
-        wrap.querySelector('[data-action="add-more"]').addEventListener('click', ()=> addMoreInfoRow(wrap));
+  // ✅ date fields (visible inputs) + hidden fields live in the form
+  let sourceLastModifiedInput, sourceLastModifiedNoteInput;
 
-        petPanelsEl.appendChild(wrap);
-      }
+  function ensureModal() {
+    if (!modalEl) {
+      modalEl     = document.getElementById('countryModal');
+      form        = document.getElementById('countryForm');
+      methodInput = document.getElementById('countryFormMethod');
+      titleEl     = document.getElementById('countryModalLabel');
+      petTabs     = document.getElementById('petTabs');
+      petPanelsEl = document.getElementById('petPanels');
+      originReqList = document.getElementById('originReqList');
+      officialLinksList = document.getElementById('officialLinksList');
 
-      function moreInfoRow(data={ name:'', description:'', requirements:[] }) {
-  const row = document.createElement('div');
-  row.className = 'border rounded p-2';
-  row.innerHTML = `
-    <div class="mini-grid-3">
-      <input type="text" class="form-control" placeholder="Section title (key)" value="${esc(data.name)}" data-name>
-      <input type="text" class="form-control" placeholder="Description (HTML ok)" value="${esc(data.description)}" data-desc>
+      // ✅ your visible date inputs
+      sourceLastModifiedInput = document.getElementById('sourceLastModifiedInput');
+      sourceLastModifiedNoteInput = document.getElementById('sourceLastModifiedNoteInput');
+
+      wireFormSubmit();
+
+      document.getElementById('addOriginReqBtn').addEventListener('click', ()=> addOriginReqRow());
+      document.getElementById('addOfficialLinkBtn').addEventListener('click', ()=> addOfficialLinkRow());
+      document.getElementById('addPetTypeBtn').addEventListener('click', onAddPetType);
+    }
+    if (!window.bootstrap || !bootstrap.Modal) { alert('Bootstrap JS missing.'); return false; }
+    if (!modal) modal = new bootstrap.Modal(modalEl);
+    return true;
+  }
+
+  // =========== Helpers ===========
+  function cap(s){ return s ? s.slice(0,1).toUpperCase() + s.slice(1) : s; }
+  function slug(s){ return (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+  function isDefault(p){ return DEFAULTS.includes(p); }
+
+  function seedDefaults(){
+    DEFAULTS.forEach(addPetTypeIfMissing);
+    selectPet(DEFAULTS[0]);
+  }
+
+  function createPetTab(petKey, label){
+    const li = document.createElement('li');
+    li.className = 'nav-item' + (isDefault(petKey) ? '' : ' custom');
+
+    const a = document.createElement('a');
+    a.className = 'nav-link' + (petTabs.childElementCount===0 ? ' active' : '');
+    a.href = 'javascript:void(0)';
+    a.dataset.pet = petKey;
+    a.textContent = label || cap(petKey);
+    a.addEventListener('click', ()=> selectPet(petKey));
+    li.appendChild(a);
+
+    if (!isDefault(petKey)) {
+      const x = document.createElement('button');
+      x.type = 'button';
+      x.className = 'btn btn-outline-danger btn-icon close-pet';
+      x.innerHTML = '&times;';
+      x.title = 'Remove pet type';
+      x.addEventListener('click', (e)=> { e.stopPropagation(); removePetType(petKey); });
+      li.appendChild(x);
+    }
+
+    petTabs.appendChild(li);
+  }
+
+  function petPanelTemplate(pet){
+    const wrap = document.createElement('div');
+    wrap.className = 'pet-panel';
+    wrap.dataset.pet = pet;
+    wrap.style.display = (petPanelsEl.childElementCount===0?'block':'none');
+    wrap.innerHTML = `
+      <div class="mb-3">
+        <label class="form-label">Microchip (HTML allowed)</label>
+        <textarea class="form-control" rows="2" data-field="microchip"></textarea>
+      </div>
+
+      <div class="mb-2 d-flex align-items-center justify-content-between">
+        <h6 class="m-0">More Info</h6>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-more">Add more info item</button>
+      </div>
+      <div class="vstack gap-2" data-list="moreInfo"></div>
+
+      <div class="mb-2 d-flex align-items-center justify-content-between">
+        <h6 class="m-0">Vaccinations</h6>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-vax">Add vaccination</button>
+      </div>
+      <div class="vstack gap-2" data-list="vaccinations"></div>
+
+      <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
+        <h6 class="m-0">Certifications</h6>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-cert">Add certification</button>
+      </div>
+      <div class="vstack gap-2" data-list="certifications"></div>
+
+      <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
+        <h6 class="m-0">Links</h6>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-action="add-link">Add link</button>
+      </div>
+      <div class="vstack gap-2" data-list="links"></div>
+    `;
+    wrap.querySelector('[data-action="add-vax"]').addEventListener('click', ()=> addVaxRow(wrap));
+    wrap.querySelector('[data-action="add-cert"]').addEventListener('click', ()=> addCertRow(wrap));
+    wrap.querySelector('[data-action="add-link"]').addEventListener('click', ()=> addPetLinkRow(wrap));
+    wrap.querySelector('[data-action="add-more"]').addEventListener('click', ()=> addMoreInfoRow(wrap));
+
+    petPanelsEl.appendChild(wrap);
+  }
+
+  function moreInfoRow(data={ name:'', description:'', requirements:[] }) {
+    const row = document.createElement('div');
+    row.className = 'border rounded p-2';
+    row.innerHTML = `
+      <div class="mini-grid-3">
+        <input type="text" class="form-control" placeholder="Section title (key)" value="${esc(data.name)}" data-name>
+        <input type="text" class="form-control" placeholder="Description (HTML ok)" value="${esc(data.description)}" data-desc>
+        <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+      </div>
+    `;
+    row.querySelector('button').addEventListener('click', ()=> row.remove());
+    row.appendChild(reqListBlock(data.requirements || []));
+    return row;
+  }
+
+  function addMoreInfoRow(panel, data){
+    panel.querySelector('[data-list="moreInfo"]').appendChild(moreInfoRow(data));
+  }
+
+  function vaxOrCertRow(kind, data={ name:'', description:'', requirements:[] }) {
+    const row = document.createElement('div');
+    row.className = 'border rounded p-2';
+    row.innerHTML = `
+      <div class="mini-grid-3">
+        <input type="text" class="form-control" placeholder="${kind} name (key)" value="${esc(data.name)}" data-name>
+        <input type="text" class="form-control" placeholder="Short description (HTML ok)" value="${esc(data.description)}" data-desc>
+        <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+      </div>
+    `;
+    row.querySelector('button').addEventListener('click', ()=> row.remove());
+    row.appendChild(reqListBlock(data.requirements || []));
+    return row;
+  }
+  function addVaxRow(panel, data){ panel.querySelector('[data-list="vaccinations"]').appendChild(vaxOrCertRow('Vaccine', data)); }
+  function addCertRow(panel, data){ panel.querySelector('[data-list="certifications"]').appendChild(vaxOrCertRow('Certificate', data)); }
+
+  function reqListBlock(reqs=[]){
+    const frag = document.createElement('div');
+    frag.innerHTML = `
+      <div class="muted mb-1">Requirements</div>
+      <div class="vstack gap-1" data-reqs></div>
+      <button type="button" class="btn btn-sm btn-outline-secondary mt-1" data-add-req>Add requirement</button>
+    `;
+    const list = frag.querySelector('[data-reqs]');
+    reqs.forEach(r => list.appendChild(requirementRow(r)));
+    frag.querySelector('[data-add-req]').addEventListener('click', ()=> list.appendChild(requirementRow('')));
+    return frag;
+  }
+
+  function requirementRow(val=''){
+    const div = document.createElement('div');
+    div.className = 'chip-row';
+    div.innerHTML = `
+      <input type="text" class="form-control" placeholder="Requirement…" value="${esc(val)}">
+      <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>`;
+    div.querySelector('button').addEventListener('click', ()=> div.remove());
+    return div;
+  }
+
+  function petLinkRow(data={name:'', url:''}){
+    const row = document.createElement('div');
+    row.className = 'mini-grid-3';
+    row.innerHTML = `
+      <input type="text" name="petLinkName" class="form-control" placeholder="Link name" value="${esc(data.name)}">
+      <input type="url" name="petLinkUrl" class="form-control" placeholder="https://…" value="${esc(data.url)}">
       <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
-    </div>
-  `;
-  row.querySelector('button').addEventListener('click', ()=> row.remove());
-  row.appendChild(reqListBlock(data.requirements || []));
-  return row;
-}
+    `;
+    row.querySelector('button').addEventListener('click', ()=> row.remove());
+    return row;
+  }
+  function addPetLinkRow(panel, data){ panel.querySelector('[data-list="links"]').appendChild(petLinkRow(data)); }
 
-function addMoreInfoRow(panel, data){
-  panel.querySelector('[data-list="moreInfo"]').appendChild(moreInfoRow(data));
-}
+  function addOriginReqRow(data={ key:'', appliesTo:[], details:'' }){
+    const row = document.createElement('div');
+    row.className = 'border rounded p-2';
+    row.innerHTML = `
+      <div class="mini-grid">
+        <input type="text" class="form-control" placeholder="Requirement key (e.g., footAndMouthDisease)" value="${esc(data.key)}" data-key>
+        <div data-applies>
+          <div class="muted mb-1">Applies to</div>
+        </div>
+      </div>
+      <div class="mt-2 mini-grid-3" style="grid-template-columns: 1fr auto auto">
+        <textarea class="form-control" rows="2" placeholder="Details…">${esc(data.details)}</textarea>
+        <button type="button" class="btn btn-outline-danger btn-icon ms-2" title="Remove">&times;</button>
+      </div>
+    `;
+    row.querySelector('button').addEventListener('click', ()=> row.remove());
+    originReqList.appendChild(row);
+    renderAppliesToCheckboxes(row.querySelector('[data-applies]'), data.appliesTo || []);
+  }
 
-    
-      function vaxOrCertRow(kind, data={ name:'', description:'', requirements:[] }) {
-        const row = document.createElement('div');
-        row.className = 'border rounded p-2';
-        row.innerHTML = `
-          <div class="mini-grid-3">
-            <input type="text" class="form-control" placeholder="${kind} name (key)" value="${esc(data.name)}" data-name>
-            <input type="text" class="form-control" placeholder="Short description (HTML ok)" value="${esc(data.description)}" data-desc>
-            <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
-          </div>
-        `;
-        row.querySelector('button').addEventListener('click', ()=> row.remove());
-        row.appendChild(reqListBlock(data.requirements || []));
-        return row;
-      }
-      function addVaxRow(panel, data){ panel.querySelector('[data-list="vaccinations"]').appendChild(vaxOrCertRow('Vaccine', data)); }
-      function addCertRow(panel, data){ panel.querySelector('[data-list="certifications"]').appendChild(vaxOrCertRow('Certificate', data)); }
-    
-      function reqListBlock(reqs=[]){
-        const frag = document.createElement('div');
-        frag.innerHTML = `
-          <div class="muted mb-1">Requirements</div>
-          <div class="vstack gap-1" data-reqs></div>
-          <button type="button" class="btn btn-sm btn-outline-secondary mt-1" data-add-req>Add requirement</button>
-        `;
-        const list = frag.querySelector('[data-reqs]');
-        reqs.forEach(r => list.appendChild(requirementRow(r)));
-        frag.querySelector('[data-add-req]').addEventListener('click', ()=> list.appendChild(requirementRow('')));
-        return frag;
-      }
-      function requirementRow(val=''){
-        const div = document.createElement('div');
-        div.className = 'chip-row';
-        div.innerHTML = `
-          <input type="text" class="form-control" placeholder="Requirement…" value="${esc(val)}">
-          <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>`;
-        div.querySelector('button').addEventListener('click', ()=> div.remove());
-        return div;
-      }
-    
-     function petLinkRow(data={name:'', url:''}){
-  const row = document.createElement('div');
-  row.className = 'mini-grid-3';
-  row.innerHTML = `
-    <input type="text" name="petLinkName" class="form-control" placeholder="Link name" value="${esc(data.name)}">
-    <input type="url" name="petLinkUrl" class="form-control" placeholder="https://…" value="${esc(data.url)}">
-    <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
-  `;
-  row.querySelector('button').addEventListener('click', ()=> row.remove());
-  return row;
-}
+  function addOfficialLinkRow(data={name:'', url:''}) {
+    const row = document.createElement('div');
+    row.className = 'mini-grid-3';
+    row.innerHTML = `
+      <input type="text" name="officialLinkName" class="form-control" placeholder="Link name" value="${esc(data.name)}">
+      <input type="url" name="officialLinkUrl" class="form-control" placeholder="https://…" value="${esc(data.url)}">
+      <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
+    `;
+    row.querySelector('button').addEventListener('click', ()=> row.remove());
+    officialLinksList.appendChild(row);
+  }
 
-      function addPetLinkRow(panel, data){ panel.querySelector('[data-list="links"]').appendChild(petLinkRow(data)); }
-    
-      function addOriginReqRow(data={ key:'', appliesTo:[], details:'' }){
-        const row = document.createElement('div');
-        row.className = 'border rounded p-2';
-        row.innerHTML = `
-          <div class="mini-grid">
-            <input type="text" class="form-control" placeholder="Requirement key (e.g., footAndMouthDisease)" value="${esc(data.key)}" data-key>
-            <div data-applies>
-              <div class="muted mb-1">Applies to</div>
-            </div>
-          </div>
-          <div class="mt-2 mini-grid-3" style="grid-template-columns: 1fr auto auto">
-            <textarea class="form-control" rows="2" placeholder="Details…">${esc(data.details)}</textarea>
-            <button type="button" class="btn btn-outline-danger btn-icon ms-2" title="Remove">&times;</button>
-          </div>
-        `;
-        row.querySelector('button').addEventListener('click', ()=> row.remove());
-        originReqList.appendChild(row);
-        renderAppliesToCheckboxes(row.querySelector('[data-applies]'), data.appliesTo || []);
-      }
-    
-      function addOfficialLinkRow(data={name:'', url:''}) {
-  const row = document.createElement('div');
-  row.className = 'mini-grid-3';
-  row.innerHTML = `
-    <input type="text" name="officialLinkName" class="form-control" placeholder="Link name" value="${esc(data.name)}">
-    <input type="url" name="officialLinkUrl" class="form-control" placeholder="https://…" value="${esc(data.url)}">
-    <button type="button" class="btn btn-outline-danger btn-icon" title="Remove">&times;</button>
-  `;
-  row.querySelector('button').addEventListener('click', ()=> row.remove());
-  officialLinksList.appendChild(row);
-}
+  // =========== Tabs / Pet add/remove ===========
+  function addPetTypeIfMissing(rawKey){
+    const key = slug(rawKey);
+    if (!key) return;
+    if (petTabs.querySelector(`.nav-link[data-pet="${key}"]`)) return;
 
-    
-      // =========== Tabs / Pet add/remove ===========
-    
-      function addPetTypeIfMissing(rawKey){
-        const key = slug(rawKey);
-        if (!key) return;
-        if (petTabs.querySelector(`.nav-link[data-pet="${key}"]`)) return;
-    
-        PETS.push(key);
-        KEYMAP[key] = rawKey;
-        createPetTab(key, cap(rawKey));
-        petPanelTemplate(key);
-        appendCheckboxToOriginRows(key);
-      }
-    
-      function onAddPetType(){
-        const name = prompt('New pet type name (e.g., Ferret, Tortoise):');
-        if (!name) return;
-        const key = slug(name);
-        if (!key) return alert('Please enter a valid name.');
-        if (petTabs.querySelector(`.nav-link[data-pet="${key}"]`)) return alert('That pet type already exists.');
-        addPetTypeIfMissing(name);
-        selectPet(key);
-      }
-    
-      function removePetType(key){
-        key = slug(key);
-        if (isDefault(key)) return;
-        const tab = petTabs.querySelector(`.nav-link[data-pet="${key}"]`);
-        if (tab) tab.parentElement.remove();
-        const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${key}"]`);
-        if (panel) panel.remove();
-        PETS = PETS.filter(p => p !== key);
-        delete KEYMAP[key];
-        originReqList.querySelectorAll('[data-applies]').forEach(holder => {
-          const box = holder.querySelector(`input[type="checkbox"][value="${key}"]`);
-          if (box) box.parentElement.remove();
-        });
-        const first = petTabs.querySelector('.nav-link');
-        if (first) selectPet(first.dataset.pet);
-      }
-    
-      function selectPet(key){
-        petTabs.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.pet===key));
-        petPanelsEl.querySelectorAll('.pet-panel').forEach(pp => pp.style.display = (pp.dataset.pet===key?'block':'none'));
-      }
-    
-      function appendCheckboxToOriginRows(key){
-        originReqList.querySelectorAll('[data-applies]').forEach(holder => {
-          if (holder.querySelector(`input[value="${key}"]`)) return;
-          holder.appendChild(checkboxLabel(key, false));
-        });
-      }
-      function renderAppliesToCheckboxes(holder, checked){
-        const checkedSlugs = new Set((checked||[]).map(v => (v||'').toString().toLowerCase()));
-        holder.innerHTML = '<div class="muted mb-1">Applies to</div>';
-        PETS.forEach(p => holder.appendChild(checkboxLabel(p, checkedSlugs.has(p))));
-      }
-      function checkboxLabel(value, isChecked){
-        const lbl = document.createElement('label'); lbl.className = 'me-2';
-        lbl.innerHTML = `<input type="checkbox" value="${value}" ${isChecked?'checked':''}> ${cap(KEYMAP[value] || value)}`;
-        return lbl;
-      }
-    
-      // =========== Serialize / Fill ===========
-    
-      function buildPayload(){
-        const regs = {};
-        petPanelsEl.querySelectorAll('.pet-panel').forEach(panel => {
-          const key = panel.dataset.pet;                // slug
-          const dbKey = KEYMAP[key] || key;             // original casing if we have it
-    
-          const microchip = panel.querySelector('[data-field="microchip"]').value.trim();
+    PETS.push(key);
+    KEYMAP[key] = rawKey;
+    createPetTab(key, cap(rawKey));
+    petPanelTemplate(key);
+    appendCheckboxToOriginRows(key);
+  }
 
-// ✅ NEW: More Info sections object (same structure as vax/cert)
-const moreInfo = {};
-panel.querySelectorAll('[data-list="moreInfo"] > .border').forEach(row => {
-  const name = row.querySelector('[data-name]').value.trim();
-  const description = row.querySelector('[data-desc]').value.trim();
-  const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')]
-    .map(i=>i.value.trim()).filter(Boolean);
-  if (name) moreInfo[name] = { description, requirements };
-});
+  function onAddPetType(){
+    const name = prompt('New pet type name (e.g., Ferret, Tortoise):');
+    if (!name) return;
+    const key = slug(name);
+    if (!key) return alert('Please enter a valid name.');
+    if (petTabs.querySelector(`.nav-link[data-pet="${key}"]`)) return alert('That pet type already exists.');
+    addPetTypeIfMissing(name);
+    selectPet(key);
+  }
 
-    
-          const vaccinations = {};
-          panel.querySelectorAll('[data-list="vaccinations"] > .border').forEach(row => {
-            const name = row.querySelector('[data-name]').value.trim();
-            const description = row.querySelector('[data-desc]').value.trim();
-            const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')].map(i=>i.value.trim()).filter(Boolean);
-            if (name) vaccinations[name] = { description, requirements };
-          });
-    
-          const certifications = {};
-          panel.querySelectorAll('[data-list="certifications"] > .border').forEach(row => {
-            const name = row.querySelector('[data-name]').value.trim();
-            const description = row.querySelector('[data-desc]').value.trim();
-            const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')].map(i=>i.value.trim()).filter(Boolean);
-            if (name) certifications[name] = { description, requirements };
-          });
-    
-          const links = [...panel.querySelectorAll('[data-list="links"] > .mini-grid-3')].map(row => {
-            const name = row.children[0].value.trim();
-            const url  = row.children[1].value.trim();
-            return (name && url) ? { name, url } : null;
-          }).filter(Boolean);
-    
-         if (
-  microchip ||
-  Object.keys(moreInfo).length ||
-  Object.keys(vaccinations).length ||
-  Object.keys(certifications).length ||
-  links.length
-) {
-  regs[dbKey] = { microchip, moreInfo, vaccinations, certifications, links };
-}
+  function removePetType(key){
+    key = slug(key);
+    if (isDefault(key)) return;
+    const tab = petTabs.querySelector(`.nav-link[data-pet="${key}"]`);
+    if (tab) tab.parentElement.remove();
+    const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${key}"]`);
+    if (panel) panel.remove();
+    PETS = PETS.filter(p => p !== key);
+    delete KEYMAP[key];
+    originReqList.querySelectorAll('[data-applies]').forEach(holder => {
+      const box = holder.querySelector(`input[type="checkbox"][value="${key}"]`);
+      if (box) box.parentElement.remove();
+    });
+    const first = petTabs.querySelector('.nav-link');
+    if (first) selectPet(first.dataset.pet);
+  }
 
-        });
-    
-        const origins = {};
-        originReqList.querySelectorAll('.border.rounded').forEach(row => {
-          const key = row.querySelector('[data-key]').value.trim();
-          const details = row.querySelector('textarea').value.trim();
-          const appliesTo = [...row.querySelectorAll('input[type="checkbox"]:checked')].map(c=>c.value);
-          if (key) origins[key] = { appliesTo, details };
-        });
-    
-        const officialLinks = [...officialLinksList.querySelectorAll('.mini-grid-3')].map(row => {
-          const name = row.children[0].value.trim();
-          const url  = row.children[1].value.trim();
-          return (name && url) ? { name, url } : null;
-        }).filter(Boolean);
-    
-        document.getElementById('regulationsJson').value   = JSON.stringify(regs);
-        document.getElementById('originReqsJson').value    = JSON.stringify(origins);
-        document.getElementById('officialLinksJson').value = JSON.stringify(officialLinks);
+  function selectPet(key){
+    petTabs.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.pet===key));
+    petPanelsEl.querySelectorAll('.pet-panel').forEach(pp => pp.style.display = (pp.dataset.pet===key?'block':'none'));
+  }
+
+  function appendCheckboxToOriginRows(key){
+    originReqList.querySelectorAll('[data-applies]').forEach(holder => {
+      if (holder.querySelector(`input[value="${key}"]`)) return;
+      holder.appendChild(checkboxLabel(key, false));
+    });
+  }
+
+  function renderAppliesToCheckboxes(holder, checked){
+    const checkedSlugs = new Set((checked||[]).map(v => (v||'').toString().toLowerCase()));
+    holder.innerHTML = '<div class="muted mb-1">Applies to</div>';
+    PETS.forEach(p => holder.appendChild(checkboxLabel(p, checkedSlugs.has(p))));
+  }
+
+  function checkboxLabel(value, isChecked){
+    const lbl = document.createElement('label'); lbl.className = 'me-2';
+    lbl.innerHTML = `<input type="checkbox" value="${value}" ${isChecked?'checked':''}> ${cap(KEYMAP[value] || value)}`;
+    return lbl;
+  }
+
+  // =========== Serialize / Fill ===========
+  function buildPayload(){
+    const regs = {};
+    petPanelsEl.querySelectorAll('.pet-panel').forEach(panel => {
+      const key = panel.dataset.pet;                // slug
+      const dbKey = KEYMAP[key] || key;             // original casing if we have it
+
+      const microchip = panel.querySelector('[data-field="microchip"]').value.trim();
+
+      // ✅ MoreInfo sections object
+      const moreInfo = {};
+      panel.querySelectorAll('[data-list="moreInfo"] > .border').forEach(row => {
+        const name = row.querySelector('[data-name]').value.trim();
+        const description = row.querySelector('[data-desc]').value.trim();
+        const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')]
+          .map(i=>i.value.trim()).filter(Boolean);
+        if (name) moreInfo[name] = { description, requirements };
+      });
+
+      const vaccinations = {};
+      panel.querySelectorAll('[data-list="vaccinations"] > .border').forEach(row => {
+        const name = row.querySelector('[data-name]').value.trim();
+        const description = row.querySelector('[data-desc]').value.trim();
+        const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')]
+          .map(i=>i.value.trim()).filter(Boolean);
+        if (name) vaccinations[name] = { description, requirements };
+      });
+
+      const certifications = {};
+      panel.querySelectorAll('[data-list="certifications"] > .border').forEach(row => {
+        const name = row.querySelector('[data-name]').value.trim();
+        const description = row.querySelector('[data-desc]').value.trim();
+        const requirements = [...row.querySelectorAll('[data-reqs] .chip-row input')]
+          .map(i=>i.value.trim()).filter(Boolean);
+        if (name) certifications[name] = { description, requirements };
+      });
+
+      const links = [...panel.querySelectorAll('[data-list="links"] > .mini-grid-3')].map(row => {
+        const name = row.children[0].value.trim();
+        const url  = row.children[1].value.trim();
+        return (name && url) ? { name, url } : null;
+      }).filter(Boolean);
+
+      if (
+        microchip ||
+        Object.keys(moreInfo).length ||
+        Object.keys(vaccinations).length ||
+        Object.keys(certifications).length ||
+        links.length
+      ) {
+        regs[dbKey] = { microchip, moreInfo, vaccinations, certifications, links };
       }
-    
-      function wireFormSubmit(){ form.addEventListener('submit', function(e) {
-  buildPayload(); // <-- makes sure JSON is inserted into hidden fields
-}); }
-    
-      function clearForm(){
-        form.reset();
-        methodInput.value = 'POST';
-        form.action = '/admin/countries';
-        titleEl.textContent = 'Create Country Regulation';
-    
-        originReqList.innerHTML = '';
-        officialLinksList.innerHTML = '';
-        petTabs.innerHTML = '';
-        petPanelsEl.innerHTML = '';
-        PETS = [];
-        KEYMAP = {};
-      }
-    
-      function fillPetPanel(pet, data){
-        const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${pet}"]`);
-        if (!panel || !data) return;
-        panel.querySelector('[data-field="microchip"]').value = data.microchip || '';
-        // ✅ Normalize "moreInfo" so strings don't render as 0..N rows
-let mi = data.moreInfo;
+    });
 
-// If it's a legacy string, convert to a single section
-if (typeof mi === 'string') {
-  const s = mi.trim();
-  mi = s ? { General: { description: s, requirements: [] } } : {};
-}
+    const origins = {};
+    originReqList.querySelectorAll('.border.rounded').forEach(row => {
+      const key = row.querySelector('[data-key]').value.trim();
+      const details = row.querySelector('textarea').value.trim();
+      const appliesTo = [...row.querySelectorAll('input[type="checkbox"]:checked')].map(c=>c.value);
+      if (key) origins[key] = { appliesTo, details };
+    });
 
-// If it's null/undefined or not an object, make it empty
-if (!mi || typeof mi !== 'object' || Array.isArray(mi)) {
-  mi = {};
-}
+    const officialLinks = [...officialLinksList.querySelectorAll('.mini-grid-3')].map(row => {
+      const name = row.children[0].value.trim();
+      const url  = row.children[1].value.trim();
+      return (name && url) ? { name, url } : null;
+    }).filter(Boolean);
 
-Object.keys(mi).forEach(name => {
-  const entry = mi[name] || {};
-  addMoreInfoRow(panel, {
-    name,
-    description: entry.description || '',
-    requirements: Array.isArray(entry.requirements) ? entry.requirements : []
-  });
-});
+    document.getElementById('regulationsJson').value   = JSON.stringify(regs);
+    document.getElementById('originReqsJson').value    = JSON.stringify(origins);
+    document.getElementById('officialLinksJson').value = JSON.stringify(officialLinks);
 
-    
-        const vax = data.vaccinations || {};
-        Object.keys(vax).forEach(name => addVaxRow(panel, { name, description: vax[name].description || '', requirements: vax[name].requirements || [] }));
-        const certs = data.certifications || {};
-        Object.keys(certs).forEach(name => addCertRow(panel, { name, description: certs[name].description || '', requirements: certs[name].requirements || [] }));
-        (data.links || []).forEach(l => addPetLinkRow(panel, l));
-      }
-    
-      async function openEdit(id){
-        if (!ensureModal()) return;
-        clearForm();
-        try {
-          const res = await fetch(`/admin/countries/${id}`, { headers: { 'Accept': 'application/json' } });
-          if (!res.ok) { alert('Failed to load country'); return; }
-          const data = await res.json();
-    
-          form.querySelector('[name="destinationCountry"]').value = data.destinationCountry || '';
-    
-          // Add keys exactly as in DB first (preserve casing)
-          const regs = data.regulationsByPetType || {};
-          const keys = Object.keys(regs);
-          keys.forEach(k => addPetTypeIfMissing(k));
-          // Then fill panels using slug to target the DOM
-          keys.forEach(k => fillPetPanel(slug(k), regs[k]));
-    
-          const origins = data.originRequirements || {};
-          Object.keys(origins).forEach(k => {
-            addOriginReqRow({ key: k, appliesTo: origins[k].appliesTo || [], details: origins[k].details || '' });
-          });
-    
-          (data.officialLinks || []).forEach(l => addOfficialLinkRow(l));
-    
-          methodInput.value = 'PUT';
-          form.action = `/admin/countries/${id}?_method=PUT`;
-          titleEl.textContent = `Edit: ${data.destinationCountry || ''}`;
-    
-          if (keys.length) selectPet(slug(keys[0])); else seedDefaults();
-          modal.show();
-        } catch (e) {
-          console.error(e); alert('Error loading country.');
+    // ✅ copy visible fields -> hidden fields for POST/PUT
+    document.getElementById('sourceLastModified').value =
+      (sourceLastModifiedInput && sourceLastModifiedInput.value) ? sourceLastModifiedInput.value : '';
+
+    document.getElementById('sourceLastModifiedNote').value =
+      (sourceLastModifiedNoteInput && sourceLastModifiedNoteInput.value)
+        ? sourceLastModifiedNoteInput.value.trim()
+        : '';
+  }
+
+  function wireFormSubmit(){
+    form.addEventListener('submit', function(){
+      buildPayload(); // ensure JSON + hidden date fields get filled
+    });
+  }
+
+  function clearForm(){
+    form.reset();
+    methodInput.value = 'POST';
+    form.action = '/admin/countries';
+    titleEl.textContent = 'Create Country Regulation';
+
+    // ✅ reset date inputs
+    if (sourceLastModifiedInput) sourceLastModifiedInput.value = '';
+    if (sourceLastModifiedNoteInput) sourceLastModifiedNoteInput.value = '';
+
+    originReqList.innerHTML = '';
+    officialLinksList.innerHTML = '';
+    petTabs.innerHTML = '';
+    petPanelsEl.innerHTML = '';
+    PETS = [];
+    KEYMAP = {};
+  }
+
+  function fillPetPanel(pet, data){
+    const panel = petPanelsEl.querySelector(`.pet-panel[data-pet="${pet}"]`);
+    if (!panel || !data) return;
+
+    panel.querySelector('[data-field="microchip"]').value = data.microchip || '';
+
+    // ✅ Normalize "moreInfo" so legacy strings don’t break UI
+    let mi = data.moreInfo;
+    if (typeof mi === 'string') {
+      const s = mi.trim();
+      mi = s ? { General: { description: s, requirements: [] } } : {};
+    }
+    if (!mi || typeof mi !== 'object' || Array.isArray(mi)) mi = {};
+
+    Object.keys(mi).forEach(name => {
+      const entry = mi[name] || {};
+      addMoreInfoRow(panel, {
+        name,
+        description: entry.description || '',
+        requirements: Array.isArray(entry.requirements) ? entry.requirements : []
+      });
+    });
+
+    const vax = data.vaccinations || {};
+    Object.keys(vax).forEach(name => addVaxRow(panel, {
+      name,
+      description: vax[name].description || '',
+      requirements: vax[name].requirements || []
+    }));
+
+    const certs = data.certifications || {};
+    Object.keys(certs).forEach(name => addCertRow(panel, {
+      name,
+      description: certs[name].description || '',
+      requirements: certs[name].requirements || []
+    }));
+
+    (data.links || []).forEach(l => addPetLinkRow(panel, l));
+  }
+
+  async function openEdit(id){
+    if (!ensureModal()) return;
+    clearForm();
+    try {
+      const res = await fetch(`/admin/countries/${id}`, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) { alert('Failed to load country'); return; }
+      const data = await res.json();
+
+      form.querySelector('[name="destinationCountry"]').value = data.destinationCountry || '';
+
+      // ✅ Fill date fields (sourceLastModified + note)
+      if (sourceLastModifiedInput) {
+        const v = data.sourceLastModified;
+        if (!v) sourceLastModifiedInput.value = '';
+        else {
+          const d = new Date(v);
+          sourceLastModifiedInput.value = isNaN(d) ? '' : d.toISOString().slice(0,10);
         }
       }
-    
-      function openCreate(){
-        if (!ensureModal()) return;
-        clearForm();
-        seedDefaults();
-        modal.show();
+      if (sourceLastModifiedNoteInput) {
+        sourceLastModifiedNoteInput.value = data.sourceLastModifiedNote || '';
       }
-    
-      function esc(s=''){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    
-      return { openEdit, openCreate };
-    })();
-    </script>
-    
+
+      // Add keys exactly as in DB first (preserve casing)
+      const regs = data.regulationsByPetType || {};
+      const keys = Object.keys(regs);
+      keys.forEach(k => addPetTypeIfMissing(k));
+      // Then fill panels using slug to target the DOM
+      keys.forEach(k => fillPetPanel(slug(k), regs[k]));
+
+      const origins = data.originRequirements || {};
+      Object.keys(origins).forEach(k => {
+        addOriginReqRow({ key: k, appliesTo: origins[k].appliesTo || [], details: origins[k].details || '' });
+      });
+
+      (data.officialLinks || []).forEach(l => addOfficialLinkRow(l));
+
+      methodInput.value = 'PUT';
+      form.action = `/admin/countries/${id}?_method=PUT`;
+      titleEl.textContent = `Edit: ${data.destinationCountry || ''}`;
+
+      if (keys.length) selectPet(slug(keys[0])); else seedDefaults();
+      modal.show();
+    } catch (e) {
+      console.error(e); alert('Error loading country.');
+    }
+  }
+
+  function openCreate(){
+    if (!ensureModal()) return;
+    clearForm();
+    seedDefaults();
+    modal.show();
+  }
+
+  function esc(s=''){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  return { openEdit, openCreate };
+})();
+</script>
+
 
 </section>
 

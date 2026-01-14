@@ -71,6 +71,10 @@ const CountryPetRegulationSchema = new mongoose.Schema({
     default: []
   },
   
+   // ✅ NEW: Research-tracked fields (for crawlers)
+  sourceLastModified: { type: Date, default: null },          // date shown on the source page
+  sourceLastModifiedNote: { type: String, default: '' },      // optional "code"/note from research
+
 
   source_id: {
     type: mongoose.Schema.Types.ObjectId,
