@@ -301,6 +301,8 @@ module.exports.attachAds = async (req, res, next) => {
         if (!adsByPlacement[place]) adsByPlacement[place] = [];
         adsByPlacement[place].push(ad);
       }
+      console.log('[attachAds]', req.originalUrl);
+
     }
 
     res.locals.adsByPlacement = adsByPlacement;
