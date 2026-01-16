@@ -77,8 +77,8 @@ if (typeof users === 'undefined') users = [];
     
       <div class="tab-content border border-top-0 p-3 bg-white rounded-bottom shadow-sm">
 
-   <!-- AIRLINES TAB -->
-<div class="tab-pane fade <%= (tab==='airlines'?'show active':'') %>" id="airlines" role="tabpanel" aria-labelledby="airlines-tab">
+<!-- AIRLINES TAB -->
+    <div class="tab-pane fade <%= (tab==='airlines'?'show active':'') %>" id="airlines" role="tabpanel" aria-labelledby="airlines-tab">
 
     <!-- Top bar: search + create -->
     <form class="row gy-2 gx-2 align-items-center mb-3" method="get" action="/admin">
@@ -615,8 +615,9 @@ if (typeof users === 'undefined') users = [];
         <tr>
           <td><%= ad.title %></td>
           <td><%= ad.adType %></td>
-          <td><%= ad.placement %></td>
-          <td><%= (ad.pages || []).join(', ') %></td>
+          <td><%= (ad.placements || []).join(', ') %></td>
+          <td><%= fmtDate(ad.updatedAt) || '' %></td>
+
           <td>
             <% if (ad.active) { %>
               <span class="badge bg-success">Active</span>
@@ -723,16 +724,20 @@ if (typeof users === 'undefined') users = [];
             <input class="form-control" name="linkUrl" placeholder="https://...">
           </div>
 
-          <!-- HTML Content -->
-          <div class="col-12 ad-field" id="htmlField" style="display:none;">
-            <label class="form-label">HTML / Embed Code</label>
-            <textarea class="form-control" name="content" rows="4" placeholder='<a href="..."><img src="..."></a>'></textarea>
-          </div>
+    <!-- HTML Content -->
+<div class="col-12 ad-field" id="htmlField" style="display:none;">
+  <label class="form-label">HTML / Embed Code</label>
+  <textarea class="form-control" name="content" rows="4"
+    placeholder='<a href="..."><img src="..."></a>'></textarea>
+</div>
 
-          <!-- Product Embed Code -->
-          <div class="col-12 ad-field" id="productField" style="display:none;">
-            <label class="form-label">Product Embed / Shopify Script</label>
-            <textarea class="form-control" name="productEmbed" rows="4" placeholder='<script src="https://buy-button.js"></script>'></textarea>
+<!-- Product Embed Code -->
+<div class="col-12 ad-field" id="productField" style="display:none;">
+  <label class="form-label">Product Embed / Shopify Script</label>
+  <textarea class="form-control" name="productEmbed" rows="4"
+    placeholder='<script src="https://buy-button.js"></script>'></textarea>
+</div>
+
           </div>
 
           <!-- Active Toggle -->
@@ -776,27 +781,7 @@ document.addEventListener('DOMContentLoaded', toggleAdFields);
 </script>
 
 
-<!-- === Show/Hide Fields Based on Ad Type === -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const adTypeSelect = document.getElementById('adTypeSelect');
-  const htmlField    = document.getElementById('htmlField');
-  const imageUrlField= document.getElementById('imageUrlField');
-  const linkUrlField = document.getElementById('linkUrlField');
-  const productIdField = document.getElementById('productIdField');
 
-  function toggleFields() {
-    const type = adTypeSelect.value;
-    htmlField.style.display = (type === 'html' || type === 'script') ? 'block' : 'none';
-    imageUrlField.style.display = (type === 'image' || type === 'product') ? 'block' : 'none';
-    productIdField.style.display = (type === 'product') ? 'block' : 'none';
-    linkUrlField.style.display = (type !== '') ? 'block' : 'none';
-  }
-
-  adTypeSelect.addEventListener('change', toggleFields);
-  toggleFields(); // run on load
-});
-</script>
 
 
 
@@ -1658,38 +1643,85 @@ const AdminAds = (function () {
       methodInput = document.getElementById('adFormMethod');
       titleEl = document.getElementById('adModalLabel');
     }
-    if (!window.bootstrap || !bootstrap.Modal) return false;
+    if (!window.bootstrap || !bootstrap.Modal) {
+      alert('Bootstrap JS missing.');
+      return false;
+    }
     if (!modal) modal = new bootstrap.Modal(modalEl);
     return true;
   }
 
+  function clearPlacements() {
+    form.querySelectorAll('input[name="placements"]').forEach(cb => cb.checked = false);
+  }
+
+  function setPlacements(values) {
+    const set = new Set((values || []).map(String));
+    form.querySelectorAll('input[name="placements"]').forEach(cb => {
+      cb.checked = set.has(cb.value);
+    });
+  }
+
   function openCreate() {
     if (!ensureModal()) return;
+
     form.reset();
+    clearPlacements();
+
     form.action = '/admin/ads';
     methodInput.value = 'POST';
     titleEl.textContent = 'Create Ad';
+
+    // ensure the right fields show
+    const adTypeEl = form.querySelector('[name="adType"]');
+    if (adTypeEl) adTypeEl.value = 'image';
+    if (typeof toggleAdFields === 'function') toggleAdFields();
+
     modal.show();
   }
 
   async function openEdit(id) {
     if (!ensureModal()) return;
+
     try {
-      const res = await fetch(`/admin/ads/${id}`, { headers: {'Accept': 'application/json'} });
+      const res = await fetch(`/admin/ads/${id}`, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) {
+        alert('Failed to load ad.');
+        return;
+      }
+
       const data = await res.json();
 
-      form.title.value = data.title || '';
-      form.adType.value = data.adType || '';
-      form.placement.value = data.placement || '';
-      form.pages.value = (data.pages || []).join(', ');
-      form.content.value = data.content || '';
-      form.active.checked = !!data.active;
+      // Basic fields
+      form.querySelector('[name="title"]').value = data.title || '';
+      form.querySelector('[name="adType"]').value = data.adType || 'image';
+      form.querySelector('[name="pages"]').value = (data.pages || []).join(', ');
+      form.querySelector('[name="active"]').checked = !!data.active;
 
+      // placements (array)
+      clearPlacements();
+      setPlacements(data.placements || []);
+
+      // Optional fields
+      const imageUrlEl = form.querySelector('[name="imageUrl"]');
+      const linkUrlEl  = form.querySelector('[name="linkUrl"]');
+      const contentEl  = form.querySelector('textarea[name="content"]');
+
+      if (imageUrlEl) imageUrlEl.value = data.imageUrl || '';
+      if (linkUrlEl)  linkUrlEl.value  = data.linkUrl || '';
+      if (contentEl)  contentEl.value  = data.content || '';
+
+      // show correct fields
+      if (typeof toggleAdFields === 'function') toggleAdFields();
+
+      // PUT submit
       form.action = `/admin/ads/${id}?_method=PUT`;
       methodInput.value = 'PUT';
       titleEl.textContent = `Edit Ad: ${data.title || ''}`;
+
       modal.show();
     } catch (e) {
+      console.error(e);
       alert('Error loading ad.');
     }
   }
@@ -1697,5 +1729,6 @@ const AdminAds = (function () {
   return { openCreate, openEdit };
 })();
 </script>
+
 
 

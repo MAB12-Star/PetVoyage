@@ -1,80 +1,8 @@
 <% layout('layouts/boilerplate') %>
 
-<!-- ✅ DEBUG: TOP-OF-PAGE AD TEST (ANY ACTIVE AD) -->
-<%
-  // This will work if your middleware sets ONE OF these:
-  // - res.locals.ads   (array of ads)
-  // - res.locals.allAds
-  // - res.locals.adsByPlacement (object)
-  // - res.locals.getAd (function)
 
-  const dbg = {
-    hasGetAd: (typeof getAd === 'function'),
-    hasAdsByPlacement: !!adsByPlacement,
-    placements: adsByPlacement ? Object.keys(adsByPlacement) : [],
-    // If you also pass "ads" into render() anywhere, this will show it:
-    hasAdsVar: (typeof ads !== 'undefined'),
-    adsCount: (typeof ads !== 'undefined' && Array.isArray(ads)) ? ads.length : null
-  };
 
-  // Try to pick an ad from any known place:
-  let testAd = null;
 
-  // 1) if you passed "ads" array into template (like your admin page does)
-  if (!testAd && typeof ads !== 'undefined' && Array.isArray(ads) && ads.length) {
-    testAd = ads.find(a => a.active) || ads[0];
-  }
-
-  // 2) if middleware created adsByPlacement
-  if (!testAd && adsByPlacement && dbg.placements.length) {
-    const firstPlacement = dbg.placements[0];
-    testAd = (adsByPlacement[firstPlacement] || [])[0] || null;
-  }
-
-  // 3) if middleware created getAd()
-  if (!testAd && typeof getAd === 'function') {
-    // try a few common zones from your admin UI
-    const zones = ['header','sidebar','inline-grid-2','inline-grid-6','footer','custom-spot'];
-    for (const z of zones) {
-      const a = getAd(z);
-      if (a) { testAd = a; break; }
-    }
-  }
-%>
-
-<div class="container my-3">
-  <div class="alert alert-warning small mb-3">
-    <strong>AD DEBUG:</strong>
-    <pre class="mb-0"><%= JSON.stringify(dbg, null, 2) %></pre>
-  </div>
-
-  <% if (testAd) { %>
-    <div class="card border shadow-sm">
-      <div class="card-body">
-        <div class="small text-muted mb-2">
-          Showing TEST AD: <strong><%= testAd.title || '(no title)' %></strong>
-        </div>
-
-        <% if (testAd.adType === 'html' && testAd.content) { %>
-          <%- testAd.content %>
-
-        <% } else if (testAd.adType === 'product' && testAd.productEmbed) { %>
-          <%- testAd.productEmbed %>
-
-        <% } else { %>
-          <a href="<%= testAd.linkUrl || '#' %>" target="_blank" rel="noopener noreferrer sponsored">
-            <img src="<%= testAd.imageUrl %>" class="img-fluid rounded" style="max-height:200px; object-fit:contain;">
-          </a>
-        <% } %>
-      </div>
-    </div>
-  <% } else { %>
-    <div class="alert alert-danger">
-      No TEST AD found. This means your template is not receiving ads / getAd / adsByPlacement at all.
-    </div>
-  <% } %>
-</div>
-<!-- ✅ END DEBUG -->
 
 <%
   // ---- safe date formatter (avoids "Invalid Date") ----
@@ -222,7 +150,7 @@
         <i class="fas fa-heart me-1"></i> Save
       </button>
     </form>
-  </div>
+ 
 
   <!-- Pet Types Label -->
   <p class="text-muted fw-semibold mb-2">Pet Types</p>

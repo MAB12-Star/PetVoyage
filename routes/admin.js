@@ -12,6 +12,9 @@ const { ensureAuth } = require('../middleware');
 const PAGE_SIZE = 12;
 const rxEscape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+
+
+
 /* ───────────────────────── Admin-only gate ───────────────────────── */
 router.use(ensureAuth);
 router.use((req, res, next) => {
@@ -518,8 +521,36 @@ router.delete('/countries/:id', async (req, res, next) => {
     next(e);
   }
 });
+// -----------------------------
+// Helpers
+// -----------------------------
+function coerceToString(v) {
+  if (Array.isArray(v)) return v.find(x => String(x).trim().length) || '';
+  return v == null ? '' : String(v);
+}
 
+function normalizePlacements(placements) {
+  // checkbox groups can arrive as string, array, or undefined
+  if (Array.isArray(placements)) return placements.filter(Boolean);
+  if (placements) return [placements];
+  return [];
+}
+
+function normalizePages(pages) {
+  if (!pages) return ['*'];
+  return String(pages)
+    .split(',')
+    .map(p => p.trim())
+    .filter(Boolean);
+}
+
+function normalizeActive(active) {
+  return active === 'on' || active === 'true' || active === true;
+}
+
+// -----------------------------
 // ===== ADS TAB =====
+// -----------------------------
 
 // CREATE Ad
 router.post('/ads', async (req, res, next) => {
@@ -527,25 +558,29 @@ router.post('/ads', async (req, res, next) => {
     const {
       title,
       adType,
-      placements, // now array from checkboxes
+      pages,
+      content,
+      productEmbed,
       imageUrl,
       linkUrl,
-      content,  // html or product embed
-      pages,
+      placements,
       active
     } = req.body;
+
+    const finalContent =
+      adType === 'product'
+        ? coerceToString(productEmbed)
+        : coerceToString(content);
 
     const ad = new Ad({
       title,
       adType,
-      placements: Array.isArray(placements) ? placements : [placements],
-      imageUrl: adType === 'image' ? imageUrl : undefined,
+      placements: normalizePlacements(placements),
+      imageUrl: adType === 'image' ? (imageUrl || '') : undefined,
       linkUrl: linkUrl || '',
-      content: adType !== 'image' ? content : undefined,
-      pages: pages
-        ? pages.split(',').map(p => p.trim()).filter(Boolean)
-        : ['*'],
-      active: active === 'on' || active === 'true'
+      content: adType !== 'image' ? finalContent : undefined,
+      pages: normalizePages(pages),
+      active: normalizeActive(active)
     });
 
     await ad.save();
@@ -556,7 +591,6 @@ router.post('/ads', async (req, res, next) => {
     next(err);
   }
 });
-
 
 // FETCH single ad for edit modal (AJAX)
 router.get('/ads/:id', async (req, res, next) => {
@@ -570,32 +604,35 @@ router.get('/ads/:id', async (req, res, next) => {
   }
 });
 
-
 // UPDATE Ad
 router.put('/ads/:id', async (req, res, next) => {
   try {
     const {
       title,
       adType,
-      placements,
+      pages,
+      content,
+      productEmbed,
       imageUrl,
       linkUrl,
-      content,
-      pages,
+      placements,
       active
     } = req.body;
+
+    const finalContent =
+      adType === 'product'
+        ? coerceToString(productEmbed)
+        : coerceToString(content);
 
     const updatedData = {
       title,
       adType,
-      placements: Array.isArray(placements) ? placements : [placements],
-      imageUrl: adType === 'image' ? imageUrl : undefined,
+      placements: normalizePlacements(placements),
+      imageUrl: adType === 'image' ? (imageUrl || '') : undefined,
       linkUrl: linkUrl || '',
-      content: adType !== 'image' ? content : undefined,
-      pages: pages
-        ? pages.split(',').map(p => p.trim()).filter(Boolean)
-        : ['*'],
-      active: active === 'on' || active === 'true'
+      content: adType !== 'image' ? finalContent : undefined,
+      pages: normalizePages(pages),
+      active: normalizeActive(active)
     };
 
     await Ad.findByIdAndUpdate(req.params.id, updatedData, { runValidators: true });
@@ -606,7 +643,6 @@ router.put('/ads/:id', async (req, res, next) => {
     next(err);
   }
 });
-
 
 // DELETE Ad
 router.delete('/ads/:id', async (req, res, next) => {
@@ -619,6 +655,5 @@ router.delete('/ads/:id', async (req, res, next) => {
     next(err);
   }
 });
-
 
 module.exports = router;

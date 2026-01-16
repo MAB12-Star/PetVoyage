@@ -222,64 +222,72 @@ function stripQuery(url = '') {
   return String(url).split('?')[0];
 }
 
-function normalizeUrl(url = '') {
-  const u = stripQuery(String(url).trim());
-  return u.endsWith('/') && u.length > 1 ? u.slice(0, -1) : u;
+// Convert full URL or path into a clean pathname string (no domain, no query, no trailing slash)
+function normalizeToPath(input = '') {
+  const s = String(input).trim();
+  if (!s) return '';
+
+  // full URL -> pathname
+  if (s.startsWith('http://') || s.startsWith('https://')) {
+    try {
+      const u = new URL(s);
+      const path = u.pathname || '/';
+      return path.replace(/\/+$/, '') || '/';
+    } catch {
+      // if URL parsing fails, just fall through
+    }
+  }
+
+  // if they typed "country/" without leading slash, normalize it
+  const path = s.startsWith('/') ? s : '/' + s;
+
+  // remove trailing slashes (except root)
+  return path.replace(/\/+$/, '') || '/';
+}
+
+function pageRuleMatches(rule, currentPath) {
+  const r = normalizeToPath(rule);
+  const p = normalizeToPath(currentPath);
+
+  if (!r) return false;
+  if (r === '*') return true;
+
+  // Support BOTH formats:
+  // 1) "/country/*"
+  // 2) "/country/"  (treat trailing slash as "prefix match")
+  const isPrefixRule = r.endsWith('/*') || rule.trim().endsWith('/');
+
+  if (r.endsWith('/*')) {
+    const prefix = r.slice(0, -2); // remove "/*"
+    return p === prefix || p.startsWith(prefix + '/');
+  }
+
+  if (rule.trim().endsWith('/')) {
+    // If user typed "/country/" we treat as prefix match
+    const prefix = normalizeToPath(r + 'x').slice(0, -1); // cheap way to ensure no trailing slash
+    return p === prefix || p.startsWith(prefix + '/');
+  }
+
+  // exact match
+  return p === r;
 }
 
 function pageMatches(adPages, req) {
   // If pages is blank, treat as "all pages"
   if (!adPages) return true;
 
-  // Accept string (comma-separated) OR array
   const pagesArr = Array.isArray(adPages)
     ? adPages
-    : String(adPages)
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
+    : String(adPages).split(',').map(s => s.trim()).filter(Boolean);
 
-  // If user put "*" anywhere -> all pages
   if (pagesArr.includes('*')) return true;
 
-  // Compare against path + full URL variants
-  const reqPath = normalizeUrl(req.baseUrl + req.path);       // "/country/Albania"
-  const reqOrig = normalizeUrl(req.originalUrl);              // "/country/Albania?petType=Dog"
-  const reqNoQ  = normalizeUrl(stripQuery(req.originalUrl));  // "/country/Albania"
+  // Use request PATH (no domain) for reliable matching across prod/dev
+  const currentPath = stripQuery(req.originalUrl || req.path || '/'); // "/country/Albania"
 
-  for (const raw of pagesArr) {
-    const p = normalizeUrl(raw);
-
-    // allow wildcard: "/country/*"
-    if (p.endsWith('*')) {
-      const prefix = normalizeUrl(p.slice(0, -1));
-      if (reqPath.startsWith(prefix) || reqNoQ.startsWith(prefix)) return true;
-      continue;
-    }
-
-    // allow a trailing slash entry to mean "startsWith"
-    if (raw.endsWith('/')) {
-      if (reqPath.startsWith(p) || reqNoQ.startsWith(p)) return true;
-      continue;
-    }
-
-    // allow storing full URLs OR just paths
-    if (p.startsWith('http')) {
-      // match by path portion only
-      // (so localhost vs prod doesn't break matching)
-      try {
-        const u = new URL(p);
-        const pathOnly = normalizeUrl(u.pathname);
-        if (reqPath === pathOnly || reqNoQ === pathOnly) return true;
-      } catch (_) {}
-    } else {
-      // exact path match
-      if (reqPath === p || reqNoQ === p || reqOrig === p) return true;
-    }
-  }
-
-  return false;
+  return pagesArr.some(rule => pageRuleMatches(rule, currentPath));
 }
+
 
 module.exports.attachAds = async (req, res, next) => {
   try {
