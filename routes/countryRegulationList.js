@@ -97,6 +97,15 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     // ✅ Canonical URL should always use the slug version (lowercase, hyphenated)
     const canonicalPetType = slugKey(petKey);
 
+    // ✅ If petType is missing, redirect to canonical default
+    if (!selectedPetTypeRaw) {
+      const safeCountryRedirect = regulations.destinationCountry;
+      return res.redirect(
+        301,
+        `/country/${encodeURIComponent(safeCountryRedirect)}?petType=${encodeURIComponent(canonicalPetType)}`
+      );
+    }
+
     // ✅ If user requested a non-canonical petType (Dog, Dogs, Dog & Cat, etc) redirect to canonical
     if (selectedPetTypeRaw && slugKey(selectedPetTypeRaw) !== canonicalPetType) {
       const safeCountryRedirect = regulations.destinationCountry;
@@ -208,6 +217,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 
 
