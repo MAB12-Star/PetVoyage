@@ -200,7 +200,7 @@
     <!-- Actions -->
     <div class="d-flex gap-2">
       <button class="btn btn-primary" type="submit">Save changes</button>
-      <a class="btn btn-outline-secondary" href="/blog/<%= story._id %>">Cancel</a>
+      <a class="btn btn-outline-secondary" href="/blog/<%= story.slug || story._id %>">Cancel</a>
     </div>
   </form>
 </div>
@@ -288,7 +288,7 @@
   }
 
   // Submit: sanitize minimal HTML and sync to hidden input
-  form.addEventListener('submit', () => {
+  form.addEventListener('submit', (e) => {
     const clone = editor.cloneNode(true);
     clone.querySelectorAll('script,style').forEach(n => n.remove());
     clone.querySelectorAll('*').forEach(el => {
@@ -297,6 +297,14 @@
       });
     });
     output.value = clone.innerHTML.trim();
+    if (!output.value || !output.value.replace(/<[^>]*>/g,'').trim()) {
+  e.preventDefault();
+  alert('Please write your story before saving.');
+  editor.scrollIntoView({behavior:'smooth', block:'center'});
+  editor.focus();
+  return false;
+}
+
   });
 })();
 </script>

@@ -1,9 +1,5 @@
 <% layout('layouts/boilerplate') %>
 
-
-
-
-
 <%
   // ---- safe date formatter (avoids "Invalid Date") ----
   function fmtDate(val) {
@@ -13,13 +9,10 @@
   }
 
   // ✅ Ads module helpers (comes from your middleware.attachAds)
-  // getAd(placement) should return one ad for that placement or null
   const hasGetAd = (typeof getAd === 'function');
   const safeGetAd = hasGetAd ? getAd : (() => null);
 
   // ✅ choose the placement you want to show INSIDE this page’s right container
-  // This MUST match one of your admin placement zone values
-  // Example values from your admin UI: 'header','sidebar','inline-grid-2','inline-grid-6','footer','custom-spot'
   const RIGHT_CARD_TOP_PLACEMENT = 'inline-grid-2';
 %>
 
@@ -116,7 +109,6 @@
       const created = regulations.createdAt || regulations.timestamp || null;
       const updated = regulations.updatedAt || null;
 
-      // Only show DB "Updated" if it was edited after creation
       const hasTrueUpdate =
         created && updated && (new Date(updated).getTime() > new Date(created).getTime());
 
@@ -142,7 +134,7 @@
   </div>
   <% } %>
 
-  <!-- Save Country Button (uses existing /favorites/saveToProfile route) -->
+  <!-- Save Country Button -->
   <div class="text-center mt-3 mb-2">
     <form method="POST" action="/favorites/saveToProfile" class="d-inline">
       <input type="hidden" name="regulationId" value="<%= regulationId %>">
@@ -150,18 +142,20 @@
         <i class="fas fa-heart me-1"></i> Save
       </button>
     </form>
- 
 
   <!-- Pet Types Label -->
   <p class="text-muted fw-semibold mb-2">Pet Types</p>
 
-  <!-- Pet Type Badges -->
-  <% if (regulations?.regulationsByPetType && Object.keys(regulations.regulationsByPetType).length) { %>
+  <!-- Pet Type Badges (canonical slug comes from route) -->
+  <% if (petTypes && petTypes.length) { %>
     <div class="d-flex flex-wrap justify-content-center gap-2" id="petTypeSelector">
-      <% Object.keys(regulations.regulationsByPetType).forEach((type, i) => { %>
-        <button class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= type === selectedPetType ? 'active' : '' %>"
-                data-pet="<%= type %>">
-          <i class="bi bi-paw-fill me-1"></i><%= type %>
+      <% petTypes.forEach((p) => { %>
+        <button
+          type="button"
+          class="btn btn-outline-dark rounded-pill px-3 py-2 text-capitalize pet-type-btn <%= p.key === selectedPetType ? 'active' : '' %>"
+          data-pet="<%= p.key %>"
+          data-pet-slug="<%= p.slug %>">
+          <i class="bi bi-paw-fill me-1"></i><%= p.key %>
         </button>
       <% }) %>
     </div>
@@ -171,17 +165,21 @@
   <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details]) => { %>
     <% if (!details || !Object.keys(details).length) return; %>
 
+    <%
+      const petId = encodeURIComponent(pet);
+    %>
+
     <div class="pet-regulation-section" data-pet="<%= pet %>" style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
 
       <h3 class="text-primary text-center text-capitalize mb-4">
         <i class="bi bi-paw-fill me-2"></i><%= pet %> Regulations
       </h3>
 
-      <!-- Banner Ad Section (LEAVE FOR NOW as you requested) -->
+      <!-- Banner Ad Section -->
       <%
-        const petType = selectedPetType ? selectedPetType.toLowerCase() : '';
+        const petTypeLower = selectedPetType ? selectedPetType.toLowerCase() : '';
         let imgSrc = '', titleText = '', linkUrl = '';
-        switch (petType) {
+        switch (petTypeLower) {
           case 'dog':  imgSrc = '/images/DogTravelCollectionV2.jpg'; titleText = 'Shop Dog Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/dog-travel'; break;
           case 'cat':  imgSrc = '/images/CatTravelCollection.jpg';   titleText = 'Shop Cat Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/cat-travel'; break;
           case 'bird': imgSrc = '/images/BirdTravelCollection.jpg';  titleText = 'Shop Bird Travel Supplies'; linkUrl = 'https://petsvoyage.myshopify.com/collections/bird-travel'; break;
@@ -189,10 +187,10 @@
         }
       %>
 
-<% const headerAd = (typeof getAd === 'function') ? getAd('header') : null; %>
-<% if (headerAd) { %>
-  <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
-<% } %>
+      <% const headerAd = (typeof getAd === 'function') ? getAd('header') : null; %>
+      <% if (headerAd) { %>
+        <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
+      <% } %>
 
       <% if (selectedPetType) { %>
         <div class="card shadow-sm border border-warning overflow-hidden mb-5" style="border-radius: 12px;">
@@ -229,16 +227,24 @@
 
               <% if (vaccinationKeys.length) { %>
                 <div class="mb-3 d-flex flex-wrap gap-2">
-                  <% vaccinationKeys.forEach((key, j) => { %>
+                  <% vaccinationKeys.forEach((key, j) => {
+                       const keyId = encodeURIComponent(key);
+                  %>
                     <button class="btn btn-sm btn-outline-primary vac-btn <%= j === 0 ? 'active' : '' %>"
-                            data-target="vaccination-<%= pet %>-<%= key %>">
+                            data-target="vaccination__<%= petId %>__<%= keyId %>"
+                            data-group="vaccination__<%= petId %>__">
                       <%= key %>
                     </button>
                   <% }) %>
                 </div>
 
-                <% vaccinationKeys.forEach((key, j) => { const vac = details.vaccinations[key]; %>
-                  <div id="vaccination-<%= pet %>-<%= key %>" class="vaccination-detail" style="<%= j === 0 ? '' : 'display:none;' %>">
+                <% vaccinationKeys.forEach((key, j) => {
+                     const vac = details.vaccinations[key];
+                     const keyId = encodeURIComponent(key);
+                %>
+                  <div id="vaccination__<%= petId %>__<%= keyId %>"
+                       class="vaccination-detail"
+                       style="<%= j === 0 ? '' : 'display:none;' %>">
                     <% if (vac.description?.trim()) { %>
                       <div class="mb-2"><strong>Description:</strong> <%- vac.description %></div>
                     <% } %>
@@ -258,7 +264,7 @@
           </div>
         </div>
 
-        <!-- Certifications (RIGHT CARD) -->
+        <!-- Certifications -->
         <div class="col-md-6">
           <div class="card border-start border-dark border-4 shadow-sm h-100">
             <div class="card-body">
@@ -266,7 +272,6 @@
                 <i class="bi bi-patch-check-fill me-2"></i>Certifications
               </h5>
 
-              <!-- ✅ AD FROM YOUR ADMIN ADS MODULE (ONLY IF AVAILABLE) -->
               <%
                 const rightTopAd = safeGetAd(RIGHT_CARD_TOP_PLACEMENT);
               %>
@@ -284,16 +289,24 @@
 
               <% if (certKeys.length) { %>
                 <div class="mb-3 d-flex flex-wrap gap-2">
-                  <% certKeys.forEach((key, j) => { %>
+                  <% certKeys.forEach((key, j) => {
+                       const keyId = encodeURIComponent(key);
+                  %>
                     <button class="btn btn-sm btn-outline-success cert-btn <%= j === 0 ? 'active' : '' %>"
-                            data-target="certification-<%= pet %>-<%= key %>">
+                            data-target="certification__<%= petId %>__<%= keyId %>"
+                            data-group="certification__<%= petId %>__">
                       <%= key %>
                     </button>
                   <% }) %>
                 </div>
 
-                <% certKeys.forEach((key, j) => { const cert = details.certifications[key]; %>
-                  <div id="certification-<%= pet %>-<%= key %>" class="certification-detail" style="<%= j === 0 ? '' : 'display:none;' %>">
+                <% certKeys.forEach((key, j) => {
+                     const cert = details.certifications[key];
+                     const keyId = encodeURIComponent(key);
+                %>
+                  <div id="certification__<%= petId %>__<%= keyId %>"
+                       class="certification-detail"
+                       style="<%= j === 0 ? '' : 'display:none;' %>">
                     <% if (cert.description?.trim()) { %>
                       <div class="mb-2"><strong>Description:</strong> <%- cert.description %></div>
                     <% } %>
@@ -327,7 +340,7 @@
           </div>
         <% } %>
 
-        <!-- Origin Information (country-level, filtered for this pet) -->
+        <!-- Origin Requirements -->
         <div class="col-md-6">
           <div class="card border-start border-dark border-4 shadow-sm h-100">
             <div class="card-body">
@@ -352,10 +365,9 @@
           </div>
         </div>
 
-        <!-- More Info (UNCHANGED) -->
+        <!-- More Info -->
         <%
           const mi = details?.moreInfo;
-
           const miIsString = (typeof mi === 'string');
           const miIsObject = (mi && typeof mi === 'object' && !Array.isArray(mi));
 
@@ -373,10 +385,8 @@
                 </h5>
 
                 <% if (miIsString) { %>
-                  <!-- Legacy string -->
                   <div class="card-text"><%- mi %></div>
                 <% } else { %>
-                  <!-- New object format -->
                   <% Object.entries(mi).forEach(([sectionName, entry]) => {
                        const desc = entry?.description || '';
                        const reqs = Array.isArray(entry?.requirements) ? entry.requirements : [];
@@ -450,51 +460,48 @@
 <br>
 <p></p>
 
+<!-- ✅ Pet Type Click => canonical slug -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const petButtons = document.querySelectorAll('.pet-type-btn');
-
-    petButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const selectedPet = button.dataset.pet;
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('petType', selectedPet);
-        window.location.href = currentUrl.toString();
+    document.querySelectorAll('.pet-type-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const petSlug = btn.dataset.petSlug;
+        const url = new URL(window.location.href);
+        url.searchParams.set('petType', petSlug);
+        window.location.href = url.toString();
       });
     });
   });
 </script>
 
-<!-- Toggle Logic -->
+<!-- ✅ Vaccination/Certification Toggle Logic (safe; no split('-')) -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const petButtons = document.querySelectorAll('.pet-type-btn');
-    const petSections = document.querySelectorAll('.pet-regulation-section');
-
-    petButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const selected = button.dataset.pet;
-        petSections.forEach(section => section.style.display = section.dataset.pet === selected ? 'block' : 'none');
-        petButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-      });
-    });
-
+    // Vaccinations
     document.querySelectorAll('.vac-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const group = btn.dataset.target.split('-')[1];
-        document.querySelectorAll(`[id^="vaccination-${group}-"]`).forEach(el => el.style.display = 'none');
-        document.getElementById(btn.dataset.target).style.display = 'block';
+        const prefix = btn.dataset.group;
+        const target = btn.dataset.target;
+
+        document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => el.style.display = 'none');
+        const el = document.getElementById(target);
+        if (el) el.style.display = 'block';
+
         btn.parentElement.querySelectorAll('.vac-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
     });
 
+    // Certifications
     document.querySelectorAll('.cert-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const group = btn.dataset.target.split('-')[1];
-        document.querySelectorAll(`[id^="certification-${group}-"]`).forEach(el => el.style.display = 'none');
-        document.getElementById(btn.dataset.target).style.display = 'block';
+        const prefix = btn.dataset.group;
+        const target = btn.dataset.target;
+
+        document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => el.style.display = 'none');
+        const el = document.getElementById(target);
+        if (el) el.style.display = 'block';
+
         btn.parentElement.querySelectorAll('.cert-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
