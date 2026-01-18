@@ -75,54 +75,73 @@ router.get('/sitemap.xml', async (req, res) => {
         priority: '0.8'
       }));
 
-    // ✅ COUNTRY URLs (dynamic)
-    // You said:
-    // - you have a unique page per petType
-    // - any name can be created in admin
-    //
-    // So we do:
-    // (A) start with your known/common pet types
-    // (B) union with any petTypes actually present in regulationsByPetType across all docs
-    const DEFAULT_PET_TYPES = [
-      'dog','cat','bird','reptile','ferret','rabbit','rodent',
-      'fish','turtle','amphibian','hedgehog','guinea_pig','hamster',
-      'other'
-    ];
+   // ✅ COUNTRY URLs (dynamic) — per-country petTypes only (NO global union)
+const countryDocs = await CountryPetRegulation
+  .find({}, 'destinationCountry regulationsByPetType updatedAt createdAt')
+  .lean();
 
-    const countryDocs = await CountryPetRegulation
-      .find({}, 'destinationCountry regulationsByPetType updatedAt createdAt')
-      .lean();
+// Normalize pet type keys so you don’t get Dog + dog + Dogs + "Other Pets" duplicates
+function normalizePetType(raw) {
+  if (!raw) return null;
+  const t = String(raw).trim();
 
-    // Gather custom pet types found in DB
-    const petTypeSet = new Set(DEFAULT_PET_TYPES);
+  // lower for comparisons
+  const low = t.toLowerCase();
 
-    for (const doc of (countryDocs || [])) {
-      const petMap = doc?.regulationsByPetType || {};
-      for (const k of Object.keys(petMap)) {
-        if (k && typeof k === 'string') petTypeSet.add(k.trim());
-      }
-    }
+  // common normalizations
+  if (low === 'dogs') return 'dog';
+  if (low === 'cats') return 'cat';
+  if (low === 'birds') return 'bird';
+  if (low === 'ferrets') return 'ferret';
+  if (low === 'rabbits') return 'rabbit';
+  if (low === 'rodents') return 'rodent';
+  if (low === 'reptiles') return 'reptile';
+  if (low === 'turtles') return 'turtle';
+  if (low === 'hedgehogs') return 'hedgehog';
 
-    const allPetTypes = Array.from(petTypeSet).filter(Boolean);
+  // your UI tab shows "Other Pets" — decide ONE canonical query param
+  // pick "otherPets" (matches your screenshot button label) OR "other"
+  if (low === 'other pets' || low === 'otherpets') return 'otherPets';
 
-    const countryUrls = [];
-    for (const doc of (countryDocs || [])) {
-      const country = (doc.destinationCountry || '').trim();
-      if (!country) continue;
+  // keep custom admin-created pet types, but normalize spaces a bit
+  // (optional) if you want to allow "Guinea Pig" but store it as "guinea_pig"
+  if (low === 'guinea pig') return 'guinea_pig';
 
-      const encodedCountry = encodeURIComponent(country);
-      const lastmod = new Date(doc.updatedAt || doc.createdAt || Date.now()).toISOString();
+  // otherwise keep as-is
+  return t;
+}
 
-      // Generate for ALL pet types (your request)
-      for (const petType of allPetTypes) {
-        countryUrls.push({
-          loc: `${origin}/country/${encodedCountry}?petType=${encodeURIComponent(petType)}`,
-          lastmod,
-          changefreq: 'weekly',
-          priority: '0.8'
-        });
-      }
-    }
+const countryUrls = [];
+const seen = new Set();
+
+for (const doc of (countryDocs || [])) {
+  const country = (doc.destinationCountry || '').trim();
+  if (!country) continue;
+
+  const encodedCountry = encodeURIComponent(country);
+  const lastmod = new Date(doc.updatedAt || doc.createdAt || Date.now()).toISOString();
+
+  // Only pet types that exist on THIS country doc
+  const petMap = doc.regulationsByPetType || {};
+  const rawPetTypes = Object.keys(petMap);
+
+  for (const raw of rawPetTypes) {
+    const petType = normalizePetType(raw);
+    if (!petType) continue;
+
+    const url = `${origin}/country/${encodedCountry}?petType=${encodeURIComponent(petType)}`;
+    if (seen.has(url)) continue;
+    seen.add(url);
+
+    countryUrls.push({
+      loc: url,
+      lastmod,
+      changefreq: 'weekly',
+      priority: '0.8'
+    });
+  }
+}
+
 
     // ✅ Combine + cap (avoid oversize)
     const allUrls = [
