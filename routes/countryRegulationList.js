@@ -59,7 +59,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     const rawParam = req.params.country || '';
     const countryParam = decodeURIComponent(rawParam).trim();
 
-    const selectedPetTypeRaw = req.query.petType || '';
+    const selectedPetTypeRaw = (req.query.petType || '').trim();
 
     // ✅ case-insensitive exact match
     const regulations = await CountryRegulation.findOne({
@@ -88,8 +88,23 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     petEntries.forEach(([k]) => { petSlugToKey[slugKey(k)] = k; });
 
     // Resolve requested pet; fall back to first
-    const requestedSlug = slugKey(selectedPetTypeRaw) || slugKey(petEntries[0][0]);
-    const petKey = petSlugToKey[requestedSlug] || petEntries[0][0];
+    const defaultPetKey = petEntries[0][0];
+    const requestedSlug = slugKey(selectedPetTypeRaw) || slugKey(defaultPetKey);
+    const petKey = petSlugToKey[requestedSlug] || defaultPetKey;
+
+    const petLabel = String(petKey || '').trim();
+
+    // ✅ Canonical URL should always use the slug version (lowercase, hyphenated)
+    const canonicalPetType = slugKey(petKey);
+
+    // ✅ If user requested a non-canonical petType (Dog, Dogs, Dog & Cat, etc) redirect to canonical
+    if (selectedPetTypeRaw && slugKey(selectedPetTypeRaw) !== canonicalPetType) {
+      const safeCountry = regulations.destinationCountry;
+      return res.redirect(
+        301,
+        `/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(canonicalPetType)}`
+      );
+    }
 
     // Per-pet details for your cards
     const details = (regulations.regulationsByPetType && regulations.regulationsByPetType[petKey]) || {};
@@ -110,7 +125,8 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     }
 
     const safeCountry = regulations.destinationCountry;
-    const pageUrl = `https://www.petvoyage.ai/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(petKey)}`;
+    const baseUrl = (process.env.BASE_URL || 'https://www.petvoyage.ai').replace(/\/+$/, '');
+    const pageUrl = `${baseUrl}/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(canonicalPetType)}`;
 
     const seoData = {
       regulations,
@@ -126,25 +142,25 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       details,
       originReqs,
 
-      title: `Pet Travel Requirements for ${safeCountry} - ${petKey}`,
-      metaDescription: `Explore ${petKey} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
-      metaKeywords: `${safeCountry} pet travel ${petKey}, import ${petKey} ${safeCountry}, ${safeCountry} pet rules, travel with ${petKey}, pet documentation ${safeCountry}`,
-      ogTitle: `Pet Import Regulations for ${safeCountry} - ${petKey}`,
-      ogDescription: `Get pet import/export regulations for ${petKey}s traveling to ${safeCountry}.`,
+      title: `Pet Travel Requirements for ${safeCountry} - ${petLabel}`,
+      metaDescription: `Explore ${petLabel} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
+      metaKeywords: `${safeCountry} pet travel ${petLabel}, import ${petLabel} ${safeCountry}, ${safeCountry} pet rules, travel with ${petLabel}, pet documentation ${safeCountry}`,
+      ogTitle: `Pet Import Regulations for ${safeCountry} - ${petLabel}`,
+      ogDescription: `Get pet import/export regulations for ${petLabel} traveling to ${safeCountry}.`,
       ogUrl: pageUrl,
       ogImage: '/images/pet-travel-map.jpg',
-      twitterTitle: `Bringing Your ${petKey} to ${safeCountry}?`,
-      twitterDescription: `Learn the latest ${petKey} travel requirements for ${safeCountry}.`
+      twitterTitle: `Bringing Your ${petLabel} to ${safeCountry}?`,
+      twitterDescription: `Learn the latest ${petLabel} travel requirements for ${safeCountry}.`,
+      twitterImage: '/images/pet-travel-map.jpg'
     };
 
     console.log("[SEO] Rendering showCountry with:", {
       country: safeCountry,
       selectedPetType: petKey,
+      canonicalPetType,
       petTypes: seoData.petTypes.map(p => p.key),
       originReqsCount: originReqs.length,
       regulationId: String(regulations._id),
-
-      // ✅ Quick debug to confirm ads middleware ran
       hasGetAd: typeof res.locals.getAd === 'function',
       placements: Object.keys(res.locals.adsByPlacement || {})
     });
@@ -155,5 +171,6 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 module.exports = router;
