@@ -7,10 +7,17 @@ const CountryPetRegulation = require('../models/countryPetRegulationList');
 const router = express.Router();
 
 function absoluteOrigin(req) {
-  const base = (process.env.BASE_URL || '').trim().replace(/\/+$/, '');
+  const base = (process.env.BASE_URL || 'https://www.petvoyage.ai')
+    .trim()
+    .replace(/\/+$/, '');
+
+  // If BASE_URL is set, use it exactly.
   if (base) return base;
-  return (req.protocol + '://' + req.get('host')).replace(/\/+$/, '');
+
+  // Otherwise force https (sitemaps should always be canonical)
+  return ('https://' + req.get('host')).replace(/\/+$/, '');
 }
+
 
 function xmlEscape(s = '') {
   return String(s)
