@@ -40,7 +40,7 @@ const { ensureAuth } = require('./middleware');
 const bcrypt = require('bcrypt');
 const accountRoutes = require('./routes/account');
 const { attachAds } = require('./middleware');
-const sitemapRoutes = require('./routes/sitemap.xml');
+const sitemapRoutes = require('./routes/sitemap');
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
 const e = require('connect-flash');
 
