@@ -1,0 +1,5 @@
+<% if (typeof jsonLd !== "undefined" && jsonLd) { %>
+  <script type="application/ld+json">
+    <%- JSON.stringify(jsonLd) %>
+  </script>
+<% } %>

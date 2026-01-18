@@ -99,10 +99,10 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
 
     // ✅ If user requested a non-canonical petType (Dog, Dogs, Dog & Cat, etc) redirect to canonical
     if (selectedPetTypeRaw && slugKey(selectedPetTypeRaw) !== canonicalPetType) {
-      const safeCountry = regulations.destinationCountry;
+      const safeCountryRedirect = regulations.destinationCountry;
       return res.redirect(
         301,
-        `/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(canonicalPetType)}`
+        `/country/${encodeURIComponent(safeCountryRedirect)}?petType=${encodeURIComponent(canonicalPetType)}`
       );
     }
 
@@ -124,9 +124,43 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       }
     }
 
+    // ✅ Always use canonical base URL (avoid http behind proxy)
     const safeCountry = regulations.destinationCountry;
     const baseUrl = (process.env.BASE_URL || 'https://www.petvoyage.ai').replace(/\/+$/, '');
+
+    // ✅ Canonical/OG URL for this exact country+petType canonical combo
     const pageUrl = `${baseUrl}/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(canonicalPetType)}`;
+
+    // ✅ Make OG/Twitter images absolute
+    const ogImage = `${baseUrl}/images/pet-travel-map.jpg`;
+
+    // ✅ Build JSON-LD structured data (Article schema)
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": `Pet Travel Requirements for ${safeCountry} - ${petLabel}`,
+      "description": `Explore ${petLabel} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": pageUrl
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "PetVoyage"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PetVoyage",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/images/logo.png`
+        }
+      },
+      "image": ogImage,
+      "dateModified": new Date(
+        regulations.updatedAt || regulations.createdAt || Date.now()
+      ).toISOString()
+    };
 
     const seoData = {
       regulations,
@@ -142,16 +176,19 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       details,
       originReqs,
 
+      // ✅ Structured data for head partial
+      jsonLd,
+
       title: `Pet Travel Requirements for ${safeCountry} - ${petLabel}`,
       metaDescription: `Explore ${petLabel} travel requirements for ${safeCountry}, including import rules, documentation, and vaccination policies.`,
       metaKeywords: `${safeCountry} pet travel ${petLabel}, import ${petLabel} ${safeCountry}, ${safeCountry} pet rules, travel with ${petLabel}, pet documentation ${safeCountry}`,
       ogTitle: `Pet Import Regulations for ${safeCountry} - ${petLabel}`,
       ogDescription: `Get pet import/export regulations for ${petLabel} traveling to ${safeCountry}.`,
       ogUrl: pageUrl,
-      ogImage: '/images/pet-travel-map.jpg',
+      ogImage: ogImage,
       twitterTitle: `Bringing Your ${petLabel} to ${safeCountry}?`,
       twitterDescription: `Learn the latest ${petLabel} travel requirements for ${safeCountry}.`,
-      twitterImage: '/images/pet-travel-map.jpg'
+      twitterImage: ogImage
     };
 
     console.log("[SEO] Rendering showCountry with:", {
@@ -171,6 +208,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 
 module.exports = router;
