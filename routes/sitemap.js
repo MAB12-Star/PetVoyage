@@ -21,27 +21,43 @@ function xmlEscape(s = '') {
     .replace(/'/g, '&apos;');
 }
 
+// Optional: keep sitemap from exploding if you have huge collections
+const MAX_URLS = Number(process.env.SITEMAP_MAX_URLS || 45000);
+
 router.get('/sitemap.xml', async (req, res) => {
   try {
     const origin = absoluteOrigin(req);
     const nowIso = new Date().toISOString();
 
-    // ✅ STATIC URLs (add all the pages you want indexed)
+    // ✅ STATIC URLs (add/remove what you want indexed)
+    // NOTE: Do NOT include your Shopify domain here; keep that as a separate sitemap submission.
     const staticUrls = [
       { loc: `${origin}/`, changefreq: 'daily', priority: '1.0' },
       { loc: `${origin}/aboutus`, changefreq: 'monthly', priority: '0.8' },
+
+      // Country + Flights + Airlines
       { loc: `${origin}/getCountryRegulationList`, changefreq: 'weekly', priority: '0.9' },
-      { loc: `${origin}/regulations/searchFlights`, changefreq: 'weekly', priority: '0.9' },
-      { loc: `${origin}/contactUs`, changefreq: 'yearly', priority: '0.5' },
+      { loc: `${origin}/flights/searchFlights`, changefreq: 'weekly', priority: '0.9' }, // ✅ matches your nav
+      { loc: `${origin}/regulations/airlineList`, changefreq: 'weekly', priority: '0.8' },
+
+      // Content pages
       { loc: `${origin}/tips`, changefreq: 'monthly', priority: '0.7' },
-      { loc: `${origin}/blog`, changefreq: 'weekly', priority: '0.8' },
       { loc: `${origin}/findAVet`, changefreq: 'weekly', priority: '0.9' },
-      { loc: `${origin}/regulations/airlineList`, changefreq: 'weekly', priority: '0.8' }
+      { loc: `${origin}/blog`, changefreq: 'weekly', priority: '0.8' },
+
+      // Trust/legal (good for SEO + trust)
+      { loc: `${origin}/contactUs`, changefreq: 'yearly', priority: '0.5' },
+      { loc: `${origin}/privacy`, changefreq: 'yearly', priority: '0.3' },
+      { loc: `${origin}/dataDeletion`, changefreq: 'yearly', priority: '0.3' }
+      // { loc: `${origin}/terms`, changefreq: 'yearly', priority: '0.3' }, // if you have it
     ];
 
     // ✅ BLOG URLs (dynamic)
-    const stories = await Story.find({}, 'slug updatedAt createdAt').sort({ updatedAt: -1 }).lean();
-    const blogUrls = stories.map(s => ({
+    const stories = await Story.find({}, 'slug updatedAt createdAt')
+      .sort({ updatedAt: -1 })
+      .lean();
+
+    const blogUrls = (stories || []).map(s => ({
       loc: `${origin}/blog/${s.slug || s._id}`,
       lastmod: new Date(s.updatedAt || s.createdAt || Date.now()).toISOString(),
       changefreq: 'weekly',
@@ -50,7 +66,7 @@ router.get('/sitemap.xml', async (req, res) => {
 
     // ✅ AIRLINE URLs (dynamic)
     const airlines = await Airline.find({}, 'slug updatedAt createdAt').lean();
-    const airlineUrls = airlines
+    const airlineUrls = (airlines || [])
       .filter(a => a.slug)
       .map(a => ({
         loc: `${origin}/airlines/${a.slug}`,
@@ -59,30 +75,63 @@ router.get('/sitemap.xml', async (req, res) => {
         priority: '0.8'
       }));
 
-    // ✅ COUNTRY URLs (dynamic) -> /country/<Country>?petType=<type>
-    // choose the pet types you support
-    const PET_TYPES = ['dog', 'cat', 'bird', 'reptile', 'ferret', 'rabbit', 'rodent', 'fish', 'turtle', 'amphibian', 'hedgehog', 'other'];
+    // ✅ COUNTRY URLs (dynamic)
+    // You said:
+    // - you have a unique page per petType
+    // - any name can be created in admin
+    //
+    // So we do:
+    // (A) start with your known/common pet types
+    // (B) union with any petTypes actually present in regulationsByPetType across all docs
+    const DEFAULT_PET_TYPES = [
+      'dog','cat','bird','reptile','ferret','rabbit','rodent',
+      'fish','turtle','amphibian','hedgehog','guinea_pig','hamster',
+      'other'
+    ];
 
-    // Pull distinct country names from your regulations collection
-    // (adjust field name if yours is different)
-    const countries = await CountryPetRegulation.distinct('country');
+    const countryDocs = await CountryPetRegulation
+      .find({}, 'destinationCountry regulationsByPetType updatedAt createdAt')
+      .lean();
+
+    // Gather custom pet types found in DB
+    const petTypeSet = new Set(DEFAULT_PET_TYPES);
+
+    for (const doc of (countryDocs || [])) {
+      const petMap = doc?.regulationsByPetType || {};
+      for (const k of Object.keys(petMap)) {
+        if (k && typeof k === 'string') petTypeSet.add(k.trim());
+      }
+    }
+
+    const allPetTypes = Array.from(petTypeSet).filter(Boolean);
 
     const countryUrls = [];
-    for (const c of (countries || [])) {
-      if (!c) continue;
-      const encodedCountry = encodeURIComponent(c);
+    for (const doc of (countryDocs || [])) {
+      const country = (doc.destinationCountry || '').trim();
+      if (!country) continue;
 
-      for (const petType of PET_TYPES) {
+      const encodedCountry = encodeURIComponent(country);
+      const lastmod = new Date(doc.updatedAt || doc.createdAt || Date.now()).toISOString();
+
+      // Generate for ALL pet types (your request)
+      for (const petType of allPetTypes) {
         countryUrls.push({
           loc: `${origin}/country/${encodedCountry}?petType=${encodeURIComponent(petType)}`,
-          lastmod: nowIso,          // or use updatedAt if your model has it
+          lastmod,
           changefreq: 'weekly',
           priority: '0.8'
         });
       }
     }
 
-    // XML builder
+    // ✅ Combine + cap (avoid oversize)
+    const allUrls = [
+      ...staticUrls,
+      ...blogUrls,
+      ...airlineUrls,
+      ...countryUrls
+    ].slice(0, MAX_URLS);
+
     const toUrlXml = (u) => {
       const lastmod = u.lastmod || nowIso;
       return `
@@ -94,12 +143,7 @@ router.get('/sitemap.xml', async (req, res) => {
 </url>`;
     };
 
-    const urlsXml = [
-      ...staticUrls,
-      ...blogUrls,
-      ...airlineUrls,
-      ...countryUrls
-    ].map(toUrlXml).join('\n');
+    const urlsXml = allUrls.map(toUrlXml).join('\n');
 
     res.type('application/xml');
     res.send(`<?xml version="1.0" encoding="UTF-8"?>
