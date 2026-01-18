@@ -8,7 +8,7 @@ const Airline = require('../models/airline');
 // Instantiate OpenAI with your API key
 const openai = new OpenAI({
     apiKey: process.env.openaiKey,  // Ensure the OpenAI API key is set correctly in your .env
-});
+});             
 
 // Route to render the contact page initially
 router.get('/', (req, res) => {

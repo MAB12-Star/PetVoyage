@@ -12,7 +12,13 @@
  <div class="mt-4">
     <%- include('../partials/navigation') %>
   </div>
-
+<!--Ads-->
+<%
+  const headerAd = (typeof getAd === 'function') ? getAd('header') : null;
+%>
+<% if (headerAd) { %>
+  <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
+<% } %>
  
 </div>
 
@@ -26,13 +32,8 @@
     <a href="#links" class="btn btn-outline-primary">Links</a>
   </div>
 
-<!--Ads-->
-<%
-  const headerAd = (typeof getAd === 'function') ? getAd('header') : null;
-%>
-<% if (headerAd) { %>
-  <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
-<% } %>
+
+
 <!-- Regulation Sections -->
 <div class="container my-5">
     <% regulations.forEach(regulation => { %>
@@ -68,12 +69,4 @@
             </div>
         </div>
     <% }) %>
-
-      <!--Ads-->
-<%
-  const footer = (typeof getAd === 'function') ? getAd('footer') : null;
-%>
-<% if (footer) { %>
-  <%- include('../partials/ads/ad-image', { ad: footer }) %>
-<% } %>
 </div>

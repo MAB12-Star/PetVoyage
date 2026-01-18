@@ -190,26 +190,39 @@
   </article>
 </div>
 
-<!-- JSON-LD: BlogPosting -->
+  <!-- Blog article HTML above -->
+<!-- ✅ JSON-LD: BlogPosting (PUT IT HERE) -->
 <script type="application/ld+json">
-{
+<%- JSON.stringify({
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": <%- JSON.stringify(story.title) %>,
-  "description": <%- JSON.stringify(summary160) %>,
-  "url": <%- JSON.stringify(pageUrl) %>,
-  "datePublished": <%- JSON.stringify(publishedISO) %>,
-  "dateModified": <%- JSON.stringify(updatedISO) %>,
-  "author": { "@type": "Person", "name": <%- JSON.stringify(authorName) %> },
+  "@id": ogUrl,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": ogUrl
+  },
+  "headline": story.title,
+  "description": metaDescription,
+  "url": ogUrl,
+  "datePublished": story.createdAt,
+  "dateModified": story.updatedAt || story.createdAt,
+  "author": {
+    "@type": "Person",
+    "name": (story.author && story.author.displayName) || story.authorName || "PetVoyage"
+  },
   "publisher": {
     "@type": "Organization",
     "name": "PetVoyage",
-    "logo": { "@type": "ImageObject", "url": "https://www.petvoyage.ai/images/PetVoyageLogo.png" }
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.petvoyage.ai/images/PetVoyageLogo.png"
+    }
   },
-  "image": <%- JSON.stringify(imgList.length ? imgList : [cover]) %>,
-  "mainEntityOfPage": { "@type": "WebPage", "@id": <%- JSON.stringify(pageUrl) %> }
-}
+  "image": [ogImage]
+}, null, 2) %>
 </script>
+
+
 <script>
 (() => {
   const favBtn = document.querySelector('.pv-fav-btn');

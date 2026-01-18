@@ -852,6 +852,55 @@ gap: 1rem; /* Add space between icons */
   }
 
 
+  /* =========================================================
+     PAGE SHELL: LEFT SIDEBAR | MAIN | RIGHT SIDEBAR
+     ========================================================= */
+  .pv-vet-shell{
+    display:grid;
+    grid-template-columns: 300px minmax(0,1fr) 300px;
+    gap:16px;
+    align-items:start;
+    margin-top: 1.75rem;
+    margin-bottom: 2.0rem;
+  }
+
+  .pv-side{
+    position: sticky;
+    top: 92px;
+    align-self:start;
+  }
+
+  .pv-ad-slot{
+    width:100%;
+    max-width:300px;
+    margin:0 auto;
+  }
+
+  /* Let main content breathe */
+  .pv-main{
+    min-width:0;
+  }
+
+  /* Inline ad placeholder spacing inside clinic list */
+  .pv-ad-placeholder{
+    margin: 12px 0;
+  }
+
+  /* Responsive: shrink side columns */
+  @media (max-width: 1400px){
+    .pv-vet-shell{ grid-template-columns: 260px minmax(0,1fr) 260px; }
+    .pv-ad-slot{ max-width:260px; }
+  }
+
+  /* Tablet + mobile: stack everything (side ads become top/bottom blocks) */
+  @media (max-width: 992px){
+    .pv-vet-shell{ grid-template-columns: 1fr; }
+    .pv-side{ position: static; top:auto; }
+    .pv-ad-slot{ max-width:100%; }
+  }
+
+
+
 
 
   

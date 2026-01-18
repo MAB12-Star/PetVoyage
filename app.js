@@ -40,19 +40,7 @@ const { ensureAuth } = require('./middleware');
 const bcrypt = require('bcrypt');
 const accountRoutes = require('./routes/account');
 const { attachAds } = require('./middleware');
-
-
-
-
-
-
-
-
-
-
-
-
-
+const sitemapRoutes = require('./routes/sitemap');
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
 const e = require('connect-flash');
 
@@ -189,7 +177,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/', legalRoutes);
 app.use('/account', accountRoutes);
-
+app.use('/', sitemapRoutes);
 
 
 

@@ -8,7 +8,7 @@ const PhotoSchema = new mongoose.Schema({
 }, { _id: false });
 
 /* =========================
-   NEW: Comments subdocument
+   Comments subdocument
    ========================= */
 const CommentSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -26,6 +26,7 @@ const StorySchema = new mongoose.Schema({
 
   // Travel meta (all optional, plain strings)
   airline:     { type: String, default: '' },  // e.g., "Volaris"
+  airlineSlug: { type: String, default: '' },  // ✅ add: used for linking to /airlines/:slug
   route:       { type: String, default: '' },  // e.g., "SFO → CDMX"
   country:     { type: String, default: '' },  // destination country
   petType:     { type: String, default: '' },  // single pet type for filtering
@@ -42,7 +43,7 @@ const StorySchema = new mongoose.Schema({
   likes:       { type: Number, default: 0 }, // (legacy / optional)
 
   /* =========================
-     NEW: Favorites + Comments
+     Favorites + Comments
      ========================= */
   favoritedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true }],
   favoritesCount: { type: Number, default: 0 },
@@ -66,7 +67,22 @@ function baseSlugify(s) {
     .replace(/\s+/g, '-');          // spaces → hyphens
 }
 
-/* ---------- Pre-save: ensure unique slug + keep favoritesCount accurate ---------- */
+function stripHtml(html = '') {
+  return String(html)
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function clamp(s = '', max = 160) {
+  const str = String(s || '').trim();
+  if (str.length <= max) return str;
+  return str.slice(0, max - 1).trimEnd() + '…';
+}
+
+/* ---------- Pre-save: ensure unique slug + keep favoritesCount accurate + SEO ---------- */
 StorySchema.pre('save', async function(next) {
   try {
     // If no slug (new doc), compute a slug
@@ -91,6 +107,26 @@ StorySchema.pre('save', async function(next) {
     // Keep favoritesCount consistent
     if (Array.isArray(this.favoritedBy)) {
       this.favoritesCount = this.favoritedBy.length;
+    }
+
+    // ✅ Auto-generate SEO whenever core text changes OR SEO is empty
+    const bodyChanged    = this.isModified('body');
+    const titleChanged   = this.isModified('title');
+    const summaryChanged = this.isModified('summary');
+
+    const shouldRegenSeo =
+      !String(this.metaTitle || '').trim() ||
+      !String(this.metaDescription || '').trim() ||
+      bodyChanged || titleChanged || summaryChanged;
+
+    if (shouldRegenSeo) {
+      this.metaTitle = clamp(this.title || 'Pet Travel Story | PetVoyage', 60);
+
+      const descSource = (this.summary && this.summary.trim())
+        ? this.summary
+        : stripHtml(this.body || '');
+
+      this.metaDescription = clamp(descSource, 160);
     }
 
     next();
