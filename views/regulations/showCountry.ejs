@@ -14,6 +14,17 @@
 
   // ✅ choose the placement you want to show INSIDE this page’s right container
   const RIGHT_CARD_TOP_PLACEMENT = 'inline-grid-2';
+
+  // ✅ a safe DOM id helper (avoid commas/spaces breaking ids/selectors)
+  //    (keeps it deterministic + readable)
+  function domId(str) {
+    return String(str || '')
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '');
+  }
 %>
 
 <div class="bg-light py-5 text-center border-bottom">
@@ -121,11 +132,15 @@
     <% if (dbUpdated || sourceUpdated || sourceNote) { %>
       <div class="small text-muted mt-2">
         <% if (dbUpdated) { %>
-          <span class="me-3"><strong>Updated:</strong> <%= dbUpdated %></span>
+          <span class="me-3"><strong>PetVoyage updated:</strong> <%= dbUpdated %></span>
         <% } %>
 
         <% if (sourceUpdated) { %>
           <span class="me-3"><strong>Source last modified:</strong> <%= sourceUpdated %></span>
+        <% } %>
+
+        <% if (sourceNote) { %>
+          <span class="me-3"><strong>Note:</strong> <%= sourceNote %></span>
         <% } %>
       </div>
     <% } %>
@@ -142,9 +157,10 @@
         <i class="fas fa-heart me-1"></i> Save
       </button>
     </form>
+  </div>
 
   <!-- Pet Types Label -->
-  <p class="text-muted fw-semibold mb-2">Pet Types</p>
+  <p class="text-muted fw-semibold mb-2 text-center">Pet Types</p>
 
   <!-- Pet Type Badges (canonical slug comes from route) -->
   <% if (petTypes && petTypes.length) { %>
@@ -166,10 +182,14 @@
     <% if (!details || !Object.keys(details).length) return; %>
 
     <%
-      const petId = encodeURIComponent(pet);
+      // ✅ Safe for DOM ids/selectors
+      const petDom = domId(pet);
     %>
 
-    <div class="pet-regulation-section" data-pet="<%= pet %>" style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
+    <div class="pet-regulation-section"
+         data-pet="<%= pet %>"
+         data-pet-dom="<%= petDom %>"
+         style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
 
       <h3 class="text-primary text-center text-capitalize mb-4">
         <i class="bi bi-paw-fill me-2"></i><%= pet %> Regulations
@@ -203,7 +223,7 @@
               <p class="text-muted mb-0">Find airline-approved carriers, travel crates, harnesses, medical kits, and everything you need for stress-free pet travel.</p>
             </div>
             <div class="col-md-3 d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
-              <a href="<%= linkUrl %>" target="_blank" class="btn btn-primary fw-bold px-4 py-2"> Shop Now → </a>
+              <a href="<%= linkUrl %>" target="_blank" rel="noopener noreferrer" class="btn btn-primary fw-bold px-4 py-2"> Shop Now → </a>
             </div>
           </div>
         </div>
@@ -219,20 +239,28 @@
                 <i class="bi bi-shield-plus me-2"></i>Vaccinations
               </h5>
 
-              <% const vaccinationKeys = Object.keys(details?.vaccinations || {}).filter(key => {
-                const vac = details.vaccinations[key];
-                return vac?.description?.trim() ||
-                  (Array.isArray(vac?.requirements) && vac.requirements.some(r => r.trim()));
-              }); %>
+              <%
+                const vaccinationKeys = Object.keys(details?.vaccinations || {}).filter(key => {
+                  const vac = details.vaccinations[key];
+                  return vac?.description?.trim() ||
+                    (Array.isArray(vac?.requirements) && vac.requirements.some(r => String(r).trim()));
+                });
+
+                // build stable ids
+                const vacPrefix = `vaccination__${petDom}__`;
+              %>
 
               <% if (vaccinationKeys.length) { %>
                 <div class="mb-3 d-flex flex-wrap gap-2">
                   <% vaccinationKeys.forEach((key, j) => {
-                       const keyId = encodeURIComponent(key);
+                       const keyDom = domId(key);
+                       const targetId = `${vacPrefix}${keyDom}`;
                   %>
-                    <button class="btn btn-sm btn-outline-primary vac-btn <%= j === 0 ? 'active' : '' %>"
-                            data-target="vaccination__<%= petId %>__<%= keyId %>"
-                            data-group="vaccination__<%= petId %>__">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary vac-btn <%= j === 0 ? 'active' : '' %>"
+                      data-target="<%= targetId %>"
+                      data-group="<%= vacPrefix %>">
                       <%= key %>
                     </button>
                   <% }) %>
@@ -240,17 +268,18 @@
 
                 <% vaccinationKeys.forEach((key, j) => {
                      const vac = details.vaccinations[key];
-                     const keyId = encodeURIComponent(key);
+                     const keyDom = domId(key);
+                     const targetId = `${vacPrefix}${keyDom}`;
                 %>
-                  <div id="vaccination__<%= petId %>__<%= keyId %>"
+                  <div id="<%= targetId %>"
                        class="vaccination-detail"
                        style="<%= j === 0 ? '' : 'display:none;' %>">
                     <% if (vac.description?.trim()) { %>
                       <div class="mb-2"><strong>Description:</strong> <%- vac.description %></div>
                     <% } %>
-                    <% if (Array.isArray(vac.requirements) && vac.requirements.filter(r => r.trim()).length) { %>
+                    <% if (Array.isArray(vac.requirements) && vac.requirements.filter(r => String(r).trim()).length) { %>
                       <ul>
-                        <% vac.requirements.filter(r => r.trim()).forEach(req => { %>
+                        <% vac.requirements.filter(r => String(r).trim()).forEach(req => { %>
                           <li><%- req %></li>
                         <% }) %>
                       </ul>
@@ -281,20 +310,27 @@
                 </div>
               <% } %>
 
-              <% const certKeys = Object.keys(details?.certifications || {}).filter(key => {
-                const cert = details.certifications[key];
-                return cert?.description?.trim() ||
-                  (Array.isArray(cert?.requirements) && cert.requirements.some(r => r.trim()));
-              }); %>
+              <%
+                const certKeys = Object.keys(details?.certifications || {}).filter(key => {
+                  const cert = details.certifications[key];
+                  return cert?.description?.trim() ||
+                    (Array.isArray(cert?.requirements) && cert.requirements.some(r => String(r).trim()));
+                });
+
+                const certPrefix = `certification__${petDom}__`;
+              %>
 
               <% if (certKeys.length) { %>
                 <div class="mb-3 d-flex flex-wrap gap-2">
                   <% certKeys.forEach((key, j) => {
-                       const keyId = encodeURIComponent(key);
+                       const keyDom = domId(key);
+                       const targetId = `${certPrefix}${keyDom}`;
                   %>
-                    <button class="btn btn-sm btn-outline-success cert-btn <%= j === 0 ? 'active' : '' %>"
-                            data-target="certification__<%= petId %>__<%= keyId %>"
-                            data-group="certification__<%= petId %>__">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-success cert-btn <%= j === 0 ? 'active' : '' %>"
+                      data-target="<%= targetId %>"
+                      data-group="<%= certPrefix %>">
                       <%= key %>
                     </button>
                   <% }) %>
@@ -302,17 +338,18 @@
 
                 <% certKeys.forEach((key, j) => {
                      const cert = details.certifications[key];
-                     const keyId = encodeURIComponent(key);
+                     const keyDom = domId(key);
+                     const targetId = `${certPrefix}${keyDom}`;
                 %>
-                  <div id="certification__<%= petId %>__<%= keyId %>"
+                  <div id="<%= targetId %>"
                        class="certification-detail"
                        style="<%= j === 0 ? '' : 'display:none;' %>">
                     <% if (cert.description?.trim()) { %>
                       <div class="mb-2"><strong>Description:</strong> <%- cert.description %></div>
                     <% } %>
-                    <% if (Array.isArray(cert.requirements) && cert.requirements.filter(r => r.trim()).length) { %>
+                    <% if (Array.isArray(cert.requirements) && cert.requirements.filter(r => String(r).trim()).length) { %>
                       <ul>
-                        <% cert.requirements.filter(r => r.trim()).forEach(req => { %>
+                        <% cert.requirements.filter(r => String(r).trim()).forEach(req => { %>
                           <li><%- req %></li>
                         <% }) %>
                       </ul>
@@ -421,9 +458,9 @@
                 <h5 class="card-title text-success"><i class="bi bi-journal-code me-2"></i>Import-Specific Links</h5>
                 <% details.links.forEach(link => { %>
                   <% if (typeof link === 'object' && link.name && link.url) { %>
-                    <a href="<%= link.url %>" target="_blank" class="btn btn-outline-success mb-2 me-2"><%= link.name %></a>
+                    <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success mb-2 me-2"><%= link.name %></a>
                   <% } else if (typeof link === 'string' && link.trim()) { %>
-                    <a href="<%= link %>" target="_blank" class="btn btn-outline-success mb-2 me-2">Visit Link</a>
+                    <a href="<%= link %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success mb-2 me-2">Visit Link</a>
                   <% } %>
                 <% }) %>
               </div>
@@ -439,9 +476,9 @@
                 <h5 class="card-title text-primary"><i class="bi bi-link-45deg me-2"></i>Official Source(s)</h5>
                 <% regulations.officialLinks.forEach(link => { %>
                   <% if (typeof link === 'object' && link.name && link.url) { %>
-                    <a href="<%= link.url %>" target="_blank" class="btn btn-outline-primary mb-2 me-2"><%= link.name %></a>
+                    <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary mb-2 me-2"><%= link.name %></a>
                   <% } else if (typeof link === 'string' && link.trim()) { %>
-                    <a href="<%= link %>" target="_blank" class="btn btn-outline-primary mb-2 me-2">Visit Source</a>
+                    <a href="<%= link %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary mb-2 me-2">Visit Source</a>
                   <% } %>
                 <% }) %>
               </div>
@@ -460,12 +497,14 @@
 <br>
 <p></p>
 
-<!-- ✅ Pet Type Click => canonical slug -->
+<!-- ✅ Pet Type Click => canonical slug (prevents duplicate URL variants) -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.pet-type-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const petSlug = btn.dataset.petSlug;
+        if (!petSlug) return;
+
         const url = new URL(window.location.href);
         url.searchParams.set('petType', petSlug);
         window.location.href = url.toString();
@@ -474,21 +513,28 @@
   });
 </script>
 
-<!-- ✅ Vaccination/Certification Toggle Logic (safe; no split('-')) -->
+<!-- ✅ Vaccination/Certification Toggle Logic (safe; no split('-'), safe ids) -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    function activateButton(btn, selector) {
+      const parent = btn.parentElement;
+      if (!parent) return;
+      parent.querySelectorAll(selector).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
     // Vaccinations
     document.querySelectorAll('.vac-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const prefix = btn.dataset.group;
         const target = btn.dataset.target;
+        if (!prefix || !target) return;
 
         document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => el.style.display = 'none');
         const el = document.getElementById(target);
         if (el) el.style.display = 'block';
 
-        btn.parentElement.querySelectorAll('.vac-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        activateButton(btn, '.vac-btn');
       });
     });
 
@@ -497,13 +543,13 @@
       btn.addEventListener('click', () => {
         const prefix = btn.dataset.group;
         const target = btn.dataset.target;
+        if (!prefix || !target) return;
 
         document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => el.style.display = 'none');
         const el = document.getElementById(target);
         if (el) el.style.display = 'block';
 
-        btn.parentElement.querySelectorAll('.cert-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        activateButton(btn, '.cert-btn');
       });
     });
   });
