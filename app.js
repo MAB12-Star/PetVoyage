@@ -160,6 +160,8 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/ai', aiRoutes); // AI route near the top
 //app.use('/', auth);
+app.use('/admin', adminRoutes);
+app.use("/admin", require("./routes/adminAgent"));
 app.use('/auth', auth);
 app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
@@ -176,7 +178,7 @@ app.use(redirectOldAirlineLinks); // 🔁 Legacy redirect middleware
 app.use('/', airlineRoutes);
 app.use('/airlines', reviewsRoutes); // ✅ for nested reviews
 // ... after other app.use(...)
-app.use('/admin', adminRoutes);
+
 app.use('/uploads', express.static('uploads'));
 
 
@@ -185,7 +187,7 @@ app.use('/', legalRoutes);
 app.use('/account', accountRoutes);
 app.use('/', sitemapRoutes);
 
-app.use("/admin", require("./routes/adminAgent"));
+
 
 
 // 🗺 Sitemap route

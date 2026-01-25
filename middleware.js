@@ -136,22 +136,38 @@ module.exports.redirectOldAirlineLinks = (req, res, next) => {
   };
   
 // middleware/auth.js
+// middleware/auth.js
 module.exports.ensureAuth = function ensureAuth(req, res, next) {
   if (req.isAuthenticated && req.isAuthenticated()) return next();
-  // Remember where they were going, then redirect to login
-  req.session.currentPage = req.originalUrl || '/blog';
-  return res.redirect('/login');
+
+  // If SSE or AJAX, return status instead of redirect (prevents opaque "Stream error")
+  const wantsJson = req.xhr || (req.headers.accept || "").includes("application/json");
+  const isSSE = (req.headers.accept || "").includes("text/event-stream");
+
+  req.session.currentPage = req.originalUrl || "/blog";
+
+  if (isSSE || wantsJson) {
+    return res.status(401).json({ ok: false, error: "Login required" });
+  }
+
+  return res.redirect("/login");
 };
 
 // middleware/index.js
 module.exports.ensureAdmin = function ensureAdmin(req, res, next) {
-  if (req.user && req.user.role === 'admin') return next();
+  if (req.user && req.user.role === "admin") return next();
 
-  // not an admin
-  if (req.xhr) return res.status(403).json({ error: 'Admins only' });
-  req.flash('error', 'Admins only.');
-  return res.redirect('/');  // or res.status(403).render('403') if you prefer
+  const wantsJson = req.xhr || (req.headers.accept || "").includes("application/json");
+  const isSSE = (req.headers.accept || "").includes("text/event-stream");
+
+  if (isSSE || wantsJson) {
+    return res.status(403).json({ ok: false, error: "Admins only" });
+  }
+
+  req.flash("error", "Admins only.");
+  return res.redirect("/");
 };
+
 
 
 module.exports.ensureOwner = function ensureOwner(getDoc) {
