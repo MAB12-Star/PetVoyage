@@ -4,7 +4,7 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <div>
       <h1 class="fw-bold mb-1">Country Regulations Agent</h1>
-      <div class="text-muted">Run the pipeline to research → extract → validate → publish country regulations.</div>
+      <div class="text-muted">Run research → extract → validate → publish, and chat to improve accuracy.</div>
     </div>
     <a class="btn btn-outline-secondary" href="/admin">Back to Admin</a>
   </div>
@@ -12,8 +12,6 @@
   <div class="card shadow-sm mb-3">
     <div class="card-body">
       <div class="row g-3">
-
-        <!-- Country -->
         <div class="col-lg-6">
           <label class="form-label fw-semibold">Destination Country</label>
           <select id="countryName" class="form-select">
@@ -22,7 +20,6 @@
           <div class="form-text">Pulled from <code>destinationCountry</code> values in MongoDB.</div>
         </div>
 
-        <!-- Research mode -->
         <div class="col-lg-6">
           <label class="form-label fw-semibold">Research Mode</label>
           <select id="researchMode" class="form-select">
@@ -31,20 +28,18 @@
             <option value="deep">Deep (seed + always broaden web)</option>
           </select>
           <div class="form-text">
-            Use <code>provided_only</code> when you want to control sources strictly.
+            Use <code>provided_only</code> when you want strict source control.
           </div>
         </div>
 
-        <!-- Manual URLs -->
         <div class="col-12">
           <label class="form-label fw-semibold">Manual URLs (one per line)</label>
           <textarea id="manualUrls" class="form-control" rows="5" placeholder="https://..."></textarea>
           <div class="form-text">
-            Used in <code>provided_only</code> mode (required), or as extra context for other modes.
+            Required for <code>provided_only</code>. Also used as extra context for other modes.
           </div>
         </div>
 
-        <!-- Options -->
         <div class="col-12 d-flex align-items-center gap-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="wantExplain" />
@@ -54,12 +49,9 @@
           </div>
 
           <div class="ms-auto d-flex gap-2">
-            <button id="runBtn" class="btn btn-primary">
-              Run (Preview)
-            </button>
-            <button id="publishBtn" class="btn btn-success" disabled>
-              Publish
-            </button>
+            <button id="runBtn" class="btn btn-primary">Run (Preview)</button>
+            <button id="publishBtn" class="btn btn-success" disabled>Publish</button>
+            <button id="stopBtn" class="btn btn-outline-danger" disabled>Stop</button>
           </div>
         </div>
 
@@ -67,45 +59,61 @@
     </div>
   </div>
 
- <div class="row g-3">
-  <!-- Status / Logs -->
-  <div class="col-lg-4">
-    <div class="card shadow-sm h-100">
-      <div class="card-header fw-semibold">Status</div>
-      <div class="card-body">
-        <div id="status" class="mb-2">Ready.</div>
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header fw-semibold">Status</div>
+        <div class="card-body">
+          <div id="status" class="mb-2">Ready.</div>
 
-        <div class="small text-muted mb-2">Updates:</div>
-        <pre
-          id="meta"
-          style="white-space:pre-wrap;margin:0;height:240px;overflow:auto;background:#fafafa;border:1px solid #eee;padding:.5rem;border-radius:.5rem;"
-        >(none)</pre>
+          <div class="small text-muted mb-2">Live updates:</div>
+          <pre id="meta"
+            style="white-space:pre-wrap;margin:0;height:240px;overflow:auto;background:#fafafa;border:1px solid #eee;padding:.5rem;border-radius:.5rem;"
+          >(none)</pre>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mt-3">
+        <div class="card-header fw-semibold">Chat with Agent</div>
+        <div class="card-body">
+          <div id="chatThread" class="border rounded p-2 mb-2" style="height:220px;overflow:auto;background:#fff;">
+            <div class="text-muted small">Ask: “What’s missing?” “Find official links for X.” “The result ignored ferrets, look harder.”</div>
+          </div>
+
+          <textarea id="chatInput" class="form-control mb-2" rows="3" placeholder="Type to the agent…"></textarea>
+
+          <div class="d-flex gap-2">
+            <button id="chatSendBtn" class="btn btn-outline-primary btn-sm">Send</button>
+            <button id="applyUrlsBtn" class="btn btn-outline-success btn-sm" disabled>Apply suggested URLs</button>
+          </div>
+
+          <div id="chatHints" class="small text-muted mt-2"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Output -->
-  <div class="col-lg-8">
-    <div class="card shadow-sm h-100">
-      <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
-        <span>Output</span>
-        <button id="copyBtn" class="btn btn-sm btn-outline-secondary" disabled>Copy JSON</button>
-      </div>
-      <div class="card-body">
-
-        <div id="out" class="border rounded bg-white" style="min-height:400px;">
-          <div class="text-muted p-3">(nothing yet)</div>
+    <div class="col-lg-8">
+      <div class="card shadow-sm h-100">
+        <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
+          <span>Output</span>
+          <button id="copyBtn" class="btn btn-sm btn-outline-secondary" disabled>Copy JSON</button>
         </div>
-
+        <div class="card-body">
+          <div id="out" class="border rounded bg-white" style="min-height:400px;">
+            <div class="text-muted p-3">(nothing yet)</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  let lastFinalDoc = null;
-
   const $ = (id) => document.getElementById(id);
+
+  let lastFinalDoc = null;
+  let lastSuggestedUrls = [];
+  let es = null;
 
   function setStatus(text, kind = "info") {
     const el = $("status");
@@ -118,31 +126,36 @@
 
   function appendLog(line) {
     const metaEl = $("meta");
-    metaEl.textContent += (metaEl.textContent && metaEl.textContent !== "(none)" ? "\n" : "") + line;
+    if (metaEl.textContent === "(none)") metaEl.textContent = "";
+    metaEl.textContent += (metaEl.textContent ? "\n" : "") + line;
     metaEl.scrollTop = metaEl.scrollHeight;
   }
 
   function resetUiForRun() {
     lastFinalDoc = null;
+    lastSuggestedUrls = [];
+    $("applyUrlsBtn").disabled = true;
+    $("chatHints").textContent = "";
     $("meta").textContent = "";
     $("out").innerHTML = `<div class="text-muted p-3">(running...)</div>`;
     $("copyBtn").disabled = true;
     $("publishBtn").disabled = true;
   }
 
+  function getFormPayload() {
+    return {
+      countryName: $("countryName")?.value || "",
+      researchMode: $("researchMode")?.value || "seed_first",
+      manualUrls: $("manualUrls")?.value || "",
+      wantExplain: $("wantExplain")?.checked || false
+    };
+  }
+
   async function renderPreview(finalDoc) {
     const outEl = $("out");
-
-    // Put iframe in place immediately
     outEl.innerHTML = `
-      <iframe
-        id="previewFrame"
-        style="width:100%;height:800px;border:none;"
-        srcdoc="Loading preview…">
-      </iframe>
+      <iframe id="previewFrame" style="width:100%;height:800px;border:none;" srcdoc="Loading preview…"></iframe>
     `;
-
-    const iframe = $("previewFrame");
 
     const resp = await fetch("/admin/agent/preview", {
       method: "POST",
@@ -156,40 +169,61 @@
       return;
     }
 
-    iframe.srcdoc = await resp.text();
+    $("previewFrame").srcdoc = await resp.text();
   }
 
-  function getFormPayload() {
-    return {
-      countryName: $("countryName")?.value || "",
-      researchMode: $("researchMode")?.value || "seed_first",
-      manualUrls: $("manualUrls")?.value || "",
-      wantExplain: $("wantExplain")?.checked || false
-    };
+  function stopStream() {
+    if (es) {
+      try { es.close(); } catch {}
+      es = null;
+    }
+    $("stopBtn").disabled = true;
   }
 
-  // ✅ Preview runner (non-SSE)
-  async function runPreview(p) {
+  // ✅ SSE Preview run (recommended for production)
+  async function runPreviewSSE(p) {
     resetUiForRun();
-    setStatus("Running preview…", "info");
 
+    if (!p.countryName) { setStatus("Pick a country first.", "warn"); return; }
+    if (p.researchMode === "provided_only" && !p.manualUrls.trim()) {
+      setStatus("provided_only mode requires manual URLs.", "warn");
+      return;
+    }
+
+    setStatus("Running preview (streaming)…", "info");
     appendLog(`• Starting agent for ${p.countryName}`);
     appendLog(`• Mode: ${p.researchMode}`);
     if (p.researchMode === "provided_only") appendLog(`• Using manual URLs only`);
 
-    try {
-      const resp = await fetch("/admin/agent/run", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(p)
-      });
+    stopStream();
+    $("stopBtn").disabled = false;
 
-      const data = await resp.json().catch(() => ({}));
+    const qs = new URLSearchParams({
+      countryName: p.countryName,
+      researchMode: p.researchMode,
+      wantExplain: String(!!p.wantExplain),
+      dryRun: "true",
+      manualUrls: p.manualUrls
+    });
 
-      if (!resp.ok || data?.ok === false) {
-        const msg = data?.error || data?.message || `Run failed (${resp.status})`;
-        setStatus("❌ " + msg, "err");
-        appendLog("❌ " + msg);
+    es = new EventSource("/admin/agent/stream?" + qs.toString());
+
+    es.addEventListener("status", (ev) => {
+      const data = JSON.parse(ev.data || "{}");
+      if (data.message) appendLog("• " + data.message);
+    });
+
+    es.addEventListener("progress", (ev) => {
+      const data = JSON.parse(ev.data || "{}");
+      if (data.message) appendLog("• " + data.message);
+    });
+
+    es.addEventListener("done", async (ev) => {
+      stopStream();
+      const data = JSON.parse(ev.data || "{}");
+
+      if (data?.ok === false) {
+        setStatus("❌ " + (data?.error || data?.message || "Run failed"), "err");
         $("out").textContent = JSON.stringify(data, null, 2);
         return;
       }
@@ -198,7 +232,6 @@
 
       if (!lastFinalDoc) {
         setStatus("Done, but no finalDoc returned.", "warn");
-        appendLog("✅ Done (no finalDoc).");
         $("out").textContent = JSON.stringify(data, null, 2);
         return;
       }
@@ -208,18 +241,27 @@
       await renderPreview(lastFinalDoc);
 
       $("copyBtn").disabled = false;
-      $("publishBtn").disabled = false; // enable publish after successful preview
-    } catch (e) {
-      setStatus("❌ " + (e?.message || "Unknown error"), "err");
-      appendLog("❌ " + (e?.message || "Unknown error"));
-    }
+      $("publishBtn").disabled = false;
+    });
+
+    es.addEventListener("agent_error", (ev) => {
+      stopStream();
+      const data = JSON.parse(ev.data || "{}");
+      const msg = data?.message || "Stream error";
+      setStatus("❌ " + msg, "err");
+      appendLog("❌ " + msg);
+    });
+
+    es.onerror = () => {
+      // Don't spam; Nginx/proxy can trigger this.
+      stopStream();
+      setStatus("❌ Stream error (see server logs).", "err");
+      appendLog("❌ Stream error (see server logs).");
+    };
   }
 
-  // ✅ Publish runner (non-SSE)
+  // Publish (non-SSE)
   async function publish(p) {
-    // Optional: require preview first
-    // if (!lastFinalDoc) { setStatus("Run Preview first.", "warn"); return; }
-
     $("publishBtn").disabled = true;
     setStatus("Publishing…", "info");
     appendLog("• Publishing…");
@@ -242,7 +284,6 @@
         return;
       }
 
-      // many pipelines still return finalDoc on publish; if so, preview it:
       if (data?.finalDoc) {
         lastFinalDoc = data.finalDoc;
         await renderPreview(lastFinalDoc);
@@ -283,45 +324,102 @@
       $("meta").textContent = "(none)";
     } catch (e) {
       setStatus("Failed to load countries: " + e.message, "err");
-      const sel = $("countryName");
-      sel.innerHTML = '<option value="">(error loading countries)</option>';
+      $("countryName").innerHTML = '<option value="">(error loading countries)</option>';
     }
   }
 
-  // Run (Preview)
+  function chatAdd(role, text) {
+    const wrap = $("chatThread");
+    const div = document.createElement("div");
+    div.className = "mb-2";
+    div.innerHTML = `<div class="small text-muted">${role}</div><div>${String(text).replaceAll("\n","<br>")}</div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  async function sendChat() {
+    const p = getFormPayload();
+    const msg = ($("chatInput").value || "").trim();
+    if (!msg) return;
+
+    chatAdd("You", msg);
+    $("chatInput").value = "";
+    $("chatSendBtn").disabled = true;
+    $("chatHints").textContent = "Thinking…";
+
+    try {
+      const resp = await fetch("/admin/agent/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          countryName: p.countryName,
+          researchMode: p.researchMode,
+          manualUrls: p.manualUrls,
+          finalDoc: lastFinalDoc,
+          message: msg
+        })
+      });
+
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || data?.ok === false) {
+        chatAdd("Agent", "Chat failed: " + (data?.error || resp.status));
+        $("chatHints").textContent = "";
+        $("chatSendBtn").disabled = false;
+        return;
+      }
+
+      if (data.replyMarkdown) chatAdd("Agent", data.replyMarkdown);
+
+      lastSuggestedUrls = Array.isArray(data.suggestedUrls) ? data.suggestedUrls : [];
+      $("applyUrlsBtn").disabled = lastSuggestedUrls.length === 0;
+
+      const hints = [];
+      if (Array.isArray(data.missingOrUnclear) && data.missingOrUnclear.length) {
+        hints.push("Missing/unclear:\n- " + data.missingOrUnclear.join("\n- "));
+      }
+      if (Array.isArray(data.suggestedSearchTerms) && data.suggestedSearchTerms.length) {
+        hints.push("Search terms:\n- " + data.suggestedSearchTerms.join("\n- "));
+      }
+      if (data.nextInstructions) hints.push("Next:\n" + data.nextInstructions);
+
+      $("chatHints").textContent = hints.join("\n\n");
+    } catch (e) {
+      chatAdd("Agent", "Chat error: " + (e?.message || "unknown"));
+      $("chatHints").textContent = "";
+    } finally {
+      $("chatSendBtn").disabled = false;
+    }
+  }
+
   $("runBtn")?.addEventListener("click", async () => {
-    const p = getFormPayload();
-
-    if (!p.countryName) {
-      setStatus("Pick a country first.", "warn");
-      return;
-    }
-
-    if (p.researchMode === "provided_only" && !p.manualUrls.trim()) {
-      setStatus("provided_only mode requires manual URLs.", "warn");
-      return;
-    }
-
-    await runPreview(p);
+    await runPreviewSSE(getFormPayload());
   });
 
-  // Publish
+  $("stopBtn")?.addEventListener("click", () => {
+    stopStream();
+    setStatus("Stopped.", "warn");
+    appendLog("⚠️ Stopped by user.");
+  });
+
   $("publishBtn")?.addEventListener("click", async () => {
-    const p = getFormPayload();
-
-    if (!p.countryName) {
-      setStatus("Pick a country first.", "warn");
-      return;
-    }
-
-    await publish(p);
+    await publish(getFormPayload());
   });
 
-  // Copy JSON (ONLY finalDoc)
   $("copyBtn")?.addEventListener("click", async () => {
     if (!lastFinalDoc) return;
     await navigator.clipboard.writeText(JSON.stringify(lastFinalDoc, null, 2));
     setStatus("Copied finalDoc JSON to clipboard.", "ok");
+  });
+
+  $("chatSendBtn")?.addEventListener("click", sendChat);
+
+  $("applyUrlsBtn")?.addEventListener("click", () => {
+    if (!lastSuggestedUrls.length) return;
+    const current = ($("manualUrls").value || "").trim();
+    const existing = new Set(current.split(/\r?\n/).map(s => s.trim()).filter(Boolean));
+    lastSuggestedUrls.forEach(u => existing.add(u));
+    $("manualUrls").value = Array.from(existing).join("\n");
+    setStatus("✅ Applied suggested URLs to Manual URLs.", "ok");
   });
 
   loadCountries();

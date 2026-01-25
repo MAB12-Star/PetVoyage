@@ -899,6 +899,13 @@ gap: 1rem; /* Add space between icons */
     .pv-ad-slot{ max-width:100%; }
   }
 
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer input::placeholder {
+  color: #adb5bd;
+}
 
 
 
