@@ -154,7 +154,7 @@ Output: Write a concise report (NOT JSON) with:
         input: providedPrompt,
         tools: [{ type: "web_search" }]
       }),
-      120000,
+      360000,
       "researcher web_search (provided_only)"
     );
 
@@ -170,7 +170,7 @@ Output: Write a concise report (NOT JSON) with:
           input: seedFirstPrompt,
           tools: [{ type: "web_search" }]
         }),
-        120000,
+        360000,
         "researcher web_search (seed-first)"
       );
 
@@ -189,7 +189,7 @@ Output: Write a concise report (NOT JSON) with:
           input: broadPrompt,
           tools: [{ type: "web_search" }]
         }),
-        150000,
+        360000,
         "researcher web_search (broad)"
       );
 
