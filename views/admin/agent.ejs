@@ -180,12 +180,13 @@
     es = new EventSource(`/admin/agent/stream?${qs.toString()}`);
 
     es.addEventListener("agent_error", (e) => {
-    const data = JSON.parse(e.data || "{}");
-    statusEl.textContent = "Error.";
-    metaEl.textContent += "\n\n❌ " + (data.message || "Unknown error");
-    if (es) es.close();
-    es = null;
-    });
+  const data = JSON.parse(e.data || "{}");
+  setStatus("❌ " + (data.message || "Unknown error"), "err");
+  appendLog("❌ " + (data.message || "Unknown error"));
+  if (es) es.close();
+  es = null;
+});
+
 
     es.addEventListener("progress", (e) => {
       const data = JSON.parse(e.data || "{}");
