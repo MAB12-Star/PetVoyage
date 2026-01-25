@@ -8,101 +8,48 @@ router.use(ensureAuth);
 router.use(ensureAdmin);
 
 /**
- * POST /admin/agent/preview
+ * Helpers
  */
-router.post("/preview", async (req, res) => {
-  try {
-    const { finalDoc } = req.body;
-    if (!finalDoc) return res.status(400).send("No document to preview");
+function toLines(text = "") {
+  return String(text)
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
 
-    return res.render("regulations/showCountry", {
-      regulations: finalDoc,
-      regulationId: finalDoc._id || null,
-      petTypes: Object.keys(finalDoc.regulationsByPetType || {}).map((k) => ({
-        key: k,
-        slug: String(k).toLowerCase(),
-      })),
-      selectedPetType: Object.keys(finalDoc.regulationsByPetType || {})[0] || null,
-      originReqs: [],
-      user: req.user,
-    });
-  } catch (e) {
-    console.error("[agent/preview] failed:", e);
-    return res.status(500).send("Preview failed");
-  }
-});
-
-/**
- * GET /admin/agent/stream  (SSE)
- */
-router.get("/stream", async (req, res) => {
-  res.status(200);
-  res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
-  res.setHeader("Cache-Control", "no-cache, no-transform");
-  res.setHeader("Connection", "keep-alive");
-  res.setHeader("X-Accel-Buffering", "no");
-
-  if (typeof res.flushHeaders === "function") res.flushHeaders();
-
-  let closed = false;
-  req.on("close", () => { closed = true; });
-
-  const safeWrite = (chunk) => {
-    if (closed || res.writableEnded || res.destroyed) return false;
-    try { res.write(chunk); return true; } catch { return false; }
-  };
-
-  const send = (type, data) => {
-    safeWrite(`event: ${type}\n`);
-    safeWrite(`data: ${JSON.stringify(data)}\n\n`);
-  };
-
-  try {
-    const { countryName, researchMode, wantExplain, manualUrls, dryRun } = req.query;
-
-    if (!countryName) {
-      send("agent_error", { message: "countryName is required." });
-      return res.end();
-    }
-
-    const urls = String(manualUrls || "")
-      .split(/\r?\n/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    const { runCountryAgent } = await import("../utils/regs-agent/agents/runCountryAgent.mjs");
-
-    send("status", { message: `Starting agent for ${countryName}` });
-
-    const result = await runCountryAgent({
-      countryName,
-      dryRun: String(dryRun ?? "true") === "true",
-      wantExplain: String(wantExplain ?? "false") === "true",
-      researchMode: researchMode || "seed_first",
-      manualUrls: urls,
-      onProgress: (message) => send("progress", { message, at: new Date().toISOString() }),
-    });
-
-    send("done", result);
-    return res.end();
-  } catch (e) {
-    console.error("[agent/stream] failed:", e);
-    send("agent_error", { message: e?.message || "Unknown stream error" });
-    return res.end();
-  }
-});
+function slugify(s = "") {
+  return String(s)
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 /**
  * GET /admin/agent
+ * Renders the admin UI page
  */
-router.get("/", (req, res) => {
-  res.render("admin/agent", { user: req.user });
+router.get("/agent", (req, res) => {
+  return res.render("admin/agent", { user: req.user });
+});
+
+/**
+ * GET /admin/agent/stream
+ * SSE DISABLED (intentionally). The UI should use POST /admin/agent/run instead.
+ */
+router.get("/agent/stream", (req, res) => {
+  return res.status(410).json({
+    ok: false,
+    error: "SSE stream disabled. Use POST /admin/agent/run instead.",
+  });
 });
 
 /**
  * GET /admin/agent/countries
+ * Returns list of destinationCountry values from Mongo
  */
-router.get("/countries", async (req, res) => {
+router.get("/agent/countries", async (req, res) => {
   try {
     const { withDb } = await import("../utils/regs-agent/db.mjs");
 
@@ -117,64 +64,109 @@ router.get("/countries", async (req, res) => {
     return res.json({ ok: true, countries });
   } catch (e) {
     console.error("[agent/countries] failed:", e);
-    return res.status(500).json({ ok: false, error: e.message });
+    return res.status(500).json({ ok: false, error: e?.message || "Failed to load countries" });
   }
 });
 
 /**
- * POST /admin/agent/run   (preview / dryRun)
+ * POST /admin/agent/run
+ * Runs pipeline in DRY RUN (preview)
  */
-router.post("/run", async (req, res) => {
+router.post("/agent/run", async (req, res) => {
   try {
-    const { countryName, researchMode, manualUrls, wantExplain } = req.body;
+    const { countryName, researchMode, manualUrls, wantExplain } = req.body || {};
 
-    const urls = String(manualUrls || "")
-      .split(/\r?\n/)
-      .map((s) => s.trim())
-      .filter(Boolean);
+    if (!countryName || !String(countryName).trim()) {
+      return res.status(400).json({ ok: false, error: "countryName is required" });
+    }
+
+    const mode = researchMode || "seed_first";
+    const urls = toLines(manualUrls);
+
+    if (mode === "provided_only" && urls.length === 0) {
+      return res.status(400).json({ ok: false, error: "provided_only mode requires manualUrls" });
+    }
 
     const { runCountryAgent } = await import("../utils/regs-agent/agents/runCountryAgent.mjs");
 
     const result = await runCountryAgent({
-      countryName,
+      countryName: String(countryName).trim(),
       dryRun: true,
-      wantExplain: String(wantExplain || "false") === "true",
-      researchMode: researchMode || "seed_first",
+      wantExplain: String(wantExplain ?? "false") === "true" || wantExplain === true,
+      researchMode: mode,
       manualUrls: urls,
     });
 
     return res.json(result);
   } catch (e) {
     console.error("[agent/run] failed:", e);
-    return res.status(500).json({ ok: false, error: e.message });
+    return res.status(500).json({ ok: false, error: e?.message || "Run failed" });
   }
 });
 
 /**
  * POST /admin/agent/publish
+ * Runs pipeline and publishes to Mongo
  */
-router.post("/publish", async (req, res) => {
+router.post("/agent/publish", async (req, res) => {
   try {
-    const { countryName, researchMode, manualUrls } = req.body;
+    const { countryName, researchMode, manualUrls, wantExplain } = req.body || {};
 
-    const urls = String(manualUrls || "")
-      .split(/\r?\n/)
-      .map((s) => s.trim())
-      .filter(Boolean);
+    if (!countryName || !String(countryName).trim()) {
+      return res.status(400).json({ ok: false, error: "countryName is required" });
+    }
+
+    const mode = researchMode || "seed_first";
+    const urls = toLines(manualUrls);
+
+    if (mode === "provided_only" && urls.length === 0) {
+      return res.status(400).json({ ok: false, error: "provided_only mode requires manualUrls" });
+    }
 
     const { runCountryAgent } = await import("../utils/regs-agent/agents/runCountryAgent.mjs");
 
     const result = await runCountryAgent({
-      countryName,
+      countryName: String(countryName).trim(),
       dryRun: false,
-      researchMode: researchMode || "seed_first",
+      // allow wantExplain on publish too (optional)
+      wantExplain: String(wantExplain ?? "false") === "true" || wantExplain === true,
+      researchMode: mode,
       manualUrls: urls,
     });
 
     return res.json(result);
   } catch (e) {
     console.error("[agent/publish] failed:", e);
-    return res.status(500).json({ ok: false, error: e.message });
+    return res.status(500).json({ ok: false, error: e?.message || "Publish failed" });
+  }
+});
+
+/**
+ * POST /admin/agent/preview
+ * Returns rendered HTML preview for a finalDoc (used by iframe srcdoc)
+ */
+router.post("/agent/preview", async (req, res) => {
+  try {
+    const { finalDoc } = req.body || {};
+    if (!finalDoc) return res.status(400).send("No document to preview");
+
+    const petTypeKeys = Object.keys(finalDoc.regulationsByPetType || {});
+    const petTypes = petTypeKeys.map((k) => ({
+      key: k,
+      slug: slugify(k),
+    }));
+
+    return res.render("regulations/showCountry", {
+      regulations: finalDoc,
+      regulationId: finalDoc._id || null,
+      petTypes,
+      selectedPetType: petTypeKeys[0] || null,
+      originReqs: [],
+      user: req.user,
+    });
+  } catch (e) {
+    console.error("[agent/preview] failed:", e);
+    return res.status(500).send("Preview failed");
   }
 });
 
