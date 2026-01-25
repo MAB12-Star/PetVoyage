@@ -9,7 +9,7 @@ const Story = require('./models/story');
 const Ad = require('./models/ad'); // <-- adjust if your file name is Ad.js or ad.js
 
 
-module.exports.attachFeaturedStory = async (req, res, next) => {
+module.exports.attachFeaturedStory = async (req, res, next) => {s
   try {
     const [doc] = await Story.aggregate([
       { $match: { title: { $exists: true, $ne: '' } } },
@@ -305,29 +305,51 @@ function pageMatches(adPages, req) {
 }
 
 
+
+
+
 module.exports.attachAds = async (req, res, next) => {
   try {
-    // ✅ YOUR ADMIN USES "active" BOOLEAN
+    // ✅ Skip ALL admin agent endpoints (SSE + preview/countries/etc.)
+    if (req.originalUrl.startsWith("/admin/agent")) {
+      return next();
+    }
+
+    // ✅ Skip SSE streams anywhere (extra safety)
+    const accept = String(req.headers.accept || "");
+    const isSSE =
+      accept.includes("text/event-stream") ||
+      req.path.startsWith("/admin/agent/stream") ||
+      req.originalUrl.startsWith("/admin/agent/stream");
+
+    if (isSSE) {
+      return next();
+    }
+
+    // ✅ Load active ads
     const activeAds = await Ad.find({ active: true }).lean();
 
     // ✅ Filter ads that match this page
-    const matching = activeAds.filter(ad => pageMatches(ad.pages, req));
+    const matching = activeAds.filter((ad) => pageMatches(ad.pages, req));
 
-    // ✅ Group by each placement in "placements" array (or fallback)
+    // ✅ Group by placement(s)
     const adsByPlacement = {};
     for (const ad of matching) {
-      const placements = Array.isArray(ad.placements) && ad.placements.length
-        ? ad.placements
-        : (ad.placement ? [ad.placement] : []);
+      const placements =
+        Array.isArray(ad.placements) && ad.placements.length
+          ? ad.placements
+          : ad.placement
+            ? [ad.placement]
+            : [];
 
       for (const place of placements) {
         if (!place) continue;
         if (!adsByPlacement[place]) adsByPlacement[place] = [];
         adsByPlacement[place].push(ad);
       }
-      console.log('[attachAds]', req.originalUrl);
-
     }
+
+    // console.log("[attachAds]", req.originalUrl);
 
     res.locals.adsByPlacement = adsByPlacement;
 
@@ -339,16 +361,15 @@ module.exports.attachAds = async (req, res, next) => {
 
     res.locals.getAds = (placement) => adsByPlacement[placement] || [];
 
-    // ✅ temporary debug (remove after)
-    // console.log('[attachAds]', req.originalUrl, Object.keys(adsByPlacement));
-
-    next();
+    return next();
   } catch (e) {
-    console.error('[attachAds] failed:', e);
+    console.error("[attachAds] failed:", e);
+
     res.locals.adsByPlacement = {};
     res.locals.getAd = () => null;
     res.locals.getAds = () => [];
-    next();
+
+    return next();
   }
 };
 

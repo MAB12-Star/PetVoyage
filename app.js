@@ -43,6 +43,7 @@ const { attachAds } = require('./middleware');
 const sitemapRoutes = require('./routes/sitemap');
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
 const e = require('connect-flash');
+const adminAgentRoutes = require("./routes/adminAgent");
 
 
 mongoose.connect(process.env.mongoKey, {});
@@ -148,6 +149,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/admin/agent", adminAgentRoutes);
+app.use("/admin", adminRoutes);
+
 
 // 🧠 Middleware
 app.use(toDoListMiddleware);
@@ -160,8 +164,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/ai', aiRoutes); // AI route near the top
 //app.use('/', auth);
-app.use('/admin', adminRoutes);
-app.use("/admin", require("./routes/adminAgent"));
+
 app.use('/auth', auth);
 app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
