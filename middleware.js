@@ -9,7 +9,7 @@ const Story = require('./models/story');
 const Ad = require('./models/ad'); // <-- adjust if your file name is Ad.js or ad.js
 
 
-module.exports.attachFeaturedStory = async (req, res, next) => {s
+module.exports.attachFeaturedStory = async (req, res, next) => {
   try {
     const [doc] = await Story.aggregate([
       { $match: { title: { $exists: true, $ne: '' } } },
