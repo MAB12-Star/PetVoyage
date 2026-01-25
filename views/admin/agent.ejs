@@ -1,6 +1,5 @@
 <% layout('layouts/boilerplate') %>
 
-
 <div class="container py-4">
   <div class="d-flex align-items-center justify-content-between mb-3">
     <div>
@@ -76,7 +75,7 @@
       <div class="card-body">
         <div id="status" class="mb-2">Ready.</div>
 
-        <div class="small text-muted mb-2">Live updates:</div>
+        <div class="small text-muted mb-2">Updates:</div>
         <pre
           id="meta"
           style="white-space:pre-wrap;margin:0;height:240px;overflow:auto;background:#fafafa;border:1px solid #eee;padding:.5rem;border-radius:.5rem;"
@@ -93,19 +92,17 @@
         <button id="copyBtn" class="btn btn-sm btn-outline-secondary" disabled>Copy JSON</button>
       </div>
       <div class="card-body">
-        
+
         <div id="out" class="border rounded bg-white" style="min-height:400px;">
-  <div class="text-muted p-3">(nothing yet)</div>
-</div>
+          <div class="text-muted p-3">(nothing yet)</div>
+        </div>
 
       </div>
     </div>
   </div>
 </div>
 
-
 <script>
-  let es = null;
   let lastFinalDoc = null;
 
   const $ = (id) => document.getElementById(id);
@@ -123,6 +120,14 @@
     const metaEl = $("meta");
     metaEl.textContent += (metaEl.textContent && metaEl.textContent !== "(none)" ? "\n" : "") + line;
     metaEl.scrollTop = metaEl.scrollHeight;
+  }
+
+  function resetUiForRun() {
+    lastFinalDoc = null;
+    $("meta").textContent = "";
+    $("out").innerHTML = `<div class="text-muted p-3">(running...)</div>`;
+    $("copyBtn").disabled = true;
+    $("publishBtn").disabled = true;
   }
 
   async function renderPreview(finalDoc) {
@@ -154,91 +159,103 @@
     iframe.srcdoc = await resp.text();
   }
 
-  function startAgentStream({ countryName, researchMode, manualUrls, wantExplain, dryRun }) {
-    const copyBtn = $("copyBtn");
-    const publishBtn = $("publishBtn");
+  function getFormPayload() {
+    return {
+      countryName: $("countryName")?.value || "",
+      researchMode: $("researchMode")?.value || "seed_first",
+      manualUrls: $("manualUrls")?.value || "",
+      wantExplain: $("wantExplain")?.checked || false
+    };
+  }
 
-    // reset UI
-    lastFinalDoc = null;
-    setStatus("Starting…", "info");
-    $("meta").textContent = "";
-    $("out").innerHTML = `<div class="text-muted p-3">(running...)</div>`;
-    if (copyBtn) copyBtn.disabled = true;
-    if (publishBtn) publishBtn.disabled = true;
+  // ✅ Preview runner (non-SSE)
+  async function runPreview(p) {
+    resetUiForRun();
+    setStatus("Running preview…", "info");
 
-    // close previous stream if any
-    if (es) es.close();
+    appendLog(`• Starting agent for ${p.countryName}`);
+    appendLog(`• Mode: ${p.researchMode}`);
+    if (p.researchMode === "provided_only") appendLog(`• Using manual URLs only`);
 
-    const qs = new URLSearchParams({
-      countryName,
-      researchMode: researchMode || "seed_first",
-      wantExplain: wantExplain ? "true" : "false",
-      dryRun: dryRun ? "true" : "false",
-      manualUrls: manualUrls || ""
-    });
+    try {
+      const resp = await fetch("/admin/agent/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(p)
+      });
 
-    es = new EventSource(`/admin/agent/stream?${qs.toString()}`);
+      const data = await resp.json().catch(() => ({}));
 
-    es.addEventListener("agent_error", (e) => {
-  const data = JSON.parse(e.data || "{}");
-  setStatus("❌ " + (data.message || "Unknown error"), "err");
-  appendLog("❌ " + (data.message || "Unknown error"));
-  if (es) es.close();
-  es = null;
-});
+      if (!resp.ok || data?.ok === false) {
+        const msg = data?.error || data?.message || `Run failed (${resp.status})`;
+        setStatus("❌ " + msg, "err");
+        appendLog("❌ " + msg);
+        $("out").textContent = JSON.stringify(data, null, 2);
+        return;
+      }
 
-
-    es.addEventListener("progress", (e) => {
-      const data = JSON.parse(e.data || "{}");
-      const msg = data.message || "Working…";
-      setStatus(msg, "info");
-      appendLog(`• ${msg}`);
-    });
-
-    es.addEventListener("status", (e) => {
-      // optional if your backend emits "status" events too
-      const data = JSON.parse(e.data || "{}");
-      const msg = data.message || "Working…";
-      setStatus(msg, "info");
-    });
-
-    es.addEventListener("done", async (e) => {
-      const result = JSON.parse(e.data || "{}");
-
-      // Expect result.finalDoc from backend
-      lastFinalDoc = result?.finalDoc || null;
+      lastFinalDoc = data?.finalDoc || null;
 
       if (!lastFinalDoc) {
         setStatus("Done, but no finalDoc returned.", "warn");
         appendLog("✅ Done (no finalDoc).");
-        $("out").textContent = JSON.stringify(result, null, 2);
-        if (es) es.close();
-        es = null;
+        $("out").textContent = JSON.stringify(data, null, 2);
         return;
       }
 
-      setStatus(dryRun ? "✅ Preview complete" : "✅ Published", "ok");
+      setStatus("✅ Preview complete", "ok");
       appendLog("✅ Done.");
-
-      // Render HTML preview (keeps the UI nice)
       await renderPreview(lastFinalDoc);
 
-      // Enable Copy JSON always when we have finalDoc
-      if (copyBtn) copyBtn.disabled = false;
+      $("copyBtn").disabled = false;
+      $("publishBtn").disabled = false; // enable publish after successful preview
+    } catch (e) {
+      setStatus("❌ " + (e?.message || "Unknown error"), "err");
+      appendLog("❌ " + (e?.message || "Unknown error"));
+    }
+  }
 
-      // Only enable Publish after a successful preview (dryRun)
-      if (publishBtn) publishBtn.disabled = !dryRun;
+  // ✅ Publish runner (non-SSE)
+  async function publish(p) {
+    // Optional: require preview first
+    // if (!lastFinalDoc) { setStatus("Run Preview first.", "warn"); return; }
 
-      if (es) es.close();
-      es = null;
-    });
+    $("publishBtn").disabled = true;
+    setStatus("Publishing…", "info");
+    appendLog("• Publishing…");
 
-    es.addEventListener("error", () => {
-      setStatus("❌ Stream error (see server logs).", "err");
-      appendLog("❌ Stream error (see server logs).");
-      if (es) es.close();
-      es = null;
-    });
+    try {
+      const resp = await fetch("/admin/agent/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(p)
+      });
+
+      const data = await resp.json().catch(() => ({}));
+
+      if (!resp.ok || data?.ok === false) {
+        const msg = data?.error || data?.message || `Publish failed (${resp.status})`;
+        setStatus("❌ " + msg, "err");
+        appendLog("❌ " + msg);
+        $("out").textContent = JSON.stringify(data, null, 2);
+        $("publishBtn").disabled = false;
+        return;
+      }
+
+      // many pipelines still return finalDoc on publish; if so, preview it:
+      if (data?.finalDoc) {
+        lastFinalDoc = data.finalDoc;
+        await renderPreview(lastFinalDoc);
+        $("copyBtn").disabled = false;
+      }
+
+      setStatus("✅ Published", "ok");
+      appendLog("✅ Published.");
+    } catch (e) {
+      setStatus("❌ " + (e?.message || "Unknown error"), "err");
+      appendLog("❌ " + (e?.message || "Unknown error"));
+      $("publishBtn").disabled = false;
+    }
   }
 
   async function loadCountries() {
@@ -271,17 +288,8 @@
     }
   }
 
-  function getFormPayload() {
-    return {
-      countryName: $("countryName")?.value || "",
-      researchMode: $("researchMode")?.value || "seed_first",
-      manualUrls: $("manualUrls")?.value || "",
-      wantExplain: $("wantExplain")?.checked || false
-    };
-  }
-
   // Run (Preview)
-  $("runBtn")?.addEventListener("click", () => {
+  $("runBtn")?.addEventListener("click", async () => {
     const p = getFormPayload();
 
     if (!p.countryName) {
@@ -294,11 +302,11 @@
       return;
     }
 
-    startAgentStream({ ...p, dryRun: true });
+    await runPreview(p);
   });
 
-  // Publish (runs the pipeline with dryRun=false)
-  $("publishBtn")?.addEventListener("click", () => {
+  // Publish
+  $("publishBtn")?.addEventListener("click", async () => {
     const p = getFormPayload();
 
     if (!p.countryName) {
@@ -306,10 +314,7 @@
       return;
     }
 
-    // Optional: you can require that they preview first
-    // if (!lastFinalDoc) { setStatus("Run Preview first.", "warn"); return; }
-
-    startAgentStream({ ...p, dryRun: false });
+    await publish(p);
   });
 
   // Copy JSON (ONLY finalDoc)
@@ -321,4 +326,3 @@
 
   loadCountries();
 </script>
-
