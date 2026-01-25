@@ -22,13 +22,22 @@
         <h2 class="h4 m-0"><strong><%= airline.name %></strong></h2>
       </div>
 
-        <!-- Save Button -->
-        <form method="POST" action="/favorites/saveAirlineToFavorites">
-          <input type="hidden" name="airlineId" value="<%= airline._id %>">
-          <button type="submit" class="btn btn-outline-danger fw-semibold">
-            <i class="fas fa-heart me-1"></i> Save
-          </button>
-        </form>
+       <!-- Save Button -->
+<form method="POST" action="/favorites/saveAirlineToFavorites">
+  <input type="hidden" name="airlineId" value="<%= airline._id %>">
+  <input type="hidden" name="slug" value="<%= airline.slug %>">
+  <input type="hidden" name="link" value="/airlines/<%= airline.slug %>">
+
+  <input type="hidden" name="airlineCode" value="<%= airline.airlineCode %>">
+  <input type="hidden" name="airlineName" value="<%= airline.name %>">
+  <input type="hidden" name="petPolicyURL" value="<%= airline.petPolicyURL || '' %>">
+
+  <!-- If petPolicySummary is long HTML, better to NOT send it via hidden input -->
+  <button type="submit" class="btn btn-outline-danger fw-semibold">
+    <i class="fas fa-heart me-1"></i> Save
+  </button>
+</form>
+
       </div>
 
     <!-- Quick Stats Badges -->

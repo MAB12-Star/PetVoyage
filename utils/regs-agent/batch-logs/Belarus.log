@@ -1,0 +1,40 @@
+
+=== Country Regulations Agent: Belarus ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 6 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+file:///D:/Web/petVoyage1/regs-agent/utils/timeout.mjs:4
+    t = setTimeout(() => reject(new Error(`Timeout after ${ms}ms: ${label}`)), ms);
+                                ^
+
+Error: Timeout after 300000ms: extractor
+    at Timeout.<anonymous> (file:///D:/Web/petVoyage1/regs-agent/utils/timeout.mjs:4:33)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+
+Node.js v20.17.0
+
+=== Country Regulations Agent: Belarus ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 6 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+Sample regulationsByPetType constructors: [
+  [ 'dog', 'Object' ],
+  [ 'cat', 'Object' ],
+  [ 'rabbit & fur-bearing animals', 'Object' ]
+]
+4) Validating...
+5) Publishing...
+✅ Published successfully: { matchedCount: 1, modifiedCount: 1, upsertedId: null }

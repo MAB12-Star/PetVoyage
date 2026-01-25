@@ -96,17 +96,10 @@
 <!-- Styled Regulation Summary Box -->
 <div class="container my-5">
   <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
-    <a href="https://rentalcars.tpk.mx/14vE0Ui1" target="_blank" rel="noopener noreferrer">
-      <img src="https://cdn.rcstatic.com/images/site_graphics/newsite/mobile/logos/rc-logo-small--white.svg"
-           alt="Save on Car Rentals with Rentalcars.com"
-           style="max-width:100%; height:auto; border:0;">
-    </a>
-
-    <a href="https://rentalcars.tpk.mx/14vE0Ui1"
-       target="_blank" rel="noopener noreferrer"
-       style="margin-top:10px; text-decoration:none; background:#28a745; color:white; padding:10px 20px; border-radius:4px;">
-      Rent a Car Now & Save!
-    </a>
+      <% const headerAd = (typeof getAd === 'function') ? getAd('header') : null; %>
+      <% if (headerAd) { %>
+        <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
+      <% } %>
   </div>
 
   <!-- Country Header -->
@@ -139,9 +132,7 @@
           <span class="me-3"><strong>Source last modified:</strong> <%= sourceUpdated %></span>
         <% } %>
 
-        <% if (sourceNote) { %>
-          <span class="me-3"><strong>Note:</strong> <%= sourceNote %></span>
-        <% } %>
+       
       </div>
     <% } %>
 
@@ -158,6 +149,8 @@
       </button>
     </form>
   </div>
+
+  
 
   <!-- Pet Types Label -->
   <p class="text-muted fw-semibold mb-2 text-center">Pet Types</p>
@@ -207,10 +200,7 @@
         }
       %>
 
-      <% const headerAd = (typeof getAd === 'function') ? getAd('header') : null; %>
-      <% if (headerAd) { %>
-        <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
-      <% } %>
+    
 
       <% if (selectedPetType) { %>
         <div class="card shadow-sm border border-warning overflow-hidden mb-5" style="border-radius: 12px;">

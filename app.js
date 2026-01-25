@@ -44,6 +44,7 @@ const sitemapRoutes = require('./routes/sitemap');
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
 const e = require('connect-flash');
 
+
 mongoose.connect(process.env.mongoKey, {});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -184,6 +185,7 @@ app.use('/', legalRoutes);
 app.use('/account', accountRoutes);
 app.use('/', sitemapRoutes);
 
+app.use("/admin", require("./routes/adminAgent"));
 
 
 // 🗺 Sitemap route

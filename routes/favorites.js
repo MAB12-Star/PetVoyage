@@ -14,87 +14,135 @@ const CountryRegulation = require("../models/countryPetRegulationList");
 
 
 router.post('/saveAirlineToFavorites', saveCurrentUrl, isLoggedIn, async (req, res) => {
-    try {
-        const userId = req.user._id;
-        const { airlineId, link, airlineCode, airlineName, petPolicyURL, petPolicySummary,slug } = req.body;
+  try {
+    const userId = req.user._id;
+    const { airlineId, link, airlineCode, airlineName, petPolicyURL, petPolicySummary, slug } = req.body;
 
-        if (!slug || !link) {
-            console.error('Required fields are missing.');
-            return res.status(400).json({ message: 'Slug and link are required.' });
-        }
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
 
-        const user = await User.findById(userId);
-        if (!user) {
-            console.error('User not found.');
-            return res.status(404).json({ message: 'User not found.' });
-        }
-
-        // Check if the airline already exists in the favorites
-        const airlineExists = user.favoriteAirlines.some(
-            (favorite) => String(favorite.slug) === String(slug)
-        );
-
-        if (!airlineExists) {
-            // Add the new favorite airline
-            user.favoriteAirlines.push({
-                airlineId,
-                link,
-                airlineCode,
-                airlineName,
-                petPolicyURL,
-                petPolicySummary,
-                slug,
-            });
-
-            await user.save();
-
-           
-            return res.status(200).json({ message: 'Airline added to favorites.' });
-        }
-
-        console.log('Airline already in favorites.');
-        return res.status(200).json({ message: 'Airline already in favorites.' });
-    } catch (error) {
-        console.error('Error saving airline to favorites:', error);
-        return res.status(500).json({ message: 'Something went wrong. Please try again.' });
+    if (!slug || !link) {
+      console.error('Required fields are missing.');
+      if (wantsJson) return res.status(400).json({ ok: false, message: 'Slug and link are required.' });
+      req.flash('error', 'Missing required fields (slug/link).');
+      return res.redirect(req.get('referer') || '/dashboard');
     }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.error('User not found.');
+      if (wantsJson) return res.status(404).json({ ok: false, message: 'User not found.' });
+      req.flash('error', 'User not found.');
+      return res.redirect('/login');
+    }
+
+    // Dedupe by slug (like you already do)
+    const airlineExists = user.favoriteAirlines.some(fav => String(fav.slug) === String(slug));
+
+    if (!airlineExists) {
+      user.favoriteAirlines.push({
+        airlineId,
+        link,
+        airlineCode,
+        airlineName,
+        petPolicyURL,
+        petPolicySummary,
+        slug,
+      });
+      await user.save();
+    }
+
+    // ✅ FORM submits: redirect back with flash (same as country)
+    if (!wantsJson) {
+      req.flash('success', airlineExists ? 'Already saved.' : 'Airline added to favorites.');
+      return res.redirect(req.get('referer') || '/dashboard');
+    }
+
+    // ✅ AJAX submits: JSON
+    return res.status(200).json({
+      ok: true,
+      message: airlineExists ? 'Already saved.' : 'Airline added to favorites.'
+    });
+
+  } catch (error) {
+    console.error('Error saving airline to favorites:', error);
+
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
+
+    if (wantsJson) return res.status(500).json({ ok: false, message: 'Something went wrong. Please try again.' });
+
+    req.flash('error', 'Something went wrong. Please try again.');
+    return res.redirect(req.get('referer') || '/dashboard');
+  }
 });
 
 
 
+
 router.post('/saveFlightToProfile', saveCurrentUrl, isLoggedIn, async (req, res) => {
-    try {
-        const userId = req.user._id; // Get user ID from the authenticated user
-        const { airlineCode } = req.body; // Get airlineCode from the request body
+  try {
+    const userId = req.user._id;
+    const { airlineCode } = req.body;
 
-      
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
 
-        // Find the user in the database
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
-
-        // Find the airline using airlineCode
-        const airline = await Airline.findOne({ airlineCode });
-        if (!airline) {
-            return res.status(404).json({ message: 'Airline not found.' });
-        }
-
-        // Check if the airline is already saved in the user's profile
-        if (!user.savedFlightRegulations.includes(airline._id)) {
-            user.savedFlightRegulations.push(airline._id);
-            await user.save(); // Save the updated user data
-
-            return res.status(200).json({ message: 'Flight regulation saved successfully.' });
-        }
-
-        // If the airline is already saved, return a different message
-        return res.status(200).json({ message: 'Flight regulation is already saved to your profile.' });
-    } catch (error) {
-        console.error('Error saving flight regulation:', error);
-        return res.status(500).json({ message: 'Something went wrong. Please try again.' });
+    if (!airlineCode) {
+      if (wantsJson) return res.status(400).json({ ok: false, message: 'Missing airlineCode' });
+      req.flash('error', 'Missing airline.');
+      return res.redirect(req.get('referer') || '/dashboard');
     }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      if (wantsJson) return res.status(404).json({ ok: false, message: 'User not found.' });
+      req.flash('error', 'User not found.');
+      return res.redirect('/login');
+    }
+
+    const airline = await Airline.findOne({ airlineCode });
+    if (!airline) {
+      if (wantsJson) return res.status(404).json({ ok: false, message: 'Airline not found.' });
+      req.flash('error', 'Airline not found.');
+      return res.redirect(req.get('referer') || '/dashboard');
+    }
+
+    user.savedFlightRegulations = user.savedFlightRegulations || [];
+    const already = user.savedFlightRegulations.some(id => String(id) === String(airline._id));
+
+    if (!already) {
+      user.savedFlightRegulations.push(airline._id);
+      await user.save();
+    }
+
+    // ✅ Normal form submit → flash + redirect (green box)
+    if (!wantsJson) {
+      req.flash('success', already ? 'Already saved.' : 'Saved to your profile.');
+      return res.redirect(req.get('referer') || '/dashboard');
+    }
+
+    // ✅ AJAX → JSON
+    return res.status(200).json({
+      ok: true,
+      message: already ? 'Already saved.' : 'Saved to your profile.'
+    });
+
+  } catch (error) {
+    console.error('Error saving flight regulation:', error);
+
+    const wantsJson =
+      (req.headers.accept && req.headers.accept.includes('application/json')) ||
+      req.xhr;
+
+    if (wantsJson) return res.status(500).json({ ok: false, message: 'Something went wrong. Please try again.' });
+
+    req.flash('error', 'Something went wrong. Please try again.');
+    return res.redirect(req.get('referer') || '/dashboard');
+  }
 });
 
 

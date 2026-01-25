@@ -1,0 +1,48 @@
+
+=== Country Regulations Agent: Belize ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 4 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+
+=== Country Regulations Agent: Belize ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 4 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+⚠️ Research attempt 1 failed: Timeout after 120000ms: researcher web_search (seed-first)
+   • Researcher: web_search (non-JSON mode) [seed-first]
+🔁 Retrying research once...
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+Sample regulationsByPetType constructors: [
+  [ 'Dog & Cat', 'Object' ],
+  [ 'Birds', 'Object' ],
+  [ 'Other pets', 'Object' ]
+]
+4) Validating...
+❌ Hard validation failed: Disallowed officialLinks URL: http://www.baha.org.bz/index.php/dept/animal-health
+
+=== Country Regulations Agent: Belize ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 4 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+Sample regulationsByPetType constructors: [
+  [ 'Dog & Cat', 'Object' ],
+  [ 'bird', 'Object' ],
+  [ 'other', 'Object' ]
+]
+4) Validating...
+5) Publishing...
+✅ Published successfully: { matchedCount: 1, modifiedCount: 1, upsertedId: null }

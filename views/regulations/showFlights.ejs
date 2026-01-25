@@ -170,12 +170,17 @@
                                              
                                             <div class="card-body position-relative">
                                                <!-- Favorites Button in the Right Corner -->
-                                         <form class="saveFlightForm position-absolute top-0 end-0 m-2" data-airline="<%= airline %>">
-                                            <input type="hidden" name="airlineCode" value="<%= airline %>">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
+                                         <form method="POST"
+                                              action="/favorites/saveFlightToProfile"
+                                              class="position-absolute top-0 end-0 m-2">
+
+                                          <input type="hidden" name="airlineCode" value="<%= airline %>">
+
+                                          <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-heart"></i>
+                                          </button>
                                         </form>
+
                                                 <div class="col-md-3 position-relative">
                                                     <img src="<%= logo[airline] %>" 
                                                          alt="<%= airline %> Logo" 

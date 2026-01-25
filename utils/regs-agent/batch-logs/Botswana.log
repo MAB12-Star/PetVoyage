@@ -1,0 +1,46 @@
+
+=== Country Regulations Agent: Botswana ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 5 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+⚠️ Research attempt 1 failed: Timeout after 120000ms: researcher web_search (seed-first)
+   • Researcher: web_search (non-JSON mode) [seed-first]
+🔁 Retrying research once...
+❌ Research failed twice. Not publishing. Existing doc preserved.
+
+=== Country Regulations Agent: Botswana ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 5 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+Sample regulationsByPetType constructors: [ [ 'Dog & Cat', 'Object' ] ]
+4) Validating...
+5) Publishing...
+✅ Published successfully: { matchedCount: 1, modifiedCount: 1, upsertedId: null }
+
+=== Country Regulations Agent: Botswana ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+   • Found 3 seed URLs from DB
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode) [seed-first]
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+Sample regulationsByPetType constructors: [
+  [ 'Dog & Cat', 'Object' ],
+  [ 'Wildlife/Exotic Species', 'Object' ],
+  [ 'Livestock', 'Object' ]
+]
+4) Validating...
+5) Publishing...
+✅ Published successfully: { matchedCount: 1, modifiedCount: 1, upsertedId: null }

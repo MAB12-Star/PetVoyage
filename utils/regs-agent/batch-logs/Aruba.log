@@ -1,0 +1,18 @@
+
+=== Country Regulations Agent: Aruba ===
+DRY_RUN=false
+
+1) Fetching existing doc...
+2) Researching sources...
+   • Researcher: web_search (non-JSON mode)
+   • Researcher: convert report → JSON (JSON mode, no tools)
+3) Extracting schema JSON...
+   • Extractor: build schema JSON (JSON mode, no tools)
+Sample regulationsByPetType constructors: [
+  [ 'Dog & Cat', 'Object' ],
+  [ 'Birds & Parrots', 'Object' ],
+  [ 'Iguanas, Sea Turtles, Queen Conch & Coral', 'Object' ]
+]
+4) Validating...
+5) Publishing...
+✅ Published successfully: { matchedCount: 1, modifiedCount: 1, upsertedId: null }
