@@ -907,6 +907,8 @@ footer input::placeholder {
   color: #adb5bd;
 }
 
+footer a:hover { text-decoration: underline; }
+footer .bi-facebook:hover { opacity: 0.85; }
 
 
 

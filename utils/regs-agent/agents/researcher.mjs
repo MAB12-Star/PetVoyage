@@ -22,10 +22,11 @@ export async function researcherAgent({
   existingJson,
   seedUrls = [],
   manualUrls = [],
-  researchMode = "seed_first" // "provided_only" | "seed_first" | "deep"
+  researchMode = "seed_first", // "provided_only" | "seed_first" | "deep"
+  operatorNotes = ""           // ✅ NEW
 }) {
-  const seeds = uniq(seedUrls).slice(0, 12);   // DB-derived official links
-  const manual = uniq(manualUrls).slice(0, 20); // UI-provided links (one per line)
+  const seeds = uniq(seedUrls).slice(0, 12);     // DB-derived official links
+  const manual = uniq(manualUrls).slice(0, 20);  // UI-provided links (one per line)
   const hasSeeds = seeds.length > 0;
   const hasManual = manual.length > 0;
 
@@ -33,16 +34,23 @@ export async function researcherAgent({
   const deep = researchMode === "deep";
   const seedFirst = researchMode === "seed_first" || deep;
 
+  // Normalize operator notes
+  const notesBlock = String(operatorNotes || "").trim();
+
   // -----------------------------
   // 1) Research report (non-JSON)
   // -----------------------------
-  const modeLabel = providedOnly
-    ? "[provided_only]"
-    : deep
-    ? "[deep]"
-    : "[seed_first]";
-
+  const modeLabel = providedOnly ? "[provided_only]" : deep ? "[deep]" : "[seed_first]";
   console.log(`   • Researcher: web_search (non-JSON mode) ${modeLabel}`);
+
+  const operatorInstructions = `
+OPERATOR NOTES (HIGH PRIORITY CORRECTIONS):
+These notes are provided by a human operator and may override mistakes or omissions in the existing JSON.
+Treat them as REQUIREMENTS to verify and incorporate into the report if supported by official sources.
+If a note conflicts with official sources, explain the conflict and cite the official source.
+
+${notesBlock ? notesBlock : "(none)"}
+`.trim();
 
   const seedFirstPrompt = `
 You are the RESEARCHER agent.
@@ -51,6 +59,8 @@ Country: ${countryName}
 
 Goal:
 Find OFFICIAL import rules for companion animals entering ${countryName}.
+
+${operatorInstructions}
 
 CRITICAL INSTRUCTION:
 You MUST start from the provided SEED URLS (from our database).
@@ -69,12 +79,16 @@ What to do:
    - revision/last updated dates found (url + date + note)
    - pet types explicitly mentioned
    - notes about missing/unclear areas
+4) Explicitly address operator notes:
+   - For each operator note, confirm where the official source supports it (include URL),
+     or explain why it could not be verified.
 
 Output: Write a concise report (NOT JSON) with:
 - officialLinks: name + url
 - childLinks: name + url
 - revision/last-updated dates found (url + date + note)
 - pet types explicitly mentioned
+- operatorNotesResolution: for each operator note, either {supported: url} or {not_found: why}
 - notes about missing/unclear areas
 
 Existing JSON (may be outdated/wrong):
@@ -90,6 +104,8 @@ Goal:
 Find OFFICIAL import rules for companion animals entering ${countryName}.
 Prioritize the national veterinary/animal health authority and official government portals.
 
+${operatorInstructions}
+
 Rules:
 - OFFICIAL GOVERNMENT sources only.
 - Allowed: government domains + USDA APHIS (aphis.usda.gov) as supplemental.
@@ -100,12 +116,14 @@ Search strategy:
 1) Find the official veterinary authority page(s) for importing pets into ${countryName}.
 2) Find official government portal pages about bringing pets/animals into ${countryName}.
 3) Find official PDFs/forms referenced by those pages (max 3).
+4) Explicitly verify operator notes against official sources.
 
 Output: Write a concise report (NOT JSON) with:
 - officialLinks: name + url
 - childLinks: name + url
 - revision/last-updated dates found (url + date + note)
 - pet types explicitly mentioned
+- operatorNotesResolution: for each operator note, either {supported: url} or {not_found: why}
 - notes about missing/unclear areas
 
 Existing JSON (may be outdated/wrong):
@@ -132,6 +150,8 @@ You are the RESEARCHER agent.
 
 Country: ${countryName}
 
+${operatorInstructions}
+
 CRITICAL:
 - Use ONLY the PROVIDED URLS below.
 - Do NOT search the open web beyond these URLs.
@@ -145,6 +165,7 @@ Output: Write a concise report (NOT JSON) with:
 - childLinks: name + url
 - revision/last-updated dates found (url + date + note)
 - pet types explicitly mentioned
+- operatorNotesResolution: for each operator note, either {supported: url} or {not_found: why}
 - notes about missing/unclear areas
 `;
 
@@ -154,7 +175,7 @@ Output: Write a concise report (NOT JSON) with:
         input: providedPrompt,
         tools: [{ type: "web_search" }]
       }),
-      360000,
+      360000, // 6 min
       "researcher web_search (provided_only)"
     );
 
@@ -170,7 +191,7 @@ Output: Write a concise report (NOT JSON) with:
           input: seedFirstPrompt,
           tools: [{ type: "web_search" }]
         }),
-        360000,
+        360000, // 6 min
         "researcher web_search (seed-first)"
       );
 
@@ -181,7 +202,7 @@ Output: Write a concise report (NOT JSON) with:
 
     // Broad phase:
     // - seed_first: only if seed results are weak or no seeds
-    // - deep: always do broad (even if seed results are good)
+    // - deep: always do broad
     if (deep || looksEmpty || !hasSeeds) {
       const broadResp = await withTimeout(
         openai.responses.create({
@@ -189,7 +210,7 @@ Output: Write a concise report (NOT JSON) with:
           input: broadPrompt,
           tools: [{ type: "web_search" }]
         }),
-        360000,
+        360000, // 6 min
         "researcher web_search (broad)"
       );
 
@@ -223,6 +244,7 @@ Rules:
 - Remove duplicates.
 - If no dates found, sourceDates: [].
 - If a provided/manual URL or seed URL is official and relevant, include it even if not repeated elsewhere.
+- Add a note summarizing how operator notes were handled.
 
 REPORT:
 ${researchText.slice(0, 80000)}
@@ -278,6 +300,7 @@ ${researchText.slice(0, 80000)}
 
   // Traceability notes
   data.notes.unshift(`researchMode=${researchMode}`);
+  if (notesBlock) data.notes.unshift("Operator notes present: YES");
   if (hasSeeds) data.notes.unshift(`Seed URLs available: ${seeds.length}`);
   if (hasManual) data.notes.unshift(`Manual URLs provided: ${manual.length}`);
 

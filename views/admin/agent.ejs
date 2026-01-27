@@ -9,6 +9,7 @@
     <a class="btn btn-outline-secondary" href="/admin">Back to Admin</a>
   </div>
 
+  <!-- Top controls -->
   <div class="card shadow-sm mb-3">
     <div class="card-body">
       <div class="row g-3">
@@ -54,44 +55,13 @@
             <button id="stopBtn" class="btn btn-outline-danger" disabled>Stop</button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 
+  <!-- Bottom: Output (left) + Status/Chat (right) -->
   <div class="row g-3">
-    <div class="col-lg-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-header fw-semibold">Status</div>
-        <div class="card-body">
-          <div id="status" class="mb-2">Ready.</div>
-
-          <div class="small text-muted mb-2">Live updates:</div>
-          <pre id="meta"
-            style="white-space:pre-wrap;margin:0;height:240px;overflow:auto;background:#fafafa;border:1px solid #eee;padding:.5rem;border-radius:.5rem;"
-          >(none)</pre>
-        </div>
-      </div>
-
-      <div class="card shadow-sm mt-3">
-        <div class="card-header fw-semibold">Chat with Agent</div>
-        <div class="card-body">
-          <div id="chatThread" class="border rounded p-2 mb-2" style="height:220px;overflow:auto;background:#fff;">
-            <div class="text-muted small">Ask: “What’s missing?” “Find official links for X.” “The result ignored ferrets, look harder.”</div>
-          </div>
-
-          <textarea id="chatInput" class="form-control mb-2" rows="3" placeholder="Type to the agent…"></textarea>
-
-          <div class="d-flex gap-2">
-            <button id="chatSendBtn" class="btn btn-outline-primary btn-sm">Send</button>
-            <button id="applyUrlsBtn" class="btn btn-outline-success btn-sm" disabled>Apply suggested URLs</button>
-          </div>
-
-          <div id="chatHints" class="small text-muted mt-2"></div>
-        </div>
-      </div>
-    </div>
-
+    <!-- LEFT: Output -->
     <div class="col-lg-8">
       <div class="card shadow-sm h-100">
         <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
@@ -99,8 +69,45 @@
           <button id="copyBtn" class="btn btn-sm btn-outline-secondary" disabled>Copy JSON</button>
         </div>
         <div class="card-body">
-          <div id="out" class="border rounded bg-white" style="min-height:400px;">
+          <div id="out" class="border rounded bg-white" style="min-height:700px;">
             <div class="text-muted p-3">(nothing yet)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Status + Chat (sticky) -->
+    <div class="col-lg-4">
+      <div style="position: sticky; top: 90px;">
+        <div class="card shadow-sm mb-3">
+          <div class="card-header fw-semibold">Status</div>
+          <div class="card-body">
+            <div id="status" class="mb-2">Ready.</div>
+
+            <div class="small text-muted mb-2">Live updates:</div>
+            <pre id="meta"
+              style="white-space:pre-wrap;margin:0;height:220px;overflow:auto;background:#fafafa;border:1px solid #eee;padding:.5rem;border-radius:.5rem;"
+            >(none)</pre>
+          </div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-header fw-semibold">Chat with Agent</div>
+          <div class="card-body">
+            <div id="chatThread" class="border rounded p-2 mb-2" style="height:260px;overflow:auto;background:#fff;">
+              <div class="text-muted small">
+                Ask: “What’s missing?” “Find official links for X.” “Mexico requires rabies—confirm and update.”
+              </div>
+            </div>
+
+            <textarea id="chatInput" class="form-control mb-2" rows="3" placeholder="Type to the agent…"></textarea>
+
+            <div class="d-flex gap-2">
+              <button id="chatSendBtn" class="btn btn-outline-primary btn-sm">Send</button>
+              <button id="applyUrlsBtn" class="btn btn-outline-success btn-sm" disabled>Apply suggested URLs</button>
+            </div>
+
+            <div id="chatHints" class="small text-muted mt-2"></div>
           </div>
         </div>
       </div>
@@ -154,7 +161,7 @@
   async function renderPreview(finalDoc) {
     const outEl = $("out");
     outEl.innerHTML = `
-      <iframe id="previewFrame" style="width:100%;height:800px;border:none;" srcdoc="Loading preview…"></iframe>
+      <iframe id="previewFrame" style="width:100%;height:900px;border:none;" srcdoc="Loading preview…"></iframe>
     `;
 
     const resp = await fetch("/admin/agent/preview", {
@@ -180,7 +187,6 @@
     $("stopBtn").disabled = true;
   }
 
-  // ✅ SSE Preview run (recommended for production)
   async function runPreviewSSE(p) {
     resetUiForRun();
 
@@ -253,14 +259,12 @@
     });
 
     es.onerror = () => {
-      // Don't spam; Nginx/proxy can trigger this.
       stopStream();
       setStatus("❌ Stream error (see server logs).", "err");
       appendLog("❌ Stream error (see server logs).");
     };
   }
 
-  // Publish (non-SSE)
   async function publish(p) {
     $("publishBtn").disabled = true;
     setStatus("Publishing…", "info");

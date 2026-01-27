@@ -1,3 +1,4 @@
+// agents/validator.mjs
 import { CountryPetRegulationSchema } from "../schema.mjs";
 import { isAllowedUrl } from "../policy.mjs";
 import { openai } from "../openaiClient.mjs";
@@ -24,7 +25,9 @@ export function hardValidate(doc) {
   return parsed;
 }
 
-export async function validatorAgentExplain({ draftDoc }) {
+export async function validatorAgentExplain({ draftDoc, operatorNotes = "" }) {
+  const notes = String(operatorNotes || "").trim();
+
   const prompt = `
 You are the VALIDATOR agent (explain-only).
 
@@ -35,6 +38,11 @@ Check for:
 - schema mismatches
 - disallowed sources (non-gov domains, except USDA APHIS allowed)
 - suspicious invented details not supported by official sources summary
+- missing critical requirements hinted by operator notes (if any)
+- conflicts between operator notes and the document
+
+Operator notes (human corrections; may indicate missing items):
+${notes ? notes : "(none)"}
 
 JSON:
 ${JSON.stringify(draftDoc).slice(0, 60000)}
