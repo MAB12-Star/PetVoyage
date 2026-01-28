@@ -75,7 +75,13 @@ const KNOWN_GOV_HOSTS = new Set([
   // Iceland 
   // =====================
 
-  "mast.is",
+  // Iceland
+"mast.is",
+"www.mast.is",
+"island.is",
+"www.island.is",
+"stjornarradid.is",
+"www.stjornarradid.is",
   
 ]);
 
