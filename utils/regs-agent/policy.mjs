@@ -83,6 +83,11 @@ const KNOWN_GOV_HOSTS = new Set([
 "stjornarradid.is",
 "www.stjornarradid.is",
   
+// Estonia
+"agri.ee",
+"www.agri.ee",
+"pta.agri.ee",
+
 ]);
 
 /**
