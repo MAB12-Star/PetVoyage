@@ -280,12 +280,14 @@ async function chatRefine() {
   const res = await fetch('/admin/airline-agent/chat', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      airlineCode: el('airlineCode').value,
-      researchMode: el('researchMode').value,
-      manualUrls: el('manualUrls').value,
-      operatorNotes: el('chatMsg').value
-    })
+    body: JSON.stringify({
+  airlineCode: el('airlineCode').value,
+  researchMode: el('researchMode').value,
+  manualUrls: el('manualUrls').value,
+  operatorNotes: el('chatMsg').value,
+  baseDoc: lastFinalDoc            // ✅ THIS IS THE FIX
+})
+
   });
 
   const data = await res.json();
