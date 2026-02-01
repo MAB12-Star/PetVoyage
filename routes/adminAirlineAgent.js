@@ -1,8 +1,40 @@
 const express = require("express");
 const router = express.Router();
 
-const { runAirlineAgent } = require("../utils/airline-agent/agents/runAirlineAgent.mjs");
-const { withDb, listAirlines } = require("../utils/airline-agent/db.mjs"); // ✅ add this
+// ❌ DO NOT require() .mjs from CommonJS
+// const { runAirlineAgent } = require("../utils/airline-agent/agents/runAirlineAgent.mjs");
+// const { withDb, listAirlines } = require("../utils/airline-agent/db.mjs");
+
+// --------------------------------------------
+// ESM loaders (CommonJS-safe)
+// --------------------------------------------
+let _runAirlineAgent = null;
+async function runAirlineAgent(args) {
+  if (!_runAirlineAgent) {
+    const mod = await import("../utils/airline-agent/agents/runAirlineAgent.mjs");
+    // Supports either: export function runAirlineAgent() {} OR export default ...
+    _runAirlineAgent = mod.runAirlineAgent || mod.default;
+    if (!_runAirlineAgent) {
+      throw new Error("runAirlineAgent export not found in runAirlineAgent.mjs");
+    }
+  }
+  return _runAirlineAgent(args);
+}
+
+let _withDb = null;
+let _listAirlines = null;
+async function getDbFns() {
+  if (_withDb && _listAirlines) return { withDb: _withDb, listAirlines: _listAirlines };
+
+  const mod = await import("../utils/airline-agent/db.mjs");
+  _withDb = mod.withDb || (mod.default && mod.default.withDb);
+  _listAirlines = mod.listAirlines || (mod.default && mod.default.listAirlines);
+
+  if (!_withDb || !_listAirlines) {
+    throw new Error("withDb/listAirlines export not found in db.mjs");
+  }
+  return { withDb: _withDb, listAirlines: _listAirlines };
+}
 
 // --------------------------------------------
 // Helpers
@@ -26,6 +58,7 @@ router.get("/airline-agent", (req, res) => {
 // ✅ NEW: Airline dropdown data
 router.get("/airline-agent/airlines", async (req, res) => {
   try {
+    const { withDb, listAirlines } = await getDbFns();
     const airlines = await withDb(async ({ coll }) => {
       return await listAirlines(coll);
     });
@@ -39,8 +72,15 @@ router.get("/airline-agent/airlines", async (req, res) => {
 // Latest Audit (for fast preview / resume)
 // --------------------------------------------
 router.get("/airline-agent/latest-audit", async (req, res) => {
-  const airlineCode = String(req.query.airlineCode || "").trim().toUpperCase();
-  if (!airlineCode) return res.json({ ok: false, stage: "bad_request", error: "airlineCode is required" });
+  const airlineCode = String(req.query.airlineCode || "")
+    .trim()
+    .toUpperCase();
+  if (!airlineCode)
+    return res.json({
+      ok: false,
+      stage: "bad_request",
+      error: "airlineCode is required",
+    });
 
   try {
     const mod = await import("../utils/airline-agent/audit.mjs");
@@ -49,12 +89,21 @@ router.get("/airline-agent/latest-audit", async (req, res) => {
 
     // prefer a usable document for preview
     const doc = out.finalDoc || out.draft || out.finalDoc?.draft || null;
-    return res.json({ ok: true, found: true, airlineCode, auditPath: out.auditPath, finalDoc: doc });
+    return res.json({
+      ok: true,
+      found: true,
+      airlineCode,
+      auditPath: out.auditPath,
+      finalDoc: doc,
+    });
   } catch (err) {
-    return res.status(500).json({ ok: false, stage: "exception", error: err.message || String(err) });
+    return res.status(500).json({
+      ok: false,
+      stage: "exception",
+      error: err.message || String(err),
+    });
   }
 });
-
 
 // ✅ NEW: Preview iframe HTML renderer
 router.post("/airline-agent/preview", (req, res) => {
@@ -92,7 +141,9 @@ router.post("/airline-agent/preview", (req, res) => {
         <p><b>ESAs:</b> ${finalDoc.esAnimals}</p>
       </div>
 
-      <pre style="margin-top:12px; white-space:pre-wrap;">${escapeHtml(JSON.stringify(finalDoc, null, 2))}</pre>
+      <pre style="margin-top:12px; white-space:pre-wrap;">${escapeHtml(
+        JSON.stringify(finalDoc, null, 2)
+      )}</pre>
 
       <script>
         function escapeHtml(s){return s.replace(/[&<>"']/g,(c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]))}
@@ -158,7 +209,7 @@ router.get("/airline-agent/stream", async (req, res) => {
 
     if (result?.ok === false) {
       // ✅ DO NOT use event name "error"
-      safeSend("agent_error", { ...result, terminal: true });      
+      safeSend("agent_error", { ...result, terminal: true });
       return res.end();
     }
 
@@ -181,13 +232,12 @@ router.get("/airline-agent/stream", async (req, res) => {
   }
 });
 
-
-
 // --------------------------------------------
 // Chat
 // --------------------------------------------
 router.post("/airline-agent/chat", async (req, res) => {
-  const { airlineCode, operatorNotes = "", researchMode = "seed_first", manualUrls = [] } = req.body;
+  const { airlineCode, operatorNotes = "", researchMode = "seed_first", manualUrls = [] } =
+    req.body;
 
   try {
     const result = await runAirlineAgent({
@@ -203,7 +253,9 @@ router.post("/airline-agent/chat", async (req, res) => {
 
     res.json({ ok: true, stage: "preview_updated", finalDoc: result.finalDoc });
   } catch (err) {
-    res.status(500).json({ ok: false, stage: "exception", error: err.message || String(err) });
+    res
+      .status(500)
+      .json({ ok: false, stage: "exception", error: err.message || String(err) });
   }
 });
 
@@ -211,7 +263,8 @@ router.post("/airline-agent/chat", async (req, res) => {
 // Publish
 // --------------------------------------------
 router.post("/airline-agent/publish", async (req, res) => {
-  const { airlineCode, researchMode = "seed_first", manualUrls = [], operatorNotes = "" } = req.body;
+  const { airlineCode, researchMode = "seed_first", manualUrls = [], operatorNotes = "" } =
+    req.body;
 
   try {
     const result = await runAirlineAgent({
@@ -224,7 +277,9 @@ router.post("/airline-agent/publish", async (req, res) => {
 
     res.json(result);
   } catch (err) {
-    res.status(500).json({ ok: false, stage: "exception", error: err.message || String(err) });
+    res
+      .status(500)
+      .json({ ok: false, stage: "exception", error: err.message || String(err) });
   }
 });
 
@@ -243,16 +298,23 @@ router.post("/airline-agent/publish-from-preview", async (req, res) => {
     });
     return res.json(result);
   } catch (err) {
-    return res.status(500).json({ ok: false, stage: "exception", error: err.message || String(err) });
+    return res
+      .status(500)
+      .json({ ok: false, stage: "exception", error: err.message || String(err) });
   }
 });
-
 
 module.exports = router;
 
 // helper for preview HTML
 function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
-  }[c]));
+  return String(s).replace(/[&<>"']/g, (c) =>
+    ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    }[c])
+  );
 }
