@@ -232,32 +232,49 @@ router.get("/airline-agent/stream", async (req, res) => {
   }
 });
 
-// --------------------------------------------
-// Chat
-// --------------------------------------------
 router.post("/airline-agent/chat", async (req, res) => {
-  const { airlineCode, operatorNotes = "", researchMode = "seed_first", manualUrls = [] } =
-    req.body;
+  const {
+    airlineCode,
+    operatorNotes = "",
+    researchMode = "seed_first",
+    manualUrls = [],
+    baseDoc = null
+  } = req.body;
+
+  console.log("[CHAT] hit", { airlineCode, hasBaseDoc: !!baseDoc, notesLen: operatorNotes.length });
+
+  // HARD TIMEOUT so it can’t hang forever
+  const TIMEOUT_MS = 90_000;
 
   try {
-    const result = await runAirlineAgent({
-      airlineCode,
-      dryRun: true,
-      researchMode,
-      manualUrls: parseUrls(manualUrls),
-      operatorNotes,
-      reuseAudit: false,
-    });
+    const result = await Promise.race([
+      (async () => {
+        console.log("[CHAT] calling runAirlineAgent...");
+        const out = await runAirlineAgent({
+          airlineCode,
+          dryRun: true,
+          researchMode,
+          manualUrls: parseUrls(manualUrls),
+          operatorNotes,
+          inputDoc: baseDoc || undefined,
+          reuseAudit: false,
+        });
+        console.log("[CHAT] runAirlineAgent returned", { ok: out?.ok, stage: out?.stage });
+        return out;
+      })(),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`CHAT_TIMEOUT after ${TIMEOUT_MS}ms`)), TIMEOUT_MS)
+      ),
+    ]);
 
-    if (!result.ok) return res.json(result);
-
-    res.json({ ok: true, stage: "preview_updated", finalDoc: result.finalDoc });
+    if (!result?.ok) return res.json(result);
+    return res.json({ ok: true, stage: "preview_updated", finalDoc: result.finalDoc });
   } catch (err) {
-    res
-      .status(500)
-      .json({ ok: false, stage: "exception", error: err.message || String(err) });
+    console.error("[CHAT] error:", err?.stack || err);
+    return res.status(500).json({ ok: false, stage: "exception", error: err.message || String(err) });
   }
 });
+
 
 // --------------------------------------------
 // Publish
