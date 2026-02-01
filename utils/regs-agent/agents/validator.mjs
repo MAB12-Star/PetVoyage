@@ -1,8 +1,49 @@
-// agents/validator.mjs
+// utils/regs-agent/agents/validator.mjs
 import { CountryPetRegulationSchema } from "../schema.mjs";
 import { isAllowedUrl } from "../policy.mjs";
 import { openai } from "../openaiClient.mjs";
 import { withTimeout } from "../utils/timeout.mjs";
+
+const UPLOAD_PATH_PREFIX = "/uploads/agent-pdfs/";
+
+/**
+ * Allow OUR internal uploaded PDFs even though they are not gov domains.
+ * Accepts:
+ * - https://localhost:3000/uploads/agent-pdfs/....
+ * - https://127.0.0.1:3000/uploads/agent-pdfs/....
+ * - https://YOUR_DOMAIN/uploads/agent-pdfs/.... (if PUBLIC_BASE_URL is set)
+ */
+function isAllowedAgentUploadUrl(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== "string") return false;
+
+  let u;
+  try {
+    u = new URL(rawUrl);
+  } catch {
+    return false; // not a valid absolute URL
+  }
+
+  if (!u.pathname.startsWith(UPLOAD_PATH_PREFIX)) return false;
+
+  const host = (u.hostname || "").toLowerCase();
+  if (host === "localhost" || host === "127.0.0.1") return true;
+
+  const base = (process.env.PUBLIC_BASE_URL || "").trim();
+  if (base) {
+    try {
+      const baseHost = new URL(base).hostname.toLowerCase();
+      if (host === baseHost) return true;
+    } catch {
+      // ignore bad env
+    }
+  }
+
+  return false;
+}
+
+function isAllowedUrlOrAgentUpload(url) {
+  return isAllowedUrl(url) || isAllowedAgentUploadUrl(url);
+}
 
 export function hardValidate(doc) {
   const parsed = CountryPetRegulationSchema.parse(doc);
@@ -12,13 +53,18 @@ export function hardValidate(doc) {
   }
 
   for (const link of parsed.officialLinks) {
-    if (!isAllowedUrl(link.url)) throw new Error(`Disallowed officialLinks URL: ${link.url}`);
+    if (!isAllowedUrlOrAgentUpload(link.url)) {
+      throw new Error(`Disallowed officialLinks URL: ${link.url}`);
+    }
   }
 
   for (const [petType, details] of Object.entries(parsed.regulationsByPetType || {})) {
     if (/^\d+$/.test(petType)) throw new Error(`Invalid petType key (numeric): ${petType}`);
+
     for (const link of details.links || []) {
-      if (!isAllowedUrl(link.url)) throw new Error(`Disallowed link in ${petType}: ${link.url}`);
+      if (!isAllowedUrlOrAgentUpload(link.url)) {
+        throw new Error(`Disallowed link in ${petType}: ${link.url}`);
+      }
     }
   }
 

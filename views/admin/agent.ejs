@@ -53,6 +53,14 @@
             <button id="runBtn" class="btn btn-primary">Run (Preview)</button>
             <button id="publishBtn" class="btn btn-success" disabled>Publish</button>
             <button id="stopBtn" class="btn btn-outline-danger" disabled>Stop</button>
+            <button id="loadAuditBtn" class="btn btn-outline-secondary">Load Last Audit</button>
+
+            <div class="form-check form-switch ms-2">
+              <input class="form-check-input" type="checkbox" id="reuseAuditToggle" />
+              <label class="form-check-label" for="reuseAuditToggle">Reuse last audit for Preview</label>
+            </div>
+
+
           </div>
         </div>
       </div>
@@ -102,10 +110,24 @@
 
             <textarea id="chatInput" class="form-control mb-2" rows="3" placeholder="Type to the agent…"></textarea>
 
-            <div class="d-flex gap-2">
-              <button id="chatSendBtn" class="btn btn-outline-primary btn-sm">Send</button>
-              <button id="applyUrlsBtn" class="btn btn-outline-success btn-sm" disabled>Apply suggested URLs</button>
-            </div>
+            <div class="d-flex gap-2 align-items-center flex-wrap">
+  <button id="chatSendBtn" class="btn btn-outline-primary btn-sm">Send</button>
+  <button id="applyUrlsBtn" class="btn btn-outline-success btn-sm" disabled>Apply suggested URLs</button>
+
+  <!-- PDF upload -->
+  <label class="btn btn-outline-secondary btn-sm mb-0">
+    Upload PDF
+    <input
+      type="file"
+      id="pdfUploadInput"
+      accept="application/pdf"
+      hidden
+    />
+  </label>
+</div>
+
+<div id="pdfUploadStatus" class="small text-muted mt-1"></div>
+
 
             <div id="chatHints" class="small text-muted mt-2"></div>
           </div>
@@ -117,6 +139,45 @@
 
 <script>
   const $ = (id) => document.getElementById(id);
+let lastAuditId = null;
+
+async function loadLastAudit() {
+  const p = getFormPayload();
+  if (!p.countryName) { setStatus("Pick a country first.", "warn"); return null; }
+
+  setStatus("Loading last audit…", "info");
+  const resp = await fetch("/admin/agent/audit/latest?countryName=" + encodeURIComponent(p.countryName), {
+    headers: { "Accept": "application/json" }
+  });
+
+  const data = await resp.json().catch(() => ({}));
+  if (!resp.ok || data?.ok === false) {
+    setStatus("Failed to load audit: " + (data?.error || resp.status), "err");
+    return null;
+  }
+
+  if (!data.audit) {
+    setStatus("No audit found for this country yet.", "warn");
+    return null;
+  }
+
+  lastAuditId = data.audit.id || null;
+
+  const doc = data.audit.finalDoc || data.audit.draft;
+  if (!doc) {
+    setStatus("Audit exists but has no draft/finalDoc.", "warn");
+    return null;
+  }
+
+  lastFinalDoc = doc;
+  $("out").textContent = JSON.stringify(doc, null, 2);
+  $("copyBtn").disabled = false;
+  $("publishBtn").disabled = false;
+
+  appendLog(`✅ Loaded audit ${lastAuditId}`);
+  setStatus("✅ Audit loaded", "ok");
+  return doc;
+}
 
   let lastFinalDoc = null;
   let lastSuggestedUrls = [];
@@ -266,42 +327,48 @@
   }
 
   async function publish(p) {
-    $("publishBtn").disabled = true;
-    setStatus("Publishing…", "info");
-    appendLog("• Publishing…");
+  if (!lastFinalDoc) {
+  setStatus("Run Preview / Load Audit / Chat update first so there is something to publish.", "warn");
+  return;
+}
 
-    try {
-      const resp = await fetch("/admin/agent/publish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(p)
-      });
 
-      const data = await resp.json().catch(() => ({}));
+  $("publishBtn").disabled = true;
+  setStatus("Publishing…", "info");
+  appendLog("• Publishing…");
 
-      if (!resp.ok || data?.ok === false) {
-        const msg = data?.error || data?.message || `Publish failed (${resp.status})`;
-        setStatus("❌ " + msg, "err");
-        appendLog("❌ " + msg);
-        $("out").textContent = JSON.stringify(data, null, 2);
-        $("publishBtn").disabled = false;
-        return;
-      }
+  try {
+    const resp = await fetch("/admin/agent/publish", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+  countryName: p.countryName,
+  auditId: lastAuditId,
+  finalDoc: lastFinalDoc
+})
 
-      if (data?.finalDoc) {
-        lastFinalDoc = data.finalDoc;
-        await renderPreview(lastFinalDoc);
-        $("copyBtn").disabled = false;
-      }
+    });
 
-      setStatus("✅ Published", "ok");
-      appendLog("✅ Published.");
-    } catch (e) {
-      setStatus("❌ " + (e?.message || "Unknown error"), "err");
-      appendLog("❌ " + (e?.message || "Unknown error"));
+    const data = await resp.json().catch(() => ({}));
+
+    if (!resp.ok || data?.ok === false) {
+      const msg = data?.error || data?.message || `Publish failed (${resp.status})`;
+      setStatus("❌ " + msg, "err");
+      appendLog("❌ " + msg);
+      $("out").textContent = JSON.stringify(data, null, 2);
       $("publishBtn").disabled = false;
+      return;
     }
+
+    setStatus("✅ Published", "ok");
+    appendLog("✅ Published.");
+  } catch (e) {
+    setStatus("❌ " + (e?.message || "Unknown error"), "err");
+    appendLog("❌ " + (e?.message || "Unknown error"));
+    $("publishBtn").disabled = false;
   }
+}
+
 
   async function loadCountries() {
     try {
@@ -341,6 +408,47 @@
     wrap.scrollTop = wrap.scrollHeight;
   }
 
+  async function uploadPdfToAgent(file) {
+  const p = getFormPayload();
+  if (!p.countryName) {
+    setStatus("Pick a country before uploading PDFs.", "warn");
+    return;
+  }
+
+  const statusEl = $("pdfUploadStatus");
+  statusEl.textContent = "Uploading PDF…";
+
+  const fd = new FormData();
+  fd.append("pdf", file);
+  fd.append("countryName", p.countryName);
+  if (lastAuditId) fd.append("auditId", lastAuditId);
+
+  try {
+    const resp = await fetch("/admin/agent/upload-pdf", {
+      method: "POST",
+      body: fd
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok || data?.ok === false) {
+      statusEl.textContent = "❌ PDF upload failed: " + (data?.error || resp.status);
+      return;
+    }
+
+    // Success
+    statusEl.textContent = `✅ Uploaded: ${data.filename}`;
+    chatAdd(
+      "System",
+      `📄 PDF uploaded and indexed: <a href="${data.publicUrl}" target="_blank">${data.filename}</a>`
+    );
+  } catch (e) {
+    statusEl.textContent = "❌ PDF upload error";
+    console.error(e);
+  }
+}
+
+
   async function sendChat() {
     const p = getFormPayload();
     const msg = ($("chatInput").value || "").trim();
@@ -352,52 +460,81 @@
     $("chatHints").textContent = "Thinking…";
 
     try {
-      const resp = await fetch("/admin/agent/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          countryName: p.countryName,
-          researchMode: p.researchMode,
-          manualUrls: p.manualUrls,
-          finalDoc: lastFinalDoc,
-          message: msg
-        })
-      });
+  const resp = await fetch("/admin/agent/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      countryName: p.countryName,
+      researchMode: p.researchMode,
+      manualUrls: p.manualUrls,
+      auditId: lastAuditId,
+      finalDoc: lastFinalDoc,
+      message: msg
+    })
+  });
 
-      const data = await resp.json().catch(() => ({}));
-      if (!resp.ok || data?.ok === false) {
-        chatAdd("Agent", "Chat failed: " + (data?.error || resp.status));
-        $("chatHints").textContent = "";
-        $("chatSendBtn").disabled = false;
-        return;
-      }
+  const data = await resp.json();
 
-      if (data.replyMarkdown) chatAdd("Agent", data.replyMarkdown);
+  if (!resp.ok || data?.ok === false) {
+    setStatus(data?.error || "Chat update failed", "err");
+    return;
+  }
 
-      lastSuggestedUrls = Array.isArray(data.suggestedUrls) ? data.suggestedUrls : [];
-      $("applyUrlsBtn").disabled = lastSuggestedUrls.length === 0;
+  // ✅ Update in-memory doc + preview without rerun
+  if (data?.finalDoc) {
+    lastFinalDoc = data.finalDoc;
+    if (data?.auditId) lastAuditId = data.auditId;
 
-      const hints = [];
-      if (Array.isArray(data.missingOrUnclear) && data.missingOrUnclear.length) {
-        hints.push("Missing/unclear:\n- " + data.missingOrUnclear.join("\n- "));
-      }
-      if (Array.isArray(data.suggestedSearchTerms) && data.suggestedSearchTerms.length) {
-        hints.push("Search terms:\n- " + data.suggestedSearchTerms.join("\n- "));
-      }
-      if (data.nextInstructions) hints.push("Next:\n" + data.nextInstructions);
+    await renderPreview(lastFinalDoc);
 
-      $("chatHints").textContent = hints.join("\n\n");
-    } catch (e) {
-      chatAdd("Agent", "Chat error: " + (e?.message || "unknown"));
-      $("chatHints").textContent = "";
-    } finally {
-      $("chatSendBtn").disabled = false;
-    }
+    $("copyBtn").disabled = false;
+    $("publishBtn").disabled = false;
+  }
+
+  if (data?.replyMarkdown) chatAdd("Agent", data.replyMarkdown);
+
+  setStatus("✅ Updated from chat (no rerun needed)", "ok");
+  $("chatInput").value = "";
+
+  lastSuggestedUrls = Array.isArray(data.suggestedUrls) ? data.suggestedUrls : [];
+  $("applyUrlsBtn").disabled = lastSuggestedUrls.length === 0;
+
+  const hints = [];
+  if (Array.isArray(data.missingOrUnclear) && data.missingOrUnclear.length) {
+    hints.push("Missing/unclear:\n- " + data.missingOrUnclear.join("\n- "));
+  }
+  if (Array.isArray(data.suggestedSearchTerms) && data.suggestedSearchTerms.length) {
+    hints.push("Search terms:\n- " + data.suggestedSearchTerms.join("\n- "));
+  }
+  if (data.nextInstructions) hints.push("Next:\n" + data.nextInstructions);
+
+  $("chatHints").textContent = hints.join("\n\n");
+} catch (e) {
+  chatAdd("Agent", "Chat error: " + (e?.message || "unknown"));
+  $("chatHints").textContent = "";
+} finally {
+  $("chatSendBtn").disabled = false;
+}
+
   }
 
   $("runBtn")?.addEventListener("click", async () => {
-    await runPreviewSSE(getFormPayload());
-  });
+  const reuse = $("reuseAuditToggle")?.checked;
+
+  if (reuse) {
+    const doc = await loadLastAudit();
+    if (doc) await renderPreview(doc);
+    return;
+  }
+
+  await runPreviewSSE(getFormPayload());
+});
+
+$("loadAuditBtn")?.addEventListener("click", async () => {
+  const doc = await loadLastAudit();
+  if (doc) await renderPreview(doc);
+});
+
 
   $("stopBtn")?.addEventListener("click", () => {
     stopStream();
@@ -425,6 +562,21 @@
     $("manualUrls").value = Array.from(existing).join("\n");
     setStatus("✅ Applied suggested URLs to Manual URLs.", "ok");
   });
+
+  $("pdfUploadInput")?.addEventListener("change", (ev) => {
+  const file = ev.target.files?.[0];
+  if (!file) return;
+
+  if (file.type !== "application/pdf") {
+    setStatus("Only PDF files are supported.", "warn");
+    ev.target.value = "";
+    return;
+  }
+
+  uploadPdfToAgent(file);
+  ev.target.value = ""; // allow re-upload of same file later
+});
+
 
   loadCountries();
 </script>

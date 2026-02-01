@@ -12,6 +12,81 @@ import { cleanDocUrls } from "../utils/cleanUrls.mjs";
 import { extractHostsFromExisting } from "../utils/extractAllowedHosts.mjs";
 import { mergeExistingLinks } from "../utils/mergeLinks.mjs";
 
+// --- URL preflight helpers (fail fast) ---
+function isAbsUrl(u) {
+  try { new URL(u); return true; } catch { return false; }
+}
+
+async function headOrGet(url, timeoutMs = 9000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
+
+  // Prefer HEAD, fallback to GET (some gov sites block HEAD)
+  const tryFetch = async (method) => {
+    const r = await fetch(url, { method, redirect: "follow", signal: ctrl.signal });
+    return { ok: r.ok, status: r.status, finalUrl: r.url };
+  };
+
+  try {
+    try {
+      return await tryFetch("HEAD");
+    } catch {
+      return await tryFetch("GET");
+    }
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+async function preflightUrls(urls, { checkReachable = true } = {}) {
+  const cleaned = (urls || []).map(s => String(s).trim()).filter(Boolean);
+  const invalidFormat = cleaned.filter(u => !isAbsUrl(u));
+
+  const results = [];
+  if (checkReachable) {
+    // small concurrency limit
+    const limit = 6;
+    let i = 0;
+
+    const workers = Array.from({ length: Math.min(limit, cleaned.length) }, async () => {
+      while (i < cleaned.length) {
+        const url = cleaned[i++];
+        if (!isAbsUrl(url)) continue;
+        try {
+          const r = await headOrGet(url);
+          results.push({ url, ...r });
+        } catch (e) {
+          results.push({ url, ok: false, status: 0, error: e?.message || "fetch failed" });
+        }
+      }
+    });
+
+    await Promise.all(workers);
+  }
+
+  const unreachable = results.filter(r => r.ok === false);
+
+  return { cleaned, invalidFormat, results, unreachable };
+}
+
+function findInvalidDraftUrls(doc) {
+  const bad = [];
+
+  const check = (path, url) => {
+    if (!url || !isAbsUrl(url)) bad.push({ path, url });
+  };
+
+  (doc?.officialLinks || []).forEach((l, i) => check(["officialLinks", i, "url"], l?.url));
+
+  Object.entries(doc?.regulationsByPetType || {}).forEach(([petType, details]) => {
+    (details?.links || []).forEach((l, i) =>
+      check(["regulationsByPetType", petType, "links", i, "url"], l?.url)
+    );
+  });
+
+  return bad;
+}
+
 function countKeys(obj) {
   return obj && typeof obj === "object" ? Object.keys(obj).length : 0;
 }
@@ -67,6 +142,37 @@ export async function runCountryAgent({
     const existing = await getCountryDocByName(coll, countryName);
     const existingAllowedHosts = extractHostsFromExisting(existing);
     const seedUrls = collectSeedUrls(existing);
+
+    // 1.5) Preflight manual URLs (fail fast)
+if (researchMode === "provided_only" || (manualUrls && manualUrls.length)) {
+  onProgress("1.5) Preflight: checking manual URLs...");
+
+  const pf = await preflightUrls(manualUrls, { checkReachable: true });
+
+  if (pf.invalidFormat.length || pf.unreachable.length) {
+    const auditId = await writeAudit(db, {
+      countryName,
+      trace: {
+        stage: "preflight_failed",
+        ranAt: new Date().toISOString(),
+        invalidFormat: pf.invalidFormat,
+        unreachable: pf.unreachable
+      },
+      draft: null,
+      finalDoc: null,
+      publishResult: null
+    });
+
+    return {
+      ok: false,
+      stage: "preflight_failed",
+      auditId,
+      error: "Preflight failed: one or more input URLs are invalid or unreachable.",
+      invalidFormat: pf.invalidFormat,
+      unreachable: pf.unreachable
+    };
+  }
+}
 
     // 2) Research
     onProgress(`2) Researcher: web_search (${researchMode})...`);
@@ -129,6 +235,34 @@ export async function runCountryAgent({
       });
       return { ok: false, stage: "extract_empty", auditId, message: "Extractor produced empty content." };
     }
+
+    // 3.5) Draft URL scan (fail fast before schema validate / explain)
+onProgress("3.5) Pre-validate: scanning draft URLs...");
+const badUrls = findInvalidDraftUrls(plainDraft);
+
+if (badUrls.length) {
+  const auditId = await writeAudit(db, {
+    countryName,
+    trace: {
+      stage: "draft_invalid_urls",
+      ranAt: new Date().toISOString(),
+      badUrls
+    },
+    draft: plainDraft,
+    finalDoc: null,
+    publishResult: null
+  });
+
+  return {
+    ok: false,
+    stage: "validation_failed",
+    auditId,
+    error: `Invalid url(s) found in draft: ${badUrls.length}`,
+    badUrls,
+    draft: plainDraft
+  };
+}
+
 
     // 4) Validate
     onProgress("4) Validating...");
