@@ -1,0 +1,94 @@
+{
+  "airlineCode": "OZ",
+  "dryRun": true,
+  "ranAt": "2026-02-01T00:35:30.143Z",
+  "researchPayload": {
+    "airlineCode": "OZ",
+    "officialLinks": [
+      {
+        "name": "Traveling with pets │ Asiana Airlines",
+        "url": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets",
+        "date": "",
+        "note": "No explicit last updated stamp found on page."
+      },
+      {
+        "url": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets",
+        "date": "2022-05-01",
+        "note": "Pet fee applicability: Applicable to tickets issued from May 1, 2022."
+      },
+      {
+        "url": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets",
+        "date": "2021-03-01",
+        "note": "U.S. service animal rules effective March 1, 2021."
+      },
+      {
+        "url": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets",
+        "date": "2024-08-01",
+        "note": "U.S. CDC dog entry requirements effective from August 1, 2024."
+      }
+    ],
+    "policyFindings": [
+      "Booking/approvals: Reserve pets in advance—at least 24 hours before domestic and 48 hours before international (business days). Transport may be refused without prior approval; availability varies by aircraft/route. Contact reservation center.",
+      "Eligible species/quantities: Allowed dogs, cats, and pet birds. Each adult may bring 1 pet in-cabin and 2 as checked; children cannot bring pets in-cabin. One pair of birds per cage. Pets under 16 weeks or sedated are not accepted.",
+      "In-cabin (carry-on): Pet + carrier ≤ 7 kg. Carrier max 45 × 32 × 21 cm (L×W×H); soft carrier may be up to 26 cm tall but must compress to 21 cm. One carrier per passenger; limited cohabitation allowed (two pups/kittens under 6 months, mother with young, or a pair of birds). Pet must remain in carrier; only water allowed. Designated pet seats used. In Business Class, no underseat space (except A321); container placed elsewhere during taxi/takeoff/landing per crew.",
+      "Checked (in the hold as checked baggage): Accepted when exceeding cabin limits and if pet+crate ≤ 45 kg, crate height ≤ 84 cm, and sum of dimensions ≤ 285 cm. Acceptance depends on aircraft/route; A321 aircraft do not accept checked pets on international routes. In some countries, a 32 kg limit may apply regardless of size.",
+      "Checked crate standards: Sturdy (metal/wood/plastic), lockable, leak-proof with absorbent pad, ventilated, enough space to stand/turn; birds’ crates must be covered. Two pets per crate not allowed except limited young/mother/birds cases. Weather extremes may affect acceptance; Air Busan codeshares cannot check pets.",
+      "Breed/animal restrictions: Dangerous dogs not transported: Tosa; American Pit Bull Terrier; American Staffordshire Terrier; Staffordshire Bull Terrier; Rottweiler; Mastiff, Laika, Ovtcharka, Kangal, Wolfdog, American Bully, Cane Corso, Miniature Bull Terrier and their crossbreeds.",
+      "Brachycephalic breeds: Checked-in transport discontinued since July 1, 2019 (e.g., Bulldog, Pug, Shih Tzu; Persian, Himalayan cats).",
+      "Fees (per segment; pets are not part of free baggage; local taxes may apply): Domestic Korea KRW 30,000 (≤32 kg) / KRW 60,000 (32–45 kg); Korea↔JP/CN/TW/HK/Mongolia KRW 140,000 (USD 140) / KRW 290,000 (USD 290); Other Asia (incl. Guam/Saipan) KRW 210,000 (USD 210) / KRW 440,000 (USD 440); U.S./Europe/Oceania KRW 290,000 (USD 290) / KRW 590,000 (USD 590). In-cabin pets fall under the ≤32 kg band. Applicable to tickets issued from May 1, 2022.",
+      "Service animals (U.S. segments): Only trained service dogs accepted; must be at least 16 weeks, harnessed/leashed, under control, and stay at passenger’s feet (not intruding into other seats/aisle). Up to two service dogs per passenger. Reservation 48 business hours prior; U.S. DOT Service Animal Transportation Form and Relief Attestation required; noncompliance or behavioral issues may lead to denial; accredited ID tag required.",
+      "U.S. dog entry (from Aug 1, 2024): Dogs (pets or service) arriving into the U.S. must be at least 6 months old, microchipped, and have CDC Dog Import Form approval; documents vary by origin/vaccination region."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "Asiana’s page does not state a separate seasonal embargo; it cautions against very hot/cold weather and notes certain aircraft/route limits (e.g., A321 international) and local 32 kg limits. Always reconfirm with the reservation center when booking.",
+      "Emotional support animals: Asiana limits service animals to trained dogs under U.S. DOT rules; ESAs must travel under the pet policy and fees.",
+      "No operator notes were provided; nothing to verify."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "OZ",
+    "petPolicyURL": "https://flyasiana.com/C/KR/EN/contents/traveling-with-pets",
+    "airlineURL": "https://flyasiana.com",
+    "PetPolicySummary": "Asiana Airlines allows dogs, cats, and pet birds to travel by advance reservation only (at least 24 business hours before domestic departures and 48 business hours before international departures). One pet may travel in the cabin per adult; up to two pets may be checked as baggage, subject to aircraft/route limits. In-cabin pets (pet + carrier) must be 7 kg or less, with a hard/soft carrier not exceeding 45 × 32 × 21 cm (soft carriers may be up to 26 cm tall but must compress to 21 cm). Pets must remain in the carrier; only water may be given. Business Class has no underseat space (except on A321); crew will guide carrier placement during taxi/takeoff/landing. Pets exceeding cabin limits may be transported as checked baggage if pet + crate ≤ 45 kg, crate height ≤ 84 cm, and the sum of three dimensions ≤ 285 cm; acceptance may be limited by aircraft/route and some countries impose a 32 kg limit. Crates must be sturdy, lockable, leak-proof with absorbent pad, and well ventilated, allowing the pet to stand and move. Birds’ cages should be covered. Restrictions: pets under 16 weeks, sedated pets, pregnant or foul-smelling pets, dangerous breeds, and birds of prey are not accepted. Checked transport of short-nosed (brachycephalic) breeds is not allowed (effective July 1, 2019). Only trained service dogs are accepted as service animals; up to two per passenger, harnessed/leashed, and controlled on the floor at the passenger’s feet. U.S. segments require advance notice, DOT forms, and compliance with U.S. rules. Additional pet charges apply per segment; local taxes may apply.",
+    "ImprovedPetPolicySummary": "<h2>Asiana Airlines Pet Policy (Overview)</h2><h3>Reservations</h3><ul><li>Domestic: Book at least 24 business hours before departure.</li><li>International: Book at least 48 business hours before departure.</li><li>Transport may be refused without prior approval; space varies by aircraft/route.</li></ul><h3>Eligible Animals and Quantity</h3><ul><li>Accepted species: dogs, cats, pet birds.</li><li>Per adult: 1 pet in cabin; up to 2 as checked baggage (subject to limits). Children cannot bring pets in the cabin.</li><li>One pair of birds per cage is allowed.</li></ul><h3>In-Cabin (Carry-on)</h3><ul><li>Pet + carrier ≤ 7 kg.</li><li>Carrier max size: 45 × 32 × 21 cm (L × W × H). Soft carrier may be up to 26 cm tall but must compress to 21 cm.</li><li>One carrier per passenger; cohabitation allowed only for two puppies/kittens under 6 months, a mother with young, or one pair of birds.</li><li>Pet must remain inside the carrier; only water is permitted.</li><li>Business Class: no underseat space (except on A321); crew will guide placement during taxi/takeoff/landing. Designated pet seating applies.</li></ul><h3>Checked (In the Hold)</h3><ul><li>Accepted when exceeding cabin limits and if aircraft/route permits.</li><li>Pet + crate ≤ 45 kg; crate height ≤ 84 cm; sum of three sides ≤ 285 cm.</li><li>Crate: sturdy (metal/wood/plastic), lockable, leak-proof with absorbent pad, ventilated, large enough for pet to stand/turn. Bird cages should be covered.</li><li>Some countries impose a 32 kg limit; availability varies by aircraft/route. A321 aircraft do not accept checked pets on international routes.</li></ul><h3>Restrictions</h3><ul><li>Not accepted: pets under 16 weeks; sedated pets; pregnant or foul-smelling pets; ferocious/dangerous breeds; birds of prey.</li><li>Checked transport of short-nosed (brachycephalic) breeds is not allowed (since July 1, 2019).</li></ul><h3>Service Animals</h3><ul><li>Only trained service dogs accepted. Must be ≥16 weeks, harnessed/leashed, under control, and remain on the floor at the passenger’s feet; up to two per passenger.</li><li>For U.S. segments: reserve ≥48 business hours prior and submit U.S. DOT Service Animal forms; noncompliance or improper behavior may lead to denial.</li><li>U.S. entry (from Aug 1, 2024): dogs (pets or service) must be ≥6 months, microchipped, and meet CDC Dog Import approval/document rules.</li></ul><h3>Fees (per segment; not part of free baggage; local taxes may apply)</h3><ul><li>Domestic Korea: KRW 30,000 (≤32 kg) / KRW 60,000 (32–45 kg). In-cabin pets are charged at the ≤32 kg band.</li><li>Korea ↔ JP/CN/TW/HK/Mongolia: KRW 140,000 (USD 140) / KRW 290,000 (USD 290).</li><li>Other Asia (incl. Guam/Saipan): KRW 210,000 (USD 210) / KRW 440,000 (USD 440).</li><li>U.S./Europe/Oceania: KRW 290,000 (USD 290) / KRW 590,000 (USD 590).</li><li>Applicable to tickets issued from May 1, 2022.</li></ul>",
+    "microchip": "yes",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Dogs",
+      "Cats",
+      "Pet birds"
+    ],
+    "inCompartmentDetails": "Advance reservation required (24h domestic, 48h international; business days). One pet per adult in cabin; children cannot bring pets. Pet + carrier must be ≤ 7 kg. Carrier max 45 × 32 × 21 cm; soft carriers up to 26 cm tall must compress to 21 cm. One carrier per passenger; allowed cohabitation only for two puppies/kittens under 6 months, a mother with her young, or one pair of birds. Pet stays inside the carrier for the entire flight; only water is allowed. Designated pet seating applies. Business Class: no underseat space (except A321); carrier placed per crew instructions during taxi/takeoff/landing.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Dogs",
+      "Cats",
+      "Pet birds"
+    ],
+    "inCargoDetails": "Accepted if exceeding cabin limits and if aircraft/route permits. Pet + crate ≤ 45 kg; crate height ≤ 84 cm; sum of three sides ≤ 285 cm. Crate must be sturdy (metal/wood/plastic), lockable, leak-proof with absorbent pad, ventilated, and large enough for the pet to stand and turn. Bird cages should be covered with cloth. Acceptance may be limited by aircraft/route; some countries impose a 32 kg limit regardless of size. A321 aircraft do not accept checked pets on international routes. Short-nosed (brachycephalic) breeds are not accepted as checked baggage. Transport may be restricted during extreme temperatures.",
+    "carrierCompartmentDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">In-Cabin Carrier Details</h2>\n  <p><strong>Reservation Deadline:</strong></p>\n  <ul>\n    <li>Domestic flights: At least 24 business hours before scheduled departure.</li>\n    <li>International flights: At least 48 business hours before scheduled departure.</li>\n  </ul>\n  <p class=\"alert alert-warning\">\n    Pets without prior reservation or confirmation will not be allowed on board or as checked baggage.\n  </p>\n\n  <p><strong>Eligible Pets and Quantity:</strong></p>\n  <ul>\n    <li>Each adult passenger may bring 1 pet into the cabin and 2 pets as checked baggage.</li>\n    <li>Children are not allowed to travel with pets in the cabin.</li>\n    <li>One pair of birds per cage is permitted.</li>\n  </ul>\n\n  <p><strong>Weight and Size Limits for Cabin Pets:</strong></p>\n  <ul>\n    <li>Combined weight of pet and cage must not exceed 7 kg.</li>\n    <li>Transport container dimensions must not exceed:\n      <ul>\n        <li>Height: 21 cm (26 cm for soft cages when uncompressed; compressed height must not exceed 21 cm)</li>\n        <li>Width: 32 cm</li>\n        <li>Length: 45 cm</li>\n      </ul>\n    </li>\n    <li>Rigid frame cages (wire, plastic, wood) maximum height: 21 cm.</li>\n  </ul>\n\n  <p><strong>Cage and Pet Restrictions:</strong></p>\n  <ul>\n    <li>One cage per passenger, one pet per cage.</li>\n    <li>Puppies or kittens under 6 months, a mother with her young, or a pair of birds may share a cage.</li>\n    <li>Pets must remain inside cages throughout the flight and may only be given water.</li>\n  </ul>\n\n  <p><strong>Business Class Seating:</strong></p>\n  <ul>\n    <li>Pet containers cannot be placed under the seat due to seat structure and safety regulations.</li>\n    <li>Containers will be placed in another area with flight attendant guidance during taxiing, take-off, and landing.</li>\n    <li>Underseat storage for pet containers is not available in Business Class except on A321 aircraft.</li>\n    <li>Passengers traveling with pets must be seated in designated pet seating.</li>\n  </ul>\n\n  <p><strong>Pet Carry-On Cages (Domestic Flights):</strong></p>\n  <ul>\n    <li>Available for purchase at domestic airports (excluding Incheon Airport).</li>\n    <li>Permitted soft cage size: Width 39 cm × Height 26 cm × Depth 22.5 cm.</li>\n    <li>Weight: 540 g (+ 200 g with footrest).</li>\n    <li>Fully covered with mesh screens and double top and side covers.</li>\n    <li>Includes a Saekdongi character name tag.</li>\n  </ul>\n</section>",
+    "carrierCargoDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">In Cargo Carrier Details</h2>\n  <p>If the pet exceeds the cabin baggage size specifications, the following conditions apply for cargo transport:</p>\n  <ul>\n    <li>Pet and cage combined weight must be 45 kg or less.</li>\n    <li>The sum of the cage's three dimensions must be 285 cm or less.</li>\n    <li>Cage height must not exceed 84 cm.</li>\n  </ul>\n  <p>The number of pets allowed in cabin or checked may be restricted or refused depending on aircraft type and route.</p>\n  <ul>\n    <li><strong>Note:</strong> On international routes, A321 aircraft do not accept checked pets.</li>\n  </ul>\n  <h3 class=\"mb-2\">Cage Conditions</h3>\n  <ul>\n    <li>Must have a lock, sealed bottom, and sufficient ventilation.</li>\n    <li>Waterproof construction with a waterproof pad on the bottom, plus towel or blanket inside.</li>\n    <li>Enough space for the pet to stand and move comfortably.</li>\n    <li>Bird cages must be covered with cloth during flight to prevent exposure.</li>\n    <li>Made of strong materials such as metal, wood, or plastic.</li>\n    <li>If brought inside the cabin, cages may be fabric or leather but must maintain shape with a frame.</li>\n    <li>Only one pet per cage, except for:\n      <ul>\n        <li>Two puppies or two kittens under 6 months old</li>\n        <li>A mother with her young</li>\n        <li>A pair of birds</li>\n      </ul>\n    </li>\n  </ul>\n  <h3 class=\"mb-2\">Transport Restrictions</h3>\n  <ul>\n    <li>Pets are not allowed if restricted by destination city or country laws.</li>\n    <li>Pets exceeding the allowable number for the aircraft are not permitted.</li>\n    <li>Cages not meeting transportation standards are prohibited.</li>\n    <li>Sum of cage dimensions over 285 cm or combined weight over 45 kg is not allowed.</li>\n    <li>Some countries/cities may impose a lower weight limit of 32 kg or other aircraft restrictions regardless of size or weight.</li>\n    <li>Pets under 16 weeks old or given stabilizers/sleep medicine cannot be transported.</li>\n    <li>Pregnant pets, foul smelling pets, ferocious dogs (attack dogs and other fierce animals), and birds of prey are prohibited.</li>\n  </ul>\n  <p>Checked-in transport of short-nosed animals has been discontinued due to health and safety risks (effective July 1, 2019).</p>\n  <div class=\"alert alert-warning\" role=\"alert\">\n    Transporting pets in very cold or hot weather may negatively impact their health. Please consider your pet’s safety when deciding on transportation.\n  </div>\n  <div class=\"alert alert-info\" role=\"alert\">\n    Air Busan codeshare flights are not operated by Asiana Airlines and do not provide pet checking services.\n  </div>\n</section>",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "no",
+    "brachycephalicBreedList": "",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Service Animals (In-Cabin & Support)</h2>\n  <p>Effective March 1, 2021, Asiana Airlines follows U.S. DOT regulations for service animals based on the departure date.</p>\n  <ul>\n    <li>Service dogs must have an identification tag from an accredited institution and wear a harness or leash.</li>\n    <li>Allowed only for providing airline travel assistance.</li>\n    <li>Service animals must be dogs aged 16 weeks or older.</li>\n    <li>Dogs must be trained to behave properly in public and remain under the passenger’s control.</li>\n    <li>Service dogs must stay on the floor space below or under the passenger's feet at all times and cannot intrude into other passengers’ seats or roam the aisle.</li>\n    <li>Up to two service dogs are allowed per passenger.</li>\n  </ul>\n  <p>Passengers may be denied boarding if:</p>\n  <ul>\n    <li>The service dog shows behavior indicating it is not properly trained.</li>\n    <li>The service dog barks excessively or defecates in the boarding area or on board the aircraft.</li>\n    <li>Reservations are not made at least 48 hours prior to flight departure (working days).</li>\n    <li>The passenger refuses or fails to complete and submit the required U.S. DOT Service Animal Transportation and Relief Attestation Forms at the airport.</li>\n  </ul>\n  <p class=\"mt-3\"><strong>U.S. Entry Note (from Aug 1, 2024):</strong> All dogs (including service dogs) entering the U.S. must be at least 6 months old, microchipped, and comply with CDC Dog Import Form and documentation rules. Requirements vary by origin/vaccination status.</p>\n</section>",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-02-01T02:08:33.000Z"
+  }
+}

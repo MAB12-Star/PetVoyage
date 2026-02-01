@@ -1,0 +1,397 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h1 class="fw-bold mb-1">Airline Pet Policy Agent</h1>
+      <div class="text-muted">Run research → extract → validate → publish, and chat to improve accuracy.</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="/admin?tab=airlines">Back to Admin</a>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <label class="form-label fw-semibold">Airline</label>
+          <select id="airlineCode" class="form-select">
+            <option value="">Loading airlines…</option>
+          </select>
+          <div class="form-text">Pulled from the <code>airlines</code> collection.</div>
+        </div>
+
+        <div class="col-lg-3">
+          <label class="form-label fw-semibold">Research Mode</label>
+          <select id="researchMode" class="form-select">
+            <option value="seed_first" selected>seed_first (use DB link; broaden only if weak)</option>
+            <option value="provided_only">provided_only (manual URLs only)</option>
+            <option value="deep">deep (more searching)</option>
+            <option value="deep_relaxed">deep_relaxed (search wider web; label non-official)</option>
+          </select>
+        </div>
+
+        <div class="col-lg-3">
+          <label class="form-label fw-semibold">Explain Validation</label>
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" id="wantExplain">
+            <label class="form-check-label" for="wantExplain">Return explanation</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label fw-semibold">Manual URLs (one per line)</label>
+          <textarea id="manualUrls" class="form-control" rows="5"></textarea>
+        </div>
+
+        <div class="col-12 d-flex gap-2">
+          <button id="btnRun" class="btn btn-primary">Run (Preview)</button>
+          <button id="btnPublish" class="btn btn-success">Publish</button>
+          <button id="btnStop" class="btn btn-outline-danger" disabled>Stop</button>
+          <button id="btnLoadAudit" class="btn btn-outline-secondary">Load Last Audit</button>
+          <div class="form-check form-switch ms-auto">
+            <input class="form-check-input" type="checkbox" id="reuseAudit" checked>
+            <label class="form-check-label" for="reuseAudit">Reuse last audit for Preview</label>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h5 class="mb-0">Output</h5>
+            <button id="btnCopy" class="btn btn-sm btn-outline-secondary">Copy JSON</button>
+          </div>
+          <pre id="out" class="bg-light p-3 rounded small" style="white-space:pre-wrap; min-height: 260px;">(nothing yet)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="mb-2">Status</h5>
+          <div id="statusBox" class="bg-light p-3 rounded small" style="min-height: 180px; white-space:pre-wrap;">(none)</div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="mb-2">Chat to refine</h5>
+          <textarea id="chatMsg" class="form-control mb-2" rows="3"></textarea>
+          <button id="btnChat" class="btn btn-outline-primary w-100">Send to Agent</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="mb-2">Preview</h5>
+          <iframe id="previewFrame" style="width:100%; height:380px; border:1px solid #ddd; border-radius:8px;"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let es = null;
+let lastFinalDoc = null;
+let terminalSeen = false;
+let userStopped = false;
+
+const el = (id) => document.getElementById(id);
+
+async function loadLastAudit() {
+  const airlineCode = el('airlineCode').value;
+  if (!airlineCode) return setOutput({ ok:false, error:"Pick airline first" });
+
+  appendStatus("📦 Loading latest audit...");
+
+  const res = await fetch(`/admin/airline-agent/latest-audit?airlineCode=${encodeURIComponent(airlineCode)}`);
+  const data = await res.json();
+  setOutput(data);
+
+  if (!data.ok) {
+    appendStatus("❌ Failed to load audit.");
+    return;
+  }
+  if (!data.found) {
+    appendStatus("ℹ️ No audit found for this airline.");
+    return;
+  }
+
+  // Prefer finalDoc; fallback to draft
+  lastFinalDoc = data.finalDoc || data.draft || null;
+
+  if (!lastFinalDoc) {
+    appendStatus("ℹ️ Audit found but no finalDoc/draft stored.");
+    return;
+  }
+
+  appendStatus(`✅ Loaded from audit: ${data.auditPath}`);
+  await renderPreview(lastFinalDoc);
+}
+
+// bind it:
+el('btnLoadAudit').onclick = loadLastAudit;
+
+function appendStatus(line) {
+  const box = el('statusBox');
+  if (box.textContent === '(none)') box.textContent = '';
+  box.textContent += (box.textContent ? "\n" : "") + line;
+}
+
+function setOutput(obj) {
+  el('out').textContent = JSON.stringify(obj, null, 2);
+}
+
+function closeStreamSilently() {
+  if (es) {
+    try { es.close(); } catch {}
+    es = null;
+  }
+  el('btnStop').disabled = true;
+}
+
+function stopStreamByUser() {
+  userStopped = true;
+  closeStreamSilently();
+  appendStatus("Stopped.");
+}
+
+async function renderPreview(doc) {
+  // If the agent returned no final doc (or a non-object), don’t crash the stream callback
+  if (!doc || typeof doc !== "object") {
+    appendStatus("⚠️ Preview skipped (no valid document)");
+    return;
+  }
+
+  try {
+    const res = await fetch('/admin/airline-agent/preview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ finalDoc: doc })
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`Preview HTTP ${res.status}: ${txt.slice(0, 200)}`);
+    }
+
+    const html = await res.text();
+    el('previewFrame').srcdoc = html;
+  } catch (err) {
+    console.error("Preview render failed:", err);
+    appendStatus("⚠️ Preview failed (see console)");
+    // Don't throw — we never want preview errors to kill the stream
+  }
+}
+
+
+function startStream() {
+  closeStreamSilently();
+  terminalSeen = false;
+  userStopped = false;
+  el('previewFrame').srcdoc = '';
+  setOutput({ running: true });
+  el('statusBox').textContent = '(none)';
+
+  const airlineCode = el('airlineCode').value;
+  if (!airlineCode) return setOutput({ ok:false, error:"Pick airline first" });
+
+  const qs = new URLSearchParams({
+    airlineCode,
+    researchMode: el('researchMode').value,
+    manualUrls: el('manualUrls').value,
+    wantExplain: el('wantExplain').checked ? "1" : "0",
+    reuseAudit: el('reuseAudit') && el('reuseAudit').checked ? "1" : "0"
+  });
+
+  el('btnStop').disabled = false;
+
+  // ✅ correct route (mounted under /admin)
+  es = new EventSource(`/admin/airline-agent/stream?${qs}`);
+
+  es.addEventListener("progress", e => {
+    try { appendStatus(JSON.parse(e.data).message); }
+    catch { appendStatus(e.data); }
+  });
+
+  es.addEventListener("done", async e => {
+  terminalSeen = true;
+
+  try {
+    const data = JSON.parse(e.data);
+    setOutput(data);
+
+    // Prefer finalDoc if it’s a real doc; otherwise fallback to draft when present
+    if (data.finalDoc && !data.finalDoc.error) {
+      lastFinalDoc = data.finalDoc;
+    } else if (data.draft) {
+      lastFinalDoc = data.draft;
+    } else if (data.finalDoc && data.finalDoc.draft) {
+      // some audits store { finalDoc: { error, draft } }
+      lastFinalDoc = data.finalDoc.draft;
+    } else {
+      lastFinalDoc = null;
+    }
+
+    appendStatus("✅ Done.");
+    await renderPreview(lastFinalDoc);
+  } catch (err) {
+    console.error("Done handler failed:", err);
+    appendStatus("⚠️ Done handler error (see console)");
+  } finally {
+    closeStreamSilently();
+  }
+});
+
+
+  es.addEventListener("failed", e => {
+    terminalSeen = true;
+    setOutput(JSON.parse(e.data));
+    appendStatus("❌ Research failed.");
+    closeStreamSilently();
+  });
+
+  es.addEventListener("agent_error", e => {
+    terminalSeen = true;
+    setOutput(JSON.parse(e.data));
+    appendStatus("❌ Agent error.");
+    closeStreamSilently();
+  });
+
+  es.addEventListener("error", () => {
+    if (terminalSeen || userStopped) return;
+    appendStatus("❌ Stream transport error.");
+    closeStreamSilently();
+  });
+}
+
+async function chatRefine() {
+  if (!lastFinalDoc) return setOutput({ ok:false, error:"Run preview first" });
+
+  const res = await fetch('/admin/airline-agent/chat', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      airlineCode: el('airlineCode').value,
+      researchMode: el('researchMode').value,
+      manualUrls: el('manualUrls').value,
+      operatorNotes: el('chatMsg').value
+    })
+  });
+
+  const data = await res.json();
+  setOutput(data);
+  lastFinalDoc = data.finalDoc || null;
+  appendStatus("✅ Preview updated.");
+  await renderPreview(lastFinalDoc);
+  el('chatMsg').value = '';
+}
+
+/* --------------------------------------------
+   ✅ Publish
+   Uses YOUR existing route:
+   POST /admin/airline-agent/publish
+-------------------------------------------- */
+async function publish() {
+  const airlineCode = el('airlineCode').value;
+  if (!airlineCode) return setOutput({ ok:false, error:"Pick airline first" });
+
+  const btn = el('btnPublish');
+  try {
+    btn.disabled = true;
+    appendStatus("🚀 Publishing...");
+
+    const res = await fetch('/admin/airline-agent/publish', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        airlineCode,
+        researchMode: el('researchMode').value,
+        // send textarea as string; backend parseUrls() already handles it
+        manualUrls: el('manualUrls').value,
+        operatorNotes: el('chatMsg').value || "",
+        baseDoc: lastFinalDoc
+      })
+    });
+
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch { data = { ok:false, stage:"bad_response", status: res.status, body: text.slice(0, 800) }; }
+
+    setOutput(data);
+
+    if (!res.ok || data.ok === false) {
+      appendStatus(`❌ Publish failed (${res.status}).`);
+    } else {
+      appendStatus("✅ Published.");
+    }
+  } catch (err) {
+    console.error(err);
+    setOutput({ ok:false, stage:"exception", error: err.message || String(err) });
+    appendStatus(`❌ Publish exception: ${err.message || String(err)}`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+
+async function publishNow() {
+  if (!lastFinalDoc) return setOutput({ ok:false, error:"Run Preview or Load Last Audit first" });
+
+  appendStatus("🚀 Publishing from preview...");
+
+  const res = await fetch('/admin/airline-agent/publish-from-preview', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      airlineCode: el('airlineCode').value,
+      finalDoc: lastFinalDoc
+    })
+  });
+
+  const data = await res.json();
+  setOutput(data);
+
+  if (!data.ok) {
+    appendStatus("❌ Publish failed.");
+    return;
+  }
+
+  appendStatus("✅ Published.");
+  // keep preview in sync
+  lastFinalDoc = data.finalDoc || lastFinalDoc;
+  await renderPreview(lastFinalDoc);
+}
+
+async function loadAirlines() {
+  const res = await fetch('/admin/airline-agent/airlines');
+  const data = await res.json();
+  el('airlineCode').innerHTML =
+    '<option value="">Select…</option>' +
+    (data.airlines || []).map(a =>
+      `<option value="${a.airlineCode}">${a.name} (${a.airlineCode})</option>`
+    ).join('');
+}
+
+// bindings
+el('btnRun').onclick = startStream;
+el('btnStop').onclick = stopStreamByUser;
+el('btnChat').onclick = chatRefine;
+el('btnPublish').onclick = publishNow;
+el('btnCopy').onclick = () => navigator.clipboard.writeText(el('out').textContent);
+
+
+// init
+loadAirlines();
+</script>
+

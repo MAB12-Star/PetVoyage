@@ -1,0 +1,91 @@
+{
+  "airlineCode": "EI",
+  "dryRun": true,
+  "ranAt": "2026-01-30T03:11:14.757Z",
+  "researchPayload": {
+    "ok": true,
+    "stage": "research_ok",
+    "airlineCode": "EI",
+    "diagnostics": [
+      {
+        "ok": false,
+        "url": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/",
+        "finalUrl": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/",
+        "status": 405,
+        "contentType": "text/html; charset=utf-8",
+        "bytes": 11800,
+        "blocked": true,
+        "jsHeavy": false,
+        "readableChars": 2100,
+        "textSample": "Pardon Our Interruption As you were browsing something about your browser made us think you were a bot. There are a few reasons this might happen: You're a power user moving through this website with super-human speed. You've disabled cookies in your web browser. A third-party browser plugin, such as Ghostery or NoScript, is preventing JavaScript from running. Additional information is available in this support article . To regain access, please make sure that cookies and JavaScript are enabled before reloading the page. To regain access, please make sure that cookies and JavaScript are enabled and complete the CAPTCHA below. Scusate la nostra interruzione Mentre stavi navigando, qualcosa sul tuo browser ci ha fatto pensare che fossi un bot. Ci sono alcuni motivi per cui questo potrebbe accadere: Sei un utente esperto che si muove attraverso questo sito Web con una velocità sovrumana. Hai disabilitato i cookie nel tuo browser web. Un plug-in per browser di terze parti, come Ghostery o NoScript, impedisce l'esecuzione di JavaScript. Ulteriori informazioni sono disponibili in questo articolo di supporto . Per riottenere l'accesso, assicurati che i cookie e JavaScript siano abilitati prima di ricaricare la pagina. Dopo aver completato il CAPTCHA di seguito, riacquisterai immediatamente l'accesso al sito. Verzeihen Sie unsere Unterbrechung Am Verhalten Ihres Browsers, als Sie im Internet gesurf haben wurde vermutet, dass es sich hierbeu um einen Bot handelte. Es gibt mehrere Grün",
+        "durationMs": 1153,
+        "error": null
+      }
+    ],
+    "sources": [
+      {
+        "name": "Aer Lingus – Baggage information (Animals & Pets modal)",
+        "url": "https://www.aerlingus.com/localized/en/modals/baggage-information.html"
+      },
+      {
+        "name": "Aer Lingus – Disability Assistance (Trained Service Dogs)",
+        "url": "https://www.aerlingus.com/support/special-assistance/disability-assistance/"
+      },
+      {
+        "name": "Aer Lingus – Seats information (note re: pets)",
+        "url": "https://www.aerlingus.com/prepare/seats/seats-information/"
+      },
+      {
+        "name": "Aer Lingus – Travelling with pets (canonical)",
+        "url": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/"
+      },
+      {
+        "name": "IAG Cargo – Pets",
+        "url": "https://www.iagcargo.com/en/products/pets"
+      }
+    ],
+    "extractedText": "Aer Lingus does not allow pets in the passenger cabin. Only trained and certified service dogs are accepted in-cabin and travel free; emotional support animals and service animals in training are not accepted. Household pets (cats and dogs) may travel only as cargo in the aircraft hold and must be booked via a pet travel agent through IAG Cargo; animals are not accepted at passenger check-in. For travel from North America to Ireland, contact the IAG Cargo North America Pet Desk (petdesk@iagcargo.com, +1-888-578-4806) and arrange a compliance check with Ireland’s Department of Agriculture before arrival. Restrictions: no live animals on Aer Lingus A321neo LR aircraft and pets are not accepted on Aer Lingus Regional flights operated by Emerald Airlines.",
+    "notes": [
+      "Main Aer Lingus pet policy page was gated by JS/CAPTCHA during research; relied on Aer Lingus modal and assistance pages for accessible content.",
+      "IAG Cargo is the official cargo partner for pet shipments; bookings must be made via a pet travel agent (not at passenger check-in).",
+      "Service dog and ESA rules confirmed on Aer Lingus Disability Assistance page.",
+      "Aircraft/route restrictions include A321neo LR (no live animals) and Aer Lingus Regional (no pets accepted)."
+    ]
+  },
+  "finalDoc": {
+    "error": "[\n  {\n    \"received\": \"Dogs\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      0\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Dogs'\"\n  },\n  {\n    \"received\": \"Cats\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      1\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Cats'\"\n  }\n]",
+    "draft": {
+      "airlineCode": "EI",
+      "petPolicyURL": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/",
+      "airlineURL": "https://www.aerlingus.com",
+      "PetPolicySummary": "Aer Lingus accepts domestic cats and dogs only, and they may travel only as cargo in the aircraft hold via IAG Cargo. Pets are not permitted in the passenger cabin; only trained and certified service dogs are accepted in-cabin. Bookings for pets must be made through a pet travel agent with IAG Cargo; animals will not be accepted at Aer Lingus passenger check-in. Restrictions include no live animals on Aer Lingus A321neo LR aircraft and no pets on Aer Lingus Regional flights operated by Emerald Airlines. If entering Ireland or the EU, pets must comply with EU Pet Travel rules; for entry to the UK, USA, or Canada, comply with the respective national requirements. If entering Ireland from a non-EU country, advance notification to the Department of Agriculture and a compliance check on arrival are required.",
+      "ImprovedPetPolicySummary": "<h2>Aer Lingus Pet Policy Overview</h2><ul><li>Pets in cabin: Not permitted. Only trained and certified service dogs are accepted in the passenger cabin and travel free of charge (subject to conditions).</li><li>Pets as cargo: Household cats and dogs may travel only in the aircraft hold and must be booked via a pet travel agent with IAG Cargo. Animals are not accepted at Aer Lingus passenger check-in.</li><li>Restrictions: No live animals on Aer Lingus A321neo LR aircraft. Pets are not accepted on Aer Lingus Regional flights operated by Emerald Airlines.</li><li>Entry requirements: Pets must meet destination rules (EU/UK/USA/Canada). If entering Ireland from a non‑EU country, notify the Department of Agriculture in advance and arrange a compliance check on arrival.</li></ul><p>For cargo bookings and detailed container requirements, refer to IAG Cargo’s Pets service.</p><h3>Service Dogs</h3><p>Trained service dogs for passengers with disabilities are accepted in-cabin subject to documentation and destination requirements. Emotional support animals and service animals in training are not accepted.</p>",
+      "microchip": "no",
+      "healthCertificate": "yes",
+      "inCompartment": "no",
+      "inCompartmentAnimals": [],
+      "inCompartmentDetails": "Aer Lingus does not allow pets in the passenger cabin. Only trained and certified service dogs are permitted to travel in-cabin, subject to documentation and destination rules.",
+      "inCargo": "yes",
+      "inCargoAnimals": [
+        "Dogs",
+        "Cats"
+      ],
+      "inCargoDetails": "Household pets (cats and dogs) travel only as cargo and must be booked via a pet travel agent with IAG Cargo. Pets are not accepted at Aer Lingus passenger check-in. No live animals are carried on Aer Lingus A321neo LR aircraft, and pets are not accepted on Aer Lingus Regional flights operated by Emerald Airlines.",
+      "carrierCompartmentDetails": "<section class=\"container my-4\"><h2 class=\"mb-3\">In-Cabin Policy</h2><p>Pets are not permitted in the passenger cabin on Aer Lingus flights. Only trained and certified service dogs are accepted in-cabin and must meet all documentation and destination entry requirements.</p></section>",
+      "carrierCargoDetails": "<section class=\"container my-4\"><h2 class=\"mb-3\">In Cargo Carrier Details</h2><p>Household pets (cats and dogs) may travel only in the aircraft hold and must be booked via a pet travel agent with IAG Cargo; animals are not accepted at Aer Lingus passenger check-in.</p><p>Restrictions: No live animals on Aer Lingus A321neo LR aircraft. Pets are not accepted on Aer Lingus Regional flights operated by Emerald Airlines.</p><p>During the flight, pets are carried in a temperature-controlled, unlit hold to help them settle. Ensure all destination entry requirements are met.</p><h3>Pet Travel Container Guidance</h3><ul><li>Container must be strong, secure, and provide adequate ventilation on all sides.</li><li>Door must be secured to prevent opening; pet’s nose and paws must not protrude through openings.</li><li>Include a water pot accessible from outside and sized appropriately.</li><li>Fibreboard, wire mesh, and wicker containers are not suitable for air transport.</li><li>Internal dimensions must allow the animal to stand, sit erect, turn around, and lie down comfortably. Allow extra space if adding bedding.</li></ul></section>",
+      "dangerousBreeds": "yes",
+      "dangerousBreedList": " ",
+      "brachycephalic": "yes",
+      "brachycephalicBreedList": "All Bulldogs:  (English, French, American, etc.) Pugs Boxers Persian/Exotic Cats",
+      "serviceAnimals": "yes",
+      "serviceAnimalDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Service Animals (In-Cabin & Support)</h2>\n  <p>Aer Lingus accepts trained service dogs for passengers with a disability or reduced mobility. A trained service dog must be individually trained to perform tasks for the passenger's benefit.</p>\n  <p>Only dogs are accepted as service animals in the cabin. Pets, emotional support animals, or service animals in training are not accepted on board.</p>\n  <div class=\"alert alert-warning\">\n    <strong>Important:</strong> All trained service dogs must be harnessed, leashed, or tethered at all times on the aircraft. Aer Lingus may deny transport if the passenger cannot maintain physical control of the dog.\n  </div>\n  <h3 class=\"mb-2\">General Requirements</h3>\n  <ul>\n    <li>Service dogs must be clean, well-behaved, and harnessed, leashed, or tethered at all times.</li>\n    <li>The following breeds must be securely muzzled and led by a person aged 16 or older capable of controlling the dog:\n      <ul>\n        <li>American Pit Bull Terrier</li>\n        <li>Bull Mastiff</li>\n        <li>Doberman Pinscher</li>\n        <li>English Bull Terrier</li>\n        <li>German Shepherd (Alsatian)</li>\n        <li>Japanese Akita</li>\n      </ul>\n    </li>\n    <li>Contact the Special Assistance team as early as possible, and at least 24 hours before departure, to arrange seating.</li>\n    <li>Service dogs must fit at your feet, under your seat, or in your lap. More than one dog or a large dog may not be seated in your lap.</li>\n    <li>If the dog is in a kennel, the kennel must fit under the seat in front of you.</li>\n    <li>In business class, the lie-flat seat feature is forfeited to accommodate the service dog on the floor.</li>\n    <li>Service dogs may not be seated in exit rows or block aisles.</li>\n    <li>Service dogs travel free if they fit in the allotted space. If not, you may need to pay for an additional seat, rebook, or transport the dog as a pet.</li>\n    <li>Final approval for travel is determined at the airport based on the dog fitting safely in the allotted space.</li>\n  </ul>\n  <h3 class=\"mb-2\">Flights Within Europe</h3>\n  <ul>\n    <li>Trained service dogs must have an Assistance Dog Identification Card from a qualifying organization.</li>\n    <li>Dogs must be trained by organizations affiliated with the International Guide Dog Federation (IGDF) or Assistance Dogs International (ADI).</li>\n    <li>Documentation proving affiliation must be provided.</li>\n    <li>Notify Aer Lingus via special assistance request at least 48 hours before travel.</li>\n    <li>One service dog per passenger travels free, except on connecting flights to/from USA and Canada.</li>\n  </ul>\n  <h3 class=\"mb-2\">Flights To/From North America</h3>\n  <ul>\n    <li>Passengers to/from the USA must submit the US DOT Service Animal Air Transportation Form before travel.</li>\n    <li>For flights 8 hours or longer, a US DOT Service Animal Relief Attestation Form is also required.</li>\n    <li>New US CDC requirements for service dogs apply from 01 August 2024.</li>\n    <li>Passengers to/from Canada or Barbados must submit the Service Animal Air Transportation Form before travel.</li>\n    <li>Documentation must be submitted at least 48 hours before the flight via the Special Assistance Request Form for bookings made 48 hours or more in advance.</li>\n    <li>For bookings made less than 48 hours before departure, documentation can be presented at check-in or gate.</li>\n    <li>Two service dogs per passenger are allowed free of charge on flights to/from North America, including connecting flights to Europe.</li>\n    <li>Aer Lingus may refuse carriage if required documentation is not provided before boarding.</li>\n  </ul>\n  <p>If you have difficulty accessing required forms, contact the Special Assistance team.</p>\n</section>",
+      "esAnimals": "no",
+      "esaDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Emotional Support Animals</h2>\n  <p>Airlines decide individually whether to allow animals providing other types of assistance, such as emotional support, to accompany passengers in the cabin.</p>\n</section>",
+      "petShipping": "yes",
+      "healthVaccinations": [
+        "Rabies"
+      ],
+      "timestamp": "2026-01-30T04:05:52.000Z"
+    }
+  }
+}

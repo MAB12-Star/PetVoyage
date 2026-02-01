@@ -1,0 +1,86 @@
+{
+  "airlineCode": "BA",
+  "dryRun": true,
+  "ranAt": "2026-02-01T00:24:45.558Z",
+  "researchPayload": {
+    "airlineCode": "BA",
+    "officialLinks": [
+      {
+        "name": "Travelling with pets",
+        "url": "https://www.britishairways.com/content/information/travel-assistance/travelling-with-pets"
+      },
+      {
+        "name": "Travelling with an assistance dog",
+        "url": "https://www.britishairways.com/content/information/disability-assistance/travelling-with-your-assistance-dog"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.britishairways.com/content/information/travel-assistance/travelling-with-pets",
+        "date": "2026-02-01",
+        "note": "No last updated shown on page; checked 2026-02-01."
+      },
+      {
+        "url": "https://www.britishairways.com/content/information/disability-assistance/travelling-with-your-assistance-dog",
+        "date": "2026-02-01",
+        "note": "No last updated shown on page; checked 2026-02-01."
+      }
+    ],
+    "policyFindings": [
+      "In-cabin pets: British Airways only permits trained assistance dogs to travel in the cabin on BA-operated flights; emotional support dogs are not accepted for in-cabin travel.",
+      "Assistance/service animals (SVAN): Assistance dogs travel free of charge in the cabin on all BA flights. Advance registration via the Open Doors Organization portal is required; BA recommends submitting at least 48 hours before travel. A suitable car safety harness (or equivalent) is required for take-off/landing and when seatbelt signs are on. BA may need to limit the number of dogs carried in the cabin.",
+      "ESAs: Emotional support dogs are not accepted in the cabin; they must travel as pets (see cargo/partners).",
+      "Cargo/transport of pets (non-assistance): From the UK, BA directs customers to partner PetAir UK to export pets.",
+      "Cargo/transport of pets (non-assistance): To the UK, BA directs customers to sister company IAG Cargo to import pets.",
+      "Fees: Assistance dogs travel free in the cabin. BA does not publish pet transport pricing; arrangements and costs are handled by PetAir UK (export from UK) or IAG Cargo (to UK).",
+      "Checked baggage: BA’s public guidance routes pet travel via PetAir UK/IAG Cargo; no BA checked-baggage option is described on the referenced BA pages.",
+      "Breed restrictions: Not specified on BA’s pet pages; pet breed eligibility appears governed by cargo partners and destination country rules (e.g., DEFRA for UK entry).",
+      "Seasonal/temperature embargoes: Not specified on BA’s site pages; any such restrictions would be set by the cargo provider and destination authorities.",
+      "Crate/container sizes and standards: Not provided on BA’s site pages; handled by the cargo provider (PetAir UK/IAG Cargo) in line with applicable regulations.",
+      "Country-specific entry requirements noted by BA: UK entry requires compliance with DEFRA Pet Travel Scheme requirements.",
+      "Country-specific entry requirements noted by BA: US entry may require compliance with CDC rules and submission of a CDC dog import form.",
+      "Other assistance-dog operational notes: Many organizations recommend a maximum 10-hour flight for dogs; BA will accept longer flights if the handler confirms the dog can manage. Allow extra time for connections; BA staff will assist to appropriate areas for relief during connections."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "Scope limits: BA’s official site does not publish detailed cargo pet fees, kennel dimensions, breed-specific restrictions, or seasonal embargoes; BA directs customers to PetAir UK (export from UK) and IAG Cargo (to UK) for arrangements and requirements. This summary is therefore limited to what BA states on its own pages.",
+      "Compliance reminders: For assistance dogs, BA requires accreditation/training that meets specified standards and completion of the Open Doors Organization process before travel; bring all original health/import documents required by each country.",
+      "Research method: Started from the provided seed URL and followed only British Airways child links."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "BA",
+    "petPolicyURL": "https://www.britishairways.com/content/information/travel-assistance/travelling-with-pets",
+    "airlineURL": "https://www.britishairways.com/",
+    "PetPolicySummary": "Travelling with pets\nWe know your pets are part of your family, which is why we treat every animal who flies with us like a VIP.\n\nAn assistance dog laying down with their harness on.\nBritish Airways flights\nEmotional support dogs\n\nBritish Airways is unable to accept emotional support dogs for travel in the cabin on any British Airways operated flights. Your emotional support dog can travel as a pet and details on how to arrange this can be found below.\n\nAssistance Dogs\n\nIf you’re travelling with an assistance dog, it can travel with you free of charge in the cabin of your British Airways flight. This service cannot be booked online and we might need to limit the number of dogs we can carry in the cabin.\n\nMore about travelling with assistance dogs\nPets\nPetAir UK logo.\nFrom the UK\nWe’ve partnered with PetAir UK, which is run and owned by fully-qualified veterinary surgeons and has been flying pets all over the world since 2004, to offer British Airways customers a safe, comfortable and convenient way to export their pets from the UK.\n\nMore about transporting Pets with PetAir UK\nIAG Cargo logo.\nTo the UK\nIf you are looking to transport your pet to the UK, our sister company IAG Cargo can help. They have decades of experience transporting animals from every corner of the globe and will look after your pet as if it were their own.\n\nMore about transporting pets with IAG Cargo\nPet Travel Scheme\nIf you're entering the UK, your dog must meet the requirements of the Pet Travel Scheme offered by the UK Department for Environment, Food & Rural Affairs (DEFRA). It allows cats and dogs to travel between some countries and UK airports avoiding quarantine.\n\nIf you're travelling to a different country, please check with the relevant embassy or consulate for any regulations or restrictions.\n\nMore about DEFRA's Pet Travel scheme\nSUN-AIR flights\nSUN-AIR is our franchise partner operating flights within Europe under the British Airways brand. As on British Airways operated flights, recognised assistance dogs are allowed in the cabin, as well as other pets up to 6kg.\n\nOther pets must be transported in a waterproof bag or cage, with maximum dimensions of 20 x 30 x 20cm (7.5 x 11.5 x 7.5in).\nIt is the owners’ responsibility to ensure that all documentation and animal passports are in order before departure.\nSUN-AIR permits one pet on board each aircraft at one time.\nPlease contact the SUN-AIR ticket office on +45 75 33 16 11 no later than 72 hours before departure if you wish to bring your pet on a SUN-AIR operated flight. Please note that pets are not permitted on SUN-AIR flights to the United Kingdom.",
+    "ImprovedPetPolicySummary": "<h2>British Airways Pet Policy (Summary)</h2><ul><li>BA-operated flights: Pets are not accepted in the cabin; only recognised assistance dogs may travel in-cabin free of charge (numbers may be limited).</li><li>Emotional Support Animals: ESAs are not accepted in the cabin on BA-operated flights. They must travel as pets via cargo arrangements.</li><li>Pet transport logistics: From the UK, arrange export with PetAir UK. To the UK, arrange with IAG Cargo. Fees, crate specs and any route/temperature limits are set by the cargo provider and authorities.</li><li>UK entry rules: Follow the UK DEFRA Pet Travel Scheme requirements when entering the UK.</li><li>SUN-AIR (BA franchise) exception: Permits one pet per aircraft in cabin up to 6 kg, in a waterproof bag/cage max 20 x 30 x 20 cm; contact SUN-AIR at least 72 hours before departure; pets are not permitted on SUN-AIR flights to the UK.</li><li>Assistance dogs: Must be trained/qualified (e.g., ADI/IGDF or equivalent), registered via BA’s Open Doors Organization portal, and secured with an appropriate harness during take-off/landing and when seat belt signs are on. For UK arrivals, obtain pre-approval from the Animal Reception Centre at least 72 hours before travel; for US travel, comply with CDC dog import requirements.</li></ul>",
+    "microchip": "yes",
+    "healthCertificate": "yes",
+    "inCompartment": "no",
+    "inCompartmentAnimals": [],
+    "inCompartmentDetails": "Pets are not accepted in the cabin on BA-operated flights (only recognised assistance dogs). Exception: On SUN-AIR (BA franchise) flights within Europe, one pet per aircraft is permitted up to 6 kg in a waterproof bag/cage (20 x 30 x 20 cm); pets are not permitted on SUN-AIR flights to the UK and SUN-AIR must be contacted at least 72 hours before departure.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCargoDetails": "From the UK, pet transport is arranged via PetAir UK. To the UK, transport is arranged via IAG Cargo. Fees, crate requirements, and any breed/temperature or route restrictions are set by the cargo provider and destination authorities; BA does not publish cargo pet fee tables on its site.",
+    "carrierCompartmentDetails": "Not applicable on BA-operated flights (pets are not permitted in the cabin). SUN-AIR (BA franchise) allows a waterproof bag/cage up to 20 x 30 x 20 cm for pets up to 6 kg.",
+    "carrierCargoDetails": "When carried as checked baggage/cargo, animals must be in proper, adequate and secure containers; specific crate sizes and standards are determined by the cargo provider (PetAir UK/IAG Cargo) and applicable IATA/authority requirements.",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": " ",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section><h2>Assistance/Service Dogs on British Airways</h2><ul><li>Accepted free of charge in the cabin on BA-operated flights; numbers may be limited.</li><li>Eligibility: Trained and accredited to assist with a disability/medical condition (e.g., ADI/IGDF or equivalent standard with evidence).</li><li>Registration: Complete BA’s assistance dog registration via the Open Doors Organization portal. BA recommends completing registration before booking and finalising at least 48 hours before travel. Not bookable online.</li><li>Onboard safety: A car safety harness (or equivalent) is required during taxi, take-off, landing and whenever the seat belt sign is on. The dog must remain under your control and behave appropriately in public and on board.</li><li>Seating: Bulkhead seating will be provided if required and available. BA may restrict the number of assistance dogs per flight.</li><li>Route-specific rules: For arrivals to the UK, obtain pre-approval from the relevant Animal Reception Centre at least 72 hours before your flight. For travel to the USA, comply with CDC dog import requirements (including completing the CDC Dog Import Form before boarding).</li></ul></section>",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-02-01T00:00:00.000Z"
+  }
+}

@@ -108,9 +108,9 @@ ${operatorInstructions}
 
 Rules:
 - OFFICIAL GOVERNMENT sources only.
-- Allowed: government domains + USDA APHIS (aphis.usda.gov) as supplemental.
+- Allowed: government domains + USDA APHIS (aphis.usda.gov) OR other government websites to fill as supplemental.
 - DO NOT use blogs, forums, airline summaries, visa/travel sites.
-- HARD LIMIT: open at most 3 child links total (PDFs/forms). If slow, skip.
+- HARD LIMIT: open at most 3 child links total (PDFs/forms). 
 
 Search strategy:
 1) Find the official veterinary authority page(s) for importing pets into ${countryName}.

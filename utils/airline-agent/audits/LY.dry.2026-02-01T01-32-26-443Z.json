@@ -1,0 +1,106 @@
+{
+  "airlineCode": "LY",
+  "dryRun": true,
+  "ranAt": "2026-02-01T01:32:26.443Z",
+  "researchPayload": {
+    "airlineCode": "LY",
+    "officialLinks": [
+      {
+        "name": "Traveling with pets (EL AL)",
+        "url": "https://www.elal.com/it/PassengersInfo/Baggage/Pages/Pets.aspx"
+      },
+      {
+        "name": "Live animals shipped as cargo (EL AL Cargo Direct Sales)",
+        "url": "https://www.elal.com/en/Cargo/Direct-Sales/Pages/Animals-Transport.aspx"
+      },
+      {
+        "name": "Conditions of Carriage (section 8.9 Animals)",
+        "url": "https://www.elal.com/it/About-ELAL/Legal/Pages/Conditions-of-Carriage.aspx"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.elal.com/it/PassengersInfo/Baggage/Pages/Pets.aspx",
+        "date": "not shown",
+        "note": "Pets page: no “last updated” date shown on page."
+      },
+      {
+        "url": "https://www.elal.com/en/Cargo/Direct-Sales/Pages/Animals-Transport.aspx",
+        "date": "not shown",
+        "note": "Cargo Direct Sales page: no “last updated” date shown on page."
+      },
+      {
+        "url": "https://www.elal.com/it/About-ELAL/Legal/Pages/Conditions-of-Carriage.aspx",
+        "date": "not shown",
+        "note": "Conditions of Carriage: no “last updated” date shown on page; section 8.9 governs animals generally."
+      }
+    ],
+    "policyFindings": [
+      "EL AL accepts pets; dogs, cats, and birds may be carried in the passenger cabin subject to EL AL conditions and destination-country rules.",
+      "Israel entry: up to 2 pets per passenger may enter Israel; for more than 2, contact EL AL.",
+      "In-cabin (PETC): Request via EL AL Reservations and provide pet weight and carrier dimensions; pet must remain in a leakproof semi-rigid or rigid carrier lined with absorbent material that fits under the seat and may not be placed on the lap during takeoff and landing.",
+      "Maximum carrier size: Economy Class up to 41 × 38 × 19 cm; Business Class up to 30 × 30 × 19 cm.",
+      "Up to two pets may travel in the same in-cabin carrier if safely contained and within the PETC weight limit.",
+      "PETC maximum weight: page shows inconsistent thresholds (8 kg vs 9 kg). Treat limit as 8 kg total (pet + carrier) and confirm with EL AL when booking.",
+      "In-cabin not permitted on routes: no pets in cabin on flights to/from London Heathrow and Luton; and no pets in cabin to Johannesburg, Hong Kong, or Australia (also from Johannesburg to Israel). For these routes, transport is in the hold/cargo only.",
+      "Business Class restrictions: pets permitted in Business Class on Boeing 737 aircraft and only on the upper deck of Boeing 747-400; not permitted in Business Class on Boeing 777/767. Verify aircraft on your flight.",
+      "In the hold (AVIH): Pets too large for the cabin must travel in the hold. For flights longer than 12 hours, the crate must include a water container (food recommended).",
+      "787 aircraft: cargo hold temperatures can drop to around 5°C; owner must ensure the animal can tolerate this; EL AL disclaims liability for sensitivity to hold conditions.",
+      "Crate standards for hold: strong, secure, escape-proof; ventilated on all four sides; door fastened so it cannot open in flight; side openings must not allow muzzle or paws to protrude.",
+      "Multiple animals per crate in hold: up to two animals (each up to 14 kg) in one crate; or up to three young animals (6 months or younger, each up to 14 kg) in one crate. Above those weights, separate crates are required.",
+      "Cargo (AWB) requirement: For UK (Heathrow), Hong Kong, South Africa, and Australia, live animals must be shipped as cargo with an airway bill, even when owners travel on the same flight; arrange via EL AL Cargo Direct Sales.",
+      "Fees each direction (not part of baggage allowance): Up to 8 kg (PETC) USD 100; 9–50 kg USD 200; 51–100 kg USD 400; over 100 kg handled via EL AL Cargo. Pay at EL AL airport ticket office or EL AL office; codeshares excluded; if continuing on another airline, pay that carrier directly.",
+      "Service animals and ESAs: Guide dogs, including emotional support animals, accompanying passengers with special needs are carried in the cabin free of charge (subject to conditions).",
+      "Service animals/ESAs advance notice: Notify EL AL at least 48 hours before the flight; ESAs require authorization from a licensed mental-health professional; for flights over 8 hours, provide veterinary documentation that the dog will not pose hygiene issues; bring harness and muzzle as needed; if safety concerns arise, EL AL may move the dog to the hold at no charge; for London flights with a guide dog, register 14 days in advance with Heathrow Animal Reception Centre.",
+      "Documents and destination rules: Pets must have required health/vaccination certificates and entry permits for transit/destination; EL AL is not liable if entry is refused. The page lists Israel’s veterinary import rules and certain country-specific notes (e.g., Bangkok paperwork copy in crate; France bans import of pet food; Romania commercial import ban).",
+      "Conditions of Carriage: EL AL is not obliged to carry animals except guide dogs; when accepted, animals are carried as excess baggage and at owner’s risk, subject to applicable laws and carrier conditions."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "English pets URL currently redirects; the Italian locale page contains the detailed rules used here. Content is EL AL official.",
+      "PETC weight inconsistency: The pets page shows both \"over 9 kg must go in hold\" and \"over 8 kg must go in hold.\" Confirm the operative PETC weight limit with EL AL; the fees and several bullets align to 8 kg.",
+      "Aircraft references may be outdated (mentions 737/747/767/777 Business Class rules); verify aircraft type and cabin policy for your specific flight.",
+      "Always check destination-country animal import requirements in addition to EL AL rules; compliance is the passenger's responsibility."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "LY",
+    "petPolicyURL": "https://www.elal.com/it/PassengersInfo/Baggage/Pages/Pets.aspx",
+    "airlineURL": "https://www.elal.com",
+    "PetPolicySummary": "EL AL accepts dogs, cats, and birds. Small pets may travel in the cabin if the pet plus carrier weighs up to 8 kg and the carrier fits under the seat (Economy max 41 × 38 × 19 cm; Business max 30 × 30 × 19 cm). The pet must remain in a leakproof semi‑rigid or rigid carrier lined with absorbent material; up to two pets may share one carrier if within the limit. In‑cabin transport is not permitted to/from London Heathrow or Luton, or on flights to Johannesburg, Hong Kong, or Australia (also not from Johannesburg to Israel); on these routes animals must go in the hold/cargo. Pets over the in‑cabin limit travel in the hold (about 9–100 kg with crate) or as cargo if over 100 kg or when required by destination (UK/Hong Kong/South Africa/Australia). Fees each way: up to 8 kg (in cabin) USD 100; 9–50 kg USD 200; 51–100 kg USD 400; over 100 kg via cargo. Brachycephalic dog/cat breeds are not accepted as baggage or cargo. Crates for hold must meet EL AL standards; on B787, hold temperatures may drop to around 5°C. Required documents (health/vaccination certificates and permits) must comply with the destination’s rules; up to two pets per passenger may enter Israel. Guide dogs and emotional support dogs for passengers with special needs may travel in the cabin free of charge, with advance notice and documentation, subject to conditions.",
+    "ImprovedPetPolicySummary": "<h2>EL AL Pet Policy (Overview)</h2><ul><li>Eligible animals: dogs, cats, and birds, subject to EL AL and destination-country regulations.</li><li>In-cabin (PETC): pet + carrier up to 8 kg; carrier must fit under the seat (Economy max 41×38×19 cm; Business max 30×30×19 cm). Leakproof semi‑rigid/rigid carrier lined with absorbent material; pet must remain inside. Up to two pets may share one carrier if within the limit.</li><li>Route restrictions (no pets in cabin): to/from London Heathrow and Luton; to Johannesburg, Hong Kong, and Australia (also not from Johannesburg to Israel). On these routes, animals must travel in the hold/cargo.</li><li>Business Class: restrictions apply by aircraft (e.g., allowed on 737; not on some widebodies). Confirm for your flight.</li><li>In the hold (AVIH): pets exceeding cabin limits travel in the hold. For flights over 12 hours, a water container is required (food recommended). On 787 aircraft, hold temperature may be ~5°C.</li><li>Cargo (AWB): required for the UK (Heathrow), Hong Kong, South Africa, and Australia, even if the owner travels on the same flight.</li><li>Crate standards (hold/cargo): strong, escape-proof, ventilated on all four sides; secure door; openings must not allow muzzle/paws to protrude. Up to two animals (each ≤14 kg) or up to three juveniles (≤6 months, each ≤14 kg) may share one crate.</li><li>Fees each way (not part of baggage allowance): PETC up to 8 kg – USD 100; 9–50 kg – USD 200; 51–100 kg – USD 400; over 100 kg via cargo.</li><li>Breed restrictions: brachycephalic dog/cat breeds are not accepted as baggage or cargo.</li><li>Documents: passengers are responsible for all required health/vaccination certificates and permits; up to two pets per passenger may enter Israel, otherwise contact EL AL.</li><li>Service and support dogs: guide dogs and emotional support dogs accompanying passengers with special needs may travel in the cabin free of charge (advance notice and documentation required; additional conditions apply).</li></ul>",
+    "microchip": "no",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Dogs",
+      "Cats",
+      "Exotic birds"
+    ],
+    "inCompartmentDetails": "Request approval via EL AL Reservations and provide the pet’s weight and carrier dimensions. Maximum 8 kg total (pet + carrier). The carrier must be semi‑rigid or rigid, leakproof, lined with absorbent material, and fit fully under the seat (Economy max 41 × 38 × 19 cm; Business max 30 × 30 × 19 cm). The pet must remain inside the closed carrier; it may not be placed on the lap during takeoff/landing. Up to two pets may travel in the same in‑cabin carrier if they fit safely within the weight and size limits. In‑cabin transport is not permitted on flights to/from London Heathrow or Luton, or on flights to Johannesburg, Hong Kong, or Australia (also not from Johannesburg to Israel). Business Class acceptance is limited by aircraft type (e.g., permitted on 737 and only upper deck of 747‑400; not permitted on 777/767) and availability—confirm when booking.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Dogs",
+      "Cats",
+      "Exotic birds"
+    ],
+    "inCargoDetails": "Pets exceeding in‑cabin limits or traveling on restricted routes must be transported in the hold or as cargo. For the UK (Heathrow), Hong Kong, South Africa, and Australia, live animals must be shipped as cargo with an airway bill (AWB) even if the owner travels on the same flight. Crates must be strong, secure, escape‑proof, ventilated on all four sides, and fastened so doors cannot open; openings must not allow the animal’s muzzle or paws to protrude. For flights over 12 hours, a water container is required (food recommended). On Boeing 787 aircraft, hold temperatures may drop to around 5°C; owners must ensure the animal can tolerate these conditions. Multiple animals per crate allowed: up to two animals (each up to 14 kg) or up to three young animals (6 months or younger, each up to 14 kg). Some airports do not allow animals as registered cargo, including Bangkok, Amsterdam, Boston, Mumbai, Brussels, Larnaca, Frankfurt, Moscow, Munich, Madrid, Berlin, Prague, Warsaw, Toronto, Vienna, Budapest, Kyiv, and Rome.",
+    "carrierCompartmentDetails": "<section class=\"container my-4\">\n<h2 class=\"mb-3\">In-Cabin Pet Carrier Rules</h2>\n<ul>\n<li>Allowed species: dogs, cats, and birds (subject to destination-country rules).</li>\n<li>Maximum weight: pet + carrier up to 8 kg.</li>\n<li>Carrier size limits: Economy Class up to 41 × 38 × 19 cm; Business Class up to 30 × 30 × 19 cm.</li>\n<li>Carrier type: semi-rigid or rigid, leakproof, lined with absorbent material; must fit fully under the seat.</li>\n<li>Pet must remain inside the closed carrier; not on the lap during takeoff/landing.</li>\n<li>Up to two pets may share one in-cabin carrier if safely contained within size/weight limits.</li>\n<li>Business Class acceptance is limited by aircraft type and availability (e.g., permitted on 737; not on certain widebodies). Confirm when booking.</li>\n<li>Routes where pets are not allowed in the cabin: to/from London Heathrow and Luton; to Johannesburg, Hong Kong, and Australia (also not from Johannesburg to Israel). On these routes, animals must travel in the hold/cargo.</li>\n</ul>\n</section>",
+    "carrierCargoDetails": "<section class=\"container my-4\">\n<h2 class=\"mb-3\">Checked Baggage and Cargo Pet Transport</h2>\n<ul>\n<li>Hold transport (AVIH): generally for pets exceeding in-cabin limits (about 9–100 kg including crate). Over 100 kg with crate must be shipped as cargo via EL AL Cargo.</li>\n<li>Cargo requirement (AWB): mandatory for the UK (Heathrow), Hong Kong, South Africa, and Australia, even if the owner is on the same flight.</li>\n<li>Crate standards: strong, secure, escape-proof; ventilated on all four sides; doors fastened so they cannot open in flight; openings must not allow muzzle/paws to protrude.</li>\n<li>Multiple animals per crate: up to two animals (each ≤14 kg) or up to three young animals (≤6 months, each ≤14 kg) may share one crate.</li>\n<li>Long flights: for flights over 12 hours, a water container is required (food recommended). On 787 aircraft, hold temperature may be ~5°C; ensure the animal can tolerate these conditions.</li>\n<li>Fees each direction (not part of baggage allowance):\n  <ul>\n    <li>Up to 8 kg (PETC): USD 100</li>\n    <li>9–50 kg: USD 200</li>\n    <li>51–100 kg: USD 400</li>\n    <li>Over 100 kg: via EL AL Cargo</li>\n  </ul>\n</li>\n<li>Some airports do not accept animals as registered cargo, including: Bangkok, Amsterdam, Boston, Mumbai, Brussels, Larnaca, Frankfurt, Moscow, Munich, Madrid, Berlin, Prague, Warsaw, Toronto, Vienna, Budapest, Kyiv, and Rome.</li>\n</ul>\n</section>",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": "No Specific list",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\">\n<h2 class=\"mb-3\">Service Animals</h2>\n<ul>\n<li>Guide dogs (service dogs) accompanying passengers with special needs are accepted in the cabin free of charge, subject to EL AL conditions and applicable laws.</li>\n<li>Advance notice: notify EL AL at least 48 hours before departure and provide required documentation.</li>\n<li>For flights over 8 hours, veterinary documentation may be required confirming the dog will not create hygiene issues onboard.</li>\n<li>Equipment: bring appropriate harness and muzzle as applicable.</li>\n<li>Operational safety: if safety concerns arise, EL AL may relocate the dog to the hold at no charge.</li>\n<li>London (Heathrow): register a guide dog with the Heathrow Animal Reception Centre (HARC) at least 14 days prior to the flight.</li>\n</ul>\n</section>",
+    "esAnimals": "yes",
+    "esaDetails": "Emotional support dogs accompanying passengers with special needs are accepted in the cabin free of charge, subject to EL AL conditions. Notify EL AL at least 48 hours before the flight and provide authorization from a licensed mental-health professional. For flights over 8 hours, veterinary documentation may be required confirming the dog will not pose hygiene issues. Bring appropriate harness and muzzle as applicable. If safety concerns arise, EL AL may relocate the dog to the hold at no charge. Route-specific restrictions and destination-country entry rules still apply.",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-02-01T02:06:40.000Z"
+  }
+}

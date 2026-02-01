@@ -1,0 +1,180 @@
+{
+  "airlineCode": "AF",
+  "dryRun": true,
+  "ranAt": "2026-01-31T21:22:34.752Z",
+  "researchPayload": {
+    "airlineCode": "AF",
+    "officialLinks": [
+      {
+        "name": "Traveling with pets on Air France (US)",
+        "url": "https://wwws.airfrance.us/information/passagers/voyager-avec-son-animal-chien-chat"
+      },
+      {
+        "name": "Fees and paid options (includes pet transport fees)",
+        "url": "https://wwws.airfrance.us/information/legal/fees-and-paid-options"
+      },
+      {
+        "name": "How to travel with your guide or service dog",
+        "url": "https://wwws.airfrance.us/information/passagers/acheter-billet-avion-pmr-autres-handicaps/svan"
+      },
+      {
+        "name": "General Conditions of Carriage (pets rules)",
+        "url": "https://wwws.airfrance.us/information/legal/edito-cg-airfrance"
+      },
+      {
+        "name": "Protected animals and plants (CITES and hunting trophies)",
+        "url": "https://wwws.airfrance.us/information/bagages/popin_produits-interdits-et-reglementes/produits-interdits-et-reglementes-13"
+      },
+      {
+        "name": "Air France lounges (pets in lounges guidance)",
+        "url": "https://wwws.airfrance.us/information/prepare/salons"
+      }
+    ],
+    "nonOfficialLinks": [
+      {
+        "name": "Non-official source",
+        "url": "https://www.ifly.com/airlines/air-france-airlines/pet-policy"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://www.seatmaestro.com/airlines-seating-maps/air-france/pets/"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://www.bringfido.com/travel/airline_policies/air_france/"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://img.static-af.com/m/28d3345af68762f/original/EN-Discharge-responsibility.pdf"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://russia.airfrance.com/en/information/legal/edito-cgv-upgrade"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://corporate.airfrance.com/en/about-air-france/key-figures"
+      }
+    ],
+    "sourceDates": [
+      {
+        "url": "https://wwws.airfrance.us/information/passagers/voyager-avec-son-animal-chien-chat",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://wwws.airfrance.us/information/legal/fees-and-paid-options",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://wwws.airfrance.us/information/passagers/acheter-billet-avion-pmr-autres-handicaps/svan",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://wwws.airfrance.us/information/legal/edito-cg-airfrance",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://wwws.airfrance.us/information/bagages/popin_produits-interdits-et-reglementes/produits-interdits-et-reglementes-13",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://img.static-af.com/m/28d3345af68762f/original/EN-Discharge-responsibility.pdf",
+        "date": "2024-04",
+        "note": "Document header indicates April 2024."
+      },
+      {
+        "url": "https://wwws.airfrance.us/information/prepare/salons",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://russia.airfrance.com/en/information/legal/edito-cgv-upgrade",
+        "date": "2026-01-31",
+        "note": "No last-updated date shown; retrieved on this date."
+      },
+      {
+        "url": "https://corporate.airfrance.com/en/about-air-france/key-figures",
+        "date": "2025-05-20",
+        "note": "Page states last updated May 20, 2025."
+      }
+    ],
+    "policyFindings": [
+      "Air France accepts cats and dogs.",
+      "In cabin: cats and dogs up to 8 kg (17.64 lb) including the carrier.",
+      "In hold: cats and dogs up to 75 kg (165.35 lb) including the kennel.",
+      "Animals that cannot travel as checked baggage must be shipped as cargo via an authorized transporter.",
+      "Add your pet to the booking no later than 24 hours before departure; requests under 24 hours are subject to acceptance and a surcharge (+50% on Metropolitan France and intra-Caribbean flights; +25% on international flights).",
+      "Air France asks that pet transport requests be submitted at least 48 hours before departure.",
+      "Fees each way (EUR/USD/CAD): United States–Europe cabin 200; hold 400. United States–Rest of world cabin 250; hold 500. All other routes cabin 200; hold 400.",
+      "Pet transport fees are separate from baggage allowance and are shown when adding the pet; not purchasable as an Additional Baggage option.",
+      "In-cabin carrier must be closed, purpose-designed, and allow the animal to stand up, turn around, and breathe easily; the carrier remains closed during the flight.",
+      "Hold kennel must be a rigid plastic or fiberglass IATA-approved crate.",
+      "Hold crate requirements include: wheels removed/secured; door with central locking at two points (top and bottom); hinges extending past the top and bottom extrusions; crate halves fastened by bolts; empty food/water bowl attached to the door and accessible from outside; no water bottles; animal must stand without touching the roof (crate height exceeding animal height by more than 5 cm), turn around, and lie down; no leash or muzzle inside the crate; no tranquilization.",
+      "Brachycephalic (snub-nosed) dogs and cats are prohibited in the hold; snub-nosed dogs may travel in the cabin if they meet cabin conditions.",
+      "Dogs classified in French Category 1 and 2 are prohibited on Air France flights; a veterinary certificate may be required if a dog resembles these categories.",
+      "Carriage of pets is subject to Air France’s prior acceptance; the number of pets is limited per flight and per passenger.",
+      "Only trained guide/service dogs are accepted as service animals and travel free when requirements are met; they must be harnessed, secured at the seat, not block aisles or exits, behave appropriately, and be ready to wear a muzzle if necessary.",
+      "For U.S. flights with a service dog, two U.S. DOT forms are required; for flights to the U.S., a CDC form is also required; the dog must be at least 6 months old and microchipped.",
+      "United Kingdom: submit request at least 48 hours before arrival so a Pet Checker can clear the dog; only dogs trained by IGDF/ADI-affiliated organizations are accepted. United Arab Emirates: contact Air France at least 96 hours prior.",
+      "Emotional support animals are not recognized as service animals and must travel as pets under the standard pet policy and fees.",
+      "Protected wildlife and hunting trophies are not transported in cabin, hold, or cargo; import of protected species is prohibited.",
+      "If traveling with a dog to the United States, CDC dog import rules apply in addition to airline rules.",
+      "Pets may accompany you in Air France lounges but must remain inside their carrier; service dogs are allowed on a leash and kept close to the handler.",
+      "Customers traveling with a pet in the cabin may not upgrade to the Business cabin on long-haul flights."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=deep_relaxed",
+      "The US pet policy pages did not display specific in-cabin carrier dimensions, maximum number of pets per passenger, or detailed breed lists; confirm via My Bookings or Customer Service.",
+      "No general seasonal temperature embargoes were listed on the cited US pages; acceptance can still be refused based on availability or conditions—confirm for extreme weather and specific routes.",
+      "Fees and rules can differ on codeshares; if another airline operates a segment, that carrier’s rules and fees may apply.",
+      "Some official fee and carrier-dimension details may appear in dynamic elements on Air France’s site; third-party summaries (if any) should be verified directly with Air France.",
+      "When flights are selected, add your pet in My Bookings or call Air France to view exact fees for your routing and to secure space, as capacity is limited.",
+      "If your pet travels in the hold, ensure the crate meets Air France’s IATA-style requirements in the official PDF and arrive early for checks.",
+      "For travel to or from the United States with a dog (pet or service animal), review CDC requirements early as they can affect boarding.",
+      "Some destinations (e.g., UK, Ireland, Malta, Sweden) have additional entry health requirements; verify with the destination authority.",
+      "Findings reflect Air France official sources as checked on 2026-01-31."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "AF",
+    "petPolicyURL": "https://wwws.airfrance.us/information/passagers/voyager-avec-son-animal-chien-chat",
+    "airlineURL": "",
+    "PetPolicySummary": "dog Traveling with pets on Air France Do you love your pet ? So do we ! Air France does everything to ensure your pet's journey goes as smoothly as yours.  Transport rules, prohibited animals, rates...Find all the information you need to prepare for your trip.  Regulations for travel to the United States  If you are traveling with a dog to the United States, regulations imposed by U.S. health authorities apply to all airlines and travelers. We encourage you to review both Centers for Disease Control and Prevention (CDC) regulations and existing travel requirements.  To provide you with the best possible service at the airport and ensure you can travel with your dog, please make your booking request 48 hours before your departure (96 hours for service dogs traveling from or to the United Kingdom and the United Arab Emirates).  Important! If your cat or dog weighs between 8kg / 17.64 lb. and 75 kg / 165.35 lb. with its kennel, it must travel in the hold. Since traveling with dogs or cats in the hold can be limited or prohibited on certain types of aircraft, you must submit a request at least 48 hours before your departure.  Add a cat or a dog traveling in the hold to your booking In the cabin, hold, or by cargo Rates Animals prohibited from travel Traveling with dogs, cats, and other pets We are here to help make sure your pets are comfortable and safe on board:",
+    "ImprovedPetPolicySummary": "<h2>Air France Pet Policy Summary</h2><ul><li>Pets accepted: cats and dogs. They may travel in the cabin, in the hold, or by cargo (if not accepted as checked baggage).</li><li>In cabin: cats and dogs up to 8 kg (17.64 lb), including the carrier.</li><li>In hold: cats and dogs up to 75 kg (165.35 lb), including the kennel.</li><li>Request acceptance at least 48 hours before departure. Add your pet no later than 24 hours before departure; requests under 24 hours are subject to acceptance and a surcharge (+50% on Metropolitan France and intra-Caribbean flights; +25% on international flights).</li><li>Fees each way (currency depends on country of purchase—EUR/USD/CAD): United States–Europe cabin 200; hold 400. United States–Rest of world cabin 250; hold 500. All other routes cabin 200; hold 400.</li><li>Brachycephalic (snub‑nosed) dogs and cats are not accepted in the hold. Certain dogs classified as dangerous under French law (Categories 1 and 2) are not accepted.</li><li>Capacity is limited; acceptance may be restricted on certain aircraft. Pets are not accepted in the Business cabin on long‑haul flights.</li><li>Traveling to/from the United States with a dog is subject to CDC rules in addition to airline rules.</li><li>Only trained guide/service dogs are recognized as service animals and travel free of charge when all requirements are met (documentation and behavior conditions apply).</li></ul>",
+    "microchip": "yes",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCompartmentDetails": "Cats and dogs up to 8 kg (17.64 lb), including the carrier, may travel in the cabin subject to prior acceptance and limited availability. Submit your request at least 48 hours before departure and add the pet no later than 24 hours before departure (requests under 24 hours are subject to acceptance and a surcharge). The animal must travel in a closed, purpose‑designed carrier that allows it to stand, turn around, and breathe easily; the carrier remains closed throughout the flight. Pets are not accepted in the Business cabin on long‑haul flights. Brachycephalic breeds are not accepted in the hold; additional route- and aircraft‑specific restrictions may apply.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCargoDetails": "Cats and dogs up to 75 kg (165.35 lb), including the kennel, may travel in the hold as checked baggage when accepted; otherwise, transport must be arranged via Air France KLM Cargo with an approved transporter. Use a rigid, IATA‑compliant crate; additional crate specification checks apply at check‑in. Submit your request at least 48 hours before departure; space is limited and acceptance may be restricted by aircraft type or route. Brachycephalic (snub‑nosed) dogs and cats are not accepted in the hold. For dog travel to/from the United States, CDC import rules apply in addition to airline rules. Fees apply and vary by route.",
+    "carrierCompartmentDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">In-Cabin Carrier Details</h2>\n  <p>Air France allows dogs and cats to travel in the cabin under specific conditions.</p>\n  <ul>\n    <li>Pets must travel in a special closed carrier no larger than 46 x 28 x 24 cm (18 x 11 x 9½ inches).</li>\n    <li>Only soft carriers that fit easily under the seat in front are accepted.</li>\n    <li>The carrier must be well-ventilated and large enough for the pet to stand up and turn around.</li>\n    <li>Pets must remain inside the carrier throughout the flight.</li>\n    <li>Only one animal per carrier and one animal per passenger is allowed.</li>\n    <li>The pet carrier counts as an additional baggage item and fees apply.</li>\n  </ul>\n  <p>Pets traveling in the cabin must meet age and weight requirements:</p>\n  <ul>\n    <li>Dogs or cats weighing up to 8 kg (17.64 lb) including the carrier may travel in the cabin with prior authorization from customer service.</li>\n    <li>Pets must be at least 15 weeks old and up-to-date on vaccines for international flights.</li>\n    <li>For flights within Metropolitan France (including Corsica) and between Metropolitan France and Guadeloupe, Martinique, and Reunion Island, pets must be at least 8 weeks old.</li>\n  </ul>\n  <div class=\"alert alert-warning\">\n    <strong>Important:</strong> Snub-nosed breeds such as Pugs, Bulldogs, Boxers, Pekingese, Shih Tzus, and Persian cats can experience breathing difficulties. Consult your veterinarian before travel.\n  </div>\n  <p>Snub-nosed animals are not allowed to travel in the hold.</p>\n  <p>Pets weighing between 8 kg (17.64 lb) and 75 kg (165.35 lb) including the kennel must travel in the hold, with bookings made at least 24 hours before departure.</p>\n  <div class=\"alert alert-warning\">\n    <strong>Note:</strong> Air France does not accept pets in the Business cabin on long-haul flights; pets must travel in the hold for safety reasons.\n  </div>\n  <p>Please arrive at the check-in counter at least 3 hours before departure with your pet, its transport bag, and the completed and signed Air France KLM checklist for transporting cats and dogs in the cabin.</p>\n  <div class=\"alert alert-warning\">\n    Air France declines responsibility for costs incurred due to:\n    <ul>\n      <li>Refusal of your pet on board due to non-compliance with travel conditions.</li>\n      <li>Refusal upon arrival due to non-compliance with destination country regulations.</li>\n    </ul>\n  </div>\n  <p>Pet carriers and kennels can be purchased on the Air France Shopping website with delivery available in select countries including Algeria, Austria, Belgium, Denmark, Finland, Metropolitan France, Germany, Ireland, Italy, Japan, Luxembourg, Morocco, Netherlands, Portugal, Spain, Sweden, Switzerland, Tunisia, United Kingdom, and United States.</p>\n</section>",
+    "carrierCargoDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">In Cargo Carrier Details</h2>\n  <p><strong>Permitted animals:</strong></p>\n  <ul>\n    <li>Cats and dogs weighing between 8 kg (17.64 lb) and 75 kg (165.35 lb) must travel in the hold.</li>\n    <li>Cats and dogs weighing less than 8 kg (17.64 lb) can also travel in the hold.</li>\n    <li>Each passenger may travel with a maximum of 3 animals in the hold; this number may be limited depending on the plane type.</li>\n  </ul>\n  <p>Notify Air France that you are traveling with an animal in the hold as soon as you book or at least 48 hours before departure.</p>\n\n  <p><strong>Documents Required:</strong></p>\n  <ul>\n    <li>Your pet must be at least 15 weeks old and up-to-date on vaccines.</li>\n    <li>Follow the travel guidelines in the form \"Conditions for transporting a dog or a cat in the hold\": kennel size, material, and closure type.</li>\n    <li>Print and sign the form; present it at the Air France counter when checking in your pet.</li>\n    <li>Failure to comply will result in denied boarding for your pet.</li>\n  </ul>\n\n  <p><strong>Container requirements (IATA standard):</strong></p>\n  <ul>\n    <li>Only IATA-approved, bolted, rigid plastic or fiberglass kennels are accepted.</li>\n    <li>Container must be made of fiberglass or hard plastic.</li>\n    <li>If the container has wheels, they must be removed or sealed if retractable.</li>\n    <li>Door must have a central locking system locking in two places: top and bottom.</li>\n    <li>Door hinges must extend at least 1.6 cm beyond horizontal extrusions above and below the door.</li>\n    <li>Container halves must be fastened together by bolts.</li>\n    <li>Attach an empty, open-topped bowl to the screen door accessible from outside; water bottles and dispensers are not allowed.</li>\n  </ul>\n\n  <p><strong>Comfort and well-being conditions:</strong></p>\n  <ul>\n    <li>Pet must be able to stand with head fully upright without touching the container roof; container height must exceed pet height by at least 5 cm.</li>\n    <li>Pet should be able to turn around and lie down comfortably.</li>\n    <li>Water will not be provided during the journey; ensure your pet is well hydrated before check-in.</li>\n    <li>Container bottom should be covered with blanket, newspaper, or absorbent material; straw is prohibited.</li>\n    <li>Pets should not wear a leash or muzzle, nor have these items left inside the container.</li>\n    <li>Pets must not show signs of physical weakness, injury, or be under tranquilizers.</li>\n  </ul>\n\n  <p><strong>Animals required to travel by cargo only:</strong></p>\n  <ul>\n    <li>Animals other than dogs or cats.</li>\n    <li>Snub-nosed dogs or cats from these breeds: Boxer, Pekingese, Shih Tzu dogs; Persian or Birman cats.</li>\n    <li>Animals with carrier weighing more than the maximum allowed in the hold.</li>\n    <li>If the destination country requires cargo transport for all animals.</li>\n  </ul>\n\n  <p>Since July 15, 2019, snub-nosed dogs such as Pugs, Bulldogs, and Boston Terriers are no longer permitted to travel by cargo.</p>\n\n  <p>We recommend choosing a transporter approved by AIR FRANCE KLM Cargo and consulting the International Pet and Animal Transportation Association (IPATA).</p>\n\n  <p><strong>Regulations for travel to the United States:</strong></p>\n  <ul>\n    <li>U.S. health authority regulations apply to all airlines and travelers with dogs.</li>\n    <li>Review CDC regulations and travel requirements before traveling.</li>\n    <li>Make booking requests at least 48 hours before departure (96 hours for service dogs traveling from/to the UK and UAE).</li>\n  </ul>\n</section>",
+    "dangerousBreeds": "yes",
+    "dangerousBreedList": " ",
+    "brachycephalic": "no",
+    "brachycephalicBreedList": "",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Service Animals (In-Cabin & Support)</h2>\n  <p>You can travel in an Air France cabin with your trained guide or service dog for free, provided you comply with current international regulations. Requests should be submitted at least 48 hours before departure, except 96 hours for flights to/from the United Arab Emirates.</p>\n  <ul>\n    <li>Your service dog must be well-trained and comply with health requirements of all countries involved in your journey.</li>\n    <li>The dog must wear a harness at all times and stay securely fastened to your seat or seat belt.</li>\n    <li>It must not obstruct aisles, other passengers’ space, or emergency exits, and must behave impeccably.</li>\n    <li>The dog should be ready to wear a muzzle if necessary for safety.</li>\n    <li>It is strongly recommended that your service dog wears a vest, identification tag, or visible sign indicating its status.</li>\n  </ul>\n  <p>Additional notes:</p>\n  <ul>\n    <li>Snub-nosed dogs are permitted in the cabin but not in the hold due to medical reasons; consult your veterinarian before travel.</li>\n    <li>If medication is needed onboard, bring the medical prescription.</li>\n    <li>Except for flights to/from the U.S., bring your dog’s service training certification and a copy of its passport page with breed, weight, and size.</li>\n  </ul>\n  <h3 class=\"mb-3\">Special Conditions</h3>\n  <h4>Flights to/from the United States</h4>\n  <p>Send required documents at least 48 hours before departure to the appropriate Air France contact:</p>\n  <ul>\n    <li>Two official U.S. Department of Transportation (DOT) forms, completed and signed.</li>\n    <li>Service dog’s passport, health documents, and vaccination records.</li>\n    <li>For flights to the U.S. only: a third CDC form, completed and signed, must be kept with you for boarding checks.</li>\n  </ul>\n  <p>Your service dog must be at least 6 months old and microchipped.</p>\n  <h4>Flights to the United Kingdom</h4>\n  <ul>\n    <li>Submit your travel request at least 48 hours before departure to ensure a Pet Checker is present upon arrival.</li>\n    <li>Only service dogs trained by organizations affiliated with the International Guide Dog Federation (IGDF) or Assistance Dogs International (ADI) are accepted.</li>\n    <li>Upon arrival, you and your dog must remain on the aircraft until identity and document checks are completed by the Pet Checker.</li>\n  </ul>\n  <h4>Flights to the United Arab Emirates</h4>\n  <p>Contact Air France assistance at least 96 hours before departure for document verification by airport and government authorities.</p>\n  <h3 class=\"mb-3\">Regulations</h3>\n  <ul>\n    <li>Only guide or service dogs trained by certified and recognized organizations are accepted onboard.</li>\n    <li>Guide or service dogs in training without their trainers are not accepted in the cabin, except if carried in a bag, crate, or in the hold.</li>\n    <li>Air France reserves the right to hold passengers financially liable for any damage caused by their guide or service dog.</li>\n  </ul>\n</section>",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-01-31T22:08:45.000Z"
+  }
+}

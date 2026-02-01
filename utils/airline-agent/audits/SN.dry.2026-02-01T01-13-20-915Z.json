@@ -1,0 +1,129 @@
+{
+  "airlineCode": "SN",
+  "dryRun": true,
+  "ranAt": "2026-02-01T01:13:20.915Z",
+  "researchPayload": {
+    "airlineCode": "SN",
+    "officialLinks": [
+      {
+        "name": "Pets (overview)",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets"
+      },
+      {
+        "name": "Cats and small dogs in the cabin",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-small-dogs-in-the-cabin.html"
+      },
+      {
+        "name": "Cats and dogs in the hold",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-dogs-in-the-hold.html"
+      },
+      {
+        "name": "Snub-nosed dogs and cats",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/snub-nosed-dogs-and-cats.html"
+      },
+      {
+        "name": "Other animals",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/other-animals.html"
+      },
+      {
+        "name": "Form for carrying an animal in the passenger cabin (PDF)",
+        "url": "https://www.brusselsairlines.com/content/dam/bel/pdf/SN_GOPS_Form-PetsInCabin_DEC22_A4.pdf"
+      },
+      {
+        "name": "Service dogs",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/service-dogs.html"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-small-dogs-in-the-cabin.html",
+        "date": "2026-02-01",
+        "note": "No 'last updated' noted on page; accessed Feb 1, 2026."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-dogs-in-the-hold.html",
+        "date": "2026-02-01",
+        "note": "No 'last updated' noted on page; accessed Feb 1, 2026."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/snub-nosed-dogs-and-cats.html",
+        "date": "2026-02-01",
+        "note": "No 'last updated' noted on page; accessed Feb 1, 2026."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/other-animals.html",
+        "date": "2026-02-01",
+        "note": "No 'last updated' noted on page; accessed Feb 1, 2026."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/content/dam/bel/pdf/SN_GOPS_Form-PetsInCabin_DEC22_A4.pdf",
+        "date": "Dec 2022",
+        "note": "Filename indicates Dec 2022; no separate update stamp on the PDF."
+      }
+    ],
+    "policyFindings": [
+      "Only cats and small dogs are allowed in-cabin; maximum 8 kg (18 lb) including a soft-sided carrier. Carrier must be leak/smell-proof, fully closable, without a rigid frame, and fit under the seat within 55 x 40 x 23 cm (118 cm/45 in total). Pet must remain fully inside the carrier for the entire flight. One pet bag per passenger; up to 2 adult pets may share one bag if comfortable, or 2 littermates (≤6 months) from the same litter, total still ≤8 kg.",
+      "Seating with an in-cabin pet: window seat required; not permitted in exit rows or first/bulkhead rows; not seated near other pets.",
+      "Booking for in-cabin pets is subject to availability and must be made in advance online via My booking or via the Service Centre; maximum 4 pet containers per aircraft. Bring two signed copies of the Form for carrying an animal in the passenger cabin to check-in.",
+      "Age requirements: pet must be older than 15 weeks. For travel to the USA on/after Aug 1, 2024, only dogs at least 6 months old are accepted (CDC rule).",
+      "In-cabin fees (one-way, SN-operated; vary by route): within Europe EUR 75 / USD 85; US/Canada East Coast EUR 115 / USD 130; intra-Africa EUR 65 / USD 75; other regions listed on the policy page. Verify operating carrier if not SN.",
+      "Pets in the hold (AVIH) accepted: cats and dogs only. Check in with the pet at least 2 hours before latest check-in. Container must comply with current IATA rules (especially if purchased before 2024).",
+      "AVIH crate requirements: hard-sided with solid top; clean, lockable, leak- and escape-proof; no wheels; securely bolted if two-piece; floor lined with absorbent material; ventilated on all 4 sides with vent openings in the upper two-thirds (max vent size: dogs 25 x 25 mm; cats 19 x 19 mm); water and food dishes attached and reachable from outside (left empty at drop-off); feeding/watering instructions affixed. Max accepted crate size as baggage: 125 x 75 x 85 cm; larger must be shipped as cargo. Pet must be able to stand, turn, and lie comfortably.",
+      "AVIH fees (one-way, SN-operated; depend on route and crate size band): examples include US/Canada East Coast USD 200 or USD 395; US/Canada West Coast USD 225 or USD 445; within Europe USD 120 or USD 235. A transfer via BRU/FRA/ZRH/VIE/GVA adds USD 170 per direction.",
+      "Route embargo: pets in the hold cannot be transported Brussels–Yerevan–Brussels from 15 June to 15 September 2025.",
+      "Snub-nosed (brachycephalic) breeds are not accepted in the hold. Cabin carriage may be possible if all PETC rules are met and the cabin form is presented. Examples include Bulldog (all breeds except American Bulldog), Pugs (all), Boxer, Shih Tzu, Boston Terrier, Chow Chow; and cat breeds such as Persian, Himalayan, Exotic Shorthair.",
+      "USA CDC rules (dogs): for travel on/after Aug 1, 2024, bookings for dogs to the USA are only accepted to designated airports (Washington DC, JFK, Atlanta, Miami, Los Angeles, Philadelphia). Newark (EWR) is allowed again if the dog has not been in a high-rabies-risk area in the prior 6 months. CDC Dog Import Form confirmation must be presented. Already-ticketed bookings are honored if all CDC requirements are met.",
+      "UK restriction: pets are not accepted on Brussels Airlines flights to/from the United Kingdom; only cargo transport is possible.",
+      "Lounges and airport items: pets may enter Brussels Airlines lounges but must remain in the carrier; pet strollers must be checked as part of checked baggage (excess charges may apply).",
+      "Service animals: assistance dogs remain possible to/from the USA under CDC rules if all CDC requirements are met; passengers with confirmed assistance dog bookings are asked to contact the Service Centre.",
+      "Service animal acceptance checklist (per cabin form): the assistance dog must lie or sit on the floor in front of the seat, be secured with a leash (preferably a harness), must not sit on a passenger seat, and must behave properly in public.",
+      "Emotional Support Animals (ESAs): the accessible pet-policy pages reviewed do not mention ESAs. If traveling with an ESA, confirm with the Brussels Airlines Service Centre; ESAs are typically carried under standard pet rules. (Unverified from an official SN page at time of check.)",
+      "Documentation and responsibility: passenger is responsible for import/export/transit compliance and for carrying required documents (permits, health/vaccination certificates, pet passport/ID). Brussels Airlines is not responsible for refusal of entry/transit."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "The Service dogs page exists at the listed URL but could not be fetched during this session; details above are drawn from the in-cabin/hold pages and the official cabin form. For definitive assistance-dog rules and any fee waivers, consult the Service Centre and the Service Dogs page.",
+      "Fees shown are per one-way on SN-operated flights and vary by route and (for AVIH) by crate size band; partner-airline flights may have different rates. Always verify at booking.",
+      "CDC dog-entry requirements into the USA are subject to change; SN pages reference changes effective Aug 1, 2024 and the need to present CDC Dog Import Form confirmation. Verify current CDC rules before travel.",
+      "No explicit last updated dates appear on the policy pages reviewed; the cabin form PDF filename indicates December 2022. Pages were accessed Feb 1, 2026."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "SN",
+    "petPolicyURL": "https://www.brusselsairlines.com/us/en/special-care/pets",
+    "airlineURL": "https://www.brusselsairlines.com/",
+    "PetPolicySummary": "Brussels Airlines accepts only cats and small dogs either in the cabin (PETC) or as checked pets in the hold (AVIH), subject to availability, fees and route restrictions. In-cabin: maximum 8 kg (18 lb) including a soft, fully closable, leak/smell-proof bag without a rigid frame that fits under the seat (max 55 x 40 x 23 cm / 118 cm total). Pets must be older than 15 weeks; for travel to the USA, dogs must be at least 6 months old and meet CDC requirements. One pet bag per passenger; up to two adult pets may share one bag if comfortable, or two littermates up to 6 months from the same litter (total still ≤ 8 kg). The pet must remain fully inside the bag for the entire flight. Seating: window seat required; not permitted in first/bulkhead or exit rows and not near other pets. Booking must be made in advance; bring two signed copies of the Brussels Airlines cabin pet form to check-in. A maximum of four pet containers are typically allowed per aircraft. In the hold: cats and dogs accepted in an IATA-compliant hard-sided crate (max 125 x 75 x 85 cm as baggage; larger via cargo) with food/water dishes attached and reachable from outside; no wheels; ventilated on all four sides; the pet must be clean, healthy, not pregnant, and able to stand, turn and lie down. Brachycephalic (snub-nosed) breeds are not accepted in the hold; cabin may be possible if PETC rules are met. Route/entry notes: pets are not accepted on SN flights to/from the United Kingdom (only cargo possible); hold transport is embargoed Brussels–Yerevan–Brussels from 15 June to 15 September 2025; for dogs entering the USA, only designated airports are accepted and CDC Dog Import Form confirmation is required. Fees are charged per one-way and vary by route and crate size. Passengers are responsible for all required documents (permits, pet passport/ID, vaccinations, health certificates) and for complying with import/transit rules.",
+    "ImprovedPetPolicySummary": "<h2>Brussels Airlines Pet Policy</h2><ul><li>Allowed species: cats and small dogs only.</li><li>In-cabin (PETC): max 8 kg (18 lb) including carrier; soft-sided, fully closable, leak/smell-proof bag without rigid frame; must fit under the seat (55 x 40 x 23 cm; 118 cm/45 in total).</li><li>Age: 15+ weeks; for travel to the USA, dogs must be at least 6 months old and comply with CDC rules (including Dog Import Form).</li><li>One pet bag per passenger; up to 2 adult pets may share one bag if comfortable, or 2 littermates ≤6 months from the same litter (total ≤ 8 kg).</li><li>Seating: window seat required; not allowed in first/bulkhead or exit rows; not seated near other pets. Pet must stay fully inside the closed bag for the entire flight.</li><li>Booking: request in advance; bring two signed copies of the Brussels Airlines cabin pet form to check-in. Typically max 4 pet containers per aircraft.</li><li>In the hold (AVIH): cats and dogs accepted in an IATA-compliant hard-sided crate; pet must be clean, healthy, not pregnant, and able to stand, turn and lie down. Max crate size as baggage: 125 x 75 x 85 cm (larger via cargo).</li><li>Snub-nosed breeds are not accepted in the hold (cabin may be possible if PETC rules are met).</li><li>Route restrictions: no pets on SN flights to/from the United Kingdom (only cargo possible); embargo for pets in the hold on Brussels–Yerevan–Brussels from 15 Jun to 15 Sep 2025.</li><li>Fees apply per one-way and vary by route/size; partner airlines may differ. Passenger is responsible for all permits, health/vaccination documents, and entry/transit compliance.</li></ul>",
+    "microchip": "no",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Cats",
+      "Dogs"
+    ],
+    "inCompartmentDetails": "Brussels Airlines cats and small dogs are allowed to travel in the cabin. Conditions of animal: Max. 8kg/18lbs (including the pet bag); Older than 15 weeks; Clean and healthy; Calm and well behaved; Must stay inside the bag or container (including tail and head) during the entire flight; The pet must not be pregnant. Seating: window seat required; not permitted in first/bulkhead or exit rows; not near other pets. Booking: request in advance; typically max 4 pet containers per aircraft. Bring two signed copies of the Brussels Airlines cabin pet form to check-in. Conditions of bag: Leak and smell-proof soft-sided bag, to be stowed completely under the seat in front of you; Without a stable frame; Within the size of 118cm / 45 inch (or carry-on dimensions of 55x40x23cm); Must be fully closable; To be provided by you; Max. 1 bag per passenger is allowed; 2 adult pets may travel in the same bag provided they are comfortable with each other (total max. weight of 8kg / 18lbs, including the bag); 2 small pets (max. 6 months old) may travel in the same bag, only when from the same litter (total max. weight of 8kg / 18lbs, including the bag).",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Cats",
+      "Dogs"
+    ],
+    "inCargoDetails": "Cats and dogs may travel in the aircraft hold (AVIH) on Brussels Airlines if all conditions are met. Check in with your pet at least two hours before the latest check-in time and bring a transport container suitable for the entire trip. Conditions for animals: Above 15 weeks; for travel to the USA, only dogs that are at least 6 months old will be accepted (CDC rule); Clean and healthy; Not restricted in size or weight; Must be kept in a suitable transport container; Must remain completely inside the container (including tail and head); Must have enough food and water for the whole flight; May not be pregnant. Conditions for containers: Maximum size accepted as baggage 125 x 75 x 85 cm (larger containers must be sent as cargo); Large enough for the pet to stand up-right, turn around and lie down comfortably; Must be a hard-sided container with solid top; Clean, lockable, leak-proof bottom, escape-proof and claw-proof; No wheels; If two-piece, the top and bottom must be securely bolted; Door openings must have secure fastenings (e.g. cable ties); Floor covered with absorbent material; Ventilated on 4 sides with openings placed over the upper two thirds; One water and one feed dish must be attached to the cage, accessible from the outside (left empty at drop-off). Route note: Pets in the hold cannot be transported Brussels–Yerevan–Brussels from 15 June to 15 September 2025.",
+    "carrierCompartmentDetails": "Soft-sided carrier only, fully closable, leak- and smell-proof, without a rigid frame. Must fit completely under the seat in front: max 55 x 40 x 23 cm (118 cm/45 in total). Maximum weight (pet + carrier): 8 kg (18 lb). One carrier per passenger; up to 2 adult pets who are comfortable together or 2 littermates ≤6 months from the same litter may share one carrier (total ≤ 8 kg). The carrier must remain closed with the pet fully inside for the entire flight.",
+    "carrierCargoDetails": "IATA-compliant hard-sided crate with solid top; clean, lockable, leak- and escape-proof; securely bolted if two-piece; no wheels; ventilated on all four sides with openings in the upper two-thirds; floor lined with absorbent material; one water and one food dish attached and fillable from the outside (left empty at acceptance). Pet must be able to stand, turn and lie down comfortably. Max crate size as checked baggage: 125 x 75 x 85 cm; larger must ship as cargo.",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": "Dogs: Bulldog (all breeds except American Bulldog), Pug (all breeds), Boxer, Shih Tzu, Boston Terrier, Chow Chow. Cats: Persian, Himalayan, Exotic Shorthair.",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Service Animals (In-Cabin & Support)</h2>\n  <p>Service animals (SVAN), such as seeing-eye dogs, hearing dogs, diabetes alert dogs, mobility or seizure alert dogs, can travel free of charge with Brussels Airlines.</p>\n  <ul>\n    <li>Must be fully trained to obey your commands and behave appropriately throughout the itinerary.</li>\n    <li>Must not bark, growl, or jump on people or other animals to ensure safe and undisturbed flight operation.</li>\n  </ul>\n  <p>On board:</p>\n  <ul>\n    <li>The dog must fit in the foot space in front of your seat and is not allowed on passenger seats.</li>\n    <li>The dog must remain in the same spot for the entire flight duration.</li>\n    <li>The dog must be secured by a leash to the seat, and you must be able to do this yourself.</li>\n    <li>Securing the dog with a harness is recommended over a collar.</li>\n    <li>Brussels Airlines strongly requests bringing a muzzle as an added precaution and consideration for other passengers.</li>\n  </ul>\n</section>",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-02-01T02:05:46.000Z"
+  }
+}

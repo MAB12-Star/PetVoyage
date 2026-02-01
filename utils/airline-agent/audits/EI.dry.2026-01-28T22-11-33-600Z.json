@@ -1,0 +1,82 @@
+{
+  "airlineCode": "EI",
+  "dryRun": true,
+  "ranAt": "2026-01-28T22:11:33.600Z",
+  "researchPayload": {
+    "airlineCode": "EI",
+    "officialLinks": [
+      {
+        "name": "Travelling with Pets",
+        "url": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/"
+      },
+      {
+        "name": "Baggage Information (includes “General Animals & Pets Rules” and transatlantic specifics)",
+        "url": "https://www.aerlingus.com/localized/en/modals/baggage-information.html"
+      },
+      {
+        "name": "Disability Assistance (service/assistance dog rules)",
+        "url": "https://www.aerlingus.com/support/special-assistance/disability-assistance/"
+      }
+    ],
+    "sourceDates": [
+      {
+        "url": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/",
+        "date": "2026-01-28",
+        "note": "No last updated shown; page was intermittently unavailable due to scheduled upgrade; accessed January 28, 2026."
+      },
+      {
+        "url": "https://www.aerlingus.com/localized/en/modals/baggage-information.html",
+        "date": "2026-01-28",
+        "note": "No last updated shown; accessed January 28, 2026."
+      },
+      {
+        "url": "https://www.aerlingus.com/support/special-assistance/disability-assistance/",
+        "date": "2026-01-28",
+        "note": "No last updated shown; accessed January 28, 2026."
+      }
+    ],
+    "policyFindings": [
+      "In-cabin pets: Not permitted. Aer Lingus only accepts dogs as service animals in the cabin; pets and emotional support animals (ESAs) are not accepted on board. Service animals in training are not accepted.",
+      "Checked/cargo pet travel: Household pets (cats and dogs only) must be shipped as cargo in the aircraft hold via a pet agent/IAG Cargo; animals presented at passenger check-in will not be accepted.",
+      "Transatlantic specifics (North America): All pets to/from North America must travel in the hold (cargo).",
+      "From North America to Ireland: Dublin (DUB) must be the final destination on Aer Lingus; animals cannot be shipped on Fridays or Saturdays; a compliance check with Ireland’s Department of Agriculture, Food and the Marine is required for pets arriving from the USA.",
+      "Aircraft restriction: No live animals may be carried on A321neo LR aircraft (cargo holds not ventilated).",
+      "Aer Lingus Regional (operated by Emerald Airlines): Transportation of pets is not permitted if any part of the journey is on Aer Lingus Regional.",
+      "Service dogs (trained) — general cabin rules: Dogs only; must be harnessed/leashed/tethered, clean, and well‑behaved. Cannot sit in exit rows or block aisles; must fit at your feet/under the seat or in your lap (size permitting). In business class, lie‑flat feature may be forfeited to accommodate the dog on the floor. Travel is free if the dog fits in the allotted space; otherwise an extra seat may be required. Final approval occurs at the airport based on fit.",
+      "Service dogs (trained) — restricted breeds: Certain breeds must be securely muzzled and led on a strong leash (list provided by Aer Lingus: American Pit Bull Terrier; Bull Mastiff; Doberman Pinscher; English Bull Terrier; German Shepherd/Alsatian; Japanese Akita).",
+      "Service dogs — route-specific documentation/limits (USA/Canada): Aer Lingus accommodates trained service dogs to/from the USA and Canada (including same‑itinerary connections). US flights require the U.S. DOT Service Animal Air Transportation Form; flights of 8+ hours also require the U.S. DOT Relief Attestation. Limit of two service dogs per passenger on these itineraries.",
+      "Service dogs — route-specific documentation/limits (Europe): Must be accredited by an IGDF/ADI‑affiliated organisation; generally one service dog per passenger free of charge (except certain connecting itineraries noted above).",
+      "Restricted breeds inconsistency: The Baggage Information modal states restricted dog breeds cannot be accepted in either cabin or hold as assistance dogs or otherwise, while the Disability Assistance page states specified breeds may travel in‑cabin as service dogs if muzzled and controlled. Customers with affected breeds should confirm acceptance with Aer Lingus before booking due to this inconsistency.",
+      "Fees — pets shipped as cargo: Pricing, weight/container limits, and acceptance are handled via IAG Cargo/pet agent (not priced on aerlingus.com).",
+      "Fees — trained service dogs: Carried free of charge if fitting within the allotted space; an additional seat may be required (paid) if the dog cannot be safely accommodated.",
+      "Booking/contact: Book pet transport via a pet agent/IAG Cargo; a North American Pet Desk phone number is provided by Aer Lingus within the Baggage Information modal."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "The Travelling with Pets page was intermittently unavailable due to a scheduled site upgrade at the time of review; details above come from Aer Lingus’ Baggage Information modal and Disability Assistance pages, which include the current pet/service animal rules and transatlantic restrictions.",
+      "Aer Lingus’ pages direct customers to IAG Cargo/pet agents for rates, crate specifications, weight/size limits, and breed acceptance; those specifics are not published on aerlingus.com. Always verify aircraft type (A321neo LR cannot carry live animals) and Regional segments (pets not permitted).",
+      "There is a published inconsistency on restricted breeds between the Baggage Information modal and the Disability Assistance page; confirm with Aer Lingus Special Assistance and, for hold transport, with IAG Cargo before travel."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "EI",
+    "petPolicyURL": "https://www.aerlingus.com/prepare/bags/travelling-with-pets/",
+    "PetPolicySummary": "Aer Lingus does not allow pets in the cabin. Household pets (cats and dogs only) may travel only as cargo in the aircraft hold via IAG Cargo/pet agents; animals are not accepted at passenger check-in. Live animals cannot be carried on A321neo LR aircraft, and pets are not accepted on any Aer Lingus Regional (Emerald Airlines) segments. For North America routes, all pets must travel in the hold; from North America to Ireland, Dublin must be the final Aer Lingus destination and pets cannot be shipped on Fridays or Saturdays; an Irish Department of Agriculture compliance check is required. Only trained service dogs are accepted in the cabin; emotional support animals are not accepted.",
+    "ImprovedPetPolicySummary": "<p>Aer Lingus accepts pets only as cargo and does not allow pets in the cabin. Trained service dogs are the sole exception for in-cabin travel.</p><ul><li>In-cabin: Pets not permitted; ESAs not accepted. Trained service dogs only.</li><li>In hold (cargo): Cats and dogs via IAG Cargo/pet agents only; not accepted at passenger check-in.</li><li>Route/aircraft limits: No live animals on A321neo LR; no pets on Aer Lingus Regional segments.</li><li>North America: All pets must travel in the hold; from North America to Ireland, DUB must be the final Aer Lingus destination; no Fri/Sat shipments; Irish DAFM compliance check required.</li><li>Service dogs: Dogs only; must be trained, controlled, and fit safely at the seat area; US DOT forms required on U.S. routes; limits apply.</li></ul><p>Always confirm acceptance, aircraft type, and routing with Aer Lingus and IAG Cargo before booking.</p>",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Cat",
+      "Dog"
+    ],
+    "inCompartment": "no",
+    "serviceAnimals": "yes",
+    "esAnimals": "no",
+    "petShipping": "yes",
+    "inCompartmentDetails": "Pets are not permitted in the cabin on Aer Lingus. Only trained service dogs are accepted; service animals in training and emotional support animals are not accepted.",
+    "inCargoDetails": "Cats and dogs must be shipped as cargo via a pet agent/IAG Cargo; animals presented at Aer Lingus passenger check-in will not be accepted. No live animals are permitted on A321neo LR aircraft, and pets are not accepted on any Aer Lingus Regional (Emerald Airlines) segments. Transatlantic: all pets to/from North America must travel in the hold. From North America to Ireland, Dublin (DUB) must be the final Aer Lingus destination; animals cannot be shipped on Fridays or Saturdays; an Irish Department of Agriculture compliance check is required for arrivals from the USA. Rates, container specs, weight/size limits, and breed acceptance are managed by IAG Cargo/pet agents—confirm before booking.",
+    "serviceAnimalDetails": "Dogs only. Must be trained to perform tasks for a person with a disability; service animals in training are not accepted. The dog must be harnessed/leashed/tethered, clean, well-behaved, and fit at your feet/under the seat or in your lap (subject to size); cannot block aisles or occupy exit rows. In business class, the lie-flat feature may be forfeited to accommodate the dog on the floor. Travel is free if the dog fits safely in the allotted space; otherwise, an additional seat may be required. Final approval is at the airport based on fit. USA/Canada itineraries: US DOT Service Animal Air Transportation Form required (and Relief Attestation for flights 8+ hours to/from the USA); up to two service dogs per passenger permitted. Europe: Typically one service dog per passenger free of charge; accreditation via IGDF/ADI-affiliated organisation required. Breed control: Aer Lingus lists certain breeds that must be securely muzzled and led on a strong leash (American Pit Bull Terrier; Bull Mastiff; Doberman Pinscher; English Bull Terrier; German Shepherd/Alsatian; Japanese Akita). Important: Published information is inconsistent—one Aer Lingus source states restricted breeds cannot be accepted at all. Confirm acceptance with Aer Lingus Special Assistance before booking.",
+    "carrierCargoDetails": "Book pet transport through a pet agent/IAG Cargo; Aer Lingus will not accept animals at passenger check-in. Availability and acceptance depend on routing and aircraft type (no live animals on A321neo LR). For North America itineraries and Irish arrivals, additional routing/day-of-week and compliance requirements apply. Contact IAG Cargo for crate specifications, pricing, and breed acceptance. Note: Aer Lingus Regional segments cannot carry pets.",
+    "esaDetails": "Emotional support animals are not accepted in the cabin on Aer Lingus."
+  }
+}

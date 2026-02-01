@@ -1,0 +1,95 @@
+{
+  "airlineCode": "AM",
+  "dryRun": true,
+  "ranAt": "2026-01-28T22:32:18.323Z",
+  "researchPayload": {
+    "airlineCode": "AM",
+    "officialLinks": [
+      {
+        "name": "Aeromexico — Flying with pets (policy hub)",
+        "url": "https://www.aeromexico.com/en-ca/travel-information/flying-with-pets"
+      },
+      {
+        "name": "Aeromexico — Flights with pets (EN-US)",
+        "url": "https://www.aeromexico.com/en_us/flights-with-pets"
+      },
+      {
+        "name": "Aeroméxico — Vuelos con mascotas (ES-MX)",
+        "url": "https://www.aeromexico.com/es_mx/vuelos-con-mascotas"
+      },
+      {
+        "name": "Aeromexico — Travel Information (hub)",
+        "url": "https://www.aeromexico.com/en-us/travel-information"
+      }
+    ],
+    "sourceDates": [
+      {
+        "url": "https://www.aeromexico.com/en-ca/travel-information/flying-with-pets",
+        "date": "",
+        "note": "last updated date not shown on page (no visible timestamp on retrieval)."
+      },
+      {
+        "url": "https://www.aeromexico.com/en_us/flights-with-pets",
+        "date": "",
+        "note": "last updated date not shown on page (no visible timestamp on retrieval)."
+      },
+      {
+        "url": "https://www.aeromexico.com/es_mx/vuelos-con-mascotas",
+        "date": "",
+        "note": "last updated date not shown on page (no visible timestamp on retrieval)."
+      },
+      {
+        "url": "https://www.aeromexico.com/en-us/travel-information",
+        "date": "",
+        "note": "last updated date not shown on page (no visible timestamp on retrieval)."
+      }
+    ],
+    "policyFindings": [
+      "Aeromexico accepts pets in cabin (small dogs and cats) and in the hold as checked baggage.",
+      "In-cabin allowed species: dogs and cats.",
+      "In-cabin maximum weight: up to 9 kg total (pet + carrier).",
+      "Carrier requirement: rigid or soft-sided carrier.",
+      "Minimum age: pets younger than 8 weeks are not accepted.",
+      "Marketing content mentions in-cabin pet travel permitted on flights up to 6 hours; confirm against the policy hub.",
+      "Hold transport: larger pets can travel in the hold with an approved kennel, a health certificate, and advance reservation.",
+      "Emotional Support Animals: Spanish page indicates ESAs may travel in cabin with medical documentation, a request form, and prior approval; details and route limits not shown and require verification.",
+      "Service animals: detailed policy page was not visible during this check; consult the policy hub.",
+      "Fees, carrier dimensions, pet quotas, seasonal/breed restrictions, and route/aircraft limits are not shown on overview pages and must be confirmed on the policy hub or with Aeromexico.",
+      "Exotic species are not accepted per the Spanish overview page."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=deep",
+      "The policy hub uses dynamic content that did not render via the retrieval tool; detailed tables (fees, dimensions, breed lists, forms) could not be captured.",
+      "Use the policy hub during booking to confirm carrier size limits, time limits, pet quotas, seasonal embargoes, breed restrictions, documentation, and fees; contact Aeromexico if the page does not load.",
+      "The Spanish Vuelos con Mascotas page provides concrete limits (9 kg including carrier; 8-week minimum; no exotic species) but is promotional; verify specifics directly with Aeromexico.",
+      "ESA acceptance varies by country and route; confirm ESA rules for the exact itinerary, especially for flights touching the United States.",
+      "A current, detailed service-animal policy page was not located during this check; refer to the Travel Information hub or contact Aeromexico."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "AM",
+    "petPolicyURL": "https://www.aeromexico.com/en-ca/travel-information/flying-with-pets",
+    "PetPolicySummary": "Aeromexico accepts small dogs and cats in the cabin and transports larger dogs and cats in the hold as checked baggage. In-cabin pets: up to 9 kg total (pet + carrier) in a rigid or soft-sided carrier; minimum age 8 weeks. Checked pets: approved kennel, advance reservation, and a valid health certificate required. Emotional support animals may be accepted in cabin with documentation and prior approval; acceptance can vary by route. Exotic species are not accepted. Confirm fees, dimensions, quotas, breed/seasonal restrictions, and route limits directly with Aeromexico.",
+    "ImprovedPetPolicySummary": "<p>Aeromexico permits small dogs and cats in cabin (up to 9 kg total with carrier; rigid or soft-sided) and transports larger dogs and cats in the hold with an approved kennel, advance reservation, and a valid health certificate. Pets must be at least 8 weeks old. Emotional support animals may be accepted in cabin with required documentation and prior approval; rules can vary by route. Exotic species are not accepted. Verify fees, carrier dimensions, quotas, and any breed/seasonal or route restrictions with Aeromexico.</p>",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Cat",
+      "Dog"
+    ],
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Cat",
+      "Dog"
+    ],
+    "serviceAnimals": "yes",
+    "esAnimals": "yes",
+    "healthCertificate": "yes",
+    "inCompartmentDetails": "Dogs and cats only. Total weight (pet + carrier) up to 9 kg. Carrier may be rigid or soft-sided. Minimum age: 8 weeks. Operator note: Some content suggests a maximum flight duration of 6 hours for in-cabin pets—confirm with Aeromexico.",
+    "inCargoDetails": "Dogs and cats can travel in the hold as checked baggage with an approved kennel, advance reservation, and a valid health certificate. Operator note: Breed restrictions, aircraft/route limitations, and seasonal temperature embargoes may apply—confirm with Aeromexico.",
+    "serviceAnimalDetails": "Service animals are accommodated; consult Aeromexico’s travel information for documentation and behavior requirements specific to your route.",
+    "carrierCargoDetails": "Approved airline-compliant kennel required; confirm size and specifications with Aeromexico.",
+    "carrierCompartmentDetails": "Rigid or soft-sided carrier. Total weight (pet + carrier) up to 9 kg.",
+    "esaDetails": "Emotional support animals may be accepted in the cabin with medical documentation, a request form, and prior approval. Acceptance varies by country and route—verify requirements with Aeromexico before travel."
+  }
+}

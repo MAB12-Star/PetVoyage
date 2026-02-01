@@ -1,0 +1,109 @@
+{
+  "airlineCode": "DE",
+  "dryRun": true,
+  "ranAt": "2026-01-31T23:57:14.130Z",
+  "researchPayload": {
+    "airlineCode": "DE",
+    "officialLinks": [
+      {
+        "name": "Travelling with pets (overview)",
+        "url": "https://www.condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets.jsp"
+      },
+      {
+        "name": "Pets in cabin",
+        "url": "https://www.condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-cabin.jsp"
+      },
+      {
+        "name": "Pets in the cargo hold",
+        "url": "https://www.condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-the-cargo-hold.jsp"
+      },
+      {
+        "name": "Conditions and regulations for transport and carriage",
+        "url": "https://www.condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp"
+      },
+      {
+        "name": "Assistance dogs (service dogs)",
+        "url": "https://www.condor.com/us/fly-enjoy/special-assistance/assistance-for-our-customers/assistance-dogs.jsp"
+      },
+      {
+        "name": "Flight zones",
+        "url": "https://www.condor.com/us/flight-zones.html"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.condor.com/us/flight-zones.html",
+        "date": "08/04/2025",
+        "note": "Page lists 'last updated: 08/04/2025.'"
+      }
+    ],
+    "policyFindings": [
+      "Condor accepts only dogs and cats with prior confirmed reservation; capacity is limited; one pet per carrier; one pet per passenger may be accepted in cabin and/or hold; transport is available only on nonstop Condor flights. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets.jsp)",
+      "Pet containers must be IATA-compliant; the animal must be able to stand, turn, and lie naturally; container must be stable, ventilated, waterproof with a watertight base and absorbent lining; mesh roofs are not permitted. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Animals that are sick/injured, close to giving birth (or <48 hours after birth), or sedated such that they don’t respond when spoken to are not accepted. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Minimum ages: within the EU at least 4 months; from unlisted third countries to the EU at least 7 months; dogs to the USA at least 6 months. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "In-cabin pets: maximum 8 kg (17.6 lb) including carrier; one animal per carrier; carrier must fit under the seat and meet 55 x 40 x 20 cm; may be carried in addition to standard cabin baggage; reservations up to 24 hours before departure. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-cabin.jsp)",
+      "Cabin seating restrictions: not permitted in Business Class on A330neo aircraft, exit rows, or seats behind a partition; printed live animal acceptance checklist must be brought to check-in. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-cabin.jsp)",
+      "Cabin fees each way (higher airport fee if not pre-registered): Zone 1 US$75/CA$90; Zone 2+6 US$90/CA$115; Zone 3+7 US$115/CA$150; Zone 4 US$115/CA$150; Zone 5 (USA/Canada) US$115/CA$150. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-cabin.jsp)",
+      "Pets in hold: bookings only on direct Condor flights; reserve up to 48 hours before departure; provide combined weight, exact crate dimensions, and dog breed; printed checklist must be presented. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-the-cargo-hold.jsp)",
+      "Hold crate must be IATA-compliant, ventilated, waterproof, and escape-proof. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-the-cargo-hold.jsp)",
+      "Hold environment: about 10°C on short/medium-haul and 18–23°C on long-haul; ventilation provided. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Cargo fees each way by zone and crate size (higher at airport if not pre-registered). Zone 5 (USA/Canada): up to 80 x 55 x 100 cm = US$185/CA$235; up to 125 x 75 x 100 cm = US$310/CA$385; airport check-in without prior registration may be US$260 or US$380 respectively. Other zones published; Egypt (Zone 2) cannot carry animals in the hold. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-the-cargo-hold.jsp)",
+      "Banned fighting/listed breeds (including mixes) generally not accepted: Pitbull Terrier/American Pitbull, American Staffordshire Terrier, Staffordshire Bull Terrier, Bull Terrier, American Bulldog, Dogo Argentino, Fila Brasileiro, Kangal/Anatolian Shepherd, Caucasian Ovcharka, Mastiff, Mastino Napoletano, Rottweiler. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Snub-nosed (brachycephalic) dog and cat breeds are not accepted due to health risk (including mixed breeds); examples include Pug, Bulldog breeds (except American Bulldog), Boxer, Boston Terrier, Shih Tzu, Persian, Himalayan. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Service animals: only trained assistance dogs are accepted in the cabin per country rules; on US routes the USDOT Service Animal Air Transportation Form is required, and for flights 8+ hours the DOT Relief Attestation is also required; no fee charged. (condor.com/us/fly-enjoy/special-assistance/assistance-for-our-customers/assistance-dogs.jsp)",
+      "Emotional Support Animals are not recognized as service animals; non-trained dogs must be booked under the regular pet policy. (condor.com/us/fly-enjoy/special-assistance/assistance-for-our-customers/assistance-dogs.jsp)",
+      "Additional service-dog conditions: must be well-behaved, healthy, not tranquilized, and preferably secured with a harness during takeoff/landing; some lounges do not accept animals. (condor.com/us/fly-enjoy/special-assistance/assistance-for-our-customers/assistance-dogs.jsp)",
+      "Transport of animals is only possible on Condor nonstop flights; codeshare/other airlines have their own rules. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "USA dog import rules: dogs that have been in CDC-designated high-risk rabies countries within the last 6 months are excluded from transport; all other dogs to the USA must complete the CDC Dog Import Form before travel. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Check-in: animals may only be checked in on the day of departure (no late-night check-in); live animal acceptance checklist must be completed/printed and brought to check-in. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets.jsp)",
+      "Hold crate size tiers commonly priced at up to 80 x 55 x 100 cm and up to 125 x 75 x 100 cm; animal must be able to stand without head/ears touching the roof; IATA LAR applies. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-the-cargo-hold.jsp)"
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "Fees are per flight (one-way) and subject to change without notice; pre-registration is mandatory and unregistered animals face higher airport fees and no carriage guarantee; use the flight-zones page to identify your route’s zone (USA/Canada = Zone 5). (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/pets-in-cabin.jsp)",
+      "If any part of the itinerary is operated by another airline, confirm that carrier’s pet/service-animal rules separately; cargo transfer on connections is not possible. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets.jsp)",
+      "Condor highlights IATA LAR container standards and notes approximate cargo-hold temperatures (10°C short/medium; 18–23°C long-haul); choose crate size accordingly and avoid sedating pets. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "Bring all required health/import papers (including the CDC Dog Import Form for US-bound dogs) and the printed live animal acceptance checklist. (condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets/conditions-and-regulations-for-transport-and-carriage.jsp)",
+      "No operator notes were provided."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "DE",
+    "petPolicyURL": "https://www.condor.com/us/flight-preparation/baggage-and-animals/travelling-with-pets.jsp",
+    "airlineURL": "https://www.condor.com",
+    "PetPolicySummary": "Condor accepts only dogs and cats with a prior confirmed reservation and only on nonstop Condor flights. In cabin: one pet per container; max 8 kg (including carrier); carrier max 55 x 40 x 20 cm; must fit under the seat; reservation up to 24 hours before departure; not permitted in Business Class on A330neo, exit rows, or behind partitions; printed live animal acceptance checklist required. Typical cabin fees per one-way segment by zone (higher at airport if not pre-registered): Zone 1 US$75/CA$90; Zones 2+6 US$90/CA$115; Zones 3+7 US$115/CA$150; Zone 4 US$115/CA$150; Zone 5 (USA/Canada) US$115/CA$150. In the hold: direct flights only; reserve up to 48 hours before departure; IATA-compliant crate required; provide combined weight, crate dimensions, and (for dogs) breed; example Zone 5 fees per one-way: up to 80 x 55 x 100 cm US$185/CA$235; up to 125 x 75 x 100 cm US$310/CA$385 (higher if not pre-registered). Minimum ages: within EU 4 months; from unlisted third countries to EU 7 months; dogs to the USA 6 months. Fighting/listed breeds and snub-nosed (brachycephalic) breeds, including mixes, are not accepted. Service dogs are carried in the cabin free of charge per country rules (on US routes USDOT forms apply). Emotional Support Animals are not recognized. Follow all entry rules; dogs to the USA must complete the CDC Dog Import Form; no late-night check-in; some routes have restrictions (e.g., no animals in hold to Egypt).",
+    "ImprovedPetPolicySummary": "<h2>Condor Pet Policy (Dogs & Cats)</h2><ul><li>Only accepted with prior confirmed reservation; capacity is limited; one pet per container; transport available only on nonstop Condor-operated flights.</li><li>Containers must meet IATA Live Animal Regulations; the animal must be able to stand, turn, and lie naturally.</li><li>Minimum ages: within EU 4 months; from unlisted third countries to EU 7 months; dogs to USA 6 months.</li></ul><h3>In Cabin</h3><ul><li>One pet per carrier; max 8 kg (17.6 lb) including carrier.</li><li>Carrier max size 55 x 40 x 20 cm; must fit under the seat; may be carried in addition to standard cabin baggage.</li><li>Reserve up to 24 hours before departure; bring the printed Live Animal Acceptance Checklist to check-in.</li><li>Seating: not permitted in Business Class on A330neo, at exit rows, or behind partitions.</li><li>Fees per one-way segment if pre-registered: Zone 1 US$75/CA$90; Zones 2+6 US$90/CA$115; Zones 3+7 US$115/CA$150; Zone 4 US$115/CA$150; Zone 5 (USA/Canada) US$115/CA$150. Higher airport fees apply if not pre-registered.</li></ul><h3>In the Cargo Hold</h3><ul><li>Direct flights only; reserve up to 48 hours before departure; provide combined weight, exact crate dimensions, and (for dogs) breed.</li><li>IATA-compliant, ventilated, waterproof, escape-proof crate required (no mesh roofs). Animal must stand without head/ears touching the roof.</li><li>Typical hold temperatures: approx. 10°C on short/medium-haul; 18–23°C on long-haul; ventilation provided.</li><li>Example fees (Zone 5 USA/Canada) per one-way: up to 80 x 55 x 100 cm = US$185/CA$235; up to 125 x 75 x 100 cm = US$310/CA$385. Higher airport fees if not pre-registered.</li><li>Route restriction example: animals cannot be carried in the hold to/from Egypt (Zone 2).</li></ul><h3>Restrictions</h3><ul><li>Listed/fighting breeds (including mixes) are not accepted.</li><li>Snub-nosed (brachycephalic) dog and cat breeds (including mixes) are not accepted due to health risk.</li><li>Sick/injured animals, animals close to giving birth (or within 48 hours after), or animals too sedated to respond are not accepted.</li></ul><h3>Service Animals</h3><ul><li>Only trained assistance dogs accepted in cabin; no fee; must meet destination country rules.</li><li>For flights to/from the USA: USDOT Service Animal Air Transportation Form required; for flights 8+ hours, DOT Relief Attestation also required.</li></ul><h3>Documentation</h3><ul><li>Bring all required import/health documents per destination and the printed Live Animal Acceptance Checklist.</li><li>Dogs traveling to the USA must complete the CDC Dog Import Form; dogs that have been in CDC high-risk rabies countries in the last 6 months are excluded.</li></ul>",
+    "microchip": "no",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCompartmentDetails": "Max 8 kg including carrier; carrier size 55 x 40 x 20 cm; one pet per carrier; must fit under seat; may be carried in addition to standard cabin baggage; reserve up to 24 hours before departure; bring printed Live Animal Acceptance Checklist; seating not allowed in Business Class on A330neo, exit rows, or behind partitions; only on nonstop Condor flights; limited capacity.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCargoDetails": "Direct (nonstop) Condor flights only; reserve up to 48 hours before departure; provide combined weight, crate dimensions, and (for dogs) breed; IATA-compliant ventilated, waterproof, escape-proof crate required; typical hold temps ~10°C short/medium-haul and 18–23°C long-haul; example Zone 5 fees per one-way: up to 80 x 55 x 100 cm = US$185/CA$235; up to 125 x 75 x 100 cm = US$310/CA$385 (higher fees at airport if not pre-registered); animals cannot be carried in the hold to/from Egypt (Zone 2); limited capacity; no late-night check-in.",
+    "carrierCompartmentDetails": "<section class=\"container my-4\">\n<h2 class=\"mb-3\">In-Cabin Pet Carrier Rules</h2>\n<ul>\n<li>Only small pets (cats and dogs) allowed in cabin; limited number per flight; only on nonstop Condor-operated flights.</li>\n<li>One pet per carrier; carrier must be ventilated, waterproof, lockable, and meet IATA Live Animal Regulations.</li>\n<li>Carrier maximum dimensions: Length 55 cm x Width 40 cm x Height 20 cm.</li>\n<li>Carrier plus pet maximum weight: 8 kg.</li>\n<li>Pet must remain in closed carrier under the seat in front for entire flight.</li>\n<li>Pet must be able to stand, lie down, and turn naturally inside carrier.</li>\n<li>Carrier may be carried in addition to the standard cabin baggage allowance.</li>\n<li>Reservations accepted up to 24 hours before departure.</li>\n<li>Pets not allowed in Business Class on A330neo, exit rows, or seats behind partitions.</li>\n<li>Passengers must bring a completed and printed Live Animal Acceptance Checklist to check-in.</li>\n</ul>\n<div class=\"my-2\">\n<strong>Fees (per one-way, if pre-registered):</strong>\n<ul>\n<li>Zone 1: US$ 75 / CA$ 90</li>\n<li>Zones 2 + 6: US$ 90 / CA$ 115</li>\n<li>Zones 3 + 7: US$ 115 / CA$ 150</li>\n<li>Zone 4: US$ 115 / CA$ 150</li>\n<li>Zone 5 (USA/Canada): US$ 115 / CA$ 150</li>\n</ul>\n<p class=\"alert alert-info\">Unregistered animals at airport check-in incur higher fees and transport cannot be guaranteed.</p>\n</div>\n</section>",
+    "carrierCargoDetails": "<section class=\"container my-4\">\n<h2 class=\"mb-3\">Checked/Cargo Pet Transport Rules</h2>\n<ul>\n<li>Limited number of dogs and cats allowed in the cargo hold per flight; Condor nonstop flights only.</li>\n<li>Reservations for cargo pets accepted up to 48 hours before departure on direct flights only.</li>\n<li>At booking you must provide the animal's combined weight (with crate), exact crate dimensions, and for dogs, the breed.</li>\n<li>Each animal must be in a ventilated, waterproof, escape-proof carrier meeting IATA Live Animal Regulations, allowing the animal to stand, turn, and lie naturally (no mesh roofs).</li>\n<li>Water and food containers must be provided; cage must have a stable, clean, watertight base lined with absorbent material.</li>\n<li>Animals sedated by medication must still respond when spoken to; sick, injured, or pregnant animals are not accepted.</li>\n<li>Approximate hold environment: ~10°C on short/medium haul; 18–23°C on long haul; ventilation provided.</li>\n<li>Route restriction example: animals cannot be carried in the hold to/from Egypt (Zone 2).</li>\n</ul>\n<div class=\"my-2\">\n<strong>Example fees (per one-way, Zone 5 USA/Canada):</strong>\n<ul>\n<li>Crate up to 80 x 55 x 100 cm: US$ 185 / CA$ 235</li>\n<li>Crate up to 125 x 75 x 100 cm: US$ 310 / CA$ 385</li>\n</ul>\n<p class=\"alert alert-info\">Unregistered animals at airport check-in incur higher fees and transport cannot be guaranteed. Fees vary by zone and crate size.</p>\n</div>\n</section>",
+    "dangerousBreeds": "yes",
+    "dangerousBreedList": "Pitbull Terrier/American Pitbull, American Staffordshire Terrier, Staffordshire Bull Terrier, Bull Terrier, American Bulldog, Dogo Argentino, Fila Brasileiro, Kangal/Anatolian Shepherd, Caucasian Ovcharka, Mastiff, Mastino Napoletano, Rottweiler",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": "Bulldog breeds (except American Bulldog), Pug, Boxer, Boston Terrier, Shih Tzu, Persian, Himalayan",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "Only trained assistance dogs are accepted in the cabin in accordance with destination country rules; no fee charged. On routes to/from the USA, the USDOT Service Animal Air Transportation Form is required, and for flights of 8 hours or more, the DOT Relief Attestation is also required. The dog must be well-behaved, healthy, and not tranquilized; a harness is recommended for takeoff/landing. Some lounges may not accept animals.",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "no",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-01-31T23:59:59.000Z"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "airlineCode": "AM",
+  "dryRun": true,
+  "ranAt": "2026-01-31T00:43:17.516Z",
+  "researchPayload": {
+    "airlineCode": "AM",
+    "officialLinks": [
+      {
+        "name": "Aeroméxico — Flying with pets (policy hub)",
+        "url": "https://www.aeromexico.com/en-ca/travel-information/flying-with-pets"
+      },
+      {
+        "name": "Aeroméxico — Flights with pets (EN)",
+        "url": "https://www.aeromexico.com/en_us/flights-with-pets"
+      },
+      {
+        "name": "Aeroméxico — Vuelos con mascotas (ES-MX)",
+        "url": "https://www.aeromexico.com/es_mx/vuelos-con-mascotas"
+      },
+      {
+        "name": "Aeroméxico — Vuelos con mascotas (ES-US)",
+        "url": "https://www.aeromexico.com/es_us/vuelos-con-mascotas"
+      },
+      {
+        "name": "Aeroméxico — Mascotas en cabina (policy page)",
+        "url": "https://www.aeromexico.com/es-mx/informacion-de-vuelos/mascotas-en-cabina"
+      },
+      {
+        "name": "Aeroméxico — Equipaje (baggage hub)",
+        "url": "https://www.aeromexico.com/es-mx/informacion-de-vuelos/equipaje"
+      },
+      {
+        "name": "Aeroméxico Cargo",
+        "url": "https://amcargo.aeromexico.com/"
+      },
+      {
+        "name": "Aeroméxico home",
+        "url": "https://www.aeromexico.com/"
+      },
+      {
+        "name": "Aeroméxico — Info page (flight duration note)",
+        "url": "https://www.aeromexico.com/es_cr/cuando-es-hot-travel"
+      }
+    ],
+    "nonOfficialLinks": [
+      {
+        "name": "Non-official source",
+        "url": "https://www.transportation.gov/resources/individuals/aviation-consumer-protection/service-animals"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://www.seatmaestro.com/airlines-seating-maps/aeromexico/pets/"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://www.eleconomista.com.mx/finanzaspersonales/quieres-viajar-mascota-esto-te-costara-20250605-762458.html"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://www.flying-rules.com/pet-policy/aeromexico-pet-policy/"
+      },
+      {
+        "name": "Non-official source",
+        "url": "https://www.assistcard.com/mx/como-viajar-con-un-perro-en-avion"
+      }
+    ],
+    "sourceDates": [
+      {
+        "url": "https://www.aeromexico.com/en-ca/travel-information/flying-with-pets",
+        "date": "2026-01-31",
+        "note": "Dynamic policy hub; no visible last-updated date; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.aeromexico.com/en_us/flights-with-pets",
+        "date": "2026-01-31",
+        "note": "Marketing/summary page; no visible last-updated date; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.aeromexico.com/es_mx/vuelos-con-mascotas",
+        "date": "2026-01-31",
+        "note": "Marketing/summary page; no visible last-updated date; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.aeromexico.com/es_us/vuelos-con-mascotas",
+        "date": "2026-01-31",
+        "note": "Landing/FAQ page; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.aeromexico.com/es-mx/informacion-de-vuelos/mascotas-en-cabina",
+        "date": "2026-01-31",
+        "note": "JS-rendered policy subpage; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.aeromexico.com/es-mx/informacion-de-vuelos/equipaje",
+        "date": "2026-01-31",
+        "note": "JS-rendered baggage hub; accessed 2026-01-31."
+      },
+      {
+        "url": "https://amcargo.aeromexico.com/",
+        "date": "2026-01-31",
+        "note": "Aeroméxico Cargo homepage; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.aeromexico.com/es_cr/cuando-es-hot-travel",
+        "date": "2026-01-31",
+        "note": "Official info page mentioning in-cabin pets allowed on flights up to ~6 hours; accessed 2026-01-31."
+      },
+      {
+        "url": "https://www.transportation.gov/resources/individuals/aviation-consumer-protection/service-animals",
+        "date": "2026-01-31",
+        "note": "U.S. DOT regulatory reference; accessed 2026-01-31."
+      }
+    ],
+    "policyFindings": [
+      "Small dogs and cats may travel in the cabin; larger pets may travel in the hold (bodega) in an approved crate.",
+      "In-cabin maximum weight is 9 kg total (pet + carrier).",
+      "Pets under 8 weeks of age are not accepted.",
+      "Exotic species are not accepted.",
+      "In-cabin carriers may be rigid or soft and must meet airline requirements.",
+      "A veterinary health certificate and vaccination record are required; advance reservation is recommended.",
+      "Aeroméxico pages mention Emotional Support Animals (ESAs) accepted with medical documentation and prior approval; details are not fully specified on accessible pages and may vary.",
+      "For itineraries to/from/within the United States, only trained service dogs qualify as service animals under U.S. DOT rules; ESAs are treated as pets and must comply with pet policies and fees.",
+      "Official Aeroméxico copy indicates pets in cabin are permitted on flights up to approximately 6 hours; verify applicability to your specific flight."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=deep_relaxed",
+      "Some Aeroméxico policy subpages load content dynamically; exact carrier dimensions, fees, breed restrictions, embargoes, quotas, and forms were not fully visible in our tooling during this session.",
+      "To finalize specifics (fees by route/currency, carrier/kennel dimensions, breed and seasonal restrictions, service animal documentation), review the policy hub in a standard browser or confirm with Aeroméxico directly.",
+      "Treat ESA acceptance and any fee waivers as unverified until confirmed on Aeroméxico’s policy pages or by an agent, especially for U.S.-touching itineraries.",
+      "If the pet cannot travel in cabin or as checked baggage, contact Aeroméxico Cargo for live-animal shipment requirements and crate specifications."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "AM",
+    "petPolicyURL": "https://aeromexico.com/en-ca/travel-information/flying-with-pets",
+    "airlineURL": "https://www.aeromexico.com/",
+    "PetPolicySummary": "Aeromexico allows cats and dogs to travel in the cabin in an approved carrier placed under the seat in front of the passenger. Cats, dogs, and birds may travel as checked-in baggage subject to availability and restrictions. Brachycephalic and dangerous breeds are subject to strict limitations.",
+    "ImprovedPetPolicySummary": "<h3>Aeroméxico Pet Policy Summary</h3><ul><li><strong>In-cabin pets (PETC):</strong> Small cats and dogs are allowed in an approved carrier placed under the seat; total weight (pet + carrier) up to 9 kg. Pets in cabin are generally permitted on flights up to about 6 hours.</li><li><strong>Checked-in baggage:</strong> Cats, dogs, and birds may travel in the hold in an IATA-compliant kennel, subject to availability and restrictions.</li><li><strong>Documents:</strong> A veterinary health certificate and vaccination record are required; additional entry requirements may apply by destination.</li><li><strong>Brachycephalic breeds:</strong> Not permitted as checked-in baggage unless a veterinarian certifies the animal is not brachycephalic.</li><li><strong>Dangerous breeds:</strong> Not accepted under any circumstances.</li><li><strong>Service animals:</strong> Only dogs are accepted as service animals; on U.S. itineraries, only trained service dogs are recognized under DOT rules.</li><li><strong>Emotional support animals (ESAs):</strong> Acceptance requires documentation and is route-dependent; on U.S. itineraries ESAs must travel under the pet policy and fees.</li><li><strong>Cargo:</strong> If your pet cannot travel in cabin or as checked baggage, contact Aeroméxico Cargo for live-animal shipment options.</li></ul>",
+    "microchip": "no",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Cat",
+      "Dog"
+    ],
+    "inCompartmentDetails": "- The combined weight of the pet and carrier must not exceed 9 kg (19.8 lbs).\r\n- Maximum carrier dimensions: 40 cm x 30 cm x 20 cm (16 x 12 x 8 inches).\r\n- Pets must be at least 8 weeks old.\r\n- Only one pet per passenger is permitted.\r\n- Pets must remain inside the carrier under the seat for the entire flight.\r\n- Flights with pets in cabin are limited to a maximum duration of 6 hours.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Cat",
+      "Dog",
+      "Bird"
+    ],
+    "inCargoDetails": "- The combined weight of the pet and carrier must not exceed 45 kg (99 lbs).\r\n- Pets must be clean, healthy, harmless, and non-aggressive.\r\n- Passengers are responsible for any damages caused by their pet.\r\n- IMPORTANT: Pets classified as dangerous breeds are NOT permitted to travel as checked-in baggage under any circumstances.\r\n- IMPORTANT: Brachycephalic breeds are NOT permitted as checked-in baggage unless a veterinarian declaration certifies the animal is not brachycephalic.",
+    "carrierCompartmentDetails": "<section class=\"container my-4\"><h2>In-Cabin Carrier Requirements</h2><ul><li>Rigid or soft-sided carrier</li><li>One-piece absorbent base</li><li>Adequate ventilation</li><li>Enough space for the pet to turn and lie down naturally</li><li>Only one pet per carrier</li></ul><p>Total weight (pet + carrier) must not exceed 9 kg.</p></section>",
+    "carrierCargoDetails": "<section class=\"container my-4\"><h2>Checked-In Carrier Requirements</h2><ul><li>IATA-compliant kennel</li><li>Adequate ventilation</li><li>Secure locking mechanism</li><li>Enough space for natural posture and turning</li></ul><p>Brachycephalic and dangerous breeds are not accepted.</p></section>",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": "Cats: Burmese; Exotic Shorthair; Himalayan; Persian. Dogs: Affenpinscher; American Bully; American Staffordshire Terrier; Boston Terrier; Brussels Griffon; Boxer (all breeds); Bulldog (all breeds); Bull Mastiff; Cane Corso; Cavalier King Charles; Chow Chow; Argentine Dogo; Bordeaux Mastiff; English Toy Spaniel; Japanese Spaniel; Lhasa Apso; Maltese Bichon; Mastiff (all breeds); Newfoundland; Canary Dog; Pekingese; Pug (all breeds); Saint Bernard; Shar-pei; Shih-tzu; Toy English Spaniel; Tibetan Spaniel; Yorkshire Terrier; Cavalier Spaniel. Any brachycephalic cat or dog, even if not specifically listed. If a pet appears brachycephalic, a veterinarian declaration proving the animal is not brachycephalic is required for acceptance.",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\"><h2>Service Animals</h2><p>Only dogs are accepted as service animals. No additional fees apply. Animals must behave appropriately and remain on the floor at the passenger’s feet.</p></section>",
+    "esAnimals": "yes",
+    "esaDetails": "<section class=\"container my-4\"><h2>Emotional Support Animals</h2><p>Dogs and cats may be accepted as emotional support animals with proper documentation and size limits. Breed restrictions still apply. Emotional support animals are not permitted on flights to London.</p></section>",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies",
+      "Internal/External parasites"
+    ],
+    "timestamp": "2026-01-31T00:42:00.145Z"
+  }
+}

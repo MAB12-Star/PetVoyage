@@ -1,0 +1,114 @@
+{
+  "airlineCode": "TN",
+  "dryRun": true,
+  "ranAt": "2026-02-01T01:04:20.086Z",
+  "researchPayload": {
+    "airlineCode": "TN",
+    "officialLinks": [
+      {
+        "name": "Traveling with Pets and Service Animals (Air Tahiti Nui)",
+        "url": "https://www.airtahitinui.com/en/transporting-pets-and-animals"
+      },
+      {
+        "name": "Transport of animals in the hold (Cargo)",
+        "url": "https://www.airtahitinui.com/en/transport-animals-hold"
+      },
+      {
+        "name": "Waiver of responsibility – Pets in Cabin (PDF)",
+        "url": "https://www.airtahitinui.com/sites/default/files/medias/files/2024-10/WAIVER-OF-RESPONSIBILITY-15OCT24.pdf"
+      },
+      {
+        "name": "General Sales Conditions of the “Pet in Cabin” service (PDF)",
+        "url": "https://www.airtahitinui.com/sites/default/files/medias/files/2025-03/_DRX_SQC_CGV%20PETC_V2.1_250319_EN_Effective%2026MAR25.pdf"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.airtahitinui.com/sites/default/files/medias/files/2024-10/WAIVER-OF-RESPONSIBILITY-15OCT24.pdf",
+        "date": "15 Oct 2024",
+        "note": "Waiver of responsibility – Pets in Cabin (PDF); document version V1.3 noted on the form."
+      },
+      {
+        "url": "https://www.airtahitinui.com/sites/default/files/medias/files/2025-03/_DRX_SQC_CGV%20PETC_V2.1_250319_EN_Effective%2026MAR25.pdf",
+        "date": "Effective 26 Mar 2025",
+        "note": "General Sales Conditions – “Pet in Cabin” (PDF); effective date stated on page 1."
+      },
+      {
+        "url": "https://www.airtahitinui.com/en/transporting-pets-and-animals",
+        "date": "1 Feb 2026",
+        "note": "No 'last updated' shown on page; checked on this date."
+      },
+      {
+        "url": "https://www.airtahitinui.com/en/transport-animals-hold",
+        "date": "1 Feb 2026",
+        "note": "No 'last updated' shown on page; checked on this date."
+      }
+    ],
+    "policyFindings": [
+      "In-cabin: Only cats and dogs are accepted and only on specific Air Tahiti Nui–operated routes. As of the GSC effective 26 Mar 2025, eligible routes are Papeete–Paris CDG, Papeete–Los Angeles, Papeete–Seattle, Paris–Los Angeles, and Los Angeles–Paris CDG; inbound to Papeete (e.g., Los Angeles–Papeete) is not listed. Website shows a shorter list; defer to the dated GSC.",
+      "In-cabin: Must be on flights operated by Air Tahiti Nui; service subject to availability (quota).",
+      "In-cabin size/weight: Maximum combined pet + carrier weight is 8 kg (17.6 lb). One carrier per passenger; up to two small pets allowed in one carrier if total ≤ 8 kg and they have room to move.",
+      "In-cabin carrier: Must fit under the seat; maximum exterior dimensions 40 x 35 x 20 cm (15.7 x 13.7 x 7.9 in); soft or rigid carrier permitted.",
+      "In-cabin age/health/ID: GSC requires animals be at least 3 months old and vaccinated. For travel to or via the United States, cats must be ≥4 months and dogs ≥6 months per CDC rules; microchip required for U.S. travel. For France, microchip or pre-3 July 2011 tattoo; other destinations: microchip.",
+      "In-cabin documents: Veterinary health certificate/passport required; send the requested health certificate to ATN reservations on or after 48 hours before departure.",
+      "In-cabin sedation: Sedation is not allowed; waiver requires attestation that the animal is not under tranquilizers.",
+      "In-cabin fees: Fees vary by route/currency. Listed examples: Los Angeles–Paris USD 150; Paris–Los Angeles EUR 150; Papeete–Los Angeles XPF 14,000; Papeete–Paris XPF 24,000. Seattle is listed as eligible in the GSC but no fee shown on the website; confirm with ATN.",
+      "In-cabin booking and changes: Book via ATN agencies, phone, travel agencies, and at the airport in Papeete and Paris (only). Refund/change rules are specified in the GSC.",
+      "Breed/type restrictions: Dogs categorized as dangerous under French regulations (e.g., Pit Bull, American Staffordshire Terrier, Rottweiler, Dogo Argentino, Fila Brasileiro, Broholmer, Mastiffs incl. German, Bordeaux, Bullmastiff, Neapolitan; Bulldog; Cane Corso; Tosa; and crosses) are prohibited.",
+      "Brachycephalic restriction: Brachycephalic (snub-nosed) dogs and cats are not accepted in the hold; the in-cabin waiver requires attesting the animal is not brachycephalic, effectively excluding brachycephalic pets from cabin as well.",
+      "Emotional Support Animals: ESAs are not considered service animals and must travel under the pet policy if accepted.",
+      "Service animals: Defined as individually trained to assist a person with a disability; pets and ESAs excluded. Up to two service dogs or one service cat per passenger permitted. Must stay at handler’s feet or on lap without encroaching on others; cannot block aisles or exits. Leash/harness and muzzle are mandatory; ATN may require their use and may deny boarding for aggressive behavior.",
+      "Service animal documents: Veterinary health certificate/passport required. For U.S. travel, U.S. DOT Service Animal Air Transportation Form and Service Animal Relief Attestation are required at check-in; U.S. CDC dog-entry rules also apply.",
+      "Pets in the hold (cargo): If not accepted in cabin or on non-eligible routes, cats and dogs may be shipped via Air Tahiti Nui Cargo on main stations including Paris CDG, Papeete, Auckland, Los Angeles, Tokyo Narita. Rates are weight/destination-based; ATN provides a price estimator (from Papeete). For other departures, contact a specialized forwarder.",
+      "Cargo crate: IATA-compliant crate with two interlocking plastic shells secured by metal threaded rods; metal door with four locking rods extending at least 1.6 cm beyond top and bottom; ventilation on front/sides/back; sized so the animal can stand, turn, and sit; muzzle must not pass through the grid.",
+      "Cargo restrictions: Specific breeds (e.g., Pitbull, American Staffordshire, etc.) and brachycephalic dogs/cats are not accepted; females in estrus or advanced pregnancy are not accepted. Rottweiler-type guard/defense dogs have a special procedure; contact ATN Cargo.",
+      "Cargo acceptance (non-U.S. destinations): Pets must be ≥2 months old with up-to-date health record, microchip, rabies vaccination, and a veterinary health certificate. Additional certificate from the Rural Development Office of French Polynesia required for Paris and Auckland.",
+      "Cargo to the U.S. (Los Angeles): Dogs must have only resided in rabies-free/low-risk countries in the previous 6 months, be ≥6 months old, microchipped (15-digit ISO), rabies-vaccinated, possess a valid veterinary health certificate, and have a CDC dog import form receipt. Cats must be ≥2 months, microchipped, vaccinated for rabies, and have a valid veterinary health certificate."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "Route eligibility discrepancy: The GSC effective 26 Mar 2025 adds Papeete–Seattle and confirms eligible cabin routes, while the website omits Seattle. Use the GSC list; confirm Seattle fees with ATN at booking.",
+      "U.S.-bound travel: Current U.S. CDC dog-entry rules require dogs to be ≥6 months, microchipped, and with CDC paperwork; ATN reflects these requirements for both cabin and cargo when the U.S. is involved. Always check current CDC requirements.",
+      "No seasonal temperature embargo information is published on the cited ATN pages; confirm any heat/cold restrictions with ATN Cargo at booking.",
+      "Prohibited breeds: ATN references French “dangerous dog” categories and provides examples; rely on ATN’s on-site prohibition statements for eligibility."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "TN",
+    "petPolicyURL": "https://www.airtahitinui.com/en/transporting-pets-and-animals",
+    "airlineURL": "",
+    "PetPolicySummary": "Traveling with Pets and Service Animals: Do you plan to travel with your pet or service animal? You will find all the necessary information here to help you prepare for your trip including transportation rules and conditions, fares, and the list of prohibited animals. Pets in the cabin: Air Tahiti Nui allows dogs and cats to be carried in the cabin accompanied by their owners on the following flights only: Los Angeles / Seattle – Paris, Paris - Los Angeles / Seattle, Papeete - Los Angeles / Seattle, Papeete - Paris. Conditions for acceptance and transport of animals in the cabin: Only cats and dogs are accepted (at least 4 months old and vaccinated). The combined weight of the animal and its carrier must be less than or equal to 8 Kg (about 17.6 pounds). The animal must remain in an appropriate pet carrier (either soft or rigid) that can easily fit under the seat in front of you throughout the flight. The pet carrier’s maximum dimensions should be no larger than L40cm x W35cm x H20cm (L15.7in x W13.7 x H7.9in). One pet carrier is allowed per passenger, capable of accommodating up to two (2) small pets, provided that the total weight limit is respected and there is enough space in the pet carrier for these animals to move easily. Availability is subject to quota per flight. For any other animal inquiries, please contact our CARGO department. Mandatory documents: Up-to-date vaccination records. Valid Health Certificate issued by a veterinarian. The certificate must include the weight, size, and breed of the animal. Please forward the requested document to our reservation service on or after 48 hours before the flight departure. Print and complete the mandatory waiver of responsibility and the conditions for bringing a dog or cat into the cabin. You will be asked to present this upon check-in on the day of your departure. Ensure compliance with entry requirements for departure, transit, and destination countries. Note: Starting August 1, 2024, dogs traveling to or in transit through the United States must meet new travel requirements, including being at least 6 months and having all required documentation. For more information, please visit the CDC website. Attention: Failure to comply with these rules may result in your dog being denied boarding. The new CDC regulation regarding pet dogs and service dogs is subject to change at any time without notice. Transportation fees: From Los Angeles / Seattle to Paris: 150 US dollars, From Paris to Los Angeles / Seattle: 150 Euros, From Papeete to Los Angeles / Seattle: 14,000 XPF, From Papeete to Paris: 24,000 XPF. Carriage of animals in the cabin is free on board our rail partner SNCF for journeys to and from the provinces, as part of the Train + Air package. The purchase of a ticket for your pet is no longer required. Prohibited animals: As defined by the French Ministry of Agriculture, Food and Forestry, the transportation of dogs that may be dangerous, i.e., category 1 (attack dogs) and 2 (guard and defense dogs), is prohibited on board our aircraft. Examples: Pitt Bulls, American Staffordshire terrier, Rottweiler, Dogo Argentino, Fila Brasileiro, Broholmer, German mastiff, Majorca mastiff, Bordeaux mastiff, Bulldog, Bullmastiff, Mastiff, Neapolitan Mastiff, Italian Cane Corso, Tosa, etc. Service animals: A “service animal” is defined as “an animal individually trained to provide assistance to an individual with a disability.” This excludes all non-trained animals such as emotional support animals and pets. Conditions for acceptance and transport of Service Animals: A maximum of two (2) service dogs or one (1) service cat per passenger is allowed. The service animal must be at least 4 months old. The animal must be identified by a tattoo or microchip. During the flight, the service animal must remain by its owner's feet or on their lap, without encroaching on another passenger's space. Required Accessories: a leash (with its harness or collar) and a muzzle are mandatory. An Air Tahiti Nui agent may request that a service animal be kept on a leash and/or muzzled at any time during the trip, if deemed necessary. Mandatory documents: Valid Health Certificate or passport issued by a veterinarian. According to the US DOT 14 CFR Part 382, the following documents (in English only): 'Service Animal Air Transportation Form' and 'Service Animal Relief Attestation Form.' These documents will be required at check-in. Note: French Polynesia, France, and the United States are not considered high-risk countries for rabies. For dogs that have been in high-risk countries, please refer to the CDC website for more information. Failure to comply with these rules may result in your dog being denied boarding.",
+    "ImprovedPetPolicySummary": "<h2>Air Tahiti Nui — Pets and Service Animals</h2><h3>Pets in Cabin (PETC)</h3><ul><li>Eligible routes on ATN-operated flights only: Papeete–Paris CDG, Papeete–Los Angeles, Papeete–Seattle, Paris–Los Angeles, and Los Angeles–Paris CDG. Availability is limited (quota per flight).</li><li>Accepted species: cats and dogs; minimum age generally 4 months with required vaccinations.</li><li>U.S. travel: from Aug 1, 2024, dogs must be at least 6 months old and meet CDC requirements; microchip required. Check CDC for latest rules.</li><li>Carrier and weight: soft or rigid carrier that fits under the seat; max exterior size 40 × 35 × 20 cm (15.7 × 13.7 × 7.9 in). Combined pet + carrier weight ≤ 8 kg (17.6 lb).</li><li>One carrier per passenger; up to two small pets allowed in one carrier if within 8 kg and with adequate space.</li><li>Sedation/tranquilizers are not permitted.</li></ul><h4>Documents and Process</h4><ul><li>Veterinary health certificate/passport (with weight, size, and breed). Send requested certificate to ATN Reservations on or after 48 hours before departure.</li><li>Up-to-date vaccination records and any required import permits. Bring the completed PETC waiver to check-in.</li></ul><h4>Fees (indicative)</h4><ul><li>Los Angeles/Seattle ↔ Paris: USD 150/EUR 150</li><li>Papeete → Los Angeles/Seattle: XPF 14,000</li><li>Papeete → Paris: XPF 24,000</li></ul><h3>Prohibited Animals</h3><ul><li>Dogs classified as dangerous under French regulations (e.g., Pit Bull, American Staffordshire Terrier, Rottweiler, Dogo Argentino, Fila Brasileiro, Broholmer, Mastiffs incl. German/Bordeaux/Bullmastiff/Neapolitan, Bulldog, Cane Corso, Tosa, and crosses).</li><li>Brachycephalic (snub‑nosed) dogs and cats are not accepted (hold); in-cabin waiver also excludes brachycephalic pets.</li></ul><h3>Service Animals</h3><ul><li>Defined as individually trained to assist a person with a disability; pets and ESAs are excluded.</li><li>Allowance: up to two service dogs or one service cat per passenger; animal must be ≥4 months old and identified (microchip or eligible tattoo for France).</li><li>Must remain at the handler’s feet or on lap without encroaching on others or blocking aisles/exits. Leash/harness and muzzle are mandatory; ATN may require their use.</li><li>Documents: veterinary health certificate/passport; for U.S. travel, DOT Service Animal Air Transportation Form and Relief Attestation required at check-in. CDC dog-entry rules may apply.</li></ul><h3>Pets in Hold (Cargo)</h3><ul><li>When pets are not eligible for cabin or on other routes, shipment via ATN Cargo may be possible. IATA-compliant crate required.</li><li>General acceptance: typically ≥2 months old (non-U.S. destinations), microchipped, rabies-vaccinated, veterinary health certificate. U.S.-bound dogs must be ≥6 months, microchipped, vaccinated, and have CDC dog import form receipt.</li></ul><h3>Emotional Support Animals</h3><ul><li>ESAs are not recognized as service animals. They may travel as pets under the standard pet policy if eligible.</li></ul><p>Always verify entry, transit, and health requirements with the relevant authorities and review ATN’s official pages before travel.</p>",
+    "microchip": "yes",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCompartmentDetails": "",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "Dogs",
+      "Cats"
+    ],
+    "inCargoDetails": "",
+    "carrierCompartmentDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">In-Cabin Carrier Details</h2>\n  <p>Conditions for accepting and transporting pets in the cabin with Air Tahiti Nui:</p>\n  <ul>\n    <li>Only vaccinated cats and dogs are accepted.</li>\n    <li>Pets must be identified as follows:\n      <ul>\n        <li>To the United States: microchip required.</li>\n        <li>To France: microchip or tattoo applied before July 3, 2011, and clearly legible.</li>\n        <li>To other destinations: microchip required.</li>\n      </ul>\n    </li>\n    <li>Age requirements:\n      <ul>\n        <li>Transit through or travel to the United States: cats must be at least 4 months old; dogs at least 6 months old if they have only been in rabies-free or low-risk countries in the past 6 months.</li>\n        <li>Travel to other destinations: cats and dogs must be at least 4 months old.</li>\n      </ul>\n    </li>\n    <li>The combined weight of the animal and its carrier must be ≤ 8 kg (17.6 lbs).</li>\n    <li>The pet must remain in an appropriate carrier (soft or rigid) that fits under the seat in front:\n      <ul>\n        <li>Maximum dimensions: 40 cm (L) x 35 cm (W) x 20 cm (H) / 15.7 in x 13.7 in x 7.9 in.</li>\n        <li>One carrier per passenger allowed, accommodating up to two small pets if weight and space requirements are met.</li>\n      </ul>\n    </li>\n    <li>Availability of in-cabin pet transport is subject to quota per flight.</li>\n  </ul>\n  <p>Mandatory documents:</p>\n  <ul>\n    <li>Up-to-date vaccination records.</li>\n    <li>Valid health certificate issued by a veterinarian including weight, size, and breed of the animal. Send to the reservation service on or after 48 hours before departure.</li>\n    <li>Printed and completed waiver of responsibility and conditions for bringing a dog or cat into the cabin, to be presented at check-in.</li>\n    <li>Import permit issued by the destination country. Compliance with all import regulations is the traveler's responsibility.</li>\n  </ul>\n  <div class=\"alert alert-warning\" role=\"alert\">\n    Sedation or tranquilizers are not permitted. Failure to meet import or documentation requirements may result in denied entry, repatriation at passenger's expense, or denied boarding.\n  </div>\n  <div class=\"alert alert-info\" role=\"alert\">\n    For transit through or travel to the United States: CDC regulations for pet and service dogs may change without notice. Regularly check for updates to ensure compliance.\n  </div>\n  <p>Please verify health and entry requirements specific to your destination with relevant authorities before travel.</p>\n</section>",
+    "carrierCargoDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">In Cargo Carrier Details</h2>\n  <p>To ensure the safe transport of your pets in the hold, a certified cage according to IATA standards, approved for long-haul air transport, is mandatory. It guarantees the safety and well-being of your pets.</p>\n  <ul>\n    <li>The cage consists of two plastic half-shells that fit one on top of the other, secured with metal threaded rods fitted with nuts or wing nuts.</li>\n    <li>The metal door must have four locking rods extending at least 1.6 cm beyond the bottom and top of the cage.</li>\n    <li>The cage has vents on the front, sides, and back for ventilation.</li>\n    <li>The cage must be sized so the animal can turn around, stand, and sit properly without putting its muzzle through the grid.</li>\n  </ul>\n  <h3>Acceptance Conditions for Animals in the Hold</h3>\n  <ul>\n    <li>Animals must be at least 2 months old (non-U.S. destinations).</li>\n    <li>Each animal's health book must be up to date.</li>\n    <li>Animals must be identified by a microchip.</li>\n    <li>Rabies vaccinations must be current.</li>\n    <li>A certificate of good health must be issued by a veterinarian.</li>\n    <li>Brachycephalic (snub-nosed) dogs and cats are not accepted.</li>\n    <li>Certain categories/breeds considered dangerous under French regulations are not accepted.</li>\n    <li>Females in estrus or advanced pregnancy are not accepted.</li>\n  </ul>\n  <h3>Requirements for Transporting Dogs to the U.S.</h3>\n  <ul>\n    <li>Dogs must have resided in one or more rabies-free or low-risk countries during the 6 months before the trip.</li>\n    <li>Dogs must be over 6 months old.</li>\n    <li>Dogs must be identified with a 15-digit ISO-compatible microchip.</li>\n    <li>Rabies vaccinations must be up to date.</li>\n    <li>A health certificate issued by a licensed veterinarian, valid on the day of departure, is required.</li>\n    <li>The CDC Dog Import Form receipt is required for entry into the U.S.</li>\n  </ul>\n  <h3>Requirements for Transporting Cats</h3>\n  <ul>\n    <li>Cats must be at least 2 months old.</li>\n    <li>Health records must be current.</li>\n    <li>Cats must be identified with a microchip.</li>\n    <li>Rabies vaccinations must be up to date.</li>\n    <li>A health certificate issued by an authorized veterinarian, valid on the day of departure, is required.</li>\n  </ul>\n</section>",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "no",
+    "brachycephalicBreedList": "",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Service Animals (In-Cabin)</h2>\n  <p>A service animal is an animal individually trained to provide assistance to a person with a disability. Pets and emotional support animals (ESAs) are not considered service animals.</p>\n  <ul>\n    <li>Allowance: maximum two (2) service dogs or one (1) service cat per passenger.</li>\n    <li>Age and ID: animal must be at least 4 months old; identified by microchip (or tattoo applied before 3 July 2011 for travel to France).</li>\n    <li>On board: must remain at the handler’s feet or on their lap without encroaching on other passengers or blocking aisles/exits.</li>\n    <li>Accessories: leash/harness and muzzle are mandatory; ATN may require their use and may deny boarding for aggressive behavior.</li>\n    <li>Documents: veterinary health certificate/passport. For U.S. travel, the U.S. DOT Service Animal Air Transportation Form and the Service Animal Relief Attestation (in English) are required at check-in. CDC dog-entry rules may also apply.</li>\n  </ul>\n</section>",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-02-01T02:12:00.000Z"
+  }
+}

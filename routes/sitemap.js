@@ -79,7 +79,10 @@ async function buildSitemapData(req) {
     { loc: `${origin}/dataDeletion`, changefreq: 'yearly', priority: '0.3' },
 
     // ✅ Human sitemap page should also be indexable (up to you)
-    { loc: `${origin}/sitemap`, changefreq: 'weekly', priority: '0.4' }
+    { loc: `${origin}/sitemap`, changefreq: 'weekly', priority: '0.4' },
+    { loc: `${origin}/faq`, changefreq: 'monthly', priority: '0.6' },
+    { loc: `${origin}/terms`, changefreq: 'yearly', priority: '0.3' },
+
   ];
 
   // ✅ BLOG URLs

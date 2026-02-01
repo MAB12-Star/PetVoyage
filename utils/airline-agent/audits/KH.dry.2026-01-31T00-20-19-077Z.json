@@ -1,0 +1,74 @@
+{
+  "airlineCode": "KH",
+  "dryRun": true,
+  "ranAt": "2026-01-31T00:20:19.077Z",
+  "researchPayload": {
+    "ok": true,
+    "stage": "research_ok",
+    "airlineCode": "KH",
+    "diagnostics": [
+      {
+        "ok": true,
+        "url": "https://www.alohaaircargo.com/specialized-shipping/",
+        "finalUrl": "https://www.alohaaircargo.com/specialized-shipping/",
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8",
+        "bytes": 309404,
+        "blocked": false,
+        "jsHeavy": false,
+        "readableChars": 11460,
+        "textSample": "Specialized Shipping &#8211; Aloha Air Cargo --> --> &nbsp; 1-888-94-ALOHA 50 Elliott Street, Honolulu, HI 96819 customerservice@alohaaircargo.com Facebook Twitter Instagram Linkedin &nbsp; TRACK CARGO RATE ESTIMATOR Services Routes and Locations Service Schedule Specialized Shipping Charter Flights Aloha Connect Shipping Aloha Fuel Surcharge Dangerous Goods Fleet Shipment Tracking Rates Forms and Policies Pre-Waybill Form Conditions of Contract Corporate Accounts Known Shipper Application Insurance Privacy Policy About Media Giving News Careers Aloha Tech Ops Contact Specialized Shipping How Can We Help? Aloha Air Cargo carries diverse products such as; fresh bakery products, fish and seafood, produce, tropical fish, live animals, time-sensitive shipments, cut floral and tropical fruit export products, general cargo and much more. Aloha Air Cargo offers refrigeration capabilities at all Hawaiian island locations. However, perishable shipments must be packed properly to sustain up to 48 hours of transit. Bike, Surfboard &amp; Sports Equipment Hawaii is an ideal playground for a wide range of activities, sports, and recreation. Our natural and varied landscape, perfect weather and picturesque scenery lend to how enjoyable it can be to really get out there to go biking, cycling, or surfing and paddle boarding. Don’t limit yourself to the Island you live on; take a trip to a neighbor Island and take advantage of our bike shipping and surfboard shipping services to move your equi",
+        "durationMs": 1281,
+        "error": null
+      }
+    ],
+    "sources": [
+      {
+        "name": "Aloha Air Cargo – Specialized Shipping",
+        "url": "https://www.alohaaircargo.com/specialized-shipping/"
+      }
+    ],
+    "extractedText": "Aloha Air Cargo accepts a broad range of commodities including fresh bakery items, fish/seafood, produce, live animals, tropical fish, cut flowers, tropical fruit, time‑sensitive shipments, and general cargo. Refrigeration is available at all Hawaiian island locations. Perishable shipments must be packaged to withstand up to 48 hours of transit. Specialized services are also offered for bikes, surfboards, and other sports equipment.",
+    "notes": [
+      "This page provides high‑level guidance only; it does not detail temperature set points, packaging specifications beyond the 48‑hour requirement, or documentation rules for live animals.",
+      "For full terms, packaging standards, and restricted items, the site’s Forms and Policies / Conditions of Contract / Dangerous Goods pages should be consulted."
+    ]
+  },
+  "finalDoc": {
+    "error": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Must be a valid URL or empty string\",\n    \"path\": [\n      \"airlineURL\"\n    ]\n  },\n  {\n    \"received\": \"Yes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"yes\",\n      \"no\"\n    ],\n    \"path\": [\n      \"inCargo\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'yes' | 'no', received 'Yes'\"\n  },\n  {\n    \"received\": \"Dogs\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      0\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Dogs'\"\n  },\n  {\n    \"received\": \"Cats\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      1\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Cats'\"\n  },\n  {\n    \"received\": \"Tropical fish\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      2\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Tropical fish'\"\n  },\n  {\n    \"received\": \"Pigs\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      3\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Pigs'\"\n  },\n  {\n    \"received\": \"Birds\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      4\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Birds'\"\n  },\n  {\n    \"received\": \"Yes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"yes\",\n      \"no\"\n    ],\n    \"path\": [\n      \"dangerousBreeds\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'yes' | 'no', received 'Yes'\"\n  },\n  {\n    \"received\": \"Yes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"yes\",\n      \"no\"\n    ],\n    \"path\": [\n      \"brachycephalic\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'yes' | 'no', received 'Yes'\"\n  },\n  {\n    \"received\": \"Yes\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"yes\",\n      \"no\"\n    ],\n    \"path\": [\n      \"petShipping\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'yes' | 'no', received 'Yes'\"\n  }\n]",
+    "draft": {
+      "airlineCode": "KH",
+      "petPolicyURL": "https://www.alohaaircargo.com/specialized-shipping/",
+      "airlineURL": "www.alohaaircargo.com",
+      "PetPolicySummary": "Aloha Air Cargo accepts live animals (including tropical fish) as cargo. Refrigeration is available at all Hawaiian island locations. Perishable shipments must be packaged to withstand up to 48 hours of transit.",
+      "ImprovedPetPolicySummary": "<p>Aloha Air Cargo ships live animals via cargo. The company lists live animals and tropical fish among accepted commodities. Refrigeration is available at all Hawaiian island locations, and perishable shipments must be packaged to withstand up to 48 hours of transit. For full requirements and any species/breed restrictions, review the carrier’s Forms and Policies and Dangerous Goods information or contact customer service.</p><p>See: <a href=\"https://www.alohaaircargo.com/specialized-shipping/\" target=\"_blank\" rel=\"noopener\">Specialized Shipping</a></p>",
+      "microchip": "no",
+      "healthCertificate": "no",
+      "inCompartment": "no",
+      "inCompartmentAnimals": [],
+      "inCompartmentDetails": "",
+      "inCargo": "Yes",
+      "inCargoAnimals": [
+        "Dogs",
+        "Cats",
+        "Tropical fish",
+        "Pigs",
+        "Birds"
+      ],
+      "inCargoDetails": "Live animals (including tropical fish) are accepted as cargo. Refrigeration is available at all Hawaiian island locations. Perishable shipments must be packaged to withstand up to 48 hours of transit.",
+      "carrierCompartmentDetails": "",
+      "carrierCargoDetails": "Book under Specialized Shipping. Review the carrier’s Forms and Policies and Dangerous Goods pages for full terms, packaging standards, and restrictions.",
+      "dangerousBreeds": "Yes",
+      "dangerousBreedList": "",
+      "brachycephalic": "Yes",
+      "brachycephalicBreedList": "",
+      "serviceAnimals": "no",
+      "serviceAnimalDetails": "",
+      "esAnimals": "no",
+      "esaDetails": "",
+      "petShipping": "Yes",
+      "healthVaccinations": [],
+      "timestamp": "2026-01-31T02:04:35.000Z"
+    }
+  }
+}

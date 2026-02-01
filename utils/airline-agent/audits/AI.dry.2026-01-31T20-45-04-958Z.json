@@ -1,0 +1,134 @@
+{
+  "airlineCode": "AI",
+  "dryRun": true,
+  "ranAt": "2026-01-31T20:45:04.959Z",
+  "researchPayload": {
+    "airlineCode": "AI",
+    "officialLinks": [
+      {
+        "name": "Travelling with Pets",
+        "url": "https://www.airindia.com/in/en/travel-information/travelling-with-pets.html"
+      },
+      {
+        "name": "Pets in Cabin Guidelines (PDF)",
+        "url": "https://www.airindia.com/content/dam/air-india/pdfs/ai-pets-in-cabin-guidelines.pdf"
+      },
+      {
+        "name": "Pet Travel FAQs",
+        "url": "https://www.airindia.com/in/en/frequently-asked-questions/pet-travel.html"
+      },
+      {
+        "name": "Indemnity Form (PDF)",
+        "url": "https://www.airindia.com/content/dam/air-india/pdfs/indemnity-form.pdf"
+      },
+      {
+        "name": "Travelling with a Service Dog",
+        "url": "https://www.airindia.com/in/en/travel-information/health-medical-assistance/travelling-with-service-dog.html"
+      },
+      {
+        "name": "Baggage Allowance (United States page)",
+        "url": "https://www.airindia.com/in/en/travel-information/visa-documents/travel-to-united-states/baggage-allowance.html"
+      },
+      {
+        "name": "Air India Cargo – Pets",
+        "url": "https://cargo.airindia.com/in/en/personal-cargo/pets.html"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.airindia.com/in/en/travel-information/travelling-with-pets.html",
+        "date": "2026-01-31",
+        "note": "No explicit last updated shown; accessed January 31, 2026."
+      },
+      {
+        "url": "https://www.airindia.com/content/dam/air-india/pdfs/ai-pets-in-cabin-guidelines.pdf",
+        "date": "2026-01-31",
+        "note": "Filename indicates v9; no date printed; accessed January 31, 2026."
+      },
+      {
+        "url": "https://www.airindia.com/in/en/frequently-asked-questions/pet-travel.html",
+        "date": "2026-01-31",
+        "note": "No explicit last updated shown; accessed January 31, 2026."
+      },
+      {
+        "url": "https://www.airindia.com/in/en/travel-information/health-medical-assistance/travelling-with-service-dog.html",
+        "date": "2026-01-31",
+        "note": "No explicit last updated shown; accessed January 31, 2026."
+      },
+      {
+        "url": "https://www.airindia.com/in/en/travel-information/visa-documents/travel-to-united-states/baggage-allowance.html",
+        "date": "2026-01-31",
+        "note": "No explicit last updated shown; accessed January 31, 2026."
+      },
+      {
+        "url": "https://cargo.airindia.com/in/en/personal-cargo/pets.html",
+        "date": "2026-01-31",
+        "note": "Footer shows “Copyright © 2026 Air India Ltd.”; no page-specific last updated; accessed January 31, 2026."
+      }
+    ],
+    "policyFindings": [
+      "Species allowed: only domesticated cats and dogs.",
+      "In-cabin (PETC) eligibility and booking: Maximum 10 kg/22 lb combined pet + carrier; pet must be at least 8 weeks old; pregnant or sedated pets are not accepted. Book at least 48 hours before departure with document verification; check in 3 hours prior. One pet per passenger; maximum two pets per flight (service animals have priority; if a service animal is present, one PETC may be rebooked). PETC permitted only in Economy.",
+      "Seating for PETC: aisle seats in the last five rows of Economy; two pets must be seated at least five rows apart; exit rows not allowed. PETC not permitted in First, Business, or Premium Economy; pet may not occupy a seat or be held on lap.",
+      "In-cabin carrier rules: Soft-sided kennel only, maximum 17 × 10 × 9 in (L×W×H); must be leak‑proof, secure, ventilated on at least three sides, without wheels, and fit fully under the seat. Label the carrier; place an absorbent mat; ventilation should cover at least ~16% of surface area; external access points for food/water recommended. Remove leash before placing pet in carrier; no food inside carrier during flight. Pets must be muzzled and leashed at the airport/on board (leash removed when inside carrier).",
+      "Documents (domestic): pet passport/vaccination record; valid health and rabies certificate issued within 7 days; completed indemnity form (2 copies for direct, 4 for connecting). Originals verified at check-in.",
+      "Documents (international): add all entry permits/import licenses per destination rules (e.g., AQCS/CDC/IATA references). Indemnity form must be carried to check-in.",
+      "PETC fees per sector: Domestic within India INR 7,500; Short Haul International USD 140; Medium Haul International USD 160. Taxes apply; service is non-refundable/non-transferable except when airline conditions prevent PETC.",
+      "PETC route restrictions and embargoes: PETC not allowed on flights to the USA, Canada, Australia, or the UK; from UAE flights PETC may be allowed (destination rules apply) but PETC not allowed on India→UAE flights. PETC also not allowed on Ultra Long Haul flights.",
+      "Checked baggage (pets in hold): For combined pet + crate over 10 kg and up to 32 kg; above 32 kg must travel as cargo. Hard kennel per IATA container guidelines required; availability depends on aircraft type and operational compatibility. On arrival, pet is received near the baggage belt. Age for hold/cargo travel: 3 months or older.",
+      "Checked-baggage pet charges: Domestic INR 16,000; Short Haul International USD 350; Medium Haul International USD 350; International-to-International USD 350 (taxes apply).",
+      "Cargo (Air India Cargo): Acceptance follows IATA LAR; space pre-allocation required; acceptance up to 4 hours before departure; temperature-controlled handling provided; restrictions may apply by aircraft/route. Pets must be at least 3 months old; pregnant pets not accepted; certain birds under CITES cannot be shipped as personal cargo. For brachycephalic breeds, acceptance only when temperatures are below 25°C.",
+      "Cargo to/from the UK: pets only as cargo via LHR or LGW (not BHX), with AWB; pre-booking required.",
+      "Cargo ULH embargo: not accepting pets as personal cargo on ultra long‑haul flights (>12 hours) to the US and Canada.",
+      "Breed restrictions: All dog/cat breeds may travel in cabin if they meet PETC rules; brachycephalic (snub‑nosed) breeds are not permitted in the cargo compartment due to respiratory risk; customers considering cabin travel for such breeds are advised to consult a licensed veterinarian.",
+      "Passenger limitations: Unaccompanied minors may not travel with pets. Passengers needing wheelchair assistance or traveling with an infant cannot carry PETC (pet may be transported as cargo instead). Each passenger may carry one pet in cabin and one as checked baggage, subject to rules.",
+      "Connecting itineraries: Pets allowed on direct, transit, and connecting itineraries only when both flights are Air India (AI‑AI) and route allows pets; excess charges apply per segment.",
+      "Service animals (general): A service animal is a dog trained to perform tasks for a qualified individual with a disability (including psychiatric). Service dogs may travel in the cabin free of charge; must be harnessed/leashed/tethered, clean, well‑behaved; must fit at the passenger’s feet/under seat/in lap (if smaller than a two‑year‑old child); cannot sit in exit rows or occupy a seat; disruptive animals may be reclassified as pets.",
+      "Service animals (US flights): Fully trained psychiatric service dogs accepted; limit two PSDs per passenger; US DOT Service Animal forms required (air transportation form; relief attestation for flights >8 hours). CDC dog‑import suspensions may affect carriage; AI may refuse carriage for non‑compliance.",
+      "Service animals (additional note): Service dogs must be properly harnessed and muzzled; request accommodation at booking; country rules apply.",
+      "Emotional Support Animals: ESAs/comfort animals are not recognized as service animals; they may travel only as pets and must meet PETC or cargo rules and fees.",
+      "US routes note: Air India does not allow pets on nonstop flights between the US and India; certified service dogs are an exception."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "Destination-country veterinary, quarantine, and import/export rules apply in addition to airline policy; Air India references AQCS (India), US CDC, IATA Travel Centre and IATA container rules. Plan extra time for permits and any required No Objection Certificate (AQCS) when importing/exporting to/from India.",
+      "Some statements vary by page (e.g., US restrictions summarized on the US page vs. broader PETC/checked‑pet prohibitions shown elsewhere). When in doubt, the stricter rule generally applies; confirm with Air India before booking.",
+      "This summary is based only on official Air India pages linked above and was accessed on January 31, 2026. Policies can change; always recheck close to travel."
+    ]
+  },
+  "finalDoc": {
+    "error": "[\n  {\n    \"received\": \"Dogs\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCompartmentAnimals\",\n      0\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Dogs'\"\n  },\n  {\n    \"received\": \"Cats\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCompartmentAnimals\",\n      1\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Cats'\"\n  },\n  {\n    \"received\": \"Dogs\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      0\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Dogs'\"\n  },\n  {\n    \"received\": \"Cats\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"Cat\",\n      \"Dog\",\n      \"Bird\",\n      \"Reptile\"\n    ],\n    \"path\": [\n      \"inCargoAnimals\",\n      1\n    ],\n    \"message\": \"Invalid enum value. Expected 'Cat' | 'Dog' | 'Bird' | 'Reptile', received 'Cats'\"\n  }\n]",
+    "draft": {
+      "airlineCode": "AI",
+      "petPolicyURL": "https://www.airindia.com/in/en/travel-information/travelling-with-pets.html",
+      "airlineURL": "",
+      "PetPolicySummary": "Air India accepts domesticated dogs and cats, subject to approval and route restrictions. In-cabin (PETC) is allowed only in Economy, one pet per passenger, maximum two pets per flight. Book at least 48 hours before departure and check in 3 hours prior. Pets must be at least 8 weeks old for cabin and 3 months for hold/cargo; pregnant or sedated pets are not accepted. In-cabin combined pet + carrier must not exceed 10 kg (22 lb) and the soft-sided carrier must fit under the seat (max 17 × 10 × 9 in). Fees per sector: domestic INR 7,500; short-haul international USD 140; medium-haul international USD 160 (taxes apply). Checked as baggage is permitted when combined pet + crate is over 10 kg and up to 32 kg; above 32 kg must travel as cargo. Checked-baggage pet fees: domestic INR 16,000; international USD 350 per sector (including I-I) plus taxes. For domestic travel, carry vaccination record and valid health and rabies certificates (typically issued within 7 days) and completed indemnity forms; for international travel, obtain all required entry/import permits (e.g., AQCS/CDC/IATA). Route restrictions include: PETC not allowed on flights to the USA, Canada, Australia, or the UK; PETC not allowed India→UAE; pets to/from the UK must travel as cargo via approved airports; ultra long-haul personal cargo is not accepted to the US/Canada. Brachycephalic (snub-nosed) breeds are not accepted in the cargo hold due to risk. Unaccompanied minors cannot travel with pets; passengers traveling with an infant or requiring wheelchair assistance cannot carry PETC (use cargo/hold instead). Service dogs are accepted free of charge in accordance with country rules; on US flights, DOT forms are required.",
+      "ImprovedPetPolicySummary": "<h2>Air India Pet Policy Overview</h2><ul><li>Species: Domesticated cats and dogs only.</li><li>Booking: Request PETC at least 48 hours before departure; check in 3 hours prior.</li><li>Eligibility (Cabin): Only in Economy; one pet per passenger; max two PETC per flight. Pet must be ≥8 weeks old. Combined pet + carrier ≤10 kg (22 lb). Soft-sided carrier max 17 × 10 × 9 in; must fit under-seat.</li><li>Eligibility (Checked Baggage): Combined pet + crate &gt;10 kg up to 32 kg; ≥3 months old. Over 32 kg travels as cargo.</li><li>Not accepted: Pregnant or sedated pets.</li><li>Fees (per sector; taxes extra): PETC – India domestic INR 7,500; short-haul intl USD 140; medium-haul intl USD 160. Checked pets – India domestic INR 16,000; international (incl. I–I) USD 350.</li><li>Documents: Vaccination book, valid health & rabies certificates (typically within 7 days), completed indemnity form(s). International travel requires all entry/import permits per destination (e.g., AQCS/CDC/IATA).</li><li>Seating: PETC seated in the last five rows of Economy; exit rows prohibited; pets never occupy a seat or lap.</li><li>Route restrictions: PETC not allowed on flights to USA, Canada, Australia, or UK; India→UAE PETC not allowed; UK accepts pets only as cargo via approved airports. Ultra long-haul personal cargo not accepted to US/Canada.</li><li>Breeds: Snub-nosed (brachycephalic) breeds are not permitted in the cargo hold; consider cabin only if eligible and consult a vet.</li><li>Passenger limits: UMNR not permitted to travel with pets. Passengers with an infant or requiring wheelchair assistance cannot carry PETC (use cargo/hold).</li><li>Service dogs: Accepted free of charge; country-specific rules apply. On US flights, DOT forms required; ESAs not recognized as service animals.</li></ul>",
+      "microchip": "no",
+      "healthCertificate": "yes",
+      "inCompartment": "yes",
+      "inCompartmentAnimals": [
+        "Dogs",
+        "Cats"
+      ],
+      "inCompartmentDetails": "Cabin PETC is allowed only in Economy. One pet per passenger; maximum two pets per flight. Pet must be at least 8 weeks old. Combined pet + carrier must not exceed 10 kg (22 lb). Soft-sided carrier max 17 × 10 × 9 in and must fit under the seat. Book at least 48 hours before departure; check in 3 hours prior. Seat assignment in the last five rows of Economy; no exit rows; pet cannot occupy a seat or be on lap. Domestic PETC fee: INR 7,500 per sector; short-haul international: USD 140; medium-haul international: USD 160 (taxes extra). Documents: vaccination record, valid health & rabies certificates (typically within 7 days), indemnity forms (2 for direct; 4 for connections). PETC not allowed on flights to USA, Canada, Australia, or UK, and not allowed India→UAE. Service animals have priority and may limit PETC availability.",
+      "inCargo": "yes",
+      "inCargoAnimals": [
+        "Dogs",
+        "Cats"
+      ],
+      "inCargoDetails": "Checked as baggage permitted when combined pet + crate is over 10 kg up to 32 kg; pets ≥3 months old. Over 32 kg must be shipped as cargo. IATA-compliant hard kennel required; availability subject to aircraft/route. On arrival, pets are delivered near the baggage belt. Checked-baggage pet fees per sector: India domestic INR 16,000; international (incl. international-to-international) USD 350 (taxes extra). Brachycephalic breeds are not accepted in the cargo hold. Pregnant pets are not accepted. Connections allowed only on AI–AI itineraries where pets are accepted. For the UK, pets must travel only as cargo via approved airports. Ultra long-haul personal cargo to the US/Canada is not accepted. Acceptance times and restrictions vary; pre-approval required.",
+      "carrierCompartmentDetails": "<section class=\"container my-4\"><h2 class=\"mb-3\">In-Cabin Carrier Details</h2><p>Request PETC at least 48 hours before departure. Check in 3 hours prior for document verification. PETC is only available in Economy class.</p><ul><li>One pet per passenger; maximum two PETC per flight (service animals have priority).</li><li>Pet must be at least 8 weeks old; pregnant or sedated pets are not accepted.</li><li>Combined pet + carrier must not exceed 10 kg (22 lb).</li><li>Carrier: soft-sided, secure, leak-proof, ventilated on at least three sides, without wheels, and must fit fully under the seat (maximum 17 × 10 × 9 in).</li><li>Label the carrier and place an absorbent mat. No food inside the carrier during flight.</li><li>Dogs must be muzzled and leashed when not inside the carrier during airport/boarding; remove the leash before placing inside the carrier.</li></ul><h3>Seating and Onboard</h3><ul><li>Seats assigned in the last five rows of Economy; exit rows prohibited.</li><li>Pets cannot occupy a seat or be carried on lap or in hand.</li><li>If two PETC are onboard, they are seated at least five rows apart.</li></ul><h3>Fees (per sector; taxes extra)</h3><ul><li>Domestic (within India): INR 7,500</li><li>Short-haul international: USD 140</li><li>Medium-haul international: USD 160</li></ul><h3>Documents</h3><ul><li>Vaccination record and valid health & rabies certificates (typically issued within 7 days of travel).</li><li>Completed indemnity form(s): two copies for direct flights; four for connecting (AI–AI) itineraries.</li><li>For international travel, carry all required entry/import permits per destination (e.g., AQCS/CDC/IATA).</li></ul><h3>Route Restrictions</h3><ul><li>PETC not permitted on flights to USA, Canada, Australia, or the UK.</li><li>PETC not permitted on India→UAE flights; from UAE subject to destination rules.</li></ul></section>",
+      "carrierCargoDetails": "<section class=\"container my-4\"><h2 class=\"mb-3\">In-Hold and Cargo Details</h2><p>For checked pets, combined pet + crate over 10 kg and up to 32 kg may travel in the aircraft hold as checked baggage; above 32 kg must travel as cargo. Handling follows IATA Live Animals Regulations.</p><h3>Acceptance & Handling</h3><ul><li>Pets must be at least 3 months old; pregnant pets are not accepted.</li><li>IATA-compliant hard kennel required; secure door; adequate ventilation; sized for the pet to stand and turn comfortably.</li><li>Temperature-controlled handling is provided; restrictions may apply by aircraft type and route.</li><li>Acceptance for cargo typically up to 4 hours before departure with prior booking and clearances.</li></ul><h3>Restrictions</h3><ul><li>Brachycephalic (snub-nosed) breeds are not permitted in the cargo hold; in some cargo scenarios acceptance is only when temperatures are below 25°C.</li><li>Pets to/from the UK must travel only as cargo; permitted via London Heathrow (LHR) and London Gatwick (LGW) with a valid Air Waybill. Not permitted via Birmingham (BHX).</li><li>Ultra long-haul personal cargo (&gt;12 hours) to the US and Canada is not accepted.</li><li>Certain birds listed under CITES cannot be carried as personal cargo.</li></ul><h3>Charges</h3><ul><li>Checked-baggage pets: Domestic INR 16,000; International (incl. I–I) USD 350 per sector (taxes extra).</li></ul><p>Always verify destination import, quarantine, and permit requirements before travel.</p></section>",
+      "dangerousBreeds": "no",
+      "dangerousBreedList": " ",
+      "brachycephalic": "yes",
+      "brachycephalicBreedList": "Dogs: American Pit Bull,  American Staffordshire Terrier,  Boston Terrier,  Boxer, Brussels Griffon,  Mastiff (All Breeds),  Bulldog,  Bull Terrier,  Chow Chow,  Dutch Pug,  English Bulldog,  English Toy Spaniel,  French Bulldog,  Japanese Boxer,  Japanese Pug,  Japanese Spaniel,  Pekingese,  Pug,  Shih Tzu,  Staffordshire Bull Terrier Cats: Burmese,  Exotic Shorthair,  Himalayan,  Persian",
+      "serviceAnimals": "yes",
+      "serviceAnimalDetails": "<section class=\"container my-4\"><h2 class=\"mb-3\">Service Animals (In-Cabin)</h2><p>Air India accepts trained service dogs free of charge, subject to country-specific regulations. Emotional support/comfort animals are not recognized as service animals and may travel only as pets under PETC/cargo rules and fees.</p><h3>Requirements</h3><ul><li>Service dog must be individually trained to perform tasks for a qualified individual with a disability (including psychiatric disabilities).</li><li>Must be properly harnessed, leashed, or tethered and under control; clean and well-behaved (no aggressive or disruptive behavior).</li><li>Must fit at the passenger’s feet or under the seat; cannot occupy a seat or sit in exit rows.</li></ul><h3>Documentation</h3><ul><li>Country-specific health/vaccination and entry documents as required.</li><li>For flights to/from the United States: submit U.S. DOT Service Animal Air Transportation Form (and Relief Attestation for flights over 8 hours). Limits may apply (e.g., up to two psychiatric service dogs per passenger).</li></ul><p>Acceptance remains subject to compliance with all destination regulations (e.g., AQCS/CDC) and crew assessment at the airport.</p></section>",
+      "timestamp": "2026-01-31T20:45:04.955Z"
+    }
+  }
+}

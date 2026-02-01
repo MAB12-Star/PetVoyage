@@ -1,0 +1,53 @@
+{
+  "airlineCode": "AC",
+  "dryRun": true,
+  "ranAt": "2026-01-31T00:16:02.678Z",
+  "researchPayload": {
+    "ok": false,
+    "stage": "research_failed",
+    "airlineCode": "AC",
+    "diagnostics": [
+      {
+        "ok": true,
+        "url": "https://www.aircanada.com/cargo/all-products/ac-animals, https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html#/,",
+        "finalUrl": "https://www.aircanada.com/cargo/all-products/ac-animals,%20https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html",
+        "status": 200,
+        "contentType": "text/html",
+        "bytes": 10049,
+        "blocked": false,
+        "jsHeavy": true,
+        "readableChars": 16,
+        "textSample": "Air Canada Cargo",
+        "durationMs": 551,
+        "error": null
+      },
+      {
+        "ok": true,
+        "url": "https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html#/",
+        "finalUrl": "https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html",
+        "status": 200,
+        "contentType": "text/html; charset=UTF-8",
+        "bytes": 537027,
+        "blocked": false,
+        "jsHeavy": false,
+        "readableChars": 54826,
+        "textSample": "Air Canada - Travelling with your Pet Loading... skip to homepage\" data-ng-href=\"/{{cc.country_code}}/{{cc.lang_code}}/{{cc.type_user}}/home.html#/home:\" accesskey=\"0\" class=\"sr-only sr-only-focusable\">Skip to homepage skip to book flight\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#tab_magnet_title_0','#pageContentHeading');\" accesskey=\"0\" class=\"sr-only sr-only-focusable\">Skip to book a flight skip to mega navigation\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#skipPrimaryNavAnchor','#primaryNav');\" accesskey=\"1\" class=\"sr-only sr-only-focusable\">Skip to main navigation skip to mega navigation\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#primaryNavAnchor','#primaryNav');\" accesskey=\"1\" class=\"sr-only sr-only-focusable\">Skip to main navigation skip to content\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#pageContentHeading','#pageMainAnchor');\" accesskey=\"2\" class=\"sr-only sr-only-focusable\">Skip to content skip to search\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#searchbox_011','#metaNav');\" accesskey=\"3\" class=\"sr-only sr-only-focusable\">Skip to search field skip to search\" href=\"javascript:void(0);\" data-ng-click=\"cc.showSearchTextBox($event)\" accesskey=\"3\" class=\"sr-only sr-only-focusable\">Skip to search field skip to footer link\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#skipPageFooterAnchor','#pageFooterQuickNav');\" accesskey=\"4\" class=\"sr-on",
+        "durationMs": 562,
+        "error": null
+      }
+    ],
+    "sources": [
+      {
+        "name": "Air Canada – Travelling with your Pet",
+        "url": "https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html"
+      }
+    ],
+    "extractedText": "URL: https://www.aircanada.com/ca/en/aco/home/plan/special-assistance/pets.html\n\nAir Canada - Travelling with your Pet Loading... skip to homepage\" data-ng-href=\"/{{cc.country_code}}/{{cc.lang_code}}/{{cc.type_user}}/home.html#/home:\" accesskey=\"0\" class=\"sr-only sr-only-focusable\">Skip to homepage skip to book flight\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#tab_magnet_title_0','#pageContentHeading');\" accesskey=\"0\" class=\"sr-only sr-only-focusable\">Skip to book a flight skip to mega navigation\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#skipPrimaryNavAnchor','#primaryNav');\" accesskey=\"1\" class=\"sr-only sr-only-focusable\">Skip to main navigation skip to mega navigation\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#primaryNavAnchor','#primaryNav');\" accesskey=\"1\" class=\"sr-only sr-only-focusable\">Skip to main navigation skip to content\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#pageContentHeading','#pageMainAnchor');\" accesskey=\"2\" class=\"sr-only sr-only-focusable\">Skip to content skip to search\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#searchbox_011','#metaNav');\" accesskey=\"3\" class=\"sr-only sr-only-focusable\">Skip to search field skip to search\" href=\"javascript:void(0);\" data-ng-click=\"cc.showSearchTextBox($event)\" accesskey=\"3\" class=\"sr-only sr-only-focusable\">Skip to search field skip to footer link\" href=\"javascript:void(0);\" data-ng-click=\"cc.navigateToSection('#skipPageFooterAnchor','#pageFooterQuickNav');\" accesskey=\"4\" class=\"sr-on",
+    "notes": [
+      "The captured Air Canada pet policy page did not include the substantive policy content, only navigation/assistive text.",
+      "Without the full page content, we cannot reliably extract key details (acceptance in cabin vs checked/cargo, fees by route, kennel size/weight limits, breed/temperature restrictions, cabin/class limitations, booking rules, seasonal embargoes).",
+      "Please provide a readable copy of the policy body or allow fetching the live page content to complete extraction."
+    ]
+  },
+  "finalDoc": null
+}

@@ -1,0 +1,141 @@
+{
+  "airlineCode": "SN",
+  "dryRun": false,
+  "ranAt": "2026-02-01T02:07:57.218Z",
+  "researchPayload": {
+    "airlineCode": "SN",
+    "officialLinks": [
+      {
+        "name": "Pets (overview)",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets"
+      },
+      {
+        "name": "Cats and small dogs in the cabin",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-small-dogs-in-the-cabin.html"
+      },
+      {
+        "name": "Cats and dogs in the hold",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-dogs-in-the-hold.html"
+      },
+      {
+        "name": "Snub-nosed dogs and cats",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/snub-nosed-dogs-and-cats.html"
+      },
+      {
+        "name": "Other animals (cargo)",
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/other-animals.html"
+      },
+      {
+        "name": "Service dogs",
+        "url": "https://www.brusselsairlines.com/bf/en/special-care/pets/service-dogs"
+      },
+      {
+        "name": "Form: Information for Transportation of Animals in the Passenger Cabin (PETC form)",
+        "url": "https://www.brusselsairlines.com/content/dam/bel/pdf/SN_GOPS_Form-PetsInCabin_DEC22_A4.pdf"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets",
+        "date": "2026-02-01",
+        "note": "No explicit last-updated date shown; page references CDC changes effective 2024-08-01 for dogs entering the U.S.; accessed 2026-02-01."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-small-dogs-in-the-cabin.html",
+        "date": "2026-02-01",
+        "note": "No explicit last-updated date shown; page references CDC changes effective 2024-08-01 for dogs entering the U.S.; accessed 2026-02-01."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/cats-and-dogs-in-the-hold.html",
+        "date": "2026-02-01",
+        "note": "No explicit last-updated date shown; page references CDC changes effective 2024-08-01 for dogs entering the U.S.; accessed 2026-02-01."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/snub-nosed-dogs-and-cats.html",
+        "date": "2026-02-01",
+        "note": "No explicit last-updated date shown; page references CDC changes effective 2024-08-01 for dogs entering the U.S.; accessed 2026-02-01."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/us/en/special-care/pets/other-animals.html",
+        "date": "2026-02-01",
+        "note": "No explicit last-updated date shown; page references CDC changes effective 2024-08-01 for dogs entering the U.S.; accessed 2026-02-01."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/bf/en/special-care/pets/service-dogs",
+        "date": "2026-02-01",
+        "note": "No explicit last-updated date shown; page references CDC changes effective 2024-08-01 for dogs entering the U.S.; accessed 2026-02-01."
+      },
+      {
+        "url": "https://www.brusselsairlines.com/content/dam/bel/pdf/SN_GOPS_Form-PetsInCabin_DEC22_A4.pdf",
+        "date": "2026-02-01",
+        "note": "PDF filename indicates DEC22; no on-document update timestamp found; accessed 2026-02-01."
+      }
+    ],
+    "policyFindings": [
+      "Only cats and dogs are accepted as pets; other animal types must be shipped as cargo. Comply with all import/export and health rules for each country on your itinerary.",
+      "Pets are not accepted on Brussels Airlines passenger flights to/from the United Kingdom; for the UK they must travel as cargo.",
+      "USA dog import: for travel on/after 2024-08-01, dogs must be at least 6 months old. New bookings are accepted to Washington DC, New York-JFK, Atlanta, Miami, Los Angeles and Philadelphia. Transport to Newark (EWR) is possible if the dog has not been in a high-risk rabies area in the prior 6 months. Passengers must complete the CDC Dog Import Form and carry the confirmation.",
+      "In-cabin (cats and small dogs): One soft-sided carrier per passenger; maximum 4 pet containers per aircraft. Pet must stay fully inside the carrier under the seat for the entire flight; window seat required; not allowed in exit rows or the first bulkhead row.",
+      "In-cabin: Pet plus carrier weight must not exceed 8 kg (18 lb). Minimum age is 15 weeks (for U.S.-bound dogs, minimum 6 months per CDC). Pet must be clean, healthy, calm, and not pregnant.",
+      "In-cabin carrier: leak- and smell-proof, soft-sided without a rigid frame, fully closable, must fit under the seat. Maximum size 55 × 40 × 23 cm (total 118 cm / 45 in).",
+      "In-cabin: Two adult pets may share one carrier if they are comfortable with each other and the total remains ≤8 kg. Two small pets up to 6 months from the same litter may share one carrier (≤8 kg total).",
+      "In-cabin booking/documents: Request in advance via My booking or the Service Centre. At check-in, present two copies of the completed Information for Transportation of Animals in the Passenger Cabin (PETC) form.",
+      "In-cabin fees (one-way, SN-operated; verify per route/currency): Within Europe €75; Egypt/Israel/Morocco €95; West Africa €105; Central Africa €115; United States/Canada East Coast €115; Intra-Africa €65.",
+      "In the hold (cats and dogs): Request in advance via the Service Centre; subject to availability. Check in with your pet at least two hours before the latest check-in time. If you cannot travel with the pet, shipment as cargo is available.",
+      "In the hold eligibility: Minimum age generally 15 weeks (website also notes 16 weeks USA), but for trips to the USA only dogs at least 6 months old are accepted per CDC rules from 2024-08-01.",
+      "In the hold container: IATA-compliant hard-sided crate with solid top; clean, leak-proof bottom; escape- and claw-proof; securely bolted top/bottom; door with secure fastenings; no wheels; absorbent floor; ventilation on 4 sides with vents over the upper two-thirds (max vent size dogs 25×25 mm; cats 19×19 mm). Include one water and one feed dish attached and accessible from outside with feeding/watering instructions. Maximum checked-pet container size 125 × 75 × 85 cm; larger must go as cargo.",
+      "In the hold fees (one-way, SN-operated; two crate-size bands per region): examples: Within Europe €100/€200; Egypt & Levant €130/€260; West Africa €150/€300; Central Africa €170/€340; USA/Canada East Coast €170/€340; USA/Canada West Coast €190/€380; Intra-Africa €80/€160. Verify per route and crate size.",
+      "Additional transfer surcharge for pets in the hold: €150 / CHF 170 / USD 170 / CAD 220 per direction when transiting via Brussels, Frankfurt, Zurich, Vienna or Geneva.",
+      "Embargoes/route limits: Pets in the hold are not accepted on Brussels–Yerevan (and return) between 2025-06-15 and 2025-09-15.",
+      "Snub-nosed (brachycephalic) breeds are not accepted in the hold. Examples of affected dog breeds include American Bully, Affenpinscher, Bulldogs (all except American Bulldog), Pugs (all), American Pit Bull Terrier, American Staffordshire Terrier, Boston Terrier, Boxer, Brussels Griffon, Bullmastiff, Bull Terrier (except Miniature), Chow Chow, English Toy Spaniel, Japanese Chin/Spaniel, King Charles Spaniel, Lhasa Apso, Pekingese, Pit Bull, Shar Pei, Shih Tzu, Staffordshire Bull Terrier, Tibetan Spaniel; snub-nosed cat breeds include British Shorthair, Exotic Shorthair, Himalayan, Persian, Scottish Fold. Such breeds may travel in the cabin if they meet PETC requirements.",
+      "Service dogs: Recognized assistance dogs travel in the cabin free of charge with no size/weight limit, but must fit within the floor space at the seat, remain leashed to the seat, behave appropriately, and not occupy a seat. Booking must be made via the Medical Assistance team at least 48 hours before departure. For flights over 8 hours, a written statement is required that the dog will not need to relieve itself (or can do so hygienically).",
+      "Service dogs documentation: For non-U.S. flights, provide either a certificate describing training completed (with duration, trainer and facility details) or a certificate from a training school accredited by ADI/ADEu/IGDF.",
+      "Service dogs on nonstop flights to/from the U.S.: service dogs, including psychiatric service dogs, are accepted; emotional support animals are not assistance animals under U.S. DOT rules. U.S. DOT forms are required, and from 2024-08-01 U.S.-bound dogs must be at least 6 months old per CDC.",
+      "Emotional Support Animals are not considered service dogs and must travel under the standard pet policy if eligible."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "For pets in the hold, the official page shows two price bands per region (likely crate size categories). Confirm the exact amount for your crate size with Brussels Airlines.",
+      "For U.S. travel with dogs, CDC import rules have changed since 2024-08-01. Brussels Airlines summarizes acceptance conditions, but you must also comply with CDC requirements and carry the CDC import confirmation.",
+      "Always check the operating carrier on codeshares, as pet rules and fees may differ. Prices listed are for SN-operated flights and are one-way."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "SN",
+    "petPolicyURL": "https://www.brusselsairlines.com/us/en/special-care/pets",
+    "airlineURL": "https://www.brusselsairlines.com",
+    "PetPolicySummary": "Brussels Airlines accepts only cats and small dogs as pets. In-cabin (PETC): maximum 8 kg (18 lb) including a soft‑sided, fully closable, leak/smell‑proof carrier that fits under the seat (55 × 40 × 23 cm, or total 118 cm/45 in). Pet must remain fully inside the carrier for the entire flight. One pet bag per passenger; up to 2 adult pets may share one bag if comfortable, or 2 littermates (≤6 months) from the same litter, total still ≤8 kg. Age: pet must be ≥15 weeks; for travel to the USA, only dogs ≥6 months are accepted per CDC rules. Booking is required in advance and subject to availability (maximum 4 pet containers per aircraft); bring two signed copies of the PETC form to check-in. Seating: window seat; not allowed in first/bulkhead or exit rows; not seated near other pets. In-cabin fees (one-way, SN-operated; confirm by route): Within Europe €75; Egypt/Israel/Morocco €95; West Africa €105; Central Africa €115; United States/Canada East Coast €115; Intra-Africa €65. Hold (AVIH – checked as baggage): cats and dogs accepted in an IATA-compliant, hard‑sided crate (no wheels), ventilated on all 4 sides (vents over upper two‑thirds), with water and food dishes attached and accessible from outside; pet must be able to stand, turn, and lie comfortably; maximum crate size as baggage is 125 × 75 × 85 cm (larger must ship as cargo). Check in early (at least 2 hours before latest check-in time). Hold fees (one-way, SN-operated; two size bands per region): Within Europe €100/€200; Egypt & Levant €130/€260; West Africa €150/€300; Central Africa €170/€340; USA/Canada East Coast €170/€340; USA/Canada West Coast €190/€380; Intra-Africa €80/€160. Additional transfer surcharge for pets in the hold: €150 / CHF 170 / USD 170 / CAD 220 per direction when transiting via Brussels, Frankfurt, Zurich, Vienna or Geneva. Snub‑nosed (brachycephalic) breeds are not accepted in the hold; cabin may be possible if all PETC rules are met. Pets are not accepted on Brussels Airlines passenger flights to/from the United Kingdom (only cargo options). Embargo: pets in the hold are not accepted on Brussels–Yerevan between 2025‑06‑15 and 2025‑09‑15. Travelers are responsible for all entry/transit documents and vaccinations. Dogs to the USA must meet CDC requirements (including CDC Dog Import Form and designated arrival airports); new bookings are accepted to Washington DC, New York‑JFK, Atlanta, Miami, Los Angeles, and Philadelphia; Newark (EWR) is possible only if the dog has not been in a high‑risk rabies area in the prior 6 months.",
+    "ImprovedPetPolicySummary": "<h2>Brussels Airlines Pet Policy</h2><h3>Allowed animals</h3><ul><li>Cats and small dogs only. Other species must be transported as cargo.</li></ul><h3>In the cabin (PETC)</h3><ul><li>Weight/size: up to 8 kg (18 lb) including carrier; soft-sided, leak/smell‑proof, fully closable, without a rigid frame; must fit under the seat within 55 × 40 × 23 cm (or total 118 cm / 45 in).</li><li>Condition/behavior: clean, healthy, calm/well‑behaved; not pregnant; pet must remain fully inside the closed carrier (including head and tail) for the entire flight.</li><li>Age: 15+ weeks. For travel to the USA, only dogs 6+ months are accepted (CDC rule effective 2024‑08‑01).</li><li>How many: 1 pet bag per passenger. Two adult pets may share one bag if they are comfortable together, or two littermates (≤6 months) from the same litter may share—total still ≤8 kg including the bag.</li><li>Seating: window seat required; not allowed in first/bulkhead or exit rows; not seated near other pets.</li><li>Availability: limited—maximum 4 pet containers per aircraft. Book in advance via My booking or the Service Centre.</li><li>Documents: bring two signed copies of the “Information for Transportation of Animals in the Passenger Cabin” (PETC form) to check‑in.</li><li>Fees (one‑way, SN‑operated; verify current amounts): Within Europe €75; Egypt/Israel/Morocco €95; West Africa €105; Central Africa €115; United States/Canada East Coast €115; Intra‑Africa €65.</li></ul><h3>In the hold (AVIH – checked as baggage)</h3><ul><li>Accepted animals: cats and dogs.</li><li>Crate: IATA‑compliant hard‑sided crate with solid top; clean, lockable, leak‑ and escape‑proof; no wheels; securely fastened/bolted; floor lined with absorbent material; ventilation on all 4 sides with openings over the upper two‑thirds. Attach one water and one food dish accessible from outside (left empty at drop‑off) with feeding/watering instructions affixed.</li><li>Size: pet must be able to stand, turn and lie comfortably; maximum checked‑baggage crate size: 125 × 75 × 85 cm (larger must be shipped as cargo).</li><li>Check‑in: arrive with your pet at least 2 hours before the latest check‑in time.</li><li>Age: generally 15+ weeks; for USA travel, only dogs 6+ months per CDC.</li><li>Fees (one‑way, SN‑operated; two size bands per region): Within Europe €100/€200; Egypt &amp; Levant €130/€260; West Africa €150/€300; Central Africa €170/€340; USA/Canada East Coast €170/€340; USA/Canada West Coast €190/€380; Intra‑Africa €80/€160.</li><li>Transfer surcharge when transiting via BRU/FRA/ZRH/VIE/GVA: €150 / CHF 170 / USD 170 / CAD 220 per direction.</li></ul><h3>Breed and route restrictions</h3><ul><li>Snub‑nosed (brachycephalic) breeds are not accepted in the hold; cabin carriage may be possible if all PETC rules are met and documents are presented.</li><li>United Kingdom: pets are not accepted on Brussels Airlines passenger flights to/from the UK (cargo only).</li><li>Seasonal embargo: no pets in the hold on Brussels–Yerevan between 2025‑06‑15 and 2025‑09‑15.</li></ul><h3>USA dog import specifics</h3><ul><li>Dogs must be 6+ months and comply with CDC rules, including completion of the CDC Dog Import Form with confirmation.</li><li>Accepted arrival airports for new bookings: Washington DC, New York‑JFK, Atlanta, Miami, Los Angeles, Philadelphia; Newark (EWR) possible only if the dog has not been in a high‑risk rabies area in the previous 6 months.</li></ul><h3>Service dogs</h3><ul><li>Recognized assistance dogs travel in the cabin free of charge (no weight/size limits) but must fit within the floor space at your seat, remain leashed to the seat, behave appropriately, and may not occupy a passenger seat.</li><li>Booking via the Medical Assistance team is required at least 48 hours before departure. For flights over 8 hours, provide a written statement that the dog will not need to relieve itself or can do so hygienically.</li><li>Documentation: For non‑U.S. routes, provide training documentation (e.g., certificate with training details or a certificate from a school accredited by ADI/ADEu/IGDF). For nonstop flights to/from the U.S., U.S. DOT service animal forms are required; emotional support animals are not considered service dogs.</li></ul><h3>Documentation and responsibilities</h3><ul><li>Passengers are responsible for complying with all import/transit/export rules and carrying all required documents (permits, health/vaccination certificates, pet passport/ID).</li></ul>",
+    "microchip": "no",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "cats",
+      "dogs"
+    ],
+    "inCompartmentDetails": "Cats and small dogs may travel in the cabin if the total weight (pet + soft-sided carrier) is ≤8 kg/18 lb. The carrier must be leak- and smell-proof, fully closable, without a rigid frame, and stow completely under the seat in front within 55 x 40 x 23 cm or total 118 cm/45 in. The pet must be clean, healthy, calm/well-behaved, not pregnant, and remain fully inside the carrier (including head and tail) for the entire flight. Age: ≥15 weeks; for travel to the USA, only dogs ≥6 months are accepted (CDC). One pet bag per passenger. Two adult pets may share one bag if they are comfortable together, or two small pets (≤6 months) from the same litter may share, total still ≤8 kg including the bag. Seating rules: window seat required; not permitted in first/bulkhead or exit rows; not seated near other pets. Booking must be requested in advance and is subject to availability (maximum 4 pet containers per aircraft). Bring two signed copies of the Form for carrying an animal in the passenger cabin to check-in. Fees apply and vary by route.",
+    "inCargo": "yes",
+    "inCargoAnimals": [
+      "cats",
+      "dogs"
+    ],
+    "inCargoDetails": "Cats and dogs may be carried in the aircraft hold as checked baggage (AVIH). Pet must be clean, healthy, not pregnant, and kept in a suitable IATA-compliant hard-sided transport crate with a solid top, secure door fastenings, no wheels, leak- and escape-proof construction, and a floor lined with absorbent material. The crate must be large enough for the animal to stand upright, turn around, and lie down comfortably. Ventilation is required on all 4 sides with openings placed over the upper two-thirds (max vent size: dogs 25×25 mm; cats 19×19 mm). One water and one feed dish must be attached to the door or accessible from outside (left empty at handover); feeding/watering instructions must be affixed. Maximum crate size accepted as baggage: 125 x 75 x 85 cm; larger must be shipped as cargo. Check in with your pet at least two hours before the latest check-in time. Age: generally ≥15 weeks; for travel to the USA, only dogs ≥6 months are accepted per CDC rules. Fees are charged per one-way and vary by route and crate size band (e.g., Europe €100/€200 up to USA/Canada West Coast €190/€380). An additional transfer surcharge of €150 / CHF 170 / USD 170 / CAD 220 per direction applies when transiting via Brussels, Frankfurt, Zurich, Vienna or Geneva. Snub-nosed (brachycephalic) breeds are not accepted in the hold.",
+    "carrierCompartmentDetails": "Soft-sided carrier only; fully closable; leak/smell-proof; no rigid frame; must fit under seat within 55 x 40 x 23 cm (or total 118 cm/45 in). One carrier per passenger. Window seat required; not allowed in first/bulkhead or exit rows; not seated near other pets. Bring two signed copies of the cabin pet form.",
+    "carrierCargoDetails": "Hard-sided, IATA-compliant crate with solid top; clean, lockable, leak- and escape-proof; no wheels; securely fastened/bolted; floor lined with absorbent material; ventilated on all four sides with ventilation openings placed over the upper two-thirds (max vent size: dogs 25×25 mm; cats 19×19 mm). Attach empty water and food dishes accessible from outside; affix feeding/watering instructions. Max crate size as baggage: 125 x 75 x 85 cm; larger must ship as cargo.",
+    "dangerousBreeds": "no",
+    "dangerousBreedList": "",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": "Dogs: American Bully; Affenpinscher; Bulldogs (all, except American Bulldog); Pugs (all); American Pit Bull Terrier; American Staffordshire Terrier; Boston Terrier; Boxer; Brussels Griffon; Bullmastiff; Bull Terrier (except Miniature Bull Terrier); Chow Chow; English Toy Spaniel; Japanese Chin/Japanese Spaniel; King Charles Spaniel; Lhasa Apso; Pekingese; Pit Bull; Shar Pei; Shih Tzu; Staffordshire Bull Terrier; Tibetan Spaniel; cross-breeds of the above. Cats: British Shorthair; Exotic Shorthair; Himalayan; Persian; Scottish Fold.",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\"><h2 class=\"mb-3\">Service Animals (Assistance Dogs)</h2><p>Recognized assistance dogs (e.g., guide, hearing, mobility, seizure/diabetes alert, and psychiatric service dogs on U.S. routes) travel in the cabin free of charge.</p><ul><li>Booking: request via the Medical Assistance team at least 48 hours before departure.</li><li>On board: the dog must fit in the floor space at your seat, remain in the same spot for the entire flight, be leashed and secured to the seat (harness recommended), and must not occupy a seat.</li><li>Behavior: must be fully trained, under control, and must not bark, growl, or jump on people or other animals.</li><li>For flights over 8 hours: provide a written statement that the dog will not need to relieve itself or can do so in a hygienic manner.</li><li>Documents (non‑U.S. routes): provide training documentation (certificate describing training completed with duration, trainer and facility details) or a certificate from a school accredited by ADI/ADEu/IGDF.</li><li>Documents (nonstop to/from the U.S.): U.S. DOT service animal forms are required. Emotional Support Animals are not considered assistance dogs and must travel under the pet policy if eligible.</li><li>Recommendation: bring a muzzle as a precaution and consideration for other passengers.</li></ul></section>",
+    "esAnimals": "no",
+    "esaDetails": "",
+    "petShipping": "yes",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-02-01T03:12:00.000Z"
+  }
+}

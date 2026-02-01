@@ -43,6 +43,9 @@ const { attachAds } = require('./middleware');
 const sitemapRoutes = require('./routes/sitemap');
 const { redirectOldAirlineLinks, toDoListMiddleware } = require('./middleware');
 const e = require('connect-flash');
+const pagesRoutes = require('./routes/pages');
+
+
 
 
 
@@ -150,6 +153,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/admin", require("./routes/adminAgent"));
+app.use("/admin", require("./routes/adminAirlineAgent"));
+
 app.use("/admin", adminRoutes);
 
 
@@ -189,6 +194,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/', legalRoutes);
 app.use('/account', accountRoutes);
 app.use('/', sitemapRoutes);
+app.use('/', pagesRoutes);
 
 
 

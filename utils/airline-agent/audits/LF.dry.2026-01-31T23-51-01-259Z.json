@@ -1,0 +1,109 @@
+{
+  "airlineCode": "LF",
+  "dryRun": true,
+  "ranAt": "2026-01-31T23:51:01.259Z",
+  "researchPayload": {
+    "airlineCode": "LF",
+    "officialLinks": [
+      {
+        "name": "Traveling with Pets",
+        "url": "https://www.contourairlines.com/travel-information/passengers/traveling-with-pets"
+      },
+      {
+        "name": "Contract of Carriage (PDF)",
+        "url": "https://www.contourairlines.com/images/pdf/ContractOfCarriage03302022.pdf"
+      },
+      {
+        "name": "Changes & Cancellations",
+        "url": "https://www.contourairlines.com/need-help/changes-cancellations"
+      },
+      {
+        "name": "Special Assistance",
+        "url": "https://www.contourairlines.com/travel-information/passengers/special-assistance"
+      },
+      {
+        "name": "Contact Us",
+        "url": "https://www.contourairlines.com/need-help/contact-us"
+      }
+    ],
+    "nonOfficialLinks": [],
+    "sourceDates": [
+      {
+        "url": "https://www.contourairlines.com/images/pdf/ContractOfCarriage03302022.pdf",
+        "date": "2022-03-30",
+        "note": "Revised date stated on PDF."
+      },
+      {
+        "url": "https://www.contourairlines.com/travel-information/passengers/traveling-with-pets",
+        "date": "unknown",
+        "note": "No explicit last updated date on page; site footer shows © 2026."
+      },
+      {
+        "url": "https://www.contourairlines.com/need-help/changes-cancellations",
+        "date": "unknown",
+        "note": "No explicit last updated date on page; site footer shows © 2026."
+      },
+      {
+        "url": "https://www.contourairlines.com/travel-information/passengers/special-assistance",
+        "date": "unknown",
+        "note": "No explicit last updated date on page; site footer shows © 2026."
+      }
+    ],
+    "policyFindings": [
+      "In-cabin pets: domesticated dogs and cats only; reservation for pet must be made by phone; no pet fee.",
+      "Pet must remain in a carrier under the seat; passengers with pets cannot sit in exit rows; one pet carrier per passenger.",
+      "Website carrier size limit: up to 24\" L x 16\" W x 10\" H; counts as the carry-on item.",
+      "Contract of Carriage carrier limits: hard-sided max 17.5\" L x 12\" W x 7.5\" H; soft-sided max 18\" L x 11\" W x 11\" H; carrier must be leak-proof and ventilated on at least two sides; no all-wire containers; soft-sided pet carriers designed for pets are acceptable.",
+      "Quantity limits (website): maximum of two pet containers in the cabin per flight; maximum one pet carrier per passenger.",
+      "Quantity limits (Contract of Carriage): up to three in-cabin pets per flight; maximum one in-cabin pet container per ticketed passenger; up to two small cats or dogs may share one container if they can stand and turn comfortably.",
+      "Other rules: pet must be harmless, inoffensive, odorless, and require no attention during transit; container subject to inspection; passenger responsible for health/vaccination and legal compliance.",
+      "Unaccompanied minors (age 5–14) may not bring an in-cabin pet.",
+      "Breed/species restrictions for pets (not service animals): pit bull breed dogs not accepted; snakes/reptiles, ferrets, rodents, and spiders not accepted.",
+      "Service animals: only dogs qualify under ACAA; accepted regardless of breed/type when meeting requirements; no charge; must fit on lap, at feet, or under seat, and may not block the aisle.",
+      "Service animals: DOT Service Animal Air Transportation Form must be submitted 48 hours before departure; passengers may be asked to present documentation during travel.",
+      "Contract of Carriage service animal details: one service animal per qualified passenger; must be harnessed/leashed and under control; trainers may bring one service animal in training free of charge; service animals may not occupy a seat; customers may purchase an extra seat for foot space (does not add kennel allowance); not seated in exit rows.",
+      "Working dogs on official duty (explosives/drug detection/search & rescue) accepted without charge with documentation.",
+      "Emotional Support Animals are not service animals; they may travel as pets if they meet in-cabin pet requirements and space is available.",
+      "Checked or cargo pets: no separate checked or cargo pet program is published; only in-cabin pets are covered; no seasonal temperature embargoes published for in-cabin pets."
+    ],
+    "notes": [
+      "AllowedHosts=1",
+      "researchMode=seed_first",
+      "Conflict: website lists carrier size limit 24\" x 16\" x 10\" and two pet containers per flight, while the Contract of Carriage specifies smaller carrier dimensions and up to three in-cabin pets per flight; confirm current limits when booking and consider using the stricter/smaller dimensions to avoid issues.",
+      "Practical: call Customer Experience at 1-888-332-6686 to reserve pet space and confirm current carrier size and per-flight limits; bring required documentation and arrive early for any additional paperwork at the ticket counter."
+    ]
+  },
+  "finalDoc": {
+    "airlineCode": "LF",
+    "petPolicyURL": "https://www.contourairlines.com/travel-information/passengers/traveling-with-pets",
+    "airlineURL": "www.contourairlines.com",
+    "PetPolicySummary": "Contour Airlines accepts small dogs and cats in-cabin only, at no charge. Reserve pet space by phone in advance; space is limited (website: up to 2 pet containers per flight; Contract of Carriage: up to 3). One carrier per passenger; the pet must remain in the under‑seat carrier and you may not sit in an exit row. The carrier counts as your carry-on. Website carrier size: 24 x 16 x 10 in; the Contract of Carriage lists smaller hard/soft-sided limits. Up to two small pets may share one carrier if they can stand and turn around. Unaccompanied minors (5–14) may not bring a pet. Pit bull breed dogs are not accepted as pets. There is no checked/cargo pet program. Service animals: dogs only under ACAA; submit the DOT Service Animal Air Transportation Form 48 hours before departure.",
+    "ImprovedPetPolicySummary": "<section>\n  <h2>Contour Airlines Pet Policy (In-Cabin Only)</h2>\n  <ul>\n    <li>Allowed pets: domesticated dogs and cats only.</li>\n    <li>Reservation required by phone in advance; no pet fee.</li>\n    <li>Quantity limits: website states a maximum of 2 pet containers per flight; Contract of Carriage (CoC) states up to 3. One carrier per passenger.</li>\n    <li>Carrier must fit under the seat; pet must remain in the carrier for the entire flight; passengers with pets may not sit in exit rows. Carrier counts as your carry-on.</li>\n    <li>Carrier sizing: website max 24” L x 16” W x 10” H. CoC lists hard-sided max 17.5” x 12” x 7.5” and soft-sided max 18” x 11” x 11”. Carrier must be leak-proof and ventilated on at least two sides; no all-wire containers; soft-sided pet carriers designed for pets are acceptable.</li>\n    <li>Up to two small cats or dogs may share one carrier if they can stand and turn around comfortably.</li>\n    <li>UM (age 5–14) may not bring an in-cabin pet.</li>\n    <li>Behavior/condition: pet must be harmless, inoffensive, odorless, and require no attention during transit; container subject to inspection.</li>\n    <li>Not accepted as pets: pit bull breed dogs. Only dogs and cats are accepted as in-cabin pets.</li>\n    <li>No checked or cargo pet program is offered; only in-cabin pets are accepted.</li>\n  </ul>\n  <h3>Service Animals</h3>\n  <ul>\n    <li>Only dogs individually trained to perform tasks for a person with a disability qualify under the ACAA. Emotional Support Animals (ESAs) are not service animals.</li>\n    <li>No charge; must fit on your lap, at your feet, or under your seat, and may not block the aisle or occupy a seat. Not permitted in exit rows.</li>\n    <li>Limit: one service animal per qualified passenger; animal must be harnessed/leashed and under control.</li>\n    <li>Submit the U.S. DOT Service Animal Air Transportation Form to customercare@contourairlines.com at least 48 hours before departure and keep a copy with you.</li>\n    <li>Working dogs on official duty (e.g., explosives/drug detection, search & rescue) accepted without charge with documentation.</li>\n    <li>Service animal trainers may bring one service animal in training free of charge. Purchasing an extra seat for additional foot space is optional and does not increase kennel allowance.</li>\n  </ul>\n  <p>Note: Always confirm current limits and carrier sizing when booking.</p>\n</section>",
+    "microchip": "no",
+    "healthCertificate": "yes",
+    "inCompartment": "yes",
+    "inCompartmentAnimals": [
+      "Dog",
+      "Cat"
+    ],
+    "inCompartmentDetails": "We know your family might include those with four legs and fur. Contour welcomes small pets onboard the aircraft at no charge. Reservations for your pet must be made in advance over the phone with Customer Experience to ensure availability and reserve a space for your pet. We are not able to book pets online.\n\nFor safety, we do not allow more than two (2) pet containers in the cabin at any time and only one (1) pet carrier per passenger. Pets are required to stay in their carrier at all times and must be soothed by the owner in its carrier.\n\nPermitted pets on Contour flights include domesticated dogs and cats. Pet carriers are required to fit under the seat and must be big enough to allow your pet to stand up, lie down, and turn around in a natural position. Please note that you are not allowed to sit in an Emergency Exit row with a pet carrier. Pet carrier dimensions are not to exceed 24” length x 16” width x 10” height and are considered to be a carry-on item for allowance purposes.\n\nPer the Contract of Carriage, up to two small cats or dogs may share one carrier if they can stand and turn around comfortably. Unaccompanied minors (age 5–14) may not bring an in-cabin pet. Pets must be harmless, inoffensive, odorless, and require no attention during transit; containers are subject to inspection.",
+    "inCargo": "no",
+    "inCargoAnimals": [],
+    "inCargoDetails": "Contour does not accept pets as checked baggage or cargo; only in-cabin pets are permitted.",
+    "carrierCompartmentDetails": "Under-seat pet carrier counts as the carry-on. Website size limit: 24” L x 16” W x 10” H. Contract of Carriage limits: hard-sided max 17.5” L x 12” W x 7.5” H; soft-sided max 18” L x 11” W x 11” H. Carrier must be leak-proof and ventilated on at least two sides; soft-sided carriers designed for pets are acceptable; all-wire containers are not accepted.",
+    "carrierCargoDetails": "",
+    "dangerousBreeds": "yes",
+    "dangerousBreedList": "Dogs: Pit bull-type breeds (not accepted as pets)",
+    "brachycephalic": "yes",
+    "brachycephalicBreedList": "French Bulldogs, English Bulldogs, Pugs",
+    "serviceAnimals": "yes",
+    "serviceAnimalDetails": "<section class=\"container my-4\">\n  <h2 class=\"mb-3\">Service Animals (In-Cabin & Support)</h2>\n  <p>Under the Air Carrier Access Act (ACAA), a service animal is defined as a dog, regardless of breed or type, individually trained to perform tasks for a qualified individual with a disability. This includes physical, sensory, psychiatric, intellectual, or other mental disabilities.</p>\n  <ul>\n    <li>Only dogs trained to perform work or tasks qualify as service animals. Emotional Support Animals, comfort/companion animals, and other species are not recognized as service animals.</li>\n    <li>One service animal per qualified passenger; the animal must be harnessed/leashed and under control at all times.</li>\n    <li>No charge if requirements are met. The animal must fit on your lap, at your feet, or under your seat, may not block the aisle, may not occupy a seat, and is not permitted in exit rows.</li>\n    <li>Please complete and submit the U.S. Department of Transportation Service Animal Air Transportation Form to <strong>customercare@contourairlines.com</strong> at least 48 hours before departure, and carry a copy while traveling.</li>\n    <li>Dogs trained to detect explosives, drugs, or trained for search and rescue (with documentation) are also welcome at no charge.</li>\n    <li>Service animal trainers may bring one service animal in training free of charge. Customers may purchase an extra seat for additional foot space; this does not increase kennel allowance.</li>\n  </ul>\n  <div class=\"alert alert-secondary\" role=\"alert\">\n    When traveling on another airline, please review their specific requirements for pets and service animals, as they may differ.\n  </div>\n</section>",
+    "esAnimals": "yes",
+    "esaDetails": "Emotional Support Animals are not recognized as service animals. They may travel as pets in-cabin if they meet Contour’s in-cabin pet requirements and space is available.",
+    "petShipping": "no",
+    "healthVaccinations": [
+      "Rabies"
+    ],
+    "timestamp": "2026-01-31T23:59:30.000Z"
+  }
+}
