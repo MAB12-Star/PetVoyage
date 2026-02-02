@@ -53,6 +53,12 @@ router.get('/getCountryRegulationList', async (req, res) => {
  *
  * If attachAds is not mounted, getAd will be undefined and nothing renders.
  */
+/* ---------------- SHOW COUNTRY ---------------- */
+/**
+ * ✅ Attach Ads middleware HERE so showCountry.ejs has:
+ *   - res.locals.getAd()
+ *   - res.locals.adsByPlacement
+ */
 router.get('/country/:country', mw.attachAds, async (req, res) => {
   try {
     // ✅ decode + trim to avoid mismatch from URL encoding
@@ -106,7 +112,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       );
     }
 
-    // ✅ If user requested a non-canonical petType (Dog, Dogs, Dog & Cat, etc) redirect to canonical
+    // ✅ If user requested a non-canonical petType redirect to canonical
     if (selectedPetTypeRaw && slugKey(selectedPetTypeRaw) !== canonicalPetType) {
       const safeCountryRedirect = regulations.destinationCountry;
       return res.redirect(
@@ -171,6 +177,44 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       ).toISOString()
     };
 
+    // -----------------------------
+    // ✅ Load uploaded PDFs for this country (agent_uploaded_sources)
+    // -----------------------------
+    let uploadedPdfs = [];
+    try {
+      // Try to use mongoose connection if available
+      let mongoose;
+      try { mongoose = require("mongoose"); } catch {}
+      const db = mongoose?.connection?.db;
+
+      if (db) {
+        const rows = await db.collection("agent_uploaded_sources")
+          .find({ countryName: safeCountry })
+          .project({ extractedText: 0 })
+          .sort({ createdAt: -1 })
+          .limit(50)
+          .toArray();
+
+        uploadedPdfs = (rows || []).map(r => {
+          const rel = String(r.publicUrl || "");
+          const absolute =
+            rel.startsWith("http://") || rel.startsWith("https://")
+              ? rel
+              : `${baseUrl}${rel.startsWith("/") ? "" : "/"}${rel}`;
+
+          return {
+            id: r._id?.toString?.(),
+            filename: r.filename,
+            publicUrl: absolute,
+            createdAt: r.createdAt,
+            auditId: r.auditId || null
+          };
+        });
+      }
+    } catch (e) {
+      console.warn("[WARN] Failed to load uploaded PDFs:", e?.message || e);
+    }
+
     const seoData = {
       regulations,
 
@@ -184,6 +228,9 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       // what your EJS cards need
       details,
       originReqs,
+
+      // ✅ Uploaded PDF links for frontend display
+      uploadedPdfs,
 
       // ✅ Structured data for head partial
       jsonLd,
@@ -208,15 +255,17 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       originReqsCount: originReqs.length,
       regulationId: String(regulations._id),
       hasGetAd: typeof res.locals.getAd === 'function',
-      placements: Object.keys(res.locals.adsByPlacement || {})
+      placements: Object.keys(res.locals.adsByPlacement || {}),
+      uploadedPdfsCount: uploadedPdfs.length
     });
 
-    res.render('regulations/showCountry', seoData);
+    return res.render('regulations/showCountry', seoData);
   } catch (err) {
     console.error("[ERROR] Failed to fetch country regulation:", err);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
+
 
 
 

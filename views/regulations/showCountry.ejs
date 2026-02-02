@@ -475,10 +475,30 @@
             </div>
           </div>
         <% } %>
+<% if (uploadedPdfs && uploadedPdfs.length) { %>
+  <div class="mt-4">
+    <h5 class="fw-bold">Uploaded PDFs</h5>
+
+    <div class="d-flex flex-wrap gap-2">
+      <% uploadedPdfs.forEach(p => { %>
+        <a
+          class="btn btn-outline-secondary btn-sm"
+          href="<%= p.publicUrl %>"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open PDF"
+        >
+          📄 <%= p.filename %>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+<% } %>
 
       </div>
     </div>
   <% }) %>
+</div>
 
   <!-- Expedia Script Ad -->
   <script async src="https://tpemd.com/content?trs=361070&shmarker=582248&tab=H%2CFH%2CCA&background=1&overlay=000000&button_color=FFCB00&target=1&powered_by=true&campaign_id=594&promo_id=8682" charset="utf-8"></script>
