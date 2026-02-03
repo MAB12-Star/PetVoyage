@@ -82,7 +82,7 @@ Return ONLY JSON:
 
 Check for:
 - schema mismatches
-- disallowed sources (non-gov domains, except USDA APHIS allowed)
+-
 - suspicious invented details not supported by official sources summary
 - missing critical requirements hinted by operator notes (if any)
 - conflicts between operator notes and the document
