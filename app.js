@@ -70,7 +70,8 @@ app.use((req, res, next) => {
 });
 
 app.use(methodOverride('_method'));
-app.use(express.static('public'));
+app.use(express.static('public', { index: false }));
+
 app.use(express.json());
 
 const IS_DEV  = process.env.NODE_ENV === 'development';
