@@ -70,8 +70,7 @@ app.use((req, res, next) => {
 });
 
 app.use(methodOverride('_method'));
-app.use(express.static('public', { index: false }));
-
+app.use(express.static('public'));
 app.use(express.json());
 
 const IS_DEV  = process.env.NODE_ENV === 'development';
@@ -92,14 +91,12 @@ if (IS_PROD) {
 
 
 
-// Always provide an absolute URL for templates (works in dev & prod)
-app.use((req, res, next) => {
-  res.locals.safeOgUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-  res.locals.ogUrl = null;
-  next();
-});
 
 
+// 🏠 Home
+app.get('/', (req, res) => {
+    res.render('index');
+  });
 
 // Minimal: build a URL for templates, no redirects
 app.use((req, res, next) => {
@@ -336,10 +333,7 @@ app.get('/dashboard', async (req, res) => {
 });
 
 
-// 🏠 Home
-app.get('/', (req, res) => {
-    res.render('index');
-  });
+
   
 
 // ❌ 404 Handler
