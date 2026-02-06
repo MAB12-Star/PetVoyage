@@ -1,9 +1,9 @@
 <!-- INDEX VERSION: 2026-02-05 -->
- 
+
 <% layout('layouts/boilerplate') %>
 
 <%
-  // ✅ Set SEO variables for the boilerplate to render inside its <head>
+  // ✅ These feed directly into boilerplate.ejs <head>
   title = "PetVoyage - Pet Travel Regulations and Airline Policies";
   metaDescription = "Your ultimate free resource for pet policies across countries and airlines. Find pet travel regulations, airline pet policies, and international pet import/export rules.";
   metaKeywords = "pet travel regulations, airline pet policies, pet import requirements, pet travel rules, pet policies by country, travel with pets, international pet travel, pet rules for airlines, pet import export rules, travel pet documents";
@@ -11,50 +11,15 @@
   ogTitle = title;
   ogDescription = metaDescription;
   ogImage = "https://www.petvoyage.ai/images/PetVoyageLogo.png";
-  ogUrl = "https://www.petvoyage.ai";
 
-  twitterTitle = title;
-  twitterDescription = metaDescription;
+  twitterTitle = ogTitle;
+  twitterDescription = ogDescription;
   twitterImage = ogImage;
 %>
 
-<!-- Hero + Side Panels Row -->
-<section class="bg-light py-5 border-bottom">
-  <div class="container-fluid px-lg-5">
-    <div class="row g-4 align-items-start">
+<!-- PV-MARKER: INDEX-V2 -->
 
-      <!-- LEFT (DESKTOP): Blog + Tips -->
-      <aside class="col-lg-3 d-none d-lg-block">
-        <!-- Blog Card -->
-        <a href="/blog" class="text-decoration-none">
-          <div class="card h-100 border-0 shadow-sm mb-4">
-            <img src="/images/movetocdmx.jpg" class="card-img-top" alt="PetVoyage Blog preview" loading="lazy">
-            <div class="card-body">
-              <h6 class="text-muted mb-2">Featured on the Blog</h6>
-              <h5 class="card-title mb-2">How We Moved to Mexico City With Our Pets</h5>
-              <p class="card-text small text-muted mb-3">
-                Flight prep, airline choice, vet visits, and what actually worked the day we flew…
-              </p>
-              <span class="btn btn-outline-secondary btn-sm">Read the story</span>
-            </div>
-          </div>
-        </a>
 
-        <!-- Tips Card -->
-        <a href="/tips" class="text-decoration-none">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
-            <div class="card-body">
-              <h6 class="text-muted mb-2">Featured Tip</h6>
-              <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
-              <p class="card-text small text-muted mb-3">
-                Quick and effective tips to make flying with your furry friend easier than ever…
-              </p>
-              <span class="btn btn-outline-secondary btn-sm">Read tips</span>
-            </div>
-          </div>
-        </a>
-      </aside>
 
       <!-- CENTER -->
       <div class="col-lg-6 text-center">

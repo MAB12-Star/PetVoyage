@@ -93,10 +93,7 @@ if (IS_PROD) {
 
 
 
-// 🏠 Home
-app.get('/', (req, res) => {
-    res.render('index');
-  });
+
 
 // Minimal: build a URL for templates, no redirects
 app.use((req, res, next) => {
@@ -111,6 +108,10 @@ app.use((req, res, next) => {
   });
   
   
+  // 🏠 Home
+app.get('/', (req, res) => {
+    res.render('index');
+  });
 
 // 📦 Session config
 const sessionConfig = {
