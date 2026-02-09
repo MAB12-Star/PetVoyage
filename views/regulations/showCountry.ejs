@@ -475,12 +475,16 @@
             </div>
           </div>
         <% } %>
-<% if (uploadedPdfs && uploadedPdfs.length) { %>
+<%
+  const _uploadedPdfs = (typeof uploadedPdfs !== 'undefined' ? uploadedPdfs : []);
+%>
+
+<% if (_uploadedPdfs.length) { %>
   <div class="mt-4">
     <h5 class="fw-bold">Uploaded PDFs</h5>
 
     <div class="d-flex flex-wrap gap-2">
-      <% uploadedPdfs.forEach(p => { %>
+      <% _uploadedPdfs.forEach(p => { %>
         <a
           class="btn btn-outline-secondary btn-sm"
           href="<%= p.publicUrl %>"
@@ -494,6 +498,7 @@
     </div>
   </div>
 <% } %>
+
 
       </div>
     </div>
