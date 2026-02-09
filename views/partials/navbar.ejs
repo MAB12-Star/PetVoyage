@@ -1,119 +1,133 @@
 
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-         <!-- Toggler -->
-         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Logo -->
-         
-        <a class=" logo navbar-brand mx-auto mx-lg-0" href="/">
-            
-            PetVoyage
-        </a>
+  <div class="container-fluid">
 
-       
+    <!-- Toggler -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Left side links -->
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/aboutus">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="/getCountryRegulationList">Search Country</a></li>
-                <li class="nav-item"><a class="nav-link" href="/flights/searchFlights">Search Flights</a></li>
-                <li class="nav-item"><a class="nav-link" 
-                    data-bs-toggle="tooltip" 
-                    data-bs-placement="bottom"
-                    title="Let us do the work for you!"
-                    href="/contactUs">Contact</a></li>  
-                    <li class="nav-item"><a class="nav-link" href="https://petsvoyage.myshopify.com/collections/all">Shop</a></li>
+    <!-- Logo -->
+    <a class="logo navbar-brand mx-auto mx-lg-0" href="/">PetVoyage</a>
+
+    <!-- Collapsible -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- LEFT -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/aboutus">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="/getCountryRegulationList">Search Country</a></li>
+        <li class="nav-item"><a class="nav-link" href="/flights/searchFlights">Search Flights</a></li>
+        <li class="nav-item">
+          <a class="nav-link"
+             href="/contactUs"
+             data-bs-toggle="tooltip"
+             title="Let us do the work for you!">
+            Contact
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://petsvoyage.myshopify.com/collections/all">Shop</a>
+        </li>
+      </ul>
+
+      <!-- SEARCH (unchanged) -->
+      <div class="searchField w-50 ms-3">
+        <form class="d-flex w-100 my-2 my-lg-0 position-relative" role="search">
+          <ul class="navbar-nav me-2">
+            <li class="nav-item">
+              <a class="nav-link">
+                <i class="fas fa-search"
+                   data-bs-toggle="tooltip"
+                   title="Check an airlines pet requirements."></i>
+              </a>
+            </li>
+          </ul>
+
+          <input
+            class="form-control me-2"
+            type="text"
+            id="airlineSearch"
+            placeholder="Search Airline Regulations..."
+            autocomplete="off">
+
+          <ul class="dropdown-menu" id="airlineDropdown" style="display:none;"></ul>
+        </form>
+      </div>
+
+      <!-- RIGHT (FIXED) -->
+      <ul class="navbar-nav ms-auto icon-text-container">
+
+        <% if (!currentUser) { %>
+          <li class="nav-item">
+            <a id="loginLink" class="nav-link" href="/auth/login">
+              <i class="fas fa-user"></i>
+              <span class="login-text">Login</span>
+            </a>
+          </li>
+        <% } else { %>
+
+          <!-- ✅ REQUIRED STRUCTURE -->
+          <li class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              id="userDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+
+              <i class="fas fa-user-circle"></i>
+              <span class="login-text"><%= currentUser.displayName %></span>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end full-screen-dropdown"
+                aria-labelledby="userDropdown">
+
+              <li>
+                <a class="dropdown-item" href="/dashboard">
+                  <i class="fas fa-user"></i> Profile
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="/dashboard">
+                  <i class="fas fa-heart"></i> Favorites
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="/toDoList">
+                  <i class="fas fa-tasks"></i> To-Do List
+                </a>
+              </li>
+
+              <li><hr class="dropdown-divider"></li>
+
+              <li>
+                <a class="dropdown-item" href="/auth/logout">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </li>
             </ul>
-            <div class="searchField w-50  ">
-                
-                <form class="d-flex w-100 my-2 my-lg-0 position-relative" 
-               
-                role="search">
-                    <ul class="navbar-nav me-2">
-                        <li class="nav-item"><a class="nav-link"><i class="fas fa-search"
-                            data-bs-toggle="tooltip" 
-                            data-bs-placement="bottom"
-                            title="Check an airlines pet requirements."
-                            ></i></a></li>
-                    </ul>
-                    <input
-                        class="form-control me-2"
-                        type="text"
-                        id="airlineSearch"
-                        placeholder="Search Airline Regulations..."
-                        autocomplete="off"
-                    >
-                    <ul
-                        class="dropdown-menu"
-                        id="airlineDropdown"
-                        style="display: none;"
-                    ></ul>
-                </form>
-                
-            </div>
+          </li>
 
-        </div>
+        <% } %>
+      </ul>
 
-            <!-- Search Bar -->
-          
-
-         
-            <ul class="navbar-nav ms-auto">
-                <div class="icon-text-container">
-                <% if (!currentUser) { %>
-                    <li class="nav-item">
-                        <a id="loginLink" class="nav-link" href="/auth/login">
-                            <i class="fas fa-user"></i> <span class="login-text">Login</span>
-                        
-                        </a>
-                    </li>
-                </div>
-                    <% } else { %>
-                        <!-- User is logged in -->
-                        <div id="iconContainer" class="d-flex align-items-center">
-                            <!-- User Icon with First Name -->
-                            <a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle"></i>
-                                <span class="login-text"><%= currentUser.displayName %></span>
-                            </a>
-                    
-                            <!-- Dropdown Menu -->
-                            <ul class="dropdown-menu dropdown-menu-end full-screen-dropdown" aria-labelledby="userDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="/dashboard">
-                                        <i class="fas fa-user"></i> Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/dashboard">
-                                        <i class="fas fa-heart"></i> Favorites
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/toDoList">
-                                        <i class="fas fa-tasks"></i> To-Do List
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/auth/logout">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
-                                    </a>
-                                </li>
-                            </ul>
-                            
-                        </div>
-                    <% } %>
-            </ul>
-            </div>
-        </div>
     </div>
+  </div>
 </nav>
+
 
 
 <script>
