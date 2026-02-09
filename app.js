@@ -108,10 +108,7 @@ app.use((req, res, next) => {
   });
   
   
-  // 🏠 Home
-app.get('/', (req, res) => {
-    res.render('index');
-  });
+ 
 
 // 📦 Session config
 const sessionConfig = {
@@ -150,6 +147,9 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   next();
 });
+
+
+
 
 app.use("/admin", require("./routes/adminAgent"));
 app.use("/admin", require("./routes/adminAirlineAgent"));
@@ -335,6 +335,10 @@ app.get('/dashboard', async (req, res) => {
 
 
 
+ // 🏠 Home
+app.get('/', (req, res) => {
+    res.render('index');
+  });
   
 
 // ❌ 404 Handler

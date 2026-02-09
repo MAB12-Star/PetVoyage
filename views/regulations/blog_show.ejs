@@ -71,19 +71,38 @@
     </header>
 
     <% if (story.photos && story.photos.length) { %>
-      <section class="row g-3 mb-3" aria-label="Story photos">
-        <% story.photos.forEach(p => { %>
-          <div class="col-6 col-md-4">
-            <figure class="mb-0">
-              <a href="<%= p.url %>" target="_blank" rel="noopener">
-                <img src="<%= p.url %>" class="img-fluid rounded-3" alt="<%= p.alt || story.title %>" loading="lazy">
-              </a>
-              <% if (p.alt) { %><figcaption class="visually-hidden"><%= p.alt %></figcaption><% } %>
-            </figure>
-          </div>
-        <% }) %>
-      </section>
-    <% } %>
+  <style>
+    .pv-story-photo {
+      width: 100%;
+      height: 220px;          /* consistent grid size */
+      object-fit: cover;      /* crop nicely */
+      display: block;
+    }
+  </style>
+
+  <section class="row g-3 mb-3" aria-label="Story photos">
+    <% story.photos.forEach(p => { 
+         const full  = p.url;
+         const thumb = p.thumbUrl || p.url;
+    %>
+      <div class="col-6 col-md-4">
+        <figure class="mb-0">
+          <a href="<%= full %>" target="_blank" rel="noopener">
+            <img
+              src="<%= thumb %>"
+              class="img-fluid rounded-3 pv-story-photo"
+              alt="<%= p.alt || story.title %>"
+              loading="lazy">
+          </a>
+          <% if (p.alt) { %>
+            <figcaption class="visually-hidden"><%= p.alt %></figcaption>
+          <% } %>
+        </figure>
+      </div>
+    <% }) %>
+  </section>
+<% } %>
+
 <%
   const favCount = story.favoritesCount || (story.favoritedBy ? story.favoritedBy.length : 0) || 0;
   const isFav = !!story.isFavorited;

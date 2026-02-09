@@ -14,26 +14,27 @@
     <!-- Quick metadata (all plain inputs) -->
     <div class="row g-3">
       <div class="col-md-4">
-  <label class="form-label">Airline (optional)</label>
-  <!-- Text input with native suggestions -->
-  <input name="airline"
-         id="airline-input"
-         class="form-control"
-         placeholder="e.g., Volaris"
-         list="airlineList"
-         autocomplete="off">
+        <label class="form-label">Airline (optional)</label>
+        <!-- Text input with native suggestions -->
+        <input
+          name="airline"
+          id="airline-input"
+          class="form-control"
+          placeholder="e.g., Volaris"
+          list="airlineList"
+          autocomplete="off">
 
-  <!-- Suggestions (rendered only if airlines provided) -->
-  <datalist id="airlineList">
-    <% (airlines || []).forEach(a => { %>
-      <option value="<%= a.name %>" data-slug="<%= a.slug %>"></option>
-    <% }) %>
-  </datalist>
+        <!-- Suggestions (rendered only if airlines provided) -->
+        <datalist id="airlineList">
+          <% (airlines || []).forEach(a => { %>
+            <option value="<%= a.name %>" data-slug="<%= a.slug %>"></option>
+          <% }) %>
+        </datalist>
 
-  <!-- Hidden slug captured if user picks a matching airline -->
-  <input type="hidden" name="airlineSlug" id="airline-slug">
-  <div class="form-text">Start typing to see suggestions, or enter a custom airline.</div>
-</div>
+        <!-- Hidden slug captured if user picks a matching airline -->
+        <input type="hidden" name="airlineSlug" id="airline-slug">
+        <div class="form-text">Start typing to see suggestions, or enter a custom airline.</div>
+      </div>
 
       <div class="col-md-4">
         <label class="form-label">From (optional)</label>
@@ -46,26 +47,63 @@
     </div>
 
     <div class="row g-3 mt-1">
-      <div class="col-md-4">
-        <label class="form-label">Destination country (optional)</label>
-        <input name="country" class="form-control" placeholder="e.g., Mexico">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Pet type (optional)</label>
-        <select name="petType" class="form-select">
-          <option value="">Choose…</option>
-          <option value="dog">dog</option>
-          <option value="cat">cat</option>
-          <option value="bird">bird</option>
-          <option value="reptile">reptile</option>
-          <option value="other">other</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Pet types (comma separated, optional)</label>
-        <input name="petTypes" class="form-control" placeholder="dog, cat">
-      </div>
+  <div class="col-md-4">
+    <label class="form-label">Destination country (optional)</label>
+    <input name="country" class="form-control" placeholder="e.g., Mexico">
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Pets traveling (optional)</label>
+
+    <!-- ✅ Multi-select via checkboxes -->
+    <div class="d-flex flex-wrap gap-2">
+      <label class="btn btn-outline-secondary btn-sm">
+        <input class="form-check-input me-1" type="checkbox" name="petTypes" value="dog"> dog
+      </label>
+      <label class="btn btn-outline-secondary btn-sm">
+        <input class="form-check-input me-1" type="checkbox" name="petTypes" value="cat"> cat
+      </label>
+      <label class="btn btn-outline-secondary btn-sm">
+        <input class="form-check-input me-1" type="checkbox" name="petTypes" value="bird"> bird
+      </label>
+      <label class="btn btn-outline-secondary btn-sm">
+        <input class="form-check-input me-1" type="checkbox" name="petTypes" value="reptile"> reptile
+      </label>
+      <label class="btn btn-outline-secondary btn-sm">
+        <input class="form-check-input me-1" type="checkbox" name="petTypes" value="other" id="pv-pet-other"> other
+      </label>
     </div>
+
+    <div class="form-text">Select all that apply.</div>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">If “other”, specify (optional)</label>
+    <input
+      name="petOther"
+      id="pv-pet-other-text"
+      class="form-control"
+      placeholder="e.g., rabbit, hamster"
+      disabled>
+    <div class="form-text">Enabled only if you select “other”.</div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const otherCb = document.getElementById('pv-pet-other');
+    const otherTxt = document.getElementById('pv-pet-other-text');
+    if (!otherCb || !otherTxt) return;
+
+    function sync(){
+      otherTxt.disabled = !otherCb.checked;
+      if (!otherCb.checked) otherTxt.value = '';
+    }
+    otherCb.addEventListener('change', sync);
+    sync();
+  })();
+</script>
+
 
     <div class="mb-3 mt-3">
       <label class="form-label">Short summary (optional)</label>
@@ -79,6 +117,16 @@
       .rte-toolbar .btn{ --bs-btn-padding-y:.25rem; --bs-btn-padding-x:.5rem; --bs-btn-font-size:.85rem; }
       #pv-editor{ min-height:260px; line-height:1.6; }
       .pv-limit-note{ font-size:.85rem; color:#6c757d }
+
+      /* ✅ Photo preview sizing + remove button */
+      .pv-photo-wrap{ width:150px; }
+      .pv-photo-img{ width:150px; height:110px; object-fit:cover; display:block; }
+      .pv-photo-remove{
+        position:absolute; top:6px; right:6px;
+        width:26px; height:26px; line-height:24px;
+        border-radius:999px;
+        padding:0;
+      }
     </style>
 
     <div class="mb-2">
@@ -131,6 +179,8 @@
       <label class="form-label">Photos (up to 6)</label>
       <input type="file" id="pv-photos" name="photos" class="form-control" accept="image/*" multiple>
       <div class="form-text">JPG/PNG/WebP/GIF, up to 8MB each. Landscape looks best.</div>
+
+      <!-- ✅ Will show previews + remove buttons -->
       <div id="pv-photo-previews" class="d-flex flex-wrap gap-2 mt-2"></div>
     </div>
 
@@ -212,18 +262,71 @@
   editor.addEventListener('input', updateWordCount);
   updateWordCount();
 
-  photos.addEventListener('change', () => {
+  // ✅ Photo preview + remove (keeps your existing upload limits)
+  let selectedFiles = [];
+
+  function syncInputFiles() {
+    const dt = new DataTransfer();
+    selectedFiles.forEach(f => dt.items.add(f));
+    photos.files = dt.files;
+  }
+
+  function renderPreviews() {
     previews.innerHTML = '';
-    const files = Array.from(photos.files || []);
-    if (files.length > 6) { alert('Please upload up to 6 images.'); photos.value = ''; return; }
-    const tooBig = files.find(f => f.size > 8 * 1024 * 1024);
-    if (tooBig) { alert('Each image must be 8MB or smaller.'); photos.value = ''; return; }
-    files.forEach(f => {
+
+    selectedFiles.forEach((f, idx) => {
       const url = URL.createObjectURL(f);
+
+      const wrap = document.createElement('div');
+      wrap.className = 'pv-photo-wrap position-relative';
+
       const img = document.createElement('img');
-      img.src = url; img.alt = f.name; img.style.width = '150px'; img.className = 'rounded border';
-      previews.appendChild(img);
+      img.src = url;
+      img.alt = f.name;
+      img.className = 'rounded border pv-photo-img';
+      img.onload = () => URL.revokeObjectURL(url);
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-danger btn-sm pv-photo-remove';
+      btn.title = 'Remove';
+      btn.textContent = '×';
+      btn.addEventListener('click', () => {
+        selectedFiles.splice(idx, 1);
+        syncInputFiles();
+        renderPreviews();
+      });
+
+      wrap.appendChild(img);
+      wrap.appendChild(btn);
+      previews.appendChild(wrap);
     });
+  }
+
+  photos.addEventListener('change', () => {
+    const files = Array.from(photos.files || []);
+
+    if (files.length > 6) {
+      alert('Please upload up to 6 images.');
+      photos.value = '';
+      selectedFiles = [];
+      renderPreviews();
+      return;
+    }
+
+    const tooBig = files.find(f => f.size > 8 * 1024 * 1024);
+    if (tooBig) {
+      alert('Each image must be 8MB or smaller.');
+      photos.value = '';
+      selectedFiles = [];
+      renderPreviews();
+      return;
+    }
+
+    // overwrite selection (simplest behavior)
+    selectedFiles = files;
+    syncInputFiles();
+    renderPreviews();
   });
 
   // ✅ Custom validation for the hidden body field

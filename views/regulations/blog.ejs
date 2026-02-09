@@ -303,15 +303,19 @@
             </div>
           </header>
 
-          <% if (story.photos && story.photos[0]) { %>
-            <a href="<%= url %>" aria-label="Open story: <%= story.title %>">
-              <img
-                src="<%= story.photos[0].url %>"
-                class="img-fluid rounded-3 mb-3"
-                alt="<%= story.photos[0].alt || (story.title + ' — pet travel photo') %>"
-                loading="lazy" decoding="async" itemprop="image">
-            </a>
-          <% } %>
+         <% if (story.photos && story.photos[0]) { 
+     const heroFull  = story.photos[0].url;
+     const heroThumb = story.photos[0].thumbUrl || heroFull; // ✅ use thumb if available
+%>
+  <a href="<%= url %>" aria-label="Open story: <%= story.title %>">
+    <img
+      src="<%= heroThumb %>"
+      class="img-fluid rounded-3 mb-3 pv-card-hero"
+      alt="<%= story.photos[0].alt || (story.title + ' — pet travel photo') %>"
+      loading="lazy" decoding="async" itemprop="image">
+  </a>
+<% } %>
+
 
           <p class="fs-6 text-body mb-3" itemprop="description">
             <%= excerpt %><% if (plain.length > excerpt.length) { %>…<% } %>

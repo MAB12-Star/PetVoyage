@@ -910,6 +910,12 @@ footer input::placeholder {
 footer a:hover { text-decoration: underline; }
 footer .bi-facebook:hover { opacity: 0.85; }
 
+ .pv-card-hero{
+    width: 100%;
+    height: 260px;     /* adjust if you want */
+    object-fit: cover; /* crops nicely */
+    display: block;
+  }
 
 
   

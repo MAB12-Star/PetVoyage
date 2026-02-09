@@ -18,72 +18,53 @@
     </div>
 
     <!-- Quick metadata -->
-    <% 
+    <%
       const __route = (story.route || '');
       const __split = __route.includes('→') ? __route.split('→') : [];
       const __from  = (__split[0] || '').trim();
       const __to    = (__split[1] || '').trim();
+
+      // ✅ NEW: normalize pet types for checkbox UI
+      const __petTypes = Array.isArray(story.petTypes)
+        ? story.petTypes.map(t => String(t).toLowerCase().trim()).filter(Boolean)
+        : (typeof story.petTypes === 'string'
+            ? story.petTypes.split(',').map(t=>t.toLowerCase().trim()).filter(Boolean)
+            : []);
+
+      const __has = (k) => __petTypes.includes(String(k).toLowerCase());
+      const __petOther = (story.petOther || '').trim();
     %>
+
     <div class="row g-3">
-     <div class="col-md-4">
-  <label class="form-label">Airline (optional)</label>
+      <div class="col-md-4">
+        <label class="form-label">Airline (optional)</label>
 
-  <!-- Text input with native suggestions -->
-  <input name="airline"
-         id="airline-input"
-         class="form-control"
-         value="<%= story.airline || '' %>"
-         placeholder="e.g., Volaris"
-         list="airlineList"
-         autocomplete="off">
+        <!-- Text input with native suggestions -->
+        <input name="airline"
+               id="airline-input"
+               class="form-control"
+               value="<%= story.airline || '' %>"
+               placeholder="e.g., Volaris"
+               list="airlineList"
+               autocomplete="off">
 
-  <!-- Suggestions (rendered only if airlines provided) -->
-  <datalist id="airlineList">
-    <% ((airlines || locals.airlines) || []).forEach(a => { %>
-      <option value="<%= a.name %>" data-slug="<%= a.slug %>"></option>
-    <% }) %>
-  </datalist>
+        <!-- Suggestions -->
+        <datalist id="airlineList">
+          <% ((airlines || locals.airlines) || []).forEach(a => { %>
+            <option value="<%= a.name %>" data-slug="<%= a.slug %>"></option>
+          <% }) %>
+        </datalist>
 
-  <!-- Optional: keep track of the slug if the user picks an exact match -->
-  <input type="hidden" name="airlineSlug" id="airline-slug" value="<%= story.airlineSlug || '' %>">
-
-  <div class="form-text">Start typing to see suggestions, or enter a custom airline.</div>
-</div>
-
-<script>
-  (function(){
-    const input = document.getElementById('airline-input');
-    const slugField = document.getElementById('airline-slug');
-    const dl = document.getElementById('airlineList');
-
-    function syncSlug(){
-      const val = (input.value || '').trim().toLowerCase();
-      let matchedSlug = '';
-      if (dl) {
-        Array.from(dl.options || []).some(opt => {
-          if ((opt.value || '').toLowerCase() === val) {
-            matchedSlug = opt.getAttribute('data-slug') || '';
-            return true;
-          }
-          return false;
-        });
-      }
-      slugField.value = matchedSlug; // '' if no exact match
-    }
-
-    input.addEventListener('change', syncSlug);
-    input.addEventListener('blur', syncSlug);
-    input.addEventListener('input', () => { if (!input.value) slugField.value = ''; });
-
-    // Run once on load to align slug with pre-filled value (if any)
-    syncSlug();
-  })();
-</script>
+        <!-- Hidden slug captured if user picks a matching airline -->
+        <input type="hidden" name="airlineSlug" id="airline-slug" value="<%= story.airlineSlug || '' %>">
+        <div class="form-text">Start typing to see suggestions, or enter a custom airline.</div>
+      </div>
 
       <div class="col-md-4">
         <label class="form-label">From (optional)</label>
         <input name="routeFrom" class="form-control" value="<%= __from %>" placeholder="City / Airport (e.g., SFO)">
       </div>
+
       <div class="col-md-4">
         <label class="form-label">To (optional)</label>
         <input name="routeTo" class="form-control" value="<%= __to %>" placeholder="City / Airport (e.g., CDMX)">
@@ -95,22 +76,49 @@
         <label class="form-label">Destination country (optional)</label>
         <input name="country" class="form-control" value="<%= story.country || '' %>" placeholder="e.g., Mexico">
       </div>
-      <div class="col-md-4">
-        <label class="form-label">Pet type (optional)</label>
-        <select name="petType" class="form-select">
-          <option value="" <%= !story.petType ? 'selected' : '' %> >Choose…</option>
-          <option value="dog"     <%= story.petType==='dog' ? 'selected' : '' %> >dog</option>
-          <option value="cat"     <%= story.petType==='cat' ? 'selected' : '' %> >cat</option>
-          <option value="bird"    <%= story.petType==='bird' ? 'selected' : '' %> >bird</option>
-          <option value="reptile" <%= story.petType==='reptile' ? 'selected' : '' %> >reptile</option>
-          <option value="other"   <%= story.petType==='other' ? 'selected' : '' %> >other</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Pet types (comma separated, optional)</label>
-        <input name="petTypes" class="form-control"
-               value="<%= (story.petTypes || []).join(', ') %>"
-               placeholder="dog, cat">
+
+      <!-- ✅ NEW: Multi-select pet types (checkboxes) -->
+      <div class="col-md-8">
+        <label class="form-label">Pet types (select all that apply)</label>
+
+        <div class="d-flex flex-wrap gap-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="pt-dog" name="petTypes" value="dog" <%= __has('dog') ? 'checked' : '' %>>
+            <label class="form-check-label" for="pt-dog">dog</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="pt-cat" name="petTypes" value="cat" <%= __has('cat') ? 'checked' : '' %>>
+            <label class="form-check-label" for="pt-cat">cat</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="pt-bird" name="petTypes" value="bird" <%= __has('bird') ? 'checked' : '' %>>
+            <label class="form-check-label" for="pt-bird">bird</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="pt-reptile" name="petTypes" value="reptile" <%= __has('reptile') ? 'checked' : '' %>>
+            <label class="form-check-label" for="pt-reptile">reptile</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="pt-other" name="petTypes" value="other" <%= __has('other') ? 'checked' : '' %>>
+            <label class="form-check-label" for="pt-other">other</label>
+          </div>
+        </div>
+
+        <!-- ✅ NEW: Only meaningful if "other" is checked -->
+        <div class="mt-2">
+          <label class="form-label mb-1" for="petOther">If “other”, specify (optional)</label>
+          <input id="petOther" name="petOther" class="form-control"
+                 value="<%= __petOther %>"
+                 placeholder="e.g., rabbit, guinea pig">
+          <div class="form-text">Only saved if “other” is selected.</div>
+        </div>
+
+        <!-- ✅ legacy hidden field (optional): keep your existing schema happy -->
+        <input type="hidden" name="petType" value="<%= story.petType || '' %>">
       </div>
     </div>
 
@@ -164,7 +172,7 @@
       <div id="pv-editor" class="form-control" contenteditable="true"
            aria-label="Story editor"><%- story.body || '' %></div>
 
-      <!-- Hidden input that actually submits (avoid hidden+required focus issue) -->
+      <!-- Hidden input that actually submits -->
       <input type="hidden" name="body" id="pv-editor-output" />
 
       <div class="d-flex justify-content-between">
@@ -172,20 +180,35 @@
         <div class="form-text"><span id="pv-wordcount">0</span> words</div>
       </div>
     </div>
-    <!-- === /Simple Rich Text Editor === -->
 
-    <!-- Existing photos -->
+    <!-- Existing photos (with delete checkboxes) -->
     <% if (story.photos && story.photos.length) { %>
       <div class="mb-3">
         <label class="form-label">Current photos</label>
-        <div class="d-flex flex-wrap gap-2">
-          <% story.photos.forEach(function(p){ %>
-            <div class="text-center">
-              <img src="<%= p.thumbUrl || p.url %>" class="rounded border" style="width:150px;height:auto" alt="">
+
+        <div class="d-flex flex-wrap gap-3">
+          <% story.photos.forEach(function(p, idx){ %>
+            <div class="card border-0 shadow-sm" style="width: 170px;">
+              <a href="<%= p.url %>" target="_blank" rel="noopener">
+                <img src="<%= p.thumbUrl || p.url %>" class="rounded-3 border" style="width:170px;height:auto" alt="">
+              </a>
+              <div class="card-body p-2">
+                <div class="form-check">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         id="del-photo-<%= idx %>"
+                         name="deletePhotos"
+                         value="<%= p.url %>">
+                  <label class="form-check-label small" for="del-photo-<%= idx %>">
+                    Remove
+                  </label>
+                </div>
+              </div>
             </div>
           <% }) %>
         </div>
-        <div class="form-text">Existing images stay unless you replace or remove them in the admin.</div>
+
+        <div class="form-text">Checked photos will be removed when you save.</div>
       </div>
     <% } %>
 
@@ -206,6 +229,35 @@
 </div>
 
 <script>
+  (function(){
+    const input = document.getElementById('airline-input');
+    const slugField = document.getElementById('airline-slug');
+    const dl = document.getElementById('airlineList');
+
+    function syncSlug(){
+      const val = (input.value || '').trim().toLowerCase();
+      let matchedSlug = '';
+      if (dl) {
+        Array.from(dl.options || []).some(opt => {
+          if ((opt.value || '').toLowerCase() === val) {
+            matchedSlug = opt.getAttribute('data-slug') || '';
+            return true;
+          }
+          return false;
+        });
+      }
+      slugField.value = matchedSlug;
+    }
+
+    input.addEventListener('change', syncSlug);
+    input.addEventListener('blur', syncSlug);
+    input.addEventListener('input', () => { if (!input.value) slugField.value = ''; });
+
+    syncSlug();
+  })();
+</script>
+
+<script>
 (function(){
   const editor   = document.getElementById('pv-editor');
   const output   = document.getElementById('pv-editor-output');
@@ -213,11 +265,11 @@
   const photos   = document.getElementById('pv-photos');
   const previews = document.getElementById('pv-photo-previews');
   const wcEl     = document.getElementById('pv-wordcount');
+  const otherCb  = document.getElementById('pt-other');
+  const otherInp = document.getElementById('petOther');
 
-  // execCommand helpers (simple cross-browser basic formatting)
   function exec(cmd, val=null){ document.execCommand(cmd, false, val); editor.focus(); }
 
-  // Toolbar actions
   document.querySelectorAll('[data-cmd]').forEach(btn => {
     btn.addEventListener('click', () => exec(btn.getAttribute('data-cmd')));
   });
@@ -240,7 +292,6 @@
 
   document.getElementById('pv-clear-format').addEventListener('click', () => exec('removeFormat'));
 
-  // Convert plain text paste into paragraphs
   editor.addEventListener('paste', (e) => {
     e.preventDefault();
     const text = (e.clipboardData || window.clipboardData).getData('text');
@@ -249,7 +300,6 @@
     document.execCommand('insertHTML', false, html);
   });
 
-  // Word count
   function updateWordCount(){
     const text = editor.innerText || '';
     const words = (text.trim().match(/\S+/g) || []).length;
@@ -258,22 +308,14 @@
   editor.addEventListener('input', updateWordCount);
   updateWordCount();
 
-  // Photo previews + limits
   if (photos) {
     photos.addEventListener('change', () => {
       previews.innerHTML = '';
       const files = Array.from(photos.files || []);
-      if (files.length > 6) {
-        alert('Please upload up to 6 images.');
-        photos.value = '';
-        return;
-      }
+      if (files.length > 6) { alert('Please upload up to 6 images.'); photos.value = ''; return; }
       const tooBig = files.find(f => f.size > 8 * 1024 * 1024);
-      if (tooBig) {
-        alert('Each image must be 8MB or smaller.');
-        photos.value = '';
-        return;
-      }
+      if (tooBig) { alert('Each image must be 8MB or smaller.'); photos.value = ''; return; }
+
       files.forEach(f => {
         const url = URL.createObjectURL(f);
         const img = document.createElement('img');
@@ -287,7 +329,18 @@
     });
   }
 
-  // Submit: sanitize minimal HTML and sync to hidden input
+  // Toggle other field enabled state
+  function syncOther(){
+    if (!otherCb || !otherInp) return;
+    const on = !!otherCb.checked;
+    otherInp.disabled = !on;
+    if (!on) otherInp.value = '';
+  }
+  if (otherCb && otherInp) {
+    otherCb.addEventListener('change', syncOther);
+    syncOther();
+  }
+
   form.addEventListener('submit', (e) => {
     const clone = editor.cloneNode(true);
     clone.querySelectorAll('script,style').forEach(n => n.remove());
@@ -296,15 +349,16 @@
         if (/^on/i.test(att.name)) el.removeAttribute(att.name);
       });
     });
-    output.value = clone.innerHTML.trim();
-    if (!output.value || !output.value.replace(/<[^>]*>/g,'').trim()) {
-  e.preventDefault();
-  alert('Please write your story before saving.');
-  editor.scrollIntoView({behavior:'smooth', block:'center'});
-  editor.focus();
-  return false;
-}
 
+    output.value = clone.innerHTML.trim();
+
+    if (!output.value || !output.value.replace(/<[^>]*>/g,'').trim()) {
+      e.preventDefault();
+      alert('Please write your story before saving.');
+      editor.scrollIntoView({behavior:'smooth', block:'center'});
+      editor.focus();
+      return false;
+    }
   });
 })();
 </script>
