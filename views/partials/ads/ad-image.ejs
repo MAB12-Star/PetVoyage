@@ -8,17 +8,18 @@ Supports:
 Input:
   include('ad-image', { ad })
 */
+<%
 if (!ad) return;
 %>
 
-<div class="ad-image-slot my-3 d-flex justify-content-center align-items-center">
-  <% if (ad.adType === 'image') { %>
+<% if (ad.adType === 'image') { %>
 
+  <div class="ad-image-slot my-3 text-center">
     <a
       href="<%= ad.linkUrl || '#' %>"
       target="_blank"
       rel="noopener noreferrer sponsored"
-      class="d-block text-center"
+      class="d-block"
     >
       <img
         src="<%= ad.imageUrl %>"
@@ -27,18 +28,20 @@ if (!ad) return;
         style="max-height:180px; object-fit:contain;"
       >
     </a>
+  </div>
 
-  <% } else if (ad.adType === 'html') { %>
+<% } else if (ad.adType === 'html') { %>
 
-    <div class="w-100">
-      <%- ad.content || '' %>
-    </div>
+  <div class="my-3 w-100">
+    <%- ad.content || '' %>
+  </div>
 
-  <% } else if (ad.adType === 'script') { %>
+<% } else if (ad.adType === 'script') { %>
 
-    <div class="w-100">
-      <%- ad.productEmbed || '' %>
-    </div>
+  <!-- IMPORTANT: NO FLEX HERE -->
+  <div class="my-3 w-100">
+    <%- ad.productEmbed || '' %>
+  </div>
 
-  <% } %>
-</div>
+<% } %>
+
