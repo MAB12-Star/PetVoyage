@@ -1,118 +1,180 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="bg-light py-5 text-center border-bottom">
-    <!-- Hero Section -->
-    <div class="bg-light py-5 text-center border-bottom mt-1">
-      <img
-        src="/images/PetVoyageLogo.png"
-        class="img-fluid rounded-top d-block mx-auto"
-        alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-        width="200" height="200"
-      />
-  <h1 class="fw-bold display-5">Tips & Tricks While Traveling with Your Pet!</h1>
-  <p class="fs-5 text-muted"> Traveling with your furry friends can be an incredible experience when you’re well-prepared. Here are some essential tips to ensure a stress-free journey for you and your pets.
+<!-- HERO -->
+<section class="pv-hero py-5 text-center border-bottom">
+  <img src="/images/PetVoyageLogo.png" class="img-fluid d-block mx-auto mb-3" alt="PetVoyage Global Pet Travel Platform" width="200"/>
+
+  <h1 class="fw-bold display-5">Global Pet Travel Tips & Tricks ✈️🐾</h1>
+
+  <p class="fs-5 text-muted container">
+    Traveling internationally with pets requires planning, patience, and the right tools.
+    These practical tips are based on real travel experiences and global requirements to help
+    you confidently prepare for your pet’s journey.
   </p>
-<div class="mt-4">
-  <%- include('../partials/navigation') %>    
-</div>
 
-</div>
-<div class="container mt-5">
-  <div class="row justify-content-center mb-5">
-<div class="container mt-2">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-          
-
-
-       <!-- Tip 1: GPS Collars -->
-<div class="card border-secondary shadow-lg p-3 mb-4 bg-white rounded">
-    <div class="card-body">
-      <h2 class="text-primary"><strong>GPS Collars</strong></h2>
-      <div class="d-flex align-items-center">
-        
-        <!-- Clickable image -->
-        <a href="https://petsvoyage.myshopify.com/products/for-apple-airtag-dog-collar-pet-cat-collar-with-air-tag-case-holder-reflective" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="me-3">
-          <img 
-            src="https://cdn.shopify.com/s/files/1/0711/2654/8652/files/59fe18645187fe539ab38067cdcb2ec1_550x825.jpg?v=1757779355" 
-            alt="GPS Collar for pets" 
-            class="img-fluid rounded shadow-sm" 
-            style="width: 60%;">
-        </a>
-  
-        <!-- Text + button -->
-        <div class="col-md-8 d-flex flex-column justify-content-between">
-          <p class="lead text-secondary mb-3">
-            Worried about your pet when in cargo? Or fear they might get lost? 
-            GPS collars provide peace of mind by allowing you to track your pet's location at all times, ensuring their safety during travel.
-          </p>
-          <div class="text-end">
-            <a href="https://petsvoyage.myshopify.com/products/for-apple-airtag-dog-collar-pet-cat-collar-with-air-tag-case-holder-reflective" 
-               class="btn btn-success btn-sm" 
-               target="_blank" 
-               rel="noopener noreferrer">
-              🌿 Buy Now!
-            </a>
-          </div>
-        </div>
-  
-      </div>
-    </div>
+  <div class="mt-4">
+    <%- include('../partials/navigation') %>
   </div>
-  
+</section>
 
- <!-- Tip 2: CBD Treats -->
-<div class="card border-secondary shadow-lg p-3 mb-4 bg-white rounded">
-    <div class="card-body">
-      <h2 class="text-primary"><strong>CBD Treats for Calming</strong></h2>
-  
-      <div class="row align-items-center">
-        <!-- Image column (clickable) -->
-        <div class="col-md-4 text-center mb-3 mb-md-0">
-          <a href="https://amzn.to/4kCCUfk" 
-             target="_blank" 
-             rel="noopener noreferrer">
-            <img 
-              src="https://m.media-amazon.com/images/I/71lt4PmOkJL._AC_SX679_.jpg" 
-              alt="CBD treats for pets" 
-              class="img-fluid rounded shadow-sm"
-              style="max-width: 160px;">
-          </a>
-        </div>
-  
-        <!-- Text + button column -->
-        <div class="col-md-8 d-flex flex-column justify-content-between">
-          <p class="lead text-secondary mb-3">
-            Have a pet that gets anxious during travel? CBD treats can be a game-changer. 
-            They help calm your furry friend, making the journey more comfortable for both of you. 
-            My dog found CBD gummies particularly helpful!
-          </p>
-          <div class="text-end">
-            <a href="https://amzn.to/4kCCUfk" 
-               class="btn btn-success btn-sm" 
-               target="_blank" 
-               rel="noopener noreferrer">
-              🌿 Buy Now!
-            </a>
-          </div>
-        </div>
-      </div>
-  
-    </div>
-  </div>
-  
-  
-  
+<section class="pv-tips-bg py-5">
+<div class="container">
+<div class="col-md-10 mx-auto">
 
-            <!-- Call to Action -->
-            <div class="text-center mt-0 mb-4">
-                <a href="/" class="btn btn-outline-dark fw-semibold shadow">Home</a>
-                <a href="/contact" class="btn btn-outline-dark fw-semibold shadow ms-3">Contact Us for More Tips</a>
-            </div>
-        </div>
-    </div>
+<!-- TIP -->
+<div class="pv-card p-4 mb-4 bg-white">
+<h2>GPS Tracking Collars</h2>
+
+<div class="row align-items-center">
+<div class="col-md-4 text-center">
+<a href="https://petsvoyage.myshopify.com/products/for-apple-airtag-dog-collar-pet-cat-collar-with-air-tag-case-holder-reflective" target="_blank">
+<img src="https://cdn.shopify.com/s/files/1/0711/2654/8652/files/59fe18645187fe539ab38067cdcb2ec1_550x825.jpg?v=1757779355"
+class="img-fluid pv-img shadow-sm" alt="GPS tracking collar"/>
+</a>
 </div>
 
+<div class="col-md-8">
+<p class="lead text-secondary">
+Tracking your pet during travel provides peace of mind, especially during cargo transfers and airport handling.
+</p>
+
+<ul class="text-muted">
+<li>Monitor location during airport transfers</li>
+<li>Reduce anxiety when pets travel separately</li>
+<li>Locate pets quickly during unexpected delays</li>
+</ul>
+
+<div class="text-end">
+<a href="https://petsvoyage.myshopify.com/products/for-apple-airtag-dog-collar-pet-cat-collar-with-air-tag-case-holder-reflective" class="btn btn-success pv-btn" target="_blank">
+Buy GPS Collar
+</a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TIP -->
+<div class="pv-card p-4 mb-4 bg-white">
+<h2>Bring Water for Post-Flight Hydration</h2>
+
+<p class="lead text-secondary">
+After travel, pets may be dehydrated due to stress, cabin dryness, or cargo conditions.
+Having water ready immediately after pickup helps your pet recover faster.
+</p>
+
+<ul class="text-muted">
+<li>Purchase water after security for immediate access</li>
+<li>Use collapsible bowls for convenience</li>
+<li>Offer small amounts gradually to avoid stomach upset</li>
+</ul>
+</div>
+
+<!-- TIP -->
+<div class="pv-card p-4 mb-4 bg-white">
+<h2>Research Country & Airline Regulations First</h2>
+
+<div class="row align-items-center">
+<div class="col-md-4 text-center">
+<img src="/images/PetVoyage website.jpg" class="img-fluid pv-img" alt="PetVoyage planning tools"/>
+</div>
+
+<div class="col-md-8">
+<p class="lead text-secondary">
+Pet travel rules vary dramatically between destinations and airlines. Missing one requirement can lead to denied boarding or quarantine.
+</p>
+
+<ul class="text-muted">
+<li>Verify vaccination timelines</li>
+<li>Confirm breed restrictions</li>
+<li>Understand health certificate windows</li>
+<li>Check airline carrier and cargo requirements</li>
+</ul>
+
+<div class="text-end">
+<a href="https://www.petvoyage.ai/getCountryRegulationList" class="btn btn-success pv-btn" target="_blank">
+Plan with PetVoyage
+</a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TIP -->
+<div class="pv-card p-4 mb-4 bg-white">
+<h2>Use a Travel Checklist</h2>
+
+<p class="lead text-secondary">
+International pet travel involves many moving parts. A checklist helps prevent missed steps that could disrupt your trip.
+</p>
+
+<ul class="text-muted">
+<li>Vaccination timelines</li>
+<li>Vet appointments</li>
+<li>Airline approvals</li>
+<li>Travel crate preparation</li>
+</ul>
+
+<div class="text-end">
+<a href="https://www.petvoyage.ai/toDoList" class="btn btn-success pv-btn" target="_blank">
+Create Checklist
+</a>
+</div>
+</div>
+
+<!-- TIP -->
+<div class="pv-card p-4 mb-4 bg-white">
+<h2>Calming Solutions for Anxiety</h2>
+
+<div class="row align-items-center">
+<div class="col-md-4 text-center">
+<a href="https://amzn.to/4kCCUfk" target="_blank">
+<img src="https://m.media-amazon.com/images/I/71lt4PmOkJL._AC_SX679_.jpg" class="img-fluid pv-img shadow-sm"/>
+</a>
+</div>
+
+<div class="col-md-8">
+<p class="lead text-secondary">
+Travel anxiety is common, especially during flights and airport handling. Discuss calming options with your veterinarian.
+</p>
+
+<ul class="text-muted">
+<li>Practice crate acclimation before travel</li>
+<li>Consider vet-approved calming aids</li>
+<li>Maintain routine feeding schedules</li>
+</ul>
+
+<div class="text-end">
+<a href="https://amzn.to/4kCCUfk" class="btn btn-success pv-btn" target="_blank">
+Buy Calming Treats
+</a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TIP -->
+<div class="pv-card p-4 mb-4 bg-white">
+<h2>Keep Scissors Ready for Zip Ties</h2>
+
+<p class="lead text-secondary">
+Cargo crates are secured with zip ties for safety. Having scissors ready allows quick reunification with your pet after arrival.
+</p>
+
+<ul class="text-muted">
+<li>Pack scissors in carry-on top pocket</li>
+<li>Use small travel scissors for airport compliance</li>
+<li>Check airline crate sealing policies</li>
+</ul>
+</div>
+
+<!-- CTA -->
+<div class="pv-cta text-center mt-4">
+<h4 class="fw-bold mb-3">Plan your pet’s journey with confidence</h4>
+
+<a href="/" class="btn btn-outline-dark pv-btn">Home</a>
+<a href="/contactUs" class="btn btn-outline-dark pv-btn ms-3">Contact Us</a>
+</div>
+
+</div>
+</div>
+</section>

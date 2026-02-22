@@ -917,6 +917,55 @@ footer .bi-facebook:hover { opacity: 0.85; }
     display: block;
   }
 
+/* ===== PAGE BACKGROUND ===== */
+.pv-tips-bg{
+  background: linear-gradient(180deg,#f8fafc 0%,#ffffff 100%);
+}
+
+/* ===== HERO ===== */
+.pv-hero{
+  background: linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+}
+
+/* ===== CARD STYLE ===== */
+.pv-card{
+  border-radius:18px;
+  border:1px solid #eef2f7;
+  transition:all .25s ease;
+}
+
+.pv-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+/* ===== IMAGE POLISH ===== */
+.pv-img{
+  max-width:150px;
+  border-radius:12px;
+}
+
+/* ===== BUTTON POLISH ===== */
+.pv-btn{
+  border-radius:999px;
+  padding:.45rem 1rem;
+  font-weight:500;
+}
+
+/* ===== HEADING POLISH ===== */
+.pv-card h2{
+  color:#1d4ed8;
+  font-weight:700;
+  font-size:1.5rem;
+}
+
+/* ===== CTA BAR ===== */
+.pv-cta{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:25px;
+}
+
 
   
 
