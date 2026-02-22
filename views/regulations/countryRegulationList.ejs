@@ -92,12 +92,14 @@
         </div>
 
         <!-- SHOP CAROUSEL (visible on ALL sizes) -->
+      <div class="card h-100 mt-3 border-0 shadow-sm">
       <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
       <% const footerAd = (typeof getAd === 'function') ? getAd('footer') : null; %>
       <% if (footerAd) { %>
         <%- include('../partials/ads/ad-image', { ad: footerAd }) %>
       <% } %>
-  </div>
+      </div>
+      </div>
  
 
         <!-- MOBILE-ONLY: Tips + To-Do (stacked) -->
