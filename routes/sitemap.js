@@ -54,6 +54,15 @@ function normalizePetType(raw) {
   return t; // keep custom admin-created types
 }
 
+function canonicalPetType(raw) {
+  const slug = String(raw || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return slug || null;
+}
+
 async function buildSitemapData(req) {
   const now = Date.now();
   if (cache.data && (now - cache.at) < CACHE_TTL_MS) return cache.data;
@@ -136,7 +145,7 @@ async function buildSitemapData(req) {
     const petLinks = [];
 
     for (const raw of rawPetTypes) {
-      const petType = normalizePetType(raw);
+      const petType = canonicalPetType(raw);
       if (!petType) continue;
 
       const url = `${origin}/country/${encodedCountry}?petType=${encodeURIComponent(petType)}`;
