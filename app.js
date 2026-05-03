@@ -114,6 +114,14 @@ app.use((req, res, next) => {
  
 
 // 📦 Session config
+// Serve XML sitemap before session middleware so crawlers do not receive cookies.
+app.use((req, res, next) => {
+  if (req.path.toLowerCase() === '/sitemap.xml') {
+    return sitemapRoutes(req, res, next);
+  }
+  next();
+});
+
 const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'defaultSecret',
     resave: false,
