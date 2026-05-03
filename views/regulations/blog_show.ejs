@@ -5,7 +5,7 @@
   const plainBody = String((story.body || '').replace(/<[^>]*>/g, ' ')).replace(/\s+/g,' ').trim();
   const summary160 = plainBody.slice(0, 160);
   const pageUrl = `/blog/${story.slug || story._id}`;
-  const cover = (story.photos && story.photos[0] && story.photos[0].url) ? story.photos[0].url : '/images/blog-banner.jpg';
+  const cover = (story.photos && story.photos[0] && story.photos[0].url) ? story.photos[0].url : '/images/movetocdmx.jpg';
   const imgList = (story.photos || []).map(p => p.url).slice(0, 8);
   const authorName = (story.author && story.author.displayName) ? story.author.displayName : 'Anonymous';
   const publishedISO = new Date(story.createdAt).toISOString();

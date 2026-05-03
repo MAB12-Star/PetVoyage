@@ -11,10 +11,10 @@ router.get('/', (req, res) => {
     ogTitle: 'Find a Vet for Pet Travel',
     ogDescription: 'Need a vet before flying with your pet? Find clinics that may help with travel certificates, vaccinations, and health checks.',
     ogUrl: 'https://www.petvoyage.ai/findAVet',
-    ogImage: '/images/vet-checkup.jpg',
+    ogImage: '/images/petConcierge.png',
     twitterTitle: 'Find a Pet-Friendly Vet | PetVoyage',
     twitterDescription: 'Locate vets who may support pet travel requirements like health certificates and vaccinations.',
-    twitterImage: '/images/vet-checkup.jpg'
+    twitterImage: '/images/petConcierge.png'
   });
 });
 

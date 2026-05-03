@@ -10,10 +10,10 @@ router.get('/', (req, res) => {
         ogTitle: 'Top Tips for Flying with Pets – PetVoyage',
         ogDescription: 'Everything you need to know to fly safely and smoothly with your pet. Trusted tips for pet travelers.',
         ogUrl: 'https://www.petvoyage.ai/tips',
-        ogImage: '/images/pet-travel-cover.jpg',
+        ogImage: '/images/catanddog.jpg',
         twitterTitle: 'Top Tips for Flying with Pets – PetVoyage',
         twitterDescription: 'Expert advice and actionable tips for pet air travel. Learn how to prepare and fly stress-free with your furry companion.',
-        twitterImage: '/images/pet-travel-cover.jpg'
+        twitterImage: '/images/catanddog.jpg'
     });
 });
 

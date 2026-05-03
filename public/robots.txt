@@ -1,5 +1,9 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /account/
+Disallow: /auth/
+Disallow: /dashboard
+Disallow: /favorites/
 
 Sitemap: https://www.petvoyage.ai/sitemap.xml
 

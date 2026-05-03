@@ -11,10 +11,10 @@ router.get('/', (req, res) => {
     ogTitle: 'PetVoyage: Free International Pet Travel Guide',
     ogDescription: 'Plan pet travel with confidence. Find airline and country-specific rules for cats, dogs, and service animals.',
     ogUrl: 'https://www.petvoyage.ai/',
-    ogImage: '/images/pet-travel-cover.jpg',
+    ogImage: '/images/PetVoyageLogo.png',
     twitterTitle: 'PetVoyage | Plan Pet Travel Easily',
     twitterDescription: 'Your guide to pet-friendly travel rules, policies, and documentation.',
-    twitterImage: '/images/pet-travel-cover.jpg'
+    twitterImage: '/images/PetVoyageLogo.png'
   });
 });
 
@@ -29,10 +29,10 @@ router.get('/newSearch', (req, res) => {
     ogTitle: 'New Search – Pet Travel Planner | PetVoyage',
     ogDescription: 'Select your country and animal type to begin your pet travel research.',
     ogUrl: 'https://www.petvoyage.ai/newSearch',
-    ogImage: '/images/pet-search.jpg',
+    ogImage: '/images/catanddog.jpg',
     twitterTitle: 'New Pet Travel Search | PetVoyage',
     twitterDescription: 'Search global pet import/export rules in seconds.',
-    twitterImage: '/images/pet-search.jpg'
+    twitterImage: '/images/catanddog.jpg'
   });
 });
 
@@ -63,10 +63,10 @@ router.get('/airlineList', (req, res) => {
     ogTitle: 'Complete Airline Pet Travel Guide | PetVoyage',
     ogDescription: 'Find the right airline for your pet. Compare policies and plan with confidence.',
     ogUrl: 'https://www.petvoyage.ai/airlineList',
-    ogImage: '/images/airlines-banner.jpg',
+    ogImage: '/images/Logo.png',
     twitterTitle: 'Browse Airline Pet Rules | PetVoyage',
     twitterDescription: 'See which airlines best support your pet’s needs.',
-    twitterImage: '/images/airlines-banner.jpg'
+    twitterImage: '/images/Logo.png'
   });
 });
 
@@ -80,10 +80,10 @@ router.get('/findAVet', (req, res) => {
     ogTitle: 'Locate a Vet for Pet Travel | PetVoyage',
     ogDescription: 'Ensure your pet is travel-ready. Use PetVoyage to find nearby veterinarians.',
     ogUrl: 'https://www.petvoyage.ai/findAVet',
-    ogImage: '/images/vet-checkup.jpg',
+    ogImage: '/images/petConcierge.png',
     twitterTitle: 'Find a Pet Travel Vet | PetVoyage',
     twitterDescription: 'Locate a vet for international documentation, vaccinations, and health checks.',
-    twitterImage: '/images/vet-checkup.jpg'
+    twitterImage: '/images/petConcierge.png'
   });
 });
 
@@ -97,10 +97,10 @@ router.get('/blog', (req, res) => {
     ogTitle: 'Pet Travel Blog | PetVoyage',
     ogDescription: 'Get expert advice, airline updates, and heartwarming pet travel stories.',
     ogUrl: 'https://www.petvoyage.ai/blog',
-    ogImage: '/images/blog-banner.jpg',
+    ogImage: '/images/movetocdmx.jpg',
     twitterTitle: 'Read Pet Travel Stories | PetVoyage Blog',
     twitterDescription: 'The best travel blog for pet lovers flying worldwide.',
-    twitterImage: '/images/blog-banner.jpg'
+    twitterImage: '/images/movetocdmx.jpg'
   });
 });
 

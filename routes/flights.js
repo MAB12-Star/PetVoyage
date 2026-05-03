@@ -103,7 +103,18 @@ function chunk(arr, size) {
 /* --------------------------------- routes -------------------------------- */
 router.get('/searchFlights', catchAsync((req, res) => {
   // user is available via res.locals.user from your app.js middleware
-  res.render('regulations/searchFlights');
+  res.render('regulations/searchFlights', {
+    title: 'Search Pet-Friendly Flights | PetVoyage',
+    metaDescription: 'Search flight routes and compare airline pet policies for in-cabin, cargo, service animals, health certificates, and pet travel rules.',
+    metaKeywords: 'pet-friendly flights, flights with pets, airline pet policy comparison, flying with pets, pet air travel',
+    ogTitle: 'Search Pet-Friendly Flights | PetVoyage',
+    ogDescription: 'Compare airline pet policies by route before booking travel with your pet.',
+    ogUrl: 'https://www.petvoyage.ai/flights/searchFlights',
+    ogImage: '/images/movetocdmx.jpg',
+    twitterTitle: 'Search Pet-Friendly Flights | PetVoyage',
+    twitterDescription: 'Find route-specific airline pet policy options for your next trip.',
+    twitterImage: '/images/movetocdmx.jpg'
+  });
 }));
 
 /* ------------------- map lat/lng from client -> IATA codes ------------------- */
@@ -407,10 +418,10 @@ router.get('/:slugOrId', async (req, res, next) => {
       ogUrl: flightData.slug
         ? `https://www.petvoyage.ai/flights/${encodeURIComponent(flightData.slug)}`
         : `https://www.petvoyage.ai/flights/${flightData._id}`,
-      ogImage: '/images/flight-results-pet-travel.jpg',
+      ogImage: '/images/movetocdmx.jpg',
       twitterTitle: 'Flight Results for Traveling with Pets | PetVoyage',
       twitterDescription: 'Explore airline pet regulations for your selected flight route. See which options are best for your pet.',
-      twitterImage: '/images/flight-results-pet-travel.jpg'
+      twitterImage: '/images/movetocdmx.jpg'
     });
   } catch (error) {
     console.error('Error fetching flight data (slug/id):', error.message);

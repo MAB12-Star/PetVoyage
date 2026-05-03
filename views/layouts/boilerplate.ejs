@@ -3,47 +3,58 @@
 <!DOCTYPE html>
 <html lang="en">
     <%
-    const safeTitle = (typeof title !== 'undefined' ? title : 'PetVoyage: Free Resource for Pet Travel Regulations');
-    const safeMetaDescription = (typeof metaDescription !== 'undefined' ? metaDescription : 'PetVoyage helps you find country and airline pet travel regulations. Plan your pet\'s journey with confidence!');
-    const safeMetaKeywords = (typeof metaKeywords !== 'undefined' ? metaKeywords : 'pet travel regulations, pet voyage, airline pet policies, country pet policies, travel with pets');
+    const siteBaseUrl = ((typeof baseUrl !== 'undefined' && baseUrl) ? baseUrl : (process.env.BASE_URL || 'https://www.petvoyage.ai')).replace(/\/+$/, '');
+    const currentPath = (typeof req !== 'undefined' && req && req.originalUrl) ? req.originalUrl : '/';
+    const canonicalObject = new URL(siteBaseUrl + currentPath.split('#')[0]);
+    const trackingParams = new Set(['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'fbclid', 'gclid', 'msclkid']);
+    for (const key of Array.from(canonicalObject.searchParams.keys())) {
+      if (trackingParams.has(key.toLowerCase())) canonicalObject.searchParams.delete(key);
+    }
+    const computedCanonicalUrl = (typeof canonicalUrl !== 'undefined' && canonicalUrl) ? canonicalUrl : canonicalObject.toString();
+    const absolutize = (value) => {
+      if (!value) return '';
+      if (/^https?:\/\//i.test(value)) return value;
+      return `${siteBaseUrl}/${String(value).replace(/^\/+/, '')}`;
+    };
+
+    const safeTitle = (typeof title !== 'undefined' ? title : 'PetVoyage | Pet Travel Regulations and Airline Pet Policies');
+    const safeMetaDescription = (typeof metaDescription !== 'undefined' ? metaDescription : 'Search country pet import rules and airline pet policies for dogs, cats, and other pets before you travel.');
+    const safeMetaKeywords = (typeof metaKeywords !== 'undefined' ? metaKeywords : 'pet travel regulations, airline pet policies, pet import rules, international pet travel');
+    const safeRobots = (typeof robots !== 'undefined' ? robots : 'index, follow, max-image-preview:large');
   
     const safeOgTitle = (typeof ogTitle !== 'undefined' ? ogTitle : safeTitle);
     const safeOgDescription = (typeof ogDescription !== 'undefined' ? ogDescription : safeMetaDescription);
   
-  //  IMPORTANT: don't shadow res.locals.safeOgUrl.
-   // Build one "computedOgUrl" with robust fallbacks:
     const computedOgUrl =
       (typeof ogUrl !== 'undefined' && ogUrl) ? ogUrl :
-      (typeof safeOgUrl !== 'undefined' && safeOgUrl) ? safeOgUrl :
-      'https://www.petvoyage.ai';
+      computedCanonicalUrl;
   
-    const safeOgImage = (typeof ogImage !== 'undefined' ? ogImage : 'https://www.petvoyage.ai/images/pet-travel-cover.jpg');
+    const safeOgImage = absolutize(typeof ogImage !== 'undefined' ? ogImage : '/images/PetVoyageLogo.png');
   
     const safeTwitterTitle = (typeof twitterTitle !== 'undefined' ? twitterTitle : safeTitle);
     const safeTwitterDescription = (typeof twitterDescription !== 'undefined' ? twitterDescription : safeMetaDescription);
-    const safeTwitterImage = (typeof twitterImage !== 'undefined' ? twitterImage : safeOgImage);
+    const safeTwitterImage = absolutize(typeof twitterImage !== 'undefined' ? twitterImage : safeOgImage);
   %>
   
 
 <head>
-  <%- include('../partials/jsonld') %>
-
+  <meta charset="UTF-8">
   <title><%= safeTitle %></title>
   <meta name="description" content="<%= safeMetaDescription %>">
   <meta name="keywords" content="<%= safeMetaKeywords %>">
   <meta name="author" content="PetVoyage Team">
+  <meta name="robots" content="<%= safeRobots %>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="UTF-8">
+  <link rel="canonical" href="<%= computedCanonicalUrl %>">
 
   <!-- Open Graph -->
   <meta property="og:title" content="<%= safeOgTitle %>">
   <meta property="og:description" content="<%= safeOgDescription %>">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="<%= computedOgUrl %>">
-
-  
-  
+  <meta property="og:url" content="<%= absolutize(computedOgUrl) %>">
   <meta property="og:image" content="<%= safeOgImage %>">
+  <meta property="og:site_name" content="PetVoyage">
+  <meta property="og:locale" content="en_US">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -54,10 +65,14 @@
 
     <!-- ✅ Canonical -->
    <%
-  const baseUrl = (process.env.BASE_URL || 'https://www.petvoyage.ai').replace(/\/+$/, '');
-  const canonicalUrl = baseUrl + (req ? req.originalUrl : '');
+  const legacyBaseUrl = siteBaseUrl;
+  const legacyCanonicalUrl = computedCanonicalUrl;
 %>
-<link rel="canonical" href="<%= canonicalUrl %>">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <%- include('../partials/jsonld', { baseUrl: siteBaseUrl, pageUrl: computedCanonicalUrl, pageTitle: safeTitle, pageDescription: safeMetaDescription, pageImage: safeOgImage }) %>
 
 
   <!-- Styles -->
@@ -98,10 +113,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
         <script src="/validateForms.js"></script>
         <script>

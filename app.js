@@ -103,6 +103,9 @@ app.use((req, res, next) => {
     } catch {
       res.locals.safeOgUrl = 'https://localhost:3000/';
     }
+    const baseUrl = (process.env.BASE_URL || 'https://www.petvoyage.ai').replace(/\/+$/, '');
+    res.locals.baseUrl = baseUrl;
+    res.locals.siteName = 'PetVoyage';
     res.locals.ogUrl = null;
     next();
   });
@@ -200,7 +203,7 @@ app.use('/', pagesRoutes);
 
 // 🗺 Sitemap route
 app.get('/siteMap.xml', (req, res) => {
-    res.sendFile(path.join(__dirname, 'siteMap.xml'));
+    res.redirect(301, '/sitemap.xml');
 });
 
 // Route for the sitemap

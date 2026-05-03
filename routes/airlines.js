@@ -33,7 +33,7 @@ router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
     // ✅ Make OG image absolute
     const ogImage = (airline.logo && airline.logo.startsWith('http'))
       ? airline.logo
-      : `${base}${airline.logo || '/images/default-airline.png'}`;
+      : `${base}${airline.logo || '/images/Logo.png'}`;
 
     // ✅ Clean summary for JSON-LD (no HTML)
     const plainSummary = (airline.ImprovedPetPolicySummary || '')
@@ -61,7 +61,7 @@ router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
         "name": "PetVoyage",
         "logo": {
           "@type": "ImageObject",
-          "url": `${base}/images/logo.png`
+          "url": `${base}/images/PetVoyageLogo.png`
         }
       },
       "image": ogImage,
@@ -132,11 +132,11 @@ router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
         metaKeywords: 'airline pet policies, fly with pets, airline list for pets, pet travel airlines, service animals',
         ogTitle: 'Airline Pet Policies List',
         ogDescription: 'See which airlines allow pets in cabin, cargo, or as service animals. Updated airline rules for pets.',
-        ogImage: '/images/airlines-banner.jpg',
+        ogImage: '/images/Logo.png',
         ogUrl: 'https://www.petvoyage.ai/airlines/list',
         twitterTitle: 'Compare Airline Pet Policies',
         twitterDescription: 'Check all major airlines for their latest pet travel rules.',
-        twitterImage: '/images/airlines-banner.jpg'
+        twitterImage: '/images/Logo.png'
       });
     } catch (error) {
       console.error("Error rendering airline list:", error);

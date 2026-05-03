@@ -288,12 +288,12 @@ router.get('/', async (req, res) => {
     ogTitle: 'Pet Travel Blog | PetVoyage',
     ogDescription:
       'Learn how to travel smart with your pet. Discover airline updates, personal experiences, and pet travel guides.',
-    ogImage: '/images/blog-banner.jpg',
+    ogImage: '/images/movetocdmx.jpg',
     ogUrl: absoluteUrl(req, '/blog'),
     twitterTitle: 'PetVoyage Blog | Pet Travel Insights',
     twitterDescription:
       'Stay updated with the latest tips and stories about traveling internationally with pets.',
-    twitterImage: '/images/blog-banner.jpg',
+    twitterImage: '/images/movetocdmx.jpg',
     stories,
     airlineByName,
     user: req.user || null
@@ -580,7 +580,7 @@ router.get('/:slugOrId', async (req, res) => {
     const canonical = absoluteUrl(req, `/blog/${slug}`);
     const leadImage =
       (story.photos && story.photos[0] && absoluteUrl(req, story.photos[0].url))
-      || absoluteUrl(req, '/images/blog-banner.jpg');
+      || absoluteUrl(req, '/images/movetocdmx.jpg');
 
     const metaTitle = (story.metaTitle && story.metaTitle.trim()) ? story.metaTitle : story.title;
 

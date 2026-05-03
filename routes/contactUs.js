@@ -12,7 +12,19 @@ const openai = new OpenAI({
 
 // Route to render the contact page initially
 router.get('/', (req, res) => {
-    res.render('regulations/contactUs', { answer: null });  // Initially pass null for the answer
+    res.render('regulations/contactUs', {
+        answer: null,
+        title: 'Pet Travel Concierge | PetVoyage',
+        metaDescription: 'Get help planning pet travel documents, airline policies, health certificates, vet visits, and route requirements for your pet journey.',
+        metaKeywords: 'pet travel concierge, pet travel help, pet documents, airline pet policy help, international pet travel planning',
+        ogTitle: 'Pet Travel Concierge | PetVoyage',
+        ogDescription: 'Let PetVoyage help with pet travel planning, documents, flights, vets, and destination requirements.',
+        ogUrl: 'https://www.petvoyage.ai/contactUs',
+        ogImage: '/images/petConcierge.png',
+        twitterTitle: 'Pet Travel Concierge | PetVoyage',
+        twitterDescription: 'Pet travel planning help for documents, airline rules, and route requirements.',
+        twitterImage: '/images/petConcierge.png'
+    });  // Initially pass null for the answer
 });
 
 

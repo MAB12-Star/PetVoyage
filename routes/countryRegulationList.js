@@ -34,10 +34,10 @@ router.get('/getCountryRegulationList', async (req, res) => {
       ogTitle: 'Pet Travel Regulations by Country',
       ogDescription: 'Use PetVoyage to find country-specific rules for pet import, export, vaccinations, and more.',
       ogUrl: 'https://www.petvoyage.ai/getCountryRegulationList',
-      ogImage: '/images/country-regulations-banner.jpg',
+      ogImage: '/images/catanddog.jpg',
       twitterTitle: 'Pet Travel Rules by Country | PetVoyage',
       twitterDescription: 'Browse country-specific pet travel regulations including microchip, certification, vaccination, and quarantine rules.',
-      twitterImage: '/images/country-regulations-banner.jpg'
+      twitterImage: '/images/catanddog.jpg'
     });
   } catch (err) {
     console.error("[ERROR] Failed to fetch country list:", err);
@@ -147,7 +147,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     const pageUrl = `${baseUrl}/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(canonicalPetType)}`;
 
     // ✅ Make OG/Twitter images absolute
-    const ogImage = `${baseUrl}/images/pet-travel-map.jpg`;
+    const ogImage = `${baseUrl}/images/catanddog.jpg`;
 
     // ✅ Build JSON-LD structured data (Article schema)
     const jsonLd = {
@@ -168,7 +168,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
         "name": "PetVoyage",
         "logo": {
           "@type": "ImageObject",
-          "url": `${baseUrl}/images/logo.png`
+          "url": `${baseUrl}/images/PetVoyageLogo.png`
         }
       },
       "image": ogImage,

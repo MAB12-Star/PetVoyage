@@ -130,10 +130,10 @@ router.get('/submitCountry/:originCountry/:destinationCountry/:petType/Pet/Polic
                 ogTitle: pageTitle,
                 ogDescription: description,
                 ogUrl: `https://www.petvoyage.ai/submitCountry/${origin}/${destination}/${petType}/Pet/Policy`,
-                ogImage: '/images/pet-travel-cover.jpg',
+                ogImage: '/images/catanddog.jpg',
                 twitterTitle: pageTitle,
                 twitterDescription: description,
-                twitterImage: '/images/pet-travel-cover.jpg'
+                twitterImage: '/images/catanddog.jpg'
             });
         } else {
             res.status(404).send('No regulations found for the selected countries and pet type.');

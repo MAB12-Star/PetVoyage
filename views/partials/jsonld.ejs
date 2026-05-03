@@ -1,3 +1,44 @@
+<%
+  const defaultJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${baseUrl || 'https://www.petvoyage.ai'}#organization`,
+        "name": "PetVoyage",
+        "url": baseUrl || "https://www.petvoyage.ai",
+        "logo": `${baseUrl || 'https://www.petvoyage.ai'}/images/PetVoyageLogo.png`
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl || 'https://www.petvoyage.ai'}#website`,
+        "url": baseUrl || "https://www.petvoyage.ai",
+        "name": "PetVoyage",
+        "publisher": { "@id": `${baseUrl || 'https://www.petvoyage.ai'}#organization` },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${baseUrl || 'https://www.petvoyage.ai'}/getCountryRegulationList?destinationCountry={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": pageUrl || `${baseUrl || 'https://www.petvoyage.ai'}/`,
+        "url": pageUrl || `${baseUrl || 'https://www.petvoyage.ai'}/`,
+        "name": pageTitle || "PetVoyage",
+        "description": pageDescription || "Pet travel regulations and airline pet policies.",
+        "isPartOf": { "@id": `${baseUrl || 'https://www.petvoyage.ai'}#website` },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": pageImage || `${baseUrl || 'https://www.petvoyage.ai'}/images/PetVoyageLogo.png`
+        }
+      }
+    ]
+  };
+%>
+<script type="application/ld+json">
+  <%- JSON.stringify(defaultJsonLd) %>
+</script>
 <% if (typeof jsonLd !== "undefined" && jsonLd) { %>
   <script type="application/ld+json">
     <%- JSON.stringify(jsonLd) %>
