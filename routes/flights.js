@@ -101,6 +101,10 @@ function chunk(arr, size) {
 }
 
 /* --------------------------------- routes -------------------------------- */
+router.head('/searchFlights', (req, res) => {
+  res.sendStatus(200);
+});
+
 router.get('/searchFlights', catchAsync((req, res) => {
   // user is available via res.locals.user from your app.js middleware
   res.render('regulations/searchFlights', {
