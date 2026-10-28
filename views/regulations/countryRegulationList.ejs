@@ -39,7 +39,7 @@
           width="400"
           height="400"
         />
-        <h1 class="fw-bold display-5">Travel Smarter with Pets</h1>
+        <h1 class="fw-bold display-5">Pet Travel Requirements by Country</h1>
         <p class="fs-5 text-muted">Instantly explore pet policies by airline and country. Fly with peace of mind.</p>
 
         <!-- Main Navigation -->
@@ -69,6 +69,23 @@
             </div>
           </form>
         </div>
+
+        <section class="mt-4 text-start" aria-labelledby="country-directory-heading">
+          <h2 id="country-directory-heading" class="h4">Browse country requirements by pet type</h2>
+          <p class="text-muted">Choose a destination and pet type to read its entry requirements. Rules can also depend on where your pet is traveling from.</p>
+          <ul class="list-unstyled">
+            <% countryLinks.forEach(entry => { %>
+              <li class="mb-3">
+                <strong><%= entry.country %></strong>
+                <ul class="list-inline mb-0">
+                  <% entry.pets.forEach(pet => { %>
+                    <li class="list-inline-item"><a href="/country/<%= encodeURIComponent(entry.country) %>?petType=<%= encodeURIComponent(pet.slug) %>"><%= entry.country %>: <%= pet.label %> requirements</a></li>
+                  <% }) %>
+                </ul>
+              </li>
+            <% }) %>
+          </ul>
+        </section>
 
         <!-- MOBILE-ONLY: Blog (stacked) -->
         <div class="d-lg-none">

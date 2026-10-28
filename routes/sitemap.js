@@ -63,6 +63,16 @@ function canonicalPetType(raw) {
   return slug || null;
 }
 
+// Omit unknown dates rather than reporting sitemap generation as a content update.
+function modificationDate(...values) {
+  for (const value of values) {
+    if (!value) continue;
+    const date = new Date(value);
+    if (!Number.isNaN(date.getTime())) return date.toISOString();
+  }
+  return null;
+}
+
 async function buildSitemapData(req) {
   const now = Date.now();
   if (cache.data && (now - cache.at) < CACHE_TTL_MS) return cache.data;
@@ -101,7 +111,7 @@ async function buildSitemapData(req) {
 
   const blogUrls = (stories || []).map(s => ({
     loc: `${origin}/blog/${s.slug || s._id}`,
-    lastmod: new Date(s.updatedAt || s.createdAt || Date.now()).toISOString(),
+    lastmod: modificationDate(s.updatedAt, s.createdAt),
     changefreq: 'weekly',
     priority: '0.7',
     title: s.title || null
@@ -116,7 +126,7 @@ async function buildSitemapData(req) {
     .filter(a => a.slug)
     .map(a => ({
       loc: `${origin}/airlines/${a.slug}`,
-      lastmod: new Date(a.updatedAt || a.createdAt || Date.now()).toISOString(),
+      lastmod: modificationDate(a.updatedAt, a.createdAt),
       changefreq: 'weekly',
       priority: '0.8',
       name: a.name || a.slug
@@ -137,7 +147,7 @@ async function buildSitemapData(req) {
     if (!country) continue;
 
     const encodedCountry = encodeURIComponent(country);
-    const lastmod = new Date(doc.updatedAt || doc.createdAt || Date.now()).toISOString();
+    const lastmod = modificationDate(doc.updatedAt, doc.createdAt);
 
     const petMap = doc.regulationsByPetType || {};
     const rawPetTypes = Object.keys(petMap);
@@ -199,11 +209,11 @@ router.get('/sitemap.xml', async (req, res) => {
     const { urls, nowIso } = await buildSitemapData(req);
 
     const toUrlXml = (u) => {
-      const lastmod = u.lastmod || nowIso;
+      const lastmod = u.lastmod;
       return `
 <url>
   <loc>${xmlEscape(u.loc)}</loc>
-  <lastmod>${xmlEscape(lastmod)}</lastmod>
+  ${lastmod ? `<lastmod>${xmlEscape(lastmod)}</lastmod>` : ''}
   ${u.changefreq ? `<changefreq>${xmlEscape(u.changefreq)}</changefreq>` : ''}
   <priority>${xmlEscape(u.priority || '0.5')}</priority>
 </url>`;

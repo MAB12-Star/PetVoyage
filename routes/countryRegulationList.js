@@ -23,11 +23,23 @@ function slugKey(s) {
 /* ---------------- LIST PAGE ---------------- */
 router.get('/getCountryRegulationList', async (req, res) => {
   try {
-    const countries = await CountryRegulation.find().distinct('destinationCountry');
+    const countryDocs = await CountryRegulation.find({}, 'destinationCountry regulationsByPetType').lean();
+    const countryLinks = countryDocs
+      .filter(doc => String(doc.destinationCountry || '').trim())
+      .map(doc => ({
+        country: doc.destinationCountry.trim(),
+        pets: Object.keys(doc.regulationsByPetType || {})
+          .filter(key => !key.startsWith('$_') && slugKey(key))
+          .map(key => ({ label: key, slug: slugKey(key) }))
+      }))
+      .filter(doc => doc.pets.length)
+      .sort((a, b) => a.country.localeCompare(b.country));
+    const countries = [...new Set(countryLinks.map(doc => doc.country))];
     console.log("[LOG] Retrieved countries for dropdown:", countries);
 
     res.render('regulations/countryRegulationList', {
       countries,
+      countryLinks,
       title: 'Country Pet Import Rules | PetVoyage',
       metaDescription: 'Select a country to view pet import and export requirements. Get current regulations for cats, dogs, and other pets.',
       metaKeywords: 'pet import rules, pet travel by country, international pet policies, pet export rules, dog cat travel regulations',
