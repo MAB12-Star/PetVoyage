@@ -2,6 +2,9 @@
 
 export const ALLOW_USDA = true;
 
+// Retained local timeout setting; no caller currently consumes this value.
+const DEFAULT_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
+
 /**
  * Known official government HOSTNAMES ONLY.
  * ❗ Do NOT include protocol (https://) or paths.
@@ -403,6 +406,7 @@ const KNOWN_GOV_HOSTS = new Set([
   // Iceland
   // =====================
   "mast.is",
+  // Local candidate mast.gov remains unverified and is not explicitly allowlisted.
   "www.mast.is",
   "island.is",
   "www.island.is",

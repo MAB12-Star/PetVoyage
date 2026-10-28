@@ -105,7 +105,8 @@ router.head('/searchFlights', (req, res) => {
   res.sendStatus(200);
 });
 
-router.get('/searchFlights', catchAsync((req, res) => {
+// Rendering is synchronous to initiate; catchAsync requires a returned Promise.
+router.get('/searchFlights', (req, res) => {
   // user is available via res.locals.user from your app.js middleware
   res.render('regulations/searchFlights', {
     title: 'Search Pet-Friendly Flights | PetVoyage',
@@ -119,7 +120,7 @@ router.get('/searchFlights', catchAsync((req, res) => {
     twitterDescription: 'Find route-specific airline pet policy options for your next trip.',
     twitterImage: '/images/movetocdmx.jpg'
   });
-}));
+});
 
 /* ------------------- map lat/lng from client -> IATA codes ------------------- */
 const mapAirportToIATA = async (req, res, next) => {

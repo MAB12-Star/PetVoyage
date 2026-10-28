@@ -37,6 +37,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node app.js",
     "dev": "cross-env NODE_ENV=development nodemon app.js",
-    "runReview": "node -r dotenv/config runReview.js"
+    "runReview": "node -r dotenv/config runReview.js",
+    "test:staging": "node scripts/test-staging.cjs",
+    "test:reconciliation": "node scripts/test-reconciliation.cjs && node scripts/test-content-reconciliation.mjs"
   }
 }

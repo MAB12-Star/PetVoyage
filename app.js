@@ -1,4 +1,5 @@
-require('dotenv').config();
+// Isolated staging receives an explicit environment; never load a production .env.
+if (process.env.NODE_ENV !== 'staging') require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
@@ -49,16 +50,21 @@ const pagesRoutes = require('./routes/pages');
 
 
 
-mongoose.connect(process.env.mongoKey, {});
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', () => {
-    console.log('Database Connected');
-    console.log('[MONGO] connecting to:', process.env.mongoKey.replace(/\/\/.*@/, '//<redacted>@'));
-
-});
+db.on('error', () => console.error('Database connection error.'));
 
 const app = express();
+const IS_STAGING = process.env.NODE_ENV === 'staging';
+if (IS_STAGING) {
+  app.use((req, res, next) => {
+    res.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    res.locals.robots = 'noindex, nofollow, noarchive';
+    next();
+  });
+  app.get('/robots.txt', (req, res) => {
+    res.type('text/plain').send('User-agent: *\nDisallow: /\n');
+  });
+}
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -127,7 +133,7 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.mongoKey,
+        clientPromise: db.asPromise().then(() => db.getClient()),
         touchAfter: 24 * 3600
     }),
     cookie: {
@@ -136,6 +142,9 @@ const sessionConfig = {
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7
     }
 };
+// connect-mongo starts its TTL-index setup immediately. Handle its rejection
+// now and await the same initialization before accepting HTTP requests below.
+sessionConfig.store.collectionP.catch(() => {});
 app.use(session(sessionConfig));
 app.use(flash());
 
@@ -180,6 +189,8 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/ai', aiRoutes); // AI route near the top
 //app.use('/', auth);
 
+// Preserve older login links used by favorites, tasks and authentication guards.
+app.get('/login', (req, res) => res.redirect(302, '/auth/login'));
 app.use('/auth', auth);
 app.use('/regulations', regulations);
 app.use('/flights', flightRoutes);
@@ -316,7 +327,7 @@ app.post('/account/password', ensureAuth, async (req, res) => {
 app.get('/dashboard', async (req, res) => {
   if (!req.isAuthenticated()) {
     req.flash('error', 'Please log in.');
-    return res.redirect('/login');
+    return res.redirect('/auth/login');
   }
 
   try {
@@ -364,7 +375,28 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 });
 
-// 🚀 Start Server
-app.listen(3000, () => {
-    console.log('Serving on port 3000');
-});
+// Start only after the application and session store share a ready database.
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.mongoKey, IS_STAGING ? { serverSelectionTimeoutMS: 5000 } : {});
+    await sessionConfig.store.collectionP;
+    const port = Number(process.env.PORT || 3000);
+    const host = process.env.HOST;
+    if (!Number.isInteger(port) || port < 1 || port > 65535) {
+      throw new Error('Invalid port');
+    }
+    const server = app.listen(port, host, () => {
+      console.log(`Serving on port ${port}; database ready.`);
+    });
+    server.on('error', () => {
+      console.error('Server could not start.');
+      mongoose.disconnect().finally(() => { process.exitCode = 1; });
+    });
+  } catch {
+    // Connection URLs and provider credentials must never appear in startup logs.
+    console.error('Startup failed. Check database connectivity and server configuration.');
+    await mongoose.disconnect();
+    process.exitCode = 1;
+  }
+}
+startServer();

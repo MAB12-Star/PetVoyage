@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
 
       <!-- LEFT -->
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/aboutus">About Us</a></li>
         <li class="nav-item"><a class="nav-link" href="/getCountryRegulationList">Search Country</a></li>
@@ -40,29 +40,18 @@
         </li>
       </ul>
 
-      <!-- SEARCH (unchanged) -->
-      <div class="searchField w-50 ms-3">
-        <form class="d-flex w-100 my-2 my-lg-0 position-relative" role="search">
-          <ul class="navbar-nav me-2">
-            <li class="nav-item">
-              <a class="nav-link">
-                <i class="fas fa-search"
-                   data-bs-toggle="tooltip"
-                   title="Check an airlines pet requirements."></i>
-              </a>
-            </li>
-          </ul>
-
+      <!-- Compact search; retain the existing autocomplete hooks. -->
+        <form class="d-flex position-relative me-3" role="search">
           <input
-            class="form-control me-2"
+            class="form-control"
             type="text"
             id="airlineSearch"
+            aria-label="Search airline regulations"
             placeholder="Search Airline Regulations..."
             autocomplete="off">
 
-          <ul class="dropdown-menu" id="airlineDropdown" style="display:none;"></ul>
+          <ul class="dropdown-menu position-absolute" id="airlineDropdown" style="display:none;"></ul>
         </form>
-      </div>
 
       <!-- RIGHT (FIXED) -->
       <ul class="navbar-nav ms-auto icon-text-container">
