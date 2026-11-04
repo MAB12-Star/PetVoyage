@@ -160,6 +160,7 @@ app.use((req, res, next) => {
     ? req.isAuthenticated()
     : false;
 
+  res.locals.storeSelections = require('./content/storeSelections.json');
   res.locals.user = req.user || null;                 // <— use this in partials
   res.locals.currentUser = res.locals.user;           // (kept for your existing templates)
   res.locals.isAuthenticated = !!isAuthFn;            // <— also use in partials
@@ -359,9 +360,7 @@ app.get('/dashboard', async (req, res) => {
 
 
  // 🏠 Home
-app.get('/', (req, res) => {
-    res.render('index');
-  });
+app.use('/', require('./routes/experience'));
   
 
 // ❌ 404 Handler

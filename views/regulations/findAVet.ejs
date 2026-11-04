@@ -1,25 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-<!-- Hero Section & Navigation -->
-<div class="bg-light py-2 text-center border-bottom">
-  <div class="bg-light py-lg-2 text-center border-bottom mt-1">
-    <img
-      src="/images/PetVoyageLogo.png"
-      class="img-fluid rounded-top d-block mx-auto"
-      alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-      width="200" height="200"
-      loading="eager" decoding="async"
-    />
-    <h1 class="fw-bold display-5">Find A Vet Near You</h1>
-    <p class="fs-5 text-muted">Prepare your friend for travel, make a vet appointment.</p>
-
-    <!-- Navigation Strip -->
-    <div class="mt-4">
-      <%- include('../partials/navigation') %>
-    </div>
-  </div>
-</div>
-
+<header class="pv-wrap pv-page-heading"><p class="pv-eyebrow">Prepare together</p><h1>Find a vet</h1><p>Locate a practice and confirm its experience with your destination’s travel documentation.</p></header>
 <%
   // Ads (server-side via getAd)
   const customSpot  = (typeof getAd === 'function') ? getAd('custom-spot') : null;

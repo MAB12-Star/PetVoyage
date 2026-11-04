@@ -10,7 +10,8 @@ const root = path.resolve(__dirname, '..');
   const sandbox = {
     module: { exports: {} }, console, process,
     require(name) {
-      if (name === 'express') return express;
+      if (name === '../helpers/relatedStories') return async () => [];
+    if (name === 'express') return express;
       if (name === '../middleware') return { redirectOldAirlineLinks: (_req, _res, next) => next() };
       if (name === '../models/airline') return new Proxy({}, {
         get() { databaseCalls++; throw new Error('Unexpected database access'); }

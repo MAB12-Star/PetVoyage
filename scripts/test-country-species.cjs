@@ -18,6 +18,7 @@ vm.runInNewContext(source, {
     if (name === 'express') return { Router: () => ({ get(route, ...handlers) { routes.push({ route, handlers }); } }) };
     if (name === '../models/countryPetRegulationList') return { findOne() { return { lean: async () => structuredClone(fixture) }; } };
     if (name === '../middleware') return { attachAds() {} };
+    if (name === '../helpers/relatedStories') return async () => [];
     if (name === 'mongoose') return { connection: {} };
     throw new Error(`Unexpected import: ${name}`);
   }

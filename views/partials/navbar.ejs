@@ -1,6 +1,6 @@
 
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg pv-header" aria-label="Main navigation">
   <div class="container-fluid">
 
     <!-- Toggler -->
@@ -12,36 +12,18 @@
       aria-controls="navbarNav"
       aria-expanded="false"
       aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span>Menu</span>
     </button>
 
     <!-- Logo -->
-    <a class="logo navbar-brand mx-auto mx-lg-0" href="/">PetVoyage</a>
+    <a class="navbar-brand" href="/"><img src="/images/PetVoyageLogo.png" alt="" width="50" height="50">PetVoyage</a>
 
     <!-- Collapsible -->
     <div class="collapse navbar-collapse" id="navbarNav">
 
       <!-- LEFT -->
       <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/aboutus">About Us</a></li>
-        <li class="nav-item"><a class="nav-link" href="/getCountryRegulationList">Search Country</a></li>
-        <li class="nav-item"><a class="nav-link" href="/flights/searchFlights">Search Flights</a></li>
-        <li class="nav-item">
-          <a class="nav-link"
-             href="/contactUs"
-             data-bs-toggle="tooltip"
-             title="Let us do the work for you!">
-            Contact
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://petsvoyage.myshopify.com/collections/all">Shop</a>
-        </li>
-      </ul>
-
-      <!-- Compact search; retain the existing autocomplete hooks. -->
-        <form class="d-flex position-relative me-3" role="search">
+        <li class="nav-item dropdown"><button class="nav-link dropdown-toggle" id="planMenu" type="button" data-bs-toggle="dropdown" aria-expanded="false">Plan a trip</button><ul class="dropdown-menu" aria-labelledby="planMenu"><li><a class="dropdown-item" href="/plan">Start a research plan</a></li><li><a class="dropdown-item" href="/getCountryRegulationList">Country requirements</a></li><li><a class="dropdown-item" href="/regulations/airlineList">Airline policies</a></li><li><a class="dropdown-item" href="/flights/searchFlights">Search Flights</a></li><li><a class="dropdown-item" href="/findAVet">Find a vet</a></li><li><form class="d-flex position-relative pv-header-search" role="search">
           <input
             class="form-control"
             type="text"
@@ -51,10 +33,19 @@
             autocomplete="off">
 
           <ul class="dropdown-menu position-absolute" id="airlineDropdown" style="display:none;"></ul>
-        </form>
+        </form></li></ul></li>
+        <li class="nav-item"><a class="nav-link" href="/guides">Guides</a></li>
+        <li class="nav-item"><a class="nav-link" href="/blog">Community</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://petsvoyage.myshopify.com/">Shop</a>
+        </li>
+      </ul>
+
+      <!-- Compact search; retain the existing autocomplete hooks. -->
+
 
       <!-- RIGHT (FIXED) -->
-      <ul class="navbar-nav ms-auto icon-text-container">
+      <ul class="navbar-nav ms-auto icon-text-container"><li class="nav-item"><a class="btn btn-outline-primary pv-trips-link" href="/my-trips">My trips</a></li>
 
         <% if (!currentUser) { %>
           <li class="nav-item">
@@ -101,6 +92,7 @@
               </li>
 
               <li><hr class="dropdown-divider"></li>
+              <% if (currentUser.role === 'admin') { %><li><a class="dropdown-item" href="/admin">Admin</a></li><li><a class="dropdown-item" href="/admin/agent">Country research agent</a></li><li><a class="dropdown-item" href="/admin/airline-agent">Airline research agent</a></li><% } %>
 
               <li>
                 <a class="dropdown-item" href="/auth/logout">

@@ -246,3 +246,5 @@ function validateReviewForm() {
   return !!document.querySelector('input[name="review[rating]"]:checked');
 }
 </script>
+
+<div class="pv-wrap"><%- include('../partials/relatedStories',{stories:typeof relatedStories !== 'undefined' ? relatedStories : []}) %></div>

@@ -76,6 +76,7 @@ router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
     };
 
     res.render('regulations/showAirline', {
+      relatedStories: await require('../helpers/relatedStories')({airlineSlug:airline.slug,airlineName:airline.name}).catch(() => []),
       airline,
       slug,
       link,

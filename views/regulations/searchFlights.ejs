@@ -1,20 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-<!-- Hero -->
-<div class="bg-light py-lg-2 text-center border-bottom mt-1">
-  <img
-    src="/images/PetVoyageLogo.png"
-    class="img-fluid rounded-top d-block mx-auto"
-    alt="PetVoyage Logo - Pet Travel Regulations and Policies"
-    width="200" height="200"
-  />
-  <h1 class="fw-bold display-5">Compare Pet Travel Policies Easily</h1>
-  <p class="fs-5 text-muted">Select your countries and pet type to see import/export rules instantly.</p>
-
-  <div class="mt-4">
-    <%- include('../partials/navigation') %>
-  </div>
-</div>
+<header class="pv-wrap pv-page-heading"><p class="pv-eyebrow">Find your route</p><h1>Search flights</h1><p>Explore flights, then confirm pet acceptance and availability directly with the operating airline.</p></header>
 <!--Ads-->
 <%
   const headerAd = (typeof getAd === 'function') ? getAd('header') : null;

@@ -70,13 +70,7 @@
 <!-- Header / Hero -->
 <header class="bg-light py-2 border-bottom" role="banner">
   <div class="container text-center">
-    <img
-      src="/images/PetVoyageLogo.png"
-      class="img-fluid d-block mx-auto"
-      alt="PetVoyage Logo — pet travel regulations and stories"
-      width="200" height="200"
-      loading="eager" decoding="async"
-    />
+
     <h1 class="fw-bold display-5">Pet Travel Stories from Real Flyers</h1>
     <p class="fs-5 text-muted">Share and explore real flight stories with pets.</p>
 
@@ -632,3 +626,5 @@
   applyFilters();
 })();
 </script>
+
+<div class="pv-wrap"><%- include('../partials/storeSelections',{productLimit:3}) %></div>

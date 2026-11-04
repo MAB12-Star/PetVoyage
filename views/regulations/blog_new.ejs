@@ -48,8 +48,8 @@
 
     <div class="row g-3 mt-1">
   <div class="col-md-4">
-    <label class="form-label">Destination country (optional)</label>
-    <input name="country" class="form-control" placeholder="e.g., Mexico">
+    <label class="form-label" for="storyCountry">Destination country (optional)</label>
+    <input id="storyCountry" list="storyCountries" name="country" class="form-control" placeholder="e.g., Mexico">
   </div>
 
   <div class="col-md-4">
@@ -349,3 +349,5 @@
   });
 })();
 </script>
+
+<datalist id="storyCountries"><% (typeof countries !== "undefined" ? countries : []).sort().forEach(country=>{ %><option value="<%= country %>"><% }) %></datalist>

@@ -19,6 +19,7 @@ let databaseCalls = 0;
 vm.runInNewContext(read('routes/airlines.js'), {
   module: { exports: {} }, console, process,
   require(name) {
+    if (name === '../helpers/relatedStories') return async () => [];
     if (name === 'express') return { Router: () => router };
     if (name === '../models/airline') return new Proxy({}, {
       get() { databaseCalls++; throw new Error('Unexpected database access'); }
@@ -91,7 +92,7 @@ for (const currentUser of [null, { displayName: 'Test <script>' }]) {
     assert.equal($('#loginLink[href="/auth/login"]').length, 1);
   }
   assert.equal($('a[href="/flights/searchFlights"]').length, 1);
-  assert.equal($('a[href="https://petsvoyage.myshopify.com/collections/all"]').length, 1);
+  assert.equal($('a[href="https://petsvoyage.myshopify.com/"]').length, 1);
 }
 
 const layoutSource = read('views/layouts/boilerplate.ejs');

@@ -228,6 +228,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     }
 
     const seoData = {
+      relatedStories: await require('../helpers/relatedStories')({country:safeCountry}).catch(() => []),
       regulations,
 
       // ✅ IMPORTANT: send the Mongo _id so your Save button can POST it

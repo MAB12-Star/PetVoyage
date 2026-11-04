@@ -1,0 +1,9 @@
+<% const chosenProducts = (typeof storeSelections !== 'undefined' ? storeSelections : []).slice(0, typeof productLimit !== 'undefined' ? productLimit : 5); %>
+<% if (chosenProducts.length) { %>
+<section class="pv-section pv-store-section" aria-label="Pet travel packing selections">
+  <div class="pv-section-head"><div><p class="pv-eyebrow">From our store</p><h2>Consider for your own packing list.</h2><p>Compare the details with your pet, your journey and what you already own.</p></div><a class="pv-text-link" href="https://petsvoyage.myshopify.com/collections/all">Browse all essentials →</a></div>
+  <div class="pv-product-grid"><% chosenProducts.forEach(product => { %>
+    <article class="pv-product-card"><a href="https://petsvoyage.myshopify.com/products/<%= encodeURIComponent(product.handle) %>"><img src="<%= product.image %>" alt="<%= product.title %>" loading="lazy" width="400" height="300"></a><h3><%= product.title %></h3><p><%= product.note %></p><a class="pv-text-link" href="https://petsvoyage.myshopify.com/products/<%= encodeURIComponent(product.handle) %>">View current listing →</a></article>
+  <% }) %></div><p class="pv-fine-print">Optional PetVoyage store selections. Check current price, options, fit and delivery before ordering. Placement does not mean airline acceptance or an author's use or endorsement.</p>
+</section>
+<% } %>

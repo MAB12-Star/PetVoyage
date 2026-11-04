@@ -309,6 +309,7 @@ router.get('/new', ensureAuth, async (req, res) => {
     res.render('regulations/blog_new', {
       user: req.user,
       story: {},
+      countries: await require('../models/countryPetRegulationList').distinct('destinationCountry').catch(() => []),
       airlines,
       title: 'Share Your Pet Travel Story | PetVoyage Blog',
       metaDescription:
@@ -435,6 +436,7 @@ router.get('/:id/edit', ensureAuth, ensureOwner(findStoryByParam), async (req, r
     res.render('regulations/blog_edit', {
       user: req.user,
       story,
+      countries: await require('../models/countryPetRegulationList').distinct('destinationCountry').catch(() => []),
       airlines,
       title: `Edit: ${story.title} | PetVoyage`,
       metaDescription: 'Edit your pet travel story.',

@@ -166,14 +166,26 @@ async function main() {
   assert.equal((await fixtures.findOne({ _id: marker._id })).value, 'updated');
   console.log('PASS isolated real MongoDB ping/read/write');
 
+  await database.collection('country_regulations_list').insertMany([
+    {destinationCountry:'Test Origin', regulationsByPetType:{Dog:{microchip:'SYNTHETIC_ORIGIN_REQUIREMENT'}}},
+    {destinationCountry:'Test Destination', regulationsByPetType:{'Dog & Cat':{microchip:'SYNTHETIC_SELECTED_REQUIREMENT'},Ferrets:{microchip:'SYNTHETIC_UNSELECTED_REQUIREMENT'}}}
+  ]);
+  await database.collection('stories').insertOne({title:'A synthetic staging journey',slug:'synthetic-staging-journey',summary:'Synthetic fixture for layout and association testing.',body:'<p>Synthetic body and media are preserved.</p>',country:'Test Destination',airline:'Synthetic Air',airlineSlug:'synthetic-air',authorName:'Staging fixture',createdAt:new Date(),photos:[],comments:[]});
+  await database.collection('airlines').insertOne({name:'Synthetic Air',slug:'synthetic-air',reviews:[],ImprovedPetPolicySummary:'<p>Synthetic test policy only.</p>'});
   await startApp(uri);
-  for (const route of ['/', '/auth/login', '/auth/register', '/aboutUs', '/contactUs', '/faq', '/terms', '/privacy', '/flights/searchFlights', '/regulations/airlineList', '/getCountryRegulationList', '/blog', '/tips']) {
+  for (const route of ['/', '/auth/login', '/auth/register', '/aboutUs', '/contactUs', '/faq', '/terms', '/privacy', '/flights/searchFlights', '/regulations/airlineList', '/getCountryRegulationList', '/blog', '/tips', '/plan', '/my-trips', '/guides', '/findAVet']) {
     const page = await request(route, { authenticated: false });
     assert.equal(page.status, 200, `Public page must render: ${route}`);
   }
   const oldLogin = await request('/login', { authenticated: false });
   assert.equal(oldLogin.location, '/auth/login');
-  console.log('PASS 13 public-page smoke checks and legacy login alias');
+  assert.match((await request('/',{authenticated:false})).text,/A synthetic staging journey/);
+  const countryPage=await request('/country/Test%20Destination?petType=dog-cat',{authenticated:false});
+  assert.equal(countryPage.status,200); assert.match(countryPage.text,/SYNTHETIC_SELECTED_REQUIREMENT/);assert.ok(!countryPage.text.includes('SYNTHETIC_UNSELECTED_REQUIREMENT'));assert.match(countryPage.text,/A synthetic staging journey/);
+  assert.equal((await request('/airlines/synthetic-air',{authenticated:false})).status,200);
+  for(const route of ['/admin','/admin/agent','/admin/airline-agent']) assert.equal((await request(route,{authenticated:false})).status,302);
+  assert.equal((await request('/my-trips',{method:'POST',authenticated:false,form:{}})).status,302);
+  console.log('PASS public pages, real story associations, species isolation, guest workspace and admin protection');
   const flightGet = await request('/flights/searchFlights', { authenticated: false });
   const flightHead = await request('/flights/searchFlights', { method: 'HEAD', authenticated: false });
   assert.equal(flightGet.status, 200);
@@ -205,12 +217,34 @@ async function main() {
   assert.ok(profile.text.includes(email));
   assert.ok(profile.text.includes('Synthetic Staging User'));
   assert.ok(await database.collection('sessions').findOne({ 'session': { $regex: String(user._id) } }), 'Session must persist in MongoDB');
+  const savedForm={origin:'Test Origin',destination:'Test Destination',petType:'dog',departureDate:'2027-01-10'};
+  const research=await request('/plan?origin=Test%20Origin&destination=Test%20Destination&pet=dog');
+  assert.equal(research.status,200);assert.match(research.text,/petType=dog-cat/);
+  assert.equal((await request('/my-trips',{method:'POST',form:savedForm})).status,302);
+  assert.equal((await request('/my-trips',{method:'POST',form:savedForm})).status,302);
+  assert.equal((await request('/my-trips',{method:'POST',form:{...savedForm,destination:'<script>invalid</script>'}})).status,400);
+  const savedUser=await database.collection('users').findOne({_id:user._id});assert.equal(savedUser.researchPlans.length,1);
+  assert.match((await request('/my-trips')).text,/Test Origin/);
+  for(const route of ['/admin','/admin/agent','/admin/airline-agent']) { const blocked=await request(route);assert.equal(blocked.status,302);assert.equal(blocked.location,'/'); }
+  assert.ok(!(await request('/')).text.includes('href="/admin"'));
+  await database.collection('users').updateOne({_id:user._id},{$set:{role:'admin'}});
+  for(const route of ['/admin','/admin/agent','/admin/airline-agent']) assert.equal((await request(route)).status,200,'Admin page '+route);
+  assert.ok((await request('/')).text.includes('href="/admin"'));
+  await database.collection('users').updateOne({_id:user._id},{$set:{role:'user'}});
+  await database.collection('stories').updateOne({slug:'synthetic-staging-journey'},{$set:{author:user._id}});
+  const storyEdit=await request('/blog/synthetic-staging-journey/edit');
+  assert.equal(storyEdit.status,200);assert.match(storyEdit.text,/name="country"/);assert.match(storyEdit.text,/storyCountries/);assert.match(storyEdit.text,/SYNTHETIC|Synthetic body/);
+  assert.equal((await request('/blog/synthetic-staging-journey')).status,200);
+  assert.equal((await request('/blog/new')).status,200);
+  assert.match((await request('/blog/new')).text,/storyCountries/);
+  console.log('PASS account saves, deduplication, invalid input, related SSR and guest/user/admin access');
   console.log('PASS registration, password hashing, authenticated dashboard and stored session');
 
   await stop(app);
   await startApp(uri);
   await protectedDashboard(true);
-  console.log('PASS session survives app restart');
+  assert.match((await request('/my-trips')).text,/Test Origin/);
+  console.log('PASS session and saved research survive app restart');
   assert.equal((await request('/auth/logout')).status, 302);
   const loggedOut = await request('/dashboard');
   assert.equal(loggedOut.status, 302);
@@ -231,6 +265,10 @@ async function main() {
     assert.equal(destination.searchParams.get('redirect_uri'), `${base}/auth/${provider}/callback`);
   }
   console.log('PASS Google/Facebook initiation uses local callbacks (redirects inspected only; no provider requests)');
+  if(process.argv.includes('--preview')) {
+    console.log('PREVIEW READY http://127.0.0.1:3101/ (synthetic isolated database; no production credentials)');
+    await new Promise(()=>{});
+  }
   await invalidDatabaseStartup();
 }
 
