@@ -3,6 +3,11 @@ const router = express.Router();
 const Country = require('../models/countryPetRegulationList');
 const Story = require('../models/story');
 const User = require('../models/User');
+const Airline = require('../models/airline');
+const { randomUUID } = require('node:crypto');
+const journey = require('../helpers/journeyPlanner');
+let aiDay = '', aiCount = 0, inFlight = 0;
+async function airlines() { return Airline.find({}, 'name airlineCode slug').sort({name:1}).lean(); }
 const slug = value => String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 async function countries() { return Country.find({}, 'destinationCountry regulationsByPetType').sort({ destinationCountry: 1 }).lean(); }
 function planFrom(input, rows) {
@@ -15,16 +20,69 @@ function planFrom(input, rows) {
   // Only exact species or the common combined dog/cat category can be chosen safely.
   // 'Other' and broad bird labels must not accidentally select a specialist rule set.
   const key = keys.find(k => k.toLowerCase() === petType) || (['dog','cat'].includes(petType) ? keys.find(k => ['dog-cat','dogs-cats','dog-and-cat','dogs-and-cats'].includes(slug(k))) : undefined);
-  return { origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
+  return { origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
 }
 router.get('/', async (req,res,next) => { try {
   const [rows, stories] = await Promise.all([countries(), Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()]);
-  res.render('index', { countries: rows, stories, title: 'PetVoyage | Plan a thoughtful journey with your pet', canonicalUrl: 'https://www.petvoyage.ai/' });
+  res.render('index', { countries: rows, airlines:await airlines(), stories, title: 'PetVoyage | Plan a thoughtful journey with your pet', canonicalUrl: 'https://www.petvoyage.ai/' });
 } catch(e) { next(e); } });
 router.get('/plan', async (req,res,next) => { try {
-  const rows=await countries(); const plan=planFrom(req.query,rows);
-  res.render('experience/plan',{ countries:rows, plan, title:'Research your pet’s journey | PetVoyage', robots:'noindex, follow' });
+  const rows=await countries(); let plan=planFrom(req.query,rows); let savedJourney=null;
+  if(req.query.saved && req.user && /^[a-f0-9]{24}$/i.test(req.query.saved)) {
+    const user=await User.findById(req.user._id).select('researchPlans').lean();
+    const saved=user?.researchPlans?.find(p=>String(p._id)===req.query.saved);
+    if(saved?.generatedPlan){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
+  }
+  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
+router.post('/ai/journey', async (req,res) => {
+  res.set('Cache-Control','no-store');
+  // Only the same-site planner may generate paid requests or overwrite the session result.
+  if(req.get('sec-fetch-site')==='cross-site' || (req.get('origin') && req.get('origin')!==`${req.protocol}://${req.get('host')}`)) return res.status(403).json({error:'Open the planner on PetVoyage to build your itinerary.'});
+  try {
+    const plan=planFrom(req.body,await countries());
+    if(!plan) return res.status(400).json({error:'Choose a listed origin, destination and pet type.'});
+    if((req.body.airline || req.body.airlineId) && !plan.airlineId) return res.status(400).json({error:'Choose an airline from the list.'});
+    const destination=await Country.findOne({destinationCountry:plan.destination}).lean();
+    const airline=plan.airlineId ? await Airline.findById(plan.airlineId).lean() : null;
+    if(plan.airlineId && !airline) return res.status(400).json({error:'That airline is unavailable. Please choose again.'});
+    const context=journey.contextFor(plan,destination,airline);
+    const sources=[...context.destination.sources,...(context.airline?.sources || [])];
+    const evidence={country:context.destination,airline:context.airline};
+    const key=process.env.OPENAI_API_KEY || process.env.openaiKey;
+    if(!key) return res.status(503).json({error:'Scout cannot generate an itinerary right now. Your available policy details are below; try again shortly.',evidence,sources});
+    const now=Date.now(),day=new Date().toISOString().slice(0,10);
+    if(day!==aiDay){aiDay=day;aiCount=0;}
+    const limit=req.session.journeyUsage || {start:now,count:0};
+    if(now-limit.start>3600000){limit.start=now;limit.count=0;}
+    if(limit.count>=8 || aiCount>=100 || inFlight>=3) return res.status(429).json({error:'Scout is busy. Please try again later; your policy details are still available below.',evidence,sources});
+    limit.count++;req.session.journeyUsage=limit;aiCount++;inFlight++;
+    let result;
+    try {
+      const OpenAI=require('openai');
+      result=await journey.generate(context,new OpenAI({apiKey:key}));
+    } catch(error) {
+      console.warn('[journey] AI generation unavailable',error.status || error.name);
+      return res.status(503).json({error:'Scout could not finish your itinerary. Your policy details are available below. Try building it again shortly.',evidence,sources});
+    } finally {inFlight--;}
+    const value={id:randomUUID(),plan:{...plan,airlineName:airline?.name || ''},result,sources,evidence,generatedAt:new Date().toISOString()};
+    req.session.latestJourney=value;
+    return res.json(value);
+  } catch(error){console.warn('[journey] lookup failed',error.name);return res.status(500).json({error:'We could not load the policies for this route. Please try again.'});}
+});
+router.post('/my-trips/itinerary', async (req,res,next)=>{try{
+  if(!req.user) return res.status(401).json({error:'Sign in to save this itinerary.'});
+  if(req.get('sec-fetch-site')==='cross-site' || (req.get('origin') && req.get('origin')!==`${req.protocol}://${req.get('host')}`)) return res.sendStatus(403);
+  const value=req.session.latestJourney;
+  if(!value || req.body.resultId!==value.id) return res.status(400).json({error:'Build this itinerary again before saving.'});
+  const user=await User.findById(req.user._id);
+  if(!user) return res.sendStatus(401);
+  const existing=user.researchPlans.find(p=>p.generatedPlan?.id===value.id);
+  if(existing) return res.json({url:'/plan?saved='+existing._id});
+  if(user.researchPlans.length>=100) return res.status(400).json({error:'Your workspace has reached its 100-plan limit.'});
+  user.researchPlans.push({...value.plan,generatedPlan:value});await user.save();
+  res.json({url:'/plan?saved='+user.researchPlans[user.researchPlans.length-1]._id});
+}catch(e){next(e)}});
 router.get('/my-trips', async (req,res,next) => { try {
   const user=req.user ? await User.findById(req.user._id).select('researchPlans savedItineraries').lean() : null;
   res.render('experience/trips',{ plans:user?.researchPlans || [], itineraries:user?.savedItineraries || [], title:'My trips | PetVoyage', robots:'noindex, nofollow' });

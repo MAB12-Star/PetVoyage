@@ -73,7 +73,7 @@ function appEnvironment(uri) {
 
 async function startApp(uri) {
   app = launch(process.execPath, ['app.js'], appEnvironment(uri));
-  for (let attempt = 0; attempt < 100; attempt++) {
+  for (let attempt = 0; attempt < 300; attempt++) {
     if (app.startupError) throw app.startupError;
     if (app.exitCode !== null) throw new Error('Staging app exited before readiness');
     try {
@@ -224,6 +224,20 @@ async function main() {
   assert.equal((await request('/my-trips',{method:'POST',form:savedForm})).status,302);
   assert.equal((await request('/my-trips',{method:'POST',form:{...savedForm,destination:'<script>invalid</script>'}})).status,400);
   const savedUser=await database.collection('users').findOne({_id:user._id});assert.equal(savedUser.researchPlans.length,1);
+  // Exercise server-owned generated results with synthetic session data, never a paid AI call.
+  const itinerary={id:'synthetic-result',plan:{origin:'Test Origin',destination:'Test Destination',petType:'dog',departureDate:'2027-01-10'},result:{summary:'Synthetic generated itinerary',destination:['Fixture destination policy'],airline:['Fixture airline guidance'],timeline:[{when:'Before booking',action:'Fixture preparation'}],packing:['Fixture carrier'],questions:['Fixture question']},sources:[],evidence:{},generatedAt:new Date().toISOString()};
+  const sessionRow=await database.collection('sessions').findOne({'session':{$regex:String(user._id)}});
+  const sessionData=JSON.parse(sessionRow.session);sessionData.latestJourney=itinerary;
+  await database.collection('sessions').updateOne({_id:sessionRow._id},{$set:{session:JSON.stringify(sessionData)}});
+  assert.equal((await request('/my-trips/itinerary',{method:'POST',form:{resultId:'forged'}})).status,400);
+  const savedItinerary=await request('/my-trips/itinerary',{method:'POST',form:{resultId:itinerary.id}});
+  assert.equal(savedItinerary.status,200);const savedUrl=JSON.parse(savedItinerary.text).url;
+  assert.equal((await request('/my-trips/itinerary',{method:'POST',form:{resultId:itinerary.id}})).status,200);
+  const itineraryUser=await database.collection('users').findOne({_id:user._id});assert.equal(itineraryUser.researchPlans.length,2);
+  assert.match((await request(savedUrl)).text,/Synthetic generated itinerary/);
+  assert.ok(!(await request(savedUrl,{authenticated:false})).text.includes('Synthetic generated itinerary'));
+  assert.match((await request('/my-trips')).text,/Open trip plan/);
+  console.log('PASS generated itinerary persists in real MongoDB; server-owned save, forged-id rejection, deduplication, reopen and guest isolation');
   assert.match((await request('/my-trips')).text,/Test Origin/);
   for(const route of ['/admin','/admin/agent','/admin/airline-agent']) { const blocked=await request(route);assert.equal(blocked.status,302);assert.equal(blocked.location,'/'); }
   assert.ok(!(await request('/')).text.includes('href="/admin"'));

@@ -1,1 +1,16 @@
-<form class="pv-planner" action="/plan" method="get"><p class="pv-eyebrow">Start with your journey</p><h2>A little preparation.<br>A better trip together.</h2><div class="pv-fields"><label>Leaving from<select name="origin" required><option value="">Choose origin</option><% countries.forEach(c=>{ %><option><%= c.destinationCountry %></option><% }) %></select></label><label>Travelling to<select name="destination" required><option value="">Choose destination</option><% countries.forEach(c=>{ %><option><%= c.destinationCountry %></option><% }) %></select></label><label>Your companion<select name="pet" required><option value="dog">Dog</option><option value="cat">Cat</option><option value="bird">Bird</option><option value="other">Other pet</option></select></label><label>Departure (optional)<input name="departure" type="date"></label></div><button class="pv-button" type="submit">Build my research plan →</button><p class="pv-fine-print">A starting point for research, not travel clearance. Confirm current requirements with official authorities and your airline.</p></form>
+<form class="pv-planner" action="/plan" method="get">
+  <p class="pv-eyebrow">Plan with Scout · PetVoyage AI</p>
+  <h2>One trip.<br>Everything brought together.</h2>
+  <p>Get a tailored itinerary with country rules, airline guidance and your preparation steps.</p>
+  <% const selected = typeof plan !== 'undefined' && plan ? plan : {}; %>
+  <div class="pv-fields">
+    <label>Leaving from<select name="origin" required><option value="">Choose origin</option><% countries.forEach(c=>{ %><option <%= selected.origin===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
+    <label>Travelling to<select name="destination" required><option value="">Choose destination</option><% countries.forEach(c=>{ %><option <%= selected.destination===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
+    <label>Your companion<select name="pet" required><% [['dog','Dog'],['cat','Cat'],['bird','Bird'],['other','Other pet']].forEach(([v,n])=>{ %><option value="<%= v %>" <%= selected.petType===v?'selected':'' %>><%= n %></option><% }) %></select></label>
+    <label>Departure (optional)<input name="departure" type="date" value="<%= selected.departureDate || '' %>"></label>
+    <label>Operating airline<select name="airline"><option value="">Not chosen yet</option><% (typeof airlines !== 'undefined' ? airlines : []).forEach(a=>{ %><option value="<%= a._id %>" <%= selected.airlineId===String(a._id)?'selected':'' %>><%= a.name %></option><% }) %></select></label>
+    <label>Transit countries (optional)<input name="transit" maxlength="200" value="<%= selected.transit || '' %>" placeholder="e.g. Canada, or none"></label>
+  </div>
+  <button class="pv-button" type="submit">Build my AI itinerary →</button>
+  <p class="pv-fine-print">Scout uses PetVoyage’s policy records to organise your route. Confirm final eligibility and timing with the authorities and operating airline.</p>
+</form>

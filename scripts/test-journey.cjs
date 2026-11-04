@@ -1,0 +1,40 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');const vm=require('node:vm');const express=require('express');
+const journey=require('../helpers/journeyPlanner');
+const origin={destinationCountry:'Anguilla',regulationsByPetType:{dog:{}}};
+const destination={destinationCountry:'Australia',regulationsByPetType:{'Dog & Cat':{microchip:'<p>Microchip required</p>',moreInfo:{origin:{description:'Only approved origins; eligibility is not established for this route.'}},links:[{name:'Authority',url:'https://example.gov/pets'}]},'Poultry':{microchip:'not dog data'}},originRequirements:{history:{appliesTo:['dog'],details:'Recent residence matters'}},officialLinks:[{name:'bad',url:'javascript:alert(1)'}]};
+const airline={_id:'111111111111111111111111',name:'Test Air',PetPolicySummary:'<p>Confirm pet space.</p>',petPolicyURL:'https://airline.example/pets'};
+const payload={summary:'Check eligibility first.',destination:['A microchip is required before travel.','Only approved origins are eligible.','Confirm all documentation conditions.'],airline:['Confirm pet space with the operating carrier.','Confirm the carrier dimensions for your flight.','Confirm booking acceptance before purchase.'],timeline:[{when:'Before booking',action:'Confirm approved origin.'},{when:'Veterinary preparation',action:'Discuss required care.'},{when:'Travel day',action:'Carry documents.'}],packing:['Measured carrier','Documents','Water bowl'],questions:['Recent residence?','Transit stops?','Pet measurements?']};
+let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.equal(args.response_format.type,'json_schema');assert.ok(args.messages[1].content.includes('Recent residence matters'));return {choices:[{finish_reason:'stop',message:{content:JSON.stringify(payload)}}]}}}}};
+(async()=>{
+ const html=await require('ejs').renderFile(require('node:path').join(__dirname,'../views/experience/plan.ejs'),{layout(){},plan:{origin:'A',destination:'B',petType:'dog',transit:'</script><script>alert(1)</script>'},savedJourney:null,currentUser:null,countries:[],airlines:[]});
+ const data=html.match(/id="journey-input"[^>]*>([\s\S]*?)<\/script>/)[1];
+ assert.equal(JSON.parse(data).plan.transit,'</script><script>alert(1)</script>');assert.ok(!data.includes('</script>'));
+ const context=journey.contextFor({origin:'Anguilla',destination:'Australia',petType:'dog'},destination,airline);
+ assert.equal(context.destination.speciesCategory,'Dog & Cat');assert.equal(context.destination.requirements.microchip,'Microchip required');assert.equal(context.destination.sources.length,1);assert.equal(journey.speciesKey(destination,'bird'),undefined);
+ const [a,b]=await Promise.all([journey.generate(context,fake),journey.generate(context,fake)]);assert.equal(calls,1);assert.deepEqual(a,b);await journey.generate(context,fake);assert.equal(calls,1);
+ assert.match(a.summary,/eligibility.*need confirmation/);assert.ok(a.questions[0].includes('not establish entry approval'));
+ const broken={chat:{completions:{create:async()=>({choices:[{finish_reason:'length',message:{content:'{}'}}]})}}};await assert.rejects(()=>journey.generate({...context,test:'failure'},broken));
+ let session={};let saved=0;
+ const user={researchPlans:[],async save(){saved++;this.researchPlans.forEach((p,i)=>p._id='22222222222222222222222'+i)}};
+ const chain=value=>({sort(){return this},select(){return this},limit(){return this},lean:async()=>value});
+ const db={find:()=>chain([origin,destination]),findOne:()=>chain(destination)};
+ const users={findById:()=>Object.assign(Promise.resolve(user),{select:()=>chain(user)})};
+ const app=express();app.use(express.json());app.use((req,res,next)=>{req.session=session;if(req.get('x-test-auth'))req.user={_id:'333333333333333333333333'};next()});
+ const mod={exports:{}};const source=fs.readFileSync(require.resolve('../routes/experience'),'utf8');
+ vm.runInNewContext(source,{module:mod,console,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?{...journey,generate:async()=>payload}:n==='openai'?class{}:require(n)});
+ app.use(mod.exports);const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base='http://127.0.0.1:'+server.address().port;
+ const post=async(path,body,headers={})=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(body)});return {status:r.status,data:await r.json().catch(()=>null)}};
+ try{
+  const input={origin:'Anguilla',destination:'Australia',pet:'dog',airline:airline._id};
+  assert.equal((await post('/ai/journey',{...input,origin:'Invalid'})).status,400);
+  assert.equal((await post('/ai/journey',input,{'sec-fetch-site':'cross-site'})).status,403);
+  const generated=await post('/ai/journey',input);assert.equal(generated.status,200);assert.equal(generated.data.plan.airlineName,'Test Air');assert.equal(generated.data.evidence.country.speciesCategory,'Dog & Cat');
+  assert.equal((await post('/my-trips/itinerary',{resultId:generated.data.id})).status,401);
+  assert.equal((await post('/my-trips/itinerary',{resultId:'forged'},{'x-test-auth':'yes'})).status,400);
+  const save=await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(save.status,200);assert.match(save.data.url,/saved=/);assert.equal(user.researchPlans[0].generatedPlan.result.summary,payload.summary);
+  await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(saved,1);
+  session.journeyUsage={start:Date.now(),count:8};assert.equal((await post('/ai/journey',input)).status,429);
+  console.log('PASS grounded species/origin context, safe sources, schema, cache/in-flight deduplication, incomplete AI rejection, HTTP validation, cross-site protection, authenticated server-owned save, deduplication and generation limits. No external API calls.');
+ }finally{await new Promise(r=>server.close(r));}
+})().catch(e=>{console.error(e);process.exitCode=1});

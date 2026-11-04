@@ -1,1 +1,18 @@
-<% layout('layouts/boilerplate') %><div class="pv-wrap"><section class="pv-section"><p class="pv-eyebrow">One journey, a few thoughtful steps</p><h1>Your research plan</h1><% if (plan) { %><div class="pv-note"><h2><%= plan.origin %> → <%= plan.destination %></h2><p><%= plan.petType %><% if(plan.departureDate){ %> · Departure: <%= plan.departureDate %><% } %></p><p>This is a research checklist, not confirmation that your pet can enter or fly.</p></div><div class="pv-resource-grid"><a class="pv-resource-card" href="<%= plan.countryUrl %>"><h3>1. Check destination rules</h3><p>Confirm the species and origin-specific requirements with the official authority.</p></a><a class="pv-resource-card" href="/regulations/airlineList"><h3>2. Ask the operating airline</h3><p>Check every leg, aircraft, pet space and carrier size before booking.</p></a><a class="pv-resource-card" href="/findAVet"><h3>3. Prepare with your vet</h3><p>Discuss timing, documentation and your pet’s needs.</p></a></div><p><a href="/flights/searchFlights">Search flights</a> · <a href="/guides">Read preparation guides</a></p><% if(currentUser){ %><form method="post" action="/my-trips"><% ['origin','destination','petType','departureDate'].forEach(k=>{ %><input type="hidden" name="<%= k %>" value="<%= plan[k] %>"><% }) %><button class="pv-button">Save research plan to My trips</button></form><% }else{ %><p><a href="/auth/login">Sign in</a> to save a research plan to your account. This plan has not been saved.</p><% } %><% }else{ %><p>Choose your route to organise the next questions to research.</p><% } %></section><%- include('../partials/tripForm',{countries}) %></div>
+<% layout('layouts/boilerplate') %>
+<div class="pv-wrap pv-journey-page">
+<% if(plan){ %>
+  <section class="pv-journey-heading">
+    <div><p class="pv-eyebrow">Scout · Your AI travel companion</p><h1>Your journey, brought together.</h1><p class="pv-lead"><%= plan.origin %> <span aria-hidden="true">→</span> <%= plan.destination %></p><p><%= plan.petType %><% if(plan.departureDate){ %> · <%= plan.departureDate %><% } %></p></div>
+    <a class="pv-text-link" href="#edit-journey">Edit trip details ↓</a>
+  </section>
+  <div id="journey-status" class="pv-scout-status" role="status" aria-live="polite"><span class="pv-scout-orb" aria-hidden="true">✦</span><div><strong>Scout is putting your itinerary together</strong><p>Bringing destination requirements, airline guidance and preparation into one plan.</p></div></div>
+  <div id="journey-result" hidden aria-busy="true"></div>
+  <p class="pv-fine-print">AI organises the available policy information; it does not grant entry or confirm a booking. Official sources and any missing details are included with your plan.</p>
+  <details id="edit-journey" class="pv-edit-journey"><summary>Edit your trip details</summary><%- include('../partials/tripForm',{countries,airlines,plan}) %></details>
+  <script id="journey-input" type="application/json"><%- JSON.stringify({plan,saved:savedJourney || null,signedIn:!!currentUser}).replace(/</g,'\\u003c') %></script>
+  <script src="/journey-planner.js" defer></script>
+<% }else{ %>
+  <section class="pv-section"><p class="pv-eyebrow">Scout · PetVoyage AI</p><h1>Let’s plan your pet’s journey.</h1><p>Tell Scout where you’re going. Your requirements, airline guidance and preparation will appear together.</p></section>
+  <%- include('../partials/tripForm',{countries,airlines}) %>
+<% } %>
+</div>
