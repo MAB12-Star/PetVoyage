@@ -175,14 +175,15 @@
         <div class="d-flex flex-wrap justify-content-lg-end justify-content-center gap-2 mb-2">
 
           <% petTypes.forEach((p) => { %> 
-            <button
-              type="button"
+            <a
+              href="/country/<%= encodeURIComponent(regulations.destinationCountry) %>?petType=<%= encodeURIComponent(p.slug) %>"
               class="btn rounded-pill px-3 py-1 text-capitalize pet-type-btn
               <%= p.key === selectedPetType ? 'btn-primary text-white' : 'btn-outline-secondary' %>"
+              aria-current="<%= p.key === selectedPetType ? 'page' : 'false' %>"
               data-pet="<%= p.key %>"
               data-pet-slug="<%= p.slug %>">
               <%= p.key %>
-            </button>
+            </a>
           <% }) %>
 
         </div>
@@ -200,7 +201,7 @@
 
 
   <!-- Per-Pet Regulation Details -->
-  <% Object.entries(regulations.regulationsByPetType || {}).forEach(([pet, details]) => { %>
+  <% Object.entries(regulations.regulationsByPetType || {}).filter(([pet]) => pet === selectedPetType).forEach(([pet, details]) => { %>
     <% if (!details || !Object.keys(details).length) return; %>
 
     <%
@@ -211,7 +212,7 @@
     <div class="pet-regulation-section"
          data-pet="<%= pet %>"
          data-pet-dom="<%= petDom %>"
-         style="<%= pet === selectedPetType ? '' : 'display:none;' %>">
+         >
 
     
 
@@ -512,21 +513,7 @@
 <br>
 <p></p>
 
-<!-- ✅ Pet Type Click => canonical slug (prevents duplicate URL variants) -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.pet-type-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const petSlug = btn.dataset.petSlug;
-        if (!petSlug) return;
-
-        const url = new URL(window.location.href);
-        url.searchParams.set('petType', petSlug);
-        window.location.href = url.toString();
-      });
-    });
-  });
-</script>
+<!-- Pet-type anchors load their canonical page with or without JavaScript. -->
 
 <!-- ✅ Vaccination/Certification Toggle Logic (safe; no split('-'), safe ids) -->
 <script>

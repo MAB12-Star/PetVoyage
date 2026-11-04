@@ -125,7 +125,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     }
 
     // ✅ If user requested a non-canonical petType redirect to canonical
-    if (selectedPetTypeRaw && slugKey(selectedPetTypeRaw) !== canonicalPetType) {
+    if (selectedPetTypeRaw !== canonicalPetType || countryParam !== regulations.destinationCountry) {
       const safeCountryRedirect = regulations.destinationCountry;
       return res.redirect(
         301,
@@ -253,6 +253,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
       ogTitle: `Pet Import Regulations for ${safeCountry} - ${petLabel}`,
       ogDescription: `Get pet import/export regulations for ${petLabel} traveling to ${safeCountry}.`,
       ogUrl: pageUrl,
+      canonicalUrl: pageUrl,
       ogImage: ogImage,
       twitterTitle: `Bringing Your ${petLabel} to ${safeCountry}?`,
       twitterDescription: `Learn the latest ${petLabel} travel requirements for ${safeCountry}.`,
