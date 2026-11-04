@@ -1,6 +1,7 @@
 // routes/sitemap.js
 const express = require('express');
 const router = express.Router();
+const planningGuides = require('../content/guides.json');
 
 const Story = require('../models/story');
 const Airline = require('../models/airline');
@@ -82,6 +83,8 @@ async function buildSitemapData(req) {
 
   // ✅ STATIC URLs
   const staticUrls = [
+    { loc: `${origin}/guides`, changefreq: 'monthly', priority: '0.8' },
+    ...planningGuides.map(guide => ({loc: `${origin}/guides/${guide.slug}`, lastmod: guide.published, changefreq: 'monthly', priority: '0.7'})),
     { loc: `${origin}/`, changefreq: 'daily', priority: '1.0' },
     { loc: `${origin}/aboutus`, changefreq: 'monthly', priority: '0.8' },
 

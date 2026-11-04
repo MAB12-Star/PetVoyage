@@ -1,0 +1,24 @@
+<% layout('layouts/boilerplate') %>
+<main class="container py-5" style="max-width:1000px">
+  <h1>Pet travel planning guides</h1>
+  <p class="lead">Build a route, keep your questions organized, and confirm the details for your own journey.</p>
+  <p>These guides offer planning suggestions. Entry rules, airline requirements and your pet's individual needs require their own checks.</p>
+  <div class="row g-4 my-3">
+    <% guides.forEach(guide => { %>
+    <article class="col-md-6"><div class="card h-100"><div class="card-body">
+      <h2 class="h4"><a href="/guides/<%= guide.slug %>"><%= guide.title %></a></h2>
+      <p><%= guide.description %></p>
+    </div></div></article>
+    <% }) %>
+  </div>
+  <section class="my-5" aria-labelledby="planning-faq">
+    <h2 id="planning-faq">Common planning questions</h2>
+    <h3 class="h5">Where should I start?</h3><p>Write down your route, dates, connections and return plans. Keep separate questions for the airline, destination authorities and your veterinarian.</p>
+    <h3 class="h5">Does an airline answer settle country entry requirements?</h3><p>Check both. Transport arrangements and destination entry requirements have separate responsible sources.</p>
+    <h3 class="h5">What carrier measurements should I compare?</h3><p>Keep your pet's measurements, the carrier's external dimensions and usable internal space separate. Confirm the selected variant and your airline's requirements.</p>
+    <h3 class="h5">What should I prepare for a veterinary conversation?</h3><p>Have an itinerary and questions ready. Ask the clinic which appointment, services and records apply to your plans.</p>
+    <h3 class="h5">Can I reuse old research?</h3><p>Use it as a question list, then verify it for the current itinerary. Record official source links and the date you checked them.</p>
+    <h3 class="h5">What if a product listing is unclear?</h3><p><a href="/contactUs">Contact PetVoyage</a> before ordering and identify the product, option and details you need confirmed.</p>
+  </section>
+  <p><a href="/getCountryRegulationList">Country requirements</a> · <a href="/regulations/airlineList">Airline policies</a> · <a href="/blog">Community stories</a></p>
+</main>

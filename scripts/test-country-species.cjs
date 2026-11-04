@@ -75,6 +75,8 @@ async function request(petType, country = 'Test & Country') {
     assert.ok(!html.includes(`${excluded}_ONLY_`), 'Other species rule text must be absent, not hidden');
     assert.ok(!html.includes('TRANSIENT_INTERNAL_DATA'));
     assert.equal($('a.pet-type-btn').length, 2);
+    assert.equal($('a[href="/regulations/searchFlights"]').length, 0);
+    assert.equal($('a[href="/flights/searchFlights"]').length, 2, 'Desktop and mobile flight links must use the working route');
     assert.equal($('button.pet-type-btn').length, 0);
     assert.equal($('a.pet-type-btn[aria-current="page"]').attr('href'), `/country/Test%20%26%20Country?petType=${slug}`);
     assert.ok($('a.pet-type-btn').toArray().every(a => $(a).attr('href').startsWith('/country/Test%20%26%20Country?petType=')));
@@ -92,5 +94,8 @@ async function request(petType, country = 'Test & Country') {
   const caseAlias = await request('ferrets', 'test & country');
   assert.equal(caseAlias.redirect, 301);
   assert.equal(caseAlias.url, '/country/Test%20%26%20Country?petType=ferrets');
+  const hero = cheerio.load(ejs.render(fs.readFileSync(path.join(root, 'views/partials/herosection.ejs'), 'utf8'), { currentPage: 'searchFlights' }));
+  assert.equal(hero('a[href="/regulations/searchFlights"]').length, 0);
+  assert.equal(hero('a[href="/flights/searchFlights"]').length, 2);
   console.log('PASS: selected-species SSR only; filtered origin rules; non-JS species links; canonical/H1/Article consistency; missing/alias/default redirects.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

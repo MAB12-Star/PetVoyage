@@ -1,0 +1,16 @@
+<% layout('layouts/boilerplate') %>
+<main class="container py-5" style="max-width:850px">
+  <nav aria-label="Breadcrumb"><a href="/guides">Planning guides</a></nav>
+  <article class="mt-4">
+    <h1><%= guide.title %></h1>
+    <p class="text-muted">PetVoyage editorial team · Published <time datetime="<%= guide.published %>">November 4, 2026</time></p>
+    <p class="lead"><%= guide.description %></p>
+    <div class="pv-guide-body"><%- guide.html %></div>
+  </article>
+  <aside class="border-top mt-5 pt-4" aria-label="More planning resources">
+    <h2 class="h4">Keep planning</h2>
+    <p><a href="/getCountryRegulationList">Research country requirements</a> · <a href="/regulations/airlineList">Check airline policies</a></p>
+    <ul><% guides.filter(item => item.slug !== guide.slug).forEach(item => { %><li><a href="/guides/<%= item.slug %>"><%= item.title %></a></li><% }) %></ul>
+  </aside>
+</main>
+<style>.pv-guide-body{font-size:1.075rem;line-height:1.8;overflow-wrap:anywhere}.pv-guide-body h2{font-size:1.5rem;margin-top:2rem}.pv-guide-body li{margin-bottom:.5rem}</style>

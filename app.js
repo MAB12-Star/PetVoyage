@@ -199,6 +199,7 @@ app.use('/aboutUs', aboutUs);
 app.use('/findAVet', findAVet);
 app.use('/contactUs', contactUs);
 app.use('/blog', blog);
+app.use('/guides', require('./routes/guides'));
 app.use('/tips', tips);
 app.use('/toDoList', toDoListRoutes);
 app.use('/regulations/airlineList', airlineList);
