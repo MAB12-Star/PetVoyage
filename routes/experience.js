@@ -8,6 +8,15 @@ const { randomUUID } = require('node:crypto');
 const journey = require('../helpers/journeyPlanner');
 let aiDay = '', aiCount = 0, inFlight = 0;
 async function airlines() { return Airline.find({}, 'name airlineCode slug').sort({name:1}).lean(); }
+function allowedPlannerRequest(req) {
+  if(req.get('sec-fetch-site')==='cross-site') return false;
+  const origin=req.get('origin');
+  if(!origin) return true;
+  // TLS terminates at nginx. The app's internal protocol is not the browser origin.
+  // Use a configured public address, never arbitrary forwarded headers or Host input.
+  try { return origin===new URL(process.env.PUBLIC_BASE_URL || 'https://www.petvoyage.ai').origin; }
+  catch { return false; }
+}
 const slug = value => String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 async function countries() { return Country.find({}, 'destinationCountry regulationsByPetType').sort({ destinationCountry: 1 }).lean(); }
 function planFrom(input, rows) {
@@ -38,7 +47,7 @@ router.get('/plan', async (req,res,next) => { try {
 router.post('/ai/journey', async (req,res) => {
   res.set('Cache-Control','no-store');
   // Only the same-site planner may generate paid requests or overwrite the session result.
-  if(req.get('sec-fetch-site')==='cross-site' || (req.get('origin') && req.get('origin')!==`${req.protocol}://${req.get('host')}`)) return res.status(403).json({error:'Open the planner on PetVoyage to build your itinerary.'});
+  if(!allowedPlannerRequest(req)) return res.status(403).json({error:'Open the planner on PetVoyage to build your itinerary.'});
   try {
     const plan=planFrom(req.body,await countries());
     if(!plan) return res.status(400).json({error:'Choose a listed origin, destination and pet type.'});
@@ -72,7 +81,7 @@ router.post('/ai/journey', async (req,res) => {
 });
 router.post('/my-trips/itinerary', async (req,res,next)=>{try{
   if(!req.user) return res.status(401).json({error:'Sign in to save this itinerary.'});
-  if(req.get('sec-fetch-site')==='cross-site' || (req.get('origin') && req.get('origin')!==`${req.protocol}://${req.get('host')}`)) return res.sendStatus(403);
+  if(!allowedPlannerRequest(req)) return res.sendStatus(403);
   const value=req.session.latestJourney;
   if(!value || req.body.resultId!==value.id) return res.status(400).json({error:'Build this itinerary again before saving.'});
   const user=await User.findById(req.user._id);

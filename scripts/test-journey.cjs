@@ -22,13 +22,16 @@ let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.eq
  const users={findById:()=>Object.assign(Promise.resolve(user),{select:()=>chain(user)})};
  const app=express();app.use(express.json());app.use((req,res,next)=>{req.session=session;if(req.get('x-test-auth'))req.user={_id:'333333333333333333333333'};next()});
  const mod={exports:{}};const source=fs.readFileSync(require.resolve('../routes/experience'),'utf8');
- vm.runInNewContext(source,{module:mod,console,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?{...journey,generate:async()=>payload}:n==='openai'?class{}:require(n)});
+ vm.runInNewContext(source,{module:mod,console,URL,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?{...journey,generate:async()=>payload}:n==='openai'?class{}:require(n)});
  app.use(mod.exports);const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base='http://127.0.0.1:'+server.address().port;
  const post=async(path,body,headers={})=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(body)});return {status:r.status,data:await r.json().catch(()=>null)}};
  try{
   const input={origin:'Anguilla',destination:'Australia',pet:'dog',airline:airline._id};
   assert.equal((await post('/ai/journey',{...input,origin:'Invalid'})).status,400);
   assert.equal((await post('/ai/journey',input,{'sec-fetch-site':'cross-site'})).status,403);
+  // Reproduce nginx HTTPS -> internal HTTP while NODE_ENV is not production.
+  assert.equal((await post('/ai/journey',{...input,origin:'Invalid'},{Origin:'https://www.petvoyage.ai','sec-fetch-site':'same-origin'})).status,400);
+  for(const origin of ['http://www.petvoyage.ai','https://www.petvoyage.ai.evil.example','null','https://evil.example']) assert.equal((await post('/ai/journey',input,{Origin:origin,'sec-fetch-site':'same-origin'})).status,403);
   const generated=await post('/ai/journey',input);assert.equal(generated.status,200);assert.equal(generated.data.plan.airlineName,'Test Air');assert.equal(generated.data.evidence.country.speciesCategory,'Dog & Cat');
   assert.equal((await post('/my-trips/itinerary',{resultId:generated.data.id})).status,401);
   assert.equal((await post('/my-trips/itinerary',{resultId:'forged'},{'x-test-auth':'yes'})).status,400);
