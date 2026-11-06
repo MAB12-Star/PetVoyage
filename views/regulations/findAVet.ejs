@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-<header class="pv-wrap pv-page-heading"><p class="pv-eyebrow">Prepare together</p><h1>Find a vet</h1><p>Locate a practice and confirm its experience with your destination’s travel documentation.</p></header>
+<header class="pv-wrap pv-page-heading"><p class="pv-eyebrow">Prepare together</p><h1>Find a vet</h1><p>Locate a practice and confirm its experience with your destination’s travel documentation.</p><%- include('../partials/petPhotoAccent',{photo:'coco.jpg',photoAlt:'A tabby-and-white cat resting with a white paw stretched towards the camera',photoWidth:1600,photoHeight:1200,message:'Care is part of the journey.',photoNote:'A quiet moment from our own family album.'}) %></header>
 <%
   // Ads (server-side via getAd)
   const customSpot  = (typeof getAd === 'function') ? getAd('custom-spot') : null;

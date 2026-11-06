@@ -108,8 +108,10 @@ router.head('/searchFlights', (req, res) => {
 // Rendering is synchronous to initiate; catchAsync requires a returned Promise.
 router.get('/searchFlights', (req, res) => {
   // user is available via res.locals.user from your app.js middleware
-  res.render('regulations/searchFlights', {
-    title: 'Search Pet-Friendly Flights | PetVoyage',
+  res.render(req.query?.legacy==='1' ? 'regulations/legacySearchFlights' : 'regulations/searchFlights', {
+    search: Object.fromEntries(['origin','destination','petType','departureAirport','departureCity'].map(k=>[k,String(req.query?.[k] || '').trim().slice(0,100)])),
+    discovery: req.query?.origin && req.query?.destination ? require('../helpers/transportDiscovery')(req.query) : null,
+    title: 'Flight & Pet Transport Discovery | PetVoyage',
     metaDescription: 'Search flight routes and compare airline pet policies for in-cabin, cargo, service animals, health certificates, and pet travel rules.',
     metaKeywords: 'pet-friendly flights, flights with pets, airline pet policy comparison, flying with pets, pet air travel',
     ogTitle: 'Search Pet-Friendly Flights | PetVoyage',

@@ -72,7 +72,7 @@ function appEnvironment(uri) {
 }
 
 async function startApp(uri) {
-  app = launch(process.execPath, ['app.js'], appEnvironment(uri));
+  app = launch(process.execPath, ['--require', path.join(root,'scripts/staging-ai-mock.cjs'), 'app.js'], appEnvironment(uri));
   for (let attempt = 0; attempt < 300; attempt++) {
     if (app.startupError) throw app.startupError;
     if (app.exitCode !== null) throw new Error('Staging app exited before readiness');
@@ -167,6 +167,8 @@ async function main() {
   console.log('PASS isolated real MongoDB ping/read/write');
 
   await database.collection('country_regulations_list').insertMany([
+    {destinationCountry:'United States',regulationsByPetType:{dog:{microchip:'SYNTHETIC_US_RECORD'}}},
+    {destinationCountry:'Australia',regulationsByPetType:{'Dog & Cat':{microchip:'SYNTHETIC_AU_RECORD'}}},
     {destinationCountry:'Test Origin', regulationsByPetType:{Dog:{microchip:'SYNTHETIC_ORIGIN_REQUIREMENT'}}},
     {destinationCountry:'Test Destination', regulationsByPetType:{'Dog & Cat':{microchip:'SYNTHETIC_SELECTED_REQUIREMENT'},Ferrets:{microchip:'SYNTHETIC_UNSELECTED_REQUIREMENT'}}}
   ]);
@@ -177,6 +179,11 @@ async function main() {
     const page = await request(route, { authenticated: false });
     assert.equal(page.status, 200, `Public page must render: ${route}`);
   }
+  const discovery=await request('/flights/searchFlights?origin=United%20States&destination=Australia&petType=dog&departureAirport=LAX',{authenticated:false});assert.equal(discovery.status,200);assert.match(discovery.text,/Qantas Freight/);assert.ok(!discovery.text.includes('maps.googleapis.com'));
+  assert.equal((await request('/flights/searchFlights?legacy=1',{authenticated:false})).status,200);
+  const noAir=await request('/plan?origin=United%20States&destination=Australia&pet=dog',{authenticated:false});assert.match(noAir.text,/Reviewed research/);assert.match(noAir.text,/Qantas Freight/);
+  const mockJourney=await request('/ai/journey',{method:'POST',form:{origin:'United States',destination:'Australia',pet:'dog'}});assert.equal(mockJourney.status,200);const mockData=JSON.parse(mockJourney.text);assert.equal(mockData.transportDiscovery.state,'reviewed-enquiry');assert.ok(mockData.result.destination.some(text=>text.includes('SYNTHETIC LOCAL PREVIEW')));
+  console.log('PASS default zero-API discovery, explicit legacy entry and real planner HTTP with synthetic AI preload');
   const oldLogin = await request('/login', { authenticated: false });
   assert.equal(oldLogin.location, '/auth/login');
   assert.match((await request('/',{authenticated:false})).text,/A synthetic staging journey/);

@@ -3,6 +3,7 @@
   <h1>Pet travel planning guides</h1>
   <p class="lead">Build a route, keep your questions organized, and confirm the details for your own journey.</p>
   <p>These guides offer planning suggestions. Entry rules, airline requirements and your pet's individual needs require their own checks.</p>
+  <%- include('../partials/petPhotoAccent',{photo:'emma.jpg',photoAlt:'A tan-and-white dog on a waterfront promenade at sunset',photoWidth:1600,photoHeight:1200,message:'A little preparation leaves more room for the journey.',photoNote:'An original photo from the PetVoyage family album.'}) %>
   <div class="row g-4 my-3">
     <% guides.forEach(guide => { %>
     <article class="col-md-6"><div class="card h-100"><div class="card-body">

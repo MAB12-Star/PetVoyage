@@ -34,24 +34,8 @@
               <%- include('../partials/navigation') %>
             </nav>
 
-            <!-- Three responsive images -->
-            <div class="row g-3 mb-4">
-              <div class="col-12 col-sm-4">
-                <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm">
-                  <img src="/images/carriers.jpg" alt="Pet carriers" class="w-100 h-100 object-fit-cover" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm">
-                  <img src="/images/backpack_cat.jpg" alt="Cat in a backpack carrier" class="w-100 h-100 object-fit-cover" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm">
-                  <img src="/images/family.jpg" alt="Family traveling with pets" class="w-100 h-100 object-fit-cover" loading="lazy" decoding="async">
-                </div>
-              </div>
-            </div>
+            <%- include('../partials/familyAlbum',{showAboutLink:false}) %>
+
 
             <p class="lead text-center text-muted">
               Pet Voyage is a labor of love, designed to make traveling with your pets seamless and enjoyable.

@@ -6,6 +6,7 @@ const User = require('../models/User');
 const Airline = require('../models/airline');
 const { randomUUID } = require('node:crypto');
 const journey = require('../helpers/journeyPlanner');
+const discoverTransport = require('../helpers/transportDiscovery');
 let aiDay = '', aiCount = 0, inFlight = 0;
 async function airlines() { return Airline.find({}, 'name airlineCode slug').sort({name:1}).lean(); }
 function allowedPlannerRequest(req) {
@@ -29,7 +30,7 @@ function planFrom(input, rows) {
   // Only exact species or the common combined dog/cat category can be chosen safely.
   // 'Other' and broad bird labels must not accidentally select a specialist rule set.
   const key = keys.find(k => k.toLowerCase() === petType) || (['dog','cat'].includes(petType) ? keys.find(k => ['dog-cat','dogs-cats','dog-and-cat','dogs-and-cats'].includes(slug(k))) : undefined);
-  return { origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
+  return { petPathway: input.petPathway==='assistance' ? 'assistance' : 'ordinary-pet', origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
 }
 router.get('/', async (req,res,next) => { try {
   const [rows, stories] = await Promise.all([countries(), Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()]);
@@ -42,7 +43,7 @@ router.get('/plan', async (req,res,next) => { try {
     const saved=user?.researchPlans?.find(p=>String(p._id)===req.query.saved);
     if(saved?.generatedPlan){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
   }
-  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
+  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
 router.post('/ai/journey', async (req,res) => {
   res.set('Cache-Control','no-store');
@@ -58,13 +59,14 @@ router.post('/ai/journey', async (req,res) => {
     const context=journey.contextFor(plan,destination,airline);
     const sources=[...context.destination.sources,...(context.airline?.sources || [])];
     const evidence={country:context.destination,airline:context.airline};
+    const transportDiscovery=discoverTransport(plan);
     const key=process.env.OPENAI_API_KEY || process.env.openaiKey;
-    if(!key) return res.status(503).json({error:'Scout cannot generate an itinerary right now. Your available policy details are below; try again shortly.',evidence,sources});
+    if(!key) return res.status(503).json({error:'Scout cannot generate an itinerary right now. Your available policy details are below; try again shortly.',evidence,sources,transportDiscovery});
     const now=Date.now(),day=new Date().toISOString().slice(0,10);
     if(day!==aiDay){aiDay=day;aiCount=0;}
     const limit=req.session.journeyUsage || {start:now,count:0};
     if(now-limit.start>3600000){limit.start=now;limit.count=0;}
-    if(limit.count>=8 || aiCount>=100 || inFlight>=3) return res.status(429).json({error:'Scout is busy. Please try again later; your policy details are still available below.',evidence,sources});
+    if(limit.count>=8 || aiCount>=100 || inFlight>=3) return res.status(429).json({error:'Scout is busy. Please try again later; your policy details are still available below.',evidence,sources,transportDiscovery});
     limit.count++;req.session.journeyUsage=limit;aiCount++;inFlight++;
     let result;
     try {
@@ -72,9 +74,9 @@ router.post('/ai/journey', async (req,res) => {
       result=await journey.generate(context,new OpenAI({apiKey:key}));
     } catch(error) {
       console.warn('[journey] AI generation unavailable',error.status || error.name);
-      return res.status(503).json({error:'Scout could not finish your itinerary. Your policy details are available below. Try building it again shortly.',evidence,sources});
+      return res.status(503).json({error:'Scout could not finish your itinerary. Your policy details are available below. Try building it again shortly.',evidence,sources,transportDiscovery});
     } finally {inFlight--;}
-    const value={id:randomUUID(),plan:{...plan,airlineName:airline?.name || ''},result,sources,evidence,generatedAt:new Date().toISOString()};
+    const value={id:randomUUID(),plan:{...plan,airlineName:airline?.name || ''},result,sources,evidence,transportDiscovery,generatedAt:new Date().toISOString()};
     req.session.latestJourney=value;
     return res.json(value);
   } catch(error){console.warn('[journey] lookup failed',error.name);return res.status(500).json({error:'We could not load the policies for this route. Please try again.'});}

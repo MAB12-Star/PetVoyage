@@ -1,0 +1,47 @@
+[
+  {
+    "id": "us-au-dog-qantas-freight",
+    "reviewedAt": "2026-11-06",
+    "reviewDue": "2026-12-06",
+    "originCountries": [
+      "United States",
+      "United States of America",
+      "US",
+      "USA",
+      "Mainland United States"
+    ],
+    "destinationCountry": "Australia",
+    "petType": "dog",
+    "pathway": "ordinary-pet",
+    "name": "Qantas Freight",
+    "transportMode": "manifest cargo",
+    "originAirport": "LAX",
+    "originAirportName": "Los Angeles",
+    "animalEntryAirport": "MEL",
+    "animalEntryAirportName": "Melbourne",
+    "operatingCarrierStatus": "Actual operating flight and carrier must be confirmed by the shipper for the chosen date.",
+    "enquiryUrl": "https://freight.qantas.com/en-us/freight-services/special-movements/pets",
+    "supportedClaim": "Qantas publishes a U.S. pet-shipping enquiry pathway with Los Angeles freight handover and Melbourne arrival. This is a cargo enquiry candidate, not a flight offer or confirmed pet space.",
+    "constraints": [
+      "This reviewed example concerns ordinary pet dogs only. Assistance dogs require a separate government and airline assessment.",
+      "Mainland U.S., Hawaii and Guam are not interchangeable. Confirm the correct government pathway for residence and travel history.",
+      "Confirm actual operating flight, shipment date, animal space and each segment directly with the shipper.",
+      "Confirm breed handling, crate dimensions and weather restrictions.",
+      "Coordinate the import permit, quarantine booking and approved Melbourne arrival. Your dog may travel separately from you."
+    ],
+    "sources": [
+      {
+        "name": "Australia official preparation guides",
+        "url": "https://www.agriculture.gov.au/biosecurity-trade/cats-dogs/how-to-import/step-by-step-guides"
+      },
+      {
+        "name": "Australia official transport and quarantine FAQ",
+        "url": "https://www.agriculture.gov.au/cats-dogs/frequently-asked-questions"
+      },
+      {
+        "name": "Qantas Freight U.S. pet enquiries",
+        "url": "https://freight.qantas.com/en-us/freight-services/special-movements/pets"
+      }
+    ]
+  }
+]

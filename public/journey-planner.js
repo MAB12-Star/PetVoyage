@@ -30,7 +30,7 @@
     const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));root.append(intro);
     const grid=el('div',null,'pv-itinerary-layout'),main=el('div',null,'pv-itinerary-main'),aside=el('aside',null,'pv-itinerary-aside');
     main.append(card('Destination requirements',data.result.destination));
-    main.append(card(data.plan.airlineName ? 'Flying with '+data.plan.airlineName : 'Your airline & flight',data.result.airline));
+    if(data.plan.airlineName) main.append(card('Flying with '+data.plan.airlineName,data.result.airline));
     const timeline=el('section',null,'pv-itinerary-card');timeline.append(el('p','FROM NOW TO DEPARTURE','pv-eyebrow'),el('h2','Your preparation timeline'));
     const ol=el('ol',null,'pv-journey-timeline');data.result.timeline.forEach(t=>{const li=el('li');li.append(el('h3',t.when),el('p',t.action));ol.append(li)});timeline.append(ol);main.append(timeline);
     aside.append(card('Prepare your bag',data.result.packing),card('Details still to confirm',data.result.questions,'pv-open-questions'));
