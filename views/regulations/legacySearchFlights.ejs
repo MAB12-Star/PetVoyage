@@ -70,7 +70,7 @@
             <input type="hidden" id="selectedDestinationLng" name="selectedDestinationLng" value="">
 
             <div class="d-grid gap-2 mt-3">
-              <a class="pv-button" href="/flights/searchFlights">Continue to passenger search →</a><p class="pv-fine-print">Note your selected airport and enter it on the passenger-search page. The paid route API is paused; this map only helps you locate airports. Location does not establish your pet’s origin/history.</p>
+              <a id="airport-handoff-continue" class="pv-button" href="/flights/searchFlights">Continue to passenger search →</a><p class="pv-fine-print">Note your selected airport and enter it on the passenger-search page. The paid route API is paused; this map only helps you locate airports. Location does not establish your pet’s origin/history.</p>
             </div>
 
             <!-- Inline loader -->
@@ -290,3 +290,5 @@
     });
   });
 </script>
+
+<script src="/airport-handoff.js" defer></script>

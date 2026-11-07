@@ -84,6 +84,13 @@ router.post('/ai/journey', async (req,res) => {
     return res.json(value);
   } catch(error){console.warn('[journey] lookup failed',error.name);return res.status(500).json({error:'We could not load the policies for this route. Please try again.'});}
 });
+router.post('/ai/airline-research',async(req,res)=>{
+ if(req.user?.role!=='admin')return res.status(403).json({error:'This owner-funded research pilot is available to administrators only.'});
+ if(!allowedPlannerRequest(req)||req.body.confirmed!==true)return res.status(403).json({error:'Confirm one same-site research attempt first.'});
+ try{const key=process.env.OPENAI_API_KEY||process.env.openaiKey;if(!key)return res.status(503).json({error:'Research is unavailable. No reservation was made.'});
+ const result=await require('../helpers/airlineWebResearch').run({db:require('mongoose').connection.db,client:new (require('openai'))({apiKey:key,maxRetries:0}),input:req.body});return res.status(result.status).json(result);
+ }catch(error){return res.status(400).json({error:'Research input or storage is unavailable. Do not retry until the pilot status is checked.'});}
+});
 router.post('/my-trips/itinerary', async (req,res,next)=>{try{
   if(!req.user) return res.status(401).json({error:'Sign in to save this itinerary.'});
   if(!allowedPlannerRequest(req)) return res.sendStatus(403);

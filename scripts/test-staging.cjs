@@ -164,6 +164,12 @@ async function main() {
   assert.equal((await fixtures.findOne({ _id: marker._id })).value, 'created');
   await fixtures.updateOne({ _id: marker._id }, { $set: { value: 'updated' } });
   assert.equal((await fixtures.findOne({ _id: marker._id })).value, 'updated');
+  const pilotReserve=require('../helpers/airlineWebResearch').reserve;
+  const reservations=await Promise.all(Array.from({length:12},()=>pilotReserve(database)));
+  assert.equal(reservations.filter(Boolean).length,5);
+  const secondClient=await new MongoClient(uri).connect();assert.equal(await pilotReserve(secondClient.db(databaseName)),null);await secondClient.close();
+  assert.equal((await database.collection('research_pilot_budgets').findOne({_id:'owner-airline-web-pilot-20261106'})).reservedUsd,5);
+  console.log('PASS real Mongo atomic5-attempt research cap and persistence across client recreation; no research API calls');
   console.log('PASS isolated real MongoDB ping/read/write');
 
   await database.collection('country_regulations_list').insertMany([

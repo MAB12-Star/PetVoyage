@@ -110,10 +110,10 @@ router.get('/searchFlights', (req, res) => {
   // user is available via res.locals.user from your app.js middleware
   const departureCheck=require('../helpers/departureDetails').check(req.query || {});
   const flightSearch=Object.assign(Object.fromEntries(['origin','destination','petType','departureCity','departureAirport','departureDate','returnDate'].map(k=>[k,String(req.query?.[k] || '').trim().slice(0,100)])),departureCheck.fields);
-  if(departureCheck.error) res.status(400);
+  if(departureCheck.error && req.query?.prefill!=='1') res.status(400);
   res.render(req.query?.legacy==='1' ? 'regulations/legacySearchFlights' : 'regulations/searchFlights', {
     search: flightSearch,
-    validationError: departureCheck.error,
+    validationError: req.query?.prefill==='1' ? null : departureCheck.error,
     discovery: !departureCheck.error && req.query?.origin && req.query?.destination ? require('../helpers/transportDiscovery')(flightSearch) : null,
     title: 'Flight & Pet Transport Discovery | PetVoyage',
     metaDescription: 'Search flight routes and compare airline pet policies for in-cabin, cargo, service animals, health certificates, and pet travel rules.',
