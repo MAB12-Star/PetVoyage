@@ -7,7 +7,7 @@ router.use(redirectOldAirlineLinks);
 // Route to fetch all airlines (names only)
 router.get('/airlines', async (req, res) => {
     try {
-        const airlines = await Airline.find({}, 'name _id slug'); // Fetch name, _id, and slug
+        const airlines = await Airline.find({}, 'name _id slug logo'); // Fetch name, _id, and slug
         res.json(airlines); // Return as JSON
     } catch (error) {
         console.error("Error fetching airlines:", error);
