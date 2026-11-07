@@ -8,7 +8,7 @@ const { randomUUID } = require('node:crypto');
 const journey = require('../helpers/journeyPlanner');
 const discoverTransport = require('../helpers/transportDiscovery');
 const departureDetails = require('../helpers/departureDetails');
-let aiDay = '', aiCount = 0, inFlight = 0;
+let aiDay = '', aiCount = 0, inFlight = 0, researchInFlight=false;
 async function airlines() { return Airline.find({}, 'name airlineCode slug').sort({name:1}).lean(); }
 function allowedPlannerRequest(req) {
   if(req.get('sec-fetch-site')==='cross-site') return false;
@@ -84,12 +84,15 @@ router.post('/ai/journey', async (req,res) => {
     return res.json(value);
   } catch(error){console.warn('[journey] lookup failed',error.name);return res.status(500).json({error:'We could not load the policies for this route. Please try again.'});}
 });
+router.get('/ai/airline-research/cache',async(req,res)=>{res.set('Cache-Control','no-store');try{const cached=await require('../helpers/airlineWebResearch').readCache(require('mongoose').connection.db,req.query);if(cached){const {estimatedUsd,reservedUsd,attempt,...publicResult}=cached;return res.json(publicResult);}return res.json({cached:false});}catch{return res.json({cached:false});}});
 router.post('/ai/airline-research',async(req,res)=>{
- if(req.user?.role!=='admin')return res.status(403).json({error:'This owner-funded research pilot is available to administrators only.'});
  if(!allowedPlannerRequest(req)||req.body.confirmed!==true)return res.status(403).json({error:'Confirm one same-site research attempt first.'});
+ if(researchInFlight)return res.status(429).json({error:'Research is already running. No reservation was made for this request.'});
+ const now=Date.now();if(req.session.lastWebResearchAt && now-req.session.lastWebResearchAt<60000)return res.status(429).json({error:'Please wait one minute before another research request.'});
+ req.session.lastWebResearchAt=now;researchInFlight=true;
  try{const key=process.env.OPENAI_API_KEY||process.env.openaiKey;if(!key)return res.status(503).json({error:'Research is unavailable. No reservation was made.'});
- const result=await require('../helpers/airlineWebResearch').run({db:require('mongoose').connection.db,client:new (require('openai'))({apiKey:key,maxRetries:0}),input:req.body});return res.status(result.status).json(result);
- }catch(error){return res.status(400).json({error:'Research input or storage is unavailable. Do not retry until the pilot status is checked.'});}
+ const result=await require('../helpers/airlineWebResearch').run({db:require('mongoose').connection.db,client:new (require('openai'))({apiKey:key,maxRetries:0}),input:req.body});const {estimatedUsd,reservedUsd,attempt,...publicResult}=result;return res.status(result.status).json(publicResult);
+ }catch(error){return res.status(400).json({error:'Research input or storage is unavailable. Do not retry until the pilot status is checked.'});}finally{researchInFlight=false;}
 });
 router.post('/my-trips/itinerary', async (req,res,next)=>{try{
   if(!req.user) return res.status(401).json({error:'Sign in to save this itinerary.'});

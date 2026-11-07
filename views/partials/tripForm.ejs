@@ -3,10 +3,11 @@
   <h2>One trip.<br>Everything brought together.</h2>
   <p>Get a tailored itinerary with country rules, airline guidance and your preparation steps.</p>
   <% const selected = typeof plan !== 'undefined' && plan ? plan : {}; %>
+  <%- include('departureLocation') %>
   <div class="pv-fields">
     <label>Pet’s origin country<select name="origin" required><option value="">Choose origin</option><% countries.forEach(c=>{ %><option <%= selected.origin===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
     <label>Travelling to<select name="destination" required><option value="">Choose destination</option><% countries.forEach(c=>{ %><option <%= selected.destination===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
-    <label>Departure city<input name="departureCity" maxlength="100" value="<%= selected.departureCity || '' %>" placeholder="Where will you start?" required></label><label>Departure airport (optional)<input name="departureAirport" maxlength="3" pattern="[A-Za-z]{3}" value="<%= selected.departureAirport || '' %>" placeholder="e.g. LAX"></label>
+    <label>Departure city or airport name<input name="departureCity" maxlength="100" value="<%= selected.departureCity || '' %>" placeholder="Where will you start?" required></label><label>Departure airport (optional)<input name="departureAirport" maxlength="3" pattern="[A-Za-z]{3}" value="<%= selected.departureAirport || '' %>" placeholder="e.g. LAX"></label>
     <label>Your companion<select name="pet" required><% [['dog','Dog'],['cat','Cat'],['bird','Bird'],['other','Other pet']].forEach(([v,n])=>{ %><option value="<%= v %>" <%= selected.petType===v?'selected':'' %>><%= n %></option><% }) %></select></label>
     <label>Departure (optional)<input name="departure" type="date" value="<%= selected.departureDate || '' %>"></label>
     <label>Return date (optional)<input name="returnDate" type="date" value="<%= selected.returnDate || '' %>"></label>

@@ -106,6 +106,7 @@ router.head('/searchFlights', (req, res) => {
 });
 
 // Rendering is synchronous to initiate; catchAsync requires a returned Promise.
+router.get('/location-maps.js', (_req,res)=>{try{const source=require('fs').readFileSync(require('path').join(__dirname,'../views/regulations/legacySearchFlights.ejs'),'utf8');const match=source.match(/src="(https:\/\/maps\.googleapis\.com\/maps\/api\/js[^"]+)"/);if(!match)return res.sendStatus(503);const url=new URL(match[1]);url.searchParams.set('callback','pvDepartureMapsReady');res.set('Cache-Control','no-store');return res.redirect(302,url.toString());}catch{return res.sendStatus(503);}});
 router.get('/searchFlights', (req, res) => {
   // user is available via res.locals.user from your app.js middleware
   const departureCheck=require('../helpers/departureDetails').check(req.query || {});
