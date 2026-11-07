@@ -277,7 +277,7 @@ router.post('/saveItinerary', saveCurrentUrl, isLoggedIn, async (req, res) => {
       .update(`${aCode}|${aSlug}|${country}|${petType}`)
       .digest('hex');
 
-    const exists = user.savedItineraries.some(i => i.hash === hash);
+    const exists = user.savedItineraries.some(i => !i.deletedAt && i.hash === hash);
     if (exists) {
       return res.status(200).json({ message: 'Itinerary already saved.' });
     }

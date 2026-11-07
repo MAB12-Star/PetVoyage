@@ -5,7 +5,7 @@
   const counts = {
     reviews:            (myReviews || []).length,
     posts:              (myStories || []).length,
-    itins:              (user?.savedItineraries || []).length,
+    itins:              (user?.savedItineraries || []).filter(it=>!it.deletedAt).length,
     countryRegs:        (user?.savedRegulations || []).length,
     flightRegs:         (user?.savedFlightRegulations || []).length,
     favAirlines:        (user?.favoriteAirlines || []).length
@@ -188,10 +188,10 @@
               <div id="acc-itins-body" class="accordion-collapse collapse"
                    aria-labelledby="acc-itins-head" data-bs-parent="#savesAccordion">
                 <div class="accordion-body p-3">
-                  <% if (user.savedItineraries && user.savedItineraries.length > 0) { %>
+                  <% if (user.savedItineraries && user.savedItineraries.some(it=>!it.deletedAt)) { %>
                     <div class="scroll-section">
                       <div class="accordion" id="savedItinsAccordion">
-                        <% user.savedItineraries.forEach(function(it) { %>
+                        <% user.savedItineraries.filter(it=>!it.deletedAt).forEach(function(it) { %>
                           <div class="accordion-item mb-3 shadow-sm border rounded">
                             <h2 class="accordion-header" id="head-<%= it._id %>">
                               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"

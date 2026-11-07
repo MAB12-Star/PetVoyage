@@ -46,7 +46,7 @@ router.get('/plan', async (req,res,next) => { try {
   if(req.query.saved && req.user && /^[a-f0-9]{24}$/i.test(req.query.saved)) {
     const user=await User.findById(req.user._id).select('researchPlans').lean();
     const saved=user?.researchPlans?.find(p=>String(p._id)===req.query.saved);
-    if(saved?.generatedPlan){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
+    if(saved?.generatedPlan && !saved.deletedAt){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
   }
   res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, autoSearchId: plan ? require('../helpers/flightSearchIntent').match(req,plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
@@ -104,7 +104,10 @@ router.post('/my-trips/itinerary', async (req,res,next)=>{try{
   const user=await User.findById(req.user._id);
   if(!user) return res.sendStatus(401);
   const existing=user.researchPlans.find(p=>p.generatedPlan?.id===value.id);
-  if(existing) return res.json({url:'/plan?saved='+existing._id,todoUrl:'/toDoList'});
+  if(existing) {
+    if(existing.deletedAt) await User.updateOne({_id:user._id,'researchPlans._id':existing._id},{$unset:{'researchPlans.$.deletedAt':''}});
+    return res.json({url:'/plan?saved='+existing._id,todoUrl:'/toDoList'});
+  }
   if(user.researchPlans.length>=100) return res.status(400).json({error:'Your workspace has reached its 100-plan limit.'});
   require('../helpers/itineraryTasks').addItineraryTasks(user,value);
   user.researchPlans.push({...value.plan,generatedPlan:value});
@@ -115,13 +118,25 @@ router.post('/my-trips/itinerary', async (req,res,next)=>{try{
 }catch(e){next(e)}});
 router.get('/my-trips', async (req,res,next) => { try {
   const user=req.user ? await User.findById(req.user._id).select('researchPlans savedItineraries').lean() : null;
-  res.render('experience/trips',{ plans:user?.researchPlans || [], itineraries:user?.savedItineraries || [], title:'My trips | PetVoyage', robots:'noindex, nofollow' });
+  const removed=req.query.removed==='1';
+  res.set('Cache-Control','no-store');
+  res.render('experience/trips',{ removed, plans:(user?.researchPlans || []).filter(p=>Boolean(p.deletedAt)===removed), itineraries:(user?.savedItineraries || []).filter(p=>Boolean(p.deletedAt)===removed), title:'My trips | PetVoyage', robots:'noindex, nofollow' });
 } catch(e) { next(e); } });
+router.post('/my-trips/:kind/:id/:action', async (req,res,next)=>{try{
+  if(!req.user) return res.redirect(303,'/auth/login');
+  if(!allowedPlannerRequest(req)) return res.sendStatus(403);
+  const field=req.params.kind==='plans'?'researchPlans':req.params.kind==='itineraries'?'savedItineraries':null;
+  if(!field || !/^[a-f0-9]{24}$/i.test(req.params.id) || !['remove','restore'].includes(req.params.action)) return res.sendStatus(400);
+  const change=req.params.action==='remove' ? {$set:{[field+'.$.deletedAt']:new Date()}} : {$unset:{[field+'.$.deletedAt']:''}};
+  const result=await User.updateOne({_id:req.user._id,[field+'._id']:req.params.id},change);
+  if(!result.matchedCount) return res.sendStatus(404);
+  return res.redirect(303,'/my-trips');
+}catch(e){next(e)}});
 router.post('/my-trips', async (req,res,next) => { try {
   if (!req.user) return res.redirect('/auth/login');
   const plan=planFrom(req.body,await countries()); if (!plan) return res.status(400).send('Choose a listed origin, destination and pet type.');
   const user=await User.findById(req.user._id); if (!user) return res.sendStatus(401);
-  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate && (p.destinationCity || '')===plan.destinationCity && (p.destinationAirport || '')===plan.destinationAirport && (p.flightNumber || '')===plan.flightNumber;
+  const same=p=>!p.deletedAt && p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate && (p.destinationCity || '')===plan.destinationCity && (p.destinationAirport || '')===plan.destinationAirport && (p.flightNumber || '')===plan.flightNumber;
   if (!(user.researchPlans || []).some(same)) {
     if ((user.researchPlans || []).length>=100) return res.status(400).send('Your workspace has reached its 100 research-plan limit.');
     user.researchPlans.push({...plan}); await user.save();
