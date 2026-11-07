@@ -8,3 +8,5 @@ Authenticated explicit new itinerary save atomically stores itinerary and append
 Validation: JS syntax, task preservation, escaping, dedupe and independent column source checks. Independent QA requested. No paid AI, GPS, production customer writes, order or Shopify mutations during testing. Production signed-in end-to-end save not exercised using a customer account.
 
 Baseline b0bd92e98e39f635786c088f130b5a0e3ce9f992. Rollback via prior release. Publication to be verified after deployment. Duffel and actual dated flight inventory remain Phase 2.
+
+Published a0953b25b902ff11f343c1b577c2d3d261203b31 to GitHub master and AWS PM2. Live HTTP checks: CSS, planner JS and /findAVet all 200; independent-column, save CTA, vet card and existing map/filter markers verified. Actual save handler passed isolated mocked atomic-write/session/preservation/repeat-save checks. Authenticated production save and map provider results remain unexercised. Rollback branch rollback-20261107-before-flow-tasks retained.
