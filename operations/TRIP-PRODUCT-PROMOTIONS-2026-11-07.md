@@ -8,3 +8,5 @@ OrganicFacebook organizerpublished https://www.facebook.com/permalink.php?story_
 OrganicFacebook backpackpublished https://www.facebook.com/permalink.php?story_fbid=pfbid028GS9yLmVJRcTV26LdovbYxQqcfkvDhzYZwX9uSKR83a7mvc5VKEaAJV3MBxzsQuwl&id=61584208561367
 CollarFacebook publication pending at deployment. No boosts or paid ads enabled.
 Baseline7edbbd06ad4f1d56229477da13efd59f7bcda3a5. Rollbackbranch rollback-20261107-before-trip-products.
+
+Published website release51e69d8927d7dd9add7c99a60e7521af7c33dd37. Live homepage and /trip-essentials verified: dog organizer; cat purplevariant collar+backpack; bird empty. Purplevariant links and exactpurpleimage verified. Facebook collar organic text/link post PUBLISHED https://www.facebook.com/permalink.php?story_fbid=pfbid06xeGLgExc4oqAerQCMKuumanKFirSFusZfyK9rW1V5Cu6ta6ELuDBCMzQgCU9hFHl&id=61584208561367 . Native photo upload failed; no collar photo attached to Facebook post; actual purple image is served on website card and exact Shopify variant. Boost remainsOFF. Organizer/backpack posts have productlink previews. No duplicates intentionally created, no Shopify product/order mutations.
