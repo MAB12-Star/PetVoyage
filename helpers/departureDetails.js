@@ -4,7 +4,9 @@ function check(input={}){
  const departureCity=String(input.departureCity||'').trim().slice(0,100),departureAirport=String(input.departureAirport||'').trim().toUpperCase();
  const departureDate=String(input.departure||input.departureDate||''),returnDate=String(input.returnDate||'');
  const departureConfirmed=!!(departureCity||departureAirport),departureMismatchConfirmed=false;
- const fields={departureCity,departureAirport,departureDate,returnDate,departureConfirmed,departureMismatchConfirmed,departureSource:departureCity||departureAirport?(input.departureSource==='location'?'location-suggested':'manual'):'not-supplied'};
+ const destination=require('./destinationDetails').check(input);
+ const fields={...destination.fields,departureCity,departureAirport,departureDate,returnDate,departureConfirmed,departureMismatchConfirmed,departureSource:departureCity||departureAirport?(input.departureSource==='location'?'location-suggested':'manual'):'not-supplied'};
+ if(destination.error)return {error:destination.error,fields};
  if(!validDate(departureDate)||!validDate(returnDate))return {error:'Enter valid departure and return dates.',fields};
  if(returnDate&&(!departureDate||returnDate<departureDate))return {error:'Choose a departure date and a return date on or after it.',fields};
  if(departureAirport&&!/^[A-Z]{3}$/.test(departureAirport))return {error:'Enter a three-letter airport code, or leave the airport blank and use your city.',fields};

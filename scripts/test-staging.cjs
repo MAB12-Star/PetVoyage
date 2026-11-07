@@ -234,13 +234,13 @@ async function main() {
   assert.ok(profile.text.includes(email));
   assert.ok(profile.text.includes('Synthetic Staging User'));
   assert.ok(await database.collection('sessions').findOne({ 'session': { $regex: String(user._id) } }), 'Session must persist in MongoDB');
-  const savedForm={origin:'Test Origin',destination:'Test Destination',petType:'dog',departureDate:'2027-01-10',returnDate:'2027-01-12',departureCity:'Test City',departureAirport:'XYZ',departureConfirmed:'true'};
+  const savedForm={origin:'Test Origin',destination:'Test Destination',destinationCity:'First City',petType:'dog',departureDate:'2027-01-10',returnDate:'2027-01-12',departureCity:'Test City',departureAirport:'XYZ',departureConfirmed:'true'};
   const research=await request('/plan?origin=Test%20Origin&destination=Test%20Destination&pet=dog');
   assert.equal(research.status,200);assert.match(research.text,/petType=dog-cat/);
   assert.equal((await request('/my-trips',{method:'POST',form:savedForm})).status,302);
   assert.equal((await request('/my-trips',{method:'POST',form:savedForm})).status,302);
   assert.equal((await request('/my-trips',{method:'POST',form:{...savedForm,destination:'<script>invalid</script>'}})).status,400);
-  const savedUser=await database.collection('users').findOne({_id:user._id});assert.equal(savedUser.researchPlans.length,1);assert.equal(savedUser.researchPlans[0].departureCity,'Test City');assert.equal(savedUser.researchPlans[0].returnDate,'2027-01-12');assert.equal(savedUser.researchPlans[0].departureSource,'manual');
+  const savedUser=await database.collection('users').findOne({_id:user._id});assert.equal(savedUser.researchPlans.length,1);assert.equal(savedUser.researchPlans[0].destinationCity,'First City');const secondCity=await request('/my-trips',{method:'POST',form:{...savedForm,destinationCity:'Second City'}});assert.equal(secondCity.status,302);assert.equal((await database.collection('users').findOne({_id:user._id})).researchPlans.length,2);assert.match((await request('/my-trips')).text,/destinationCity=First%20City/);assert.equal(savedUser.researchPlans[0].departureCity,'Test City');assert.equal(savedUser.researchPlans[0].returnDate,'2027-01-12');assert.equal(savedUser.researchPlans[0].departureSource,'manual');
   // Exercise server-owned generated results with synthetic session data, never a paid AI call.
   const itinerary={id:'synthetic-result',plan:{origin:'Test Origin',destination:'Test Destination',petType:'dog',departureDate:'2027-01-10'},result:{summary:'Synthetic generated itinerary',destination:['Fixture destination policy'],airline:['Fixture airline guidance'],timeline:[{when:'Before booking',action:'Fixture preparation'}],packing:['Fixture carrier'],questions:['Fixture question']},sources:[],evidence:{},generatedAt:new Date().toISOString()};
   const sessionRow=await database.collection('sessions').findOne({'session':{$regex:String(user._id)}});
@@ -250,7 +250,7 @@ async function main() {
   const savedItinerary=await request('/my-trips/itinerary',{method:'POST',form:{resultId:itinerary.id}});
   assert.equal(savedItinerary.status,200);const savedUrl=JSON.parse(savedItinerary.text).url;
   assert.equal((await request('/my-trips/itinerary',{method:'POST',form:{resultId:itinerary.id}})).status,200);
-  const itineraryUser=await database.collection('users').findOne({_id:user._id});assert.equal(itineraryUser.researchPlans.length,2);
+  const itineraryUser=await database.collection('users').findOne({_id:user._id});assert.equal(itineraryUser.researchPlans.length,3);
   assert.match((await request(savedUrl)).text,/Synthetic generated itinerary/);
   assert.ok(!(await request(savedUrl,{authenticated:false})).text.includes('Synthetic generated itinerary'));
   assert.match((await request('/my-trips')).text,/Open trip plan/);

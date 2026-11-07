@@ -39,7 +39,7 @@ router.get('/', async (req,res,next) => { try {
   const [rows, stories] = await Promise.all([countries(), Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()]);
   res.render('index', { countries: rows, airlines:await airlines(), stories, title: 'PetVoyage | Plan a thoughtful journey with your pet', canonicalUrl: 'https://www.petvoyage.ai/' });
 } catch(e) { next(e); } });
-router.post('/plan/start',async(req,res,next)=>{try{if(!allowedPlannerRequest(req))return res.sendStatus(403);const plan=planFrom(req.body,await countries());if(!plan)return res.status(400).send('Please check your departure and dates. <a href="/">Return to the planner</a>');const params=new URLSearchParams(Object.entries(plan).filter(([,v])=>typeof v==='string'||typeof v==='boolean'));if(!plan.airlineId)params.set('searchId',require('../helpers/flightSearchIntent').start(req,plan));res.redirect(303,'/plan?'+params);}catch(e){next(e)}});
+router.post('/plan/start',async(req,res,next)=>{try{if(!allowedPlannerRequest(req))return res.sendStatus(403);const plan=planFrom(req.body,await countries());if(!plan)return res.status(400).send((departureDetails.check(req.body).error||'Please check your trip details.')+' <a href="/">Return to the planner</a>');const params=new URLSearchParams(Object.entries(plan).filter(([,v])=>typeof v==='string'||typeof v==='boolean'));if(!plan.airlineId)params.set('searchId',require('../helpers/flightSearchIntent').start(req,plan));res.redirect(303,'/plan?'+params);}catch(e){next(e)}});
 router.get('/plan', async (req,res,next) => { try {
   const rows=await countries(); let plan=planFrom(req.query,rows); let savedJourney=null;
   if(req.query.saved && req.user && /^[a-f0-9]{24}$/i.test(req.query.saved)) {
@@ -116,7 +116,7 @@ router.post('/my-trips', async (req,res,next) => { try {
   if (!req.user) return res.redirect('/auth/login');
   const plan=planFrom(req.body,await countries()); if (!plan) return res.status(400).send('Choose a listed origin, destination and pet type.');
   const user=await User.findById(req.user._id); if (!user) return res.sendStatus(401);
-  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate;
+  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate && (p.destinationCity || '')===plan.destinationCity && (p.destinationAirport || '')===plan.destinationAirport;
   if (!(user.researchPlans || []).some(same)) {
     if ((user.researchPlans || []).length>=100) return res.status(400).send('Your workspace has reached its 100 research-plan limit.');
     user.researchPlans.push({...plan}); await user.save();

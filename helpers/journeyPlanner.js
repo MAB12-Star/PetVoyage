@@ -56,7 +56,7 @@ async function generate(context, client) {
     if(value.destination.some(s=>s.trim().length<20) || value.airline.some(s=>s.trim().length<20)) throw new Error('Incomplete policy summary');
     // No approved-origin list is supplied. Never promote a model's inferred approval/denial
     // into the trip headline, even when it sounds plausible.
-    value.summary=`Your ${context.route.petType}’s journey from ${context.route.origin} to ${context.route.destination}: destination requirements, airline guidance and preparation in one place. Origin eligibility and your operating flight still need confirmation.`;
+    value.summary=`Your ${context.route.petType}’s journey from ${context.route.origin} to ${context.route.destinationCity || context.route.destinationAirport || context.route.destination}${context.route.destinationCity || context.route.destinationAirport ? ", "+context.route.destination : ""}: destination requirements, airline guidance and preparation in one place. Origin eligibility and your operating flight still need confirmation.`;
     // Keep essential coverage gaps visible even if the model omits them.
     value.questions.unshift('Confirm origin eligibility, recent residence/travel history and every transit stop before booking; this plan does not establish entry approval.');
     if(!context.destination.speciesCategory) value.destination.unshift('No matching species-specific policy record is available. Entry requirements for this pet are not established.');
