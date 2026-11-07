@@ -27,7 +27,7 @@
     root.replaceChildren();root.hidden=false;root.setAttribute('aria-busy','false');
     if(!data.result){status.replaceChildren(el('strong','Your policy details are available'),el('p',data.error||'Scout is temporarily unavailable.'));root.append(evidence(data));if(flightOptions)root.append(flightOptions);const retry=el('button','Try Scout again','pv-button');retry.type='button';retry.onclick=()=>location.reload();root.append(retry);return;}
     status.replaceChildren(el('span','✦','pv-scout-orb'),el('div',(saved?'Saved itinerary · ':'AI itinerary ready · ')+(data.plan.airlineName||'Airline not chosen')));
-    const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));root.append(intro);
+    const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));const photo=el('img',null,'pv-journey-pet-photo');photo.src='/images/babies.jpg';photo.alt='The PetVoyage family pets together';photo.loading='lazy';intro.append(photo);root.append(intro);
     const grid=el('div',null,'pv-itinerary-layout'),main=el('div',null,'pv-itinerary-main'),aside=el('aside',null,'pv-itinerary-aside');
     main.append(card('Destination requirements',data.result.destination));
     if(flightOptions)main.append(flightOptions); // Move the existing node; retain async results/listeners without refetching.
