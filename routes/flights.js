@@ -108,9 +108,13 @@ router.head('/searchFlights', (req, res) => {
 // Rendering is synchronous to initiate; catchAsync requires a returned Promise.
 router.get('/searchFlights', (req, res) => {
   // user is available via res.locals.user from your app.js middleware
+  const departureCheck=require('../helpers/departureDetails').check(req.query || {});
+  const flightSearch=Object.assign(Object.fromEntries(['origin','destination','petType','departureCity','departureAirport','departureDate','returnDate'].map(k=>[k,String(req.query?.[k] || '').trim().slice(0,100)])),departureCheck.fields);
+  if(departureCheck.error) res.status(400);
   res.render(req.query?.legacy==='1' ? 'regulations/legacySearchFlights' : 'regulations/searchFlights', {
-    search: Object.fromEntries(['origin','destination','petType','departureAirport','departureCity'].map(k=>[k,String(req.query?.[k] || '').trim().slice(0,100)])),
-    discovery: req.query?.origin && req.query?.destination ? require('../helpers/transportDiscovery')(req.query) : null,
+    search: flightSearch,
+    validationError: departureCheck.error,
+    discovery: !departureCheck.error && req.query?.origin && req.query?.destination ? require('../helpers/transportDiscovery')(flightSearch) : null,
     title: 'Flight & Pet Transport Discovery | PetVoyage',
     metaDescription: 'Search flight routes and compare airline pet policies for in-cabin, cargo, service animals, health certificates, and pet travel rules.',
     metaKeywords: 'pet-friendly flights, flights with pets, airline pet policy comparison, flying with pets, pet air travel',
@@ -181,6 +185,8 @@ const mapAirportToIATA = async (req, res, next) => {
 };
 
 /* ---------------------------- handle flight search ---------------------------- */
+// FlightLabs route calls are paused by owner instruction; stop before mapping/API middleware.
+router.post('/searchFlights', (_req,res)=>res.status(503).send('<h1>Route API searches are paused</h1><p>No FlightLabs request was made.</p><p><a href="/flights/searchFlights">Explore passenger flights and pet arrangements</a></p>'));
 router.post('/searchFlights', saveCurrentUrl, mapAirportToIATA, async (req, res) => {
   const { originCode, destinationCode } = req.body;
   const originName = (req.body.selectedAirport || '').trim();

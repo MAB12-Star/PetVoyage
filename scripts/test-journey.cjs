@@ -26,7 +26,7 @@ let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.eq
  app.use(mod.exports);const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base='http://127.0.0.1:'+server.address().port;
  const post=async(path,body,headers={})=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(body)});return {status:r.status,data:await r.json().catch(()=>null)}};
  try{
-  const input={origin:'Anguilla',destination:'Australia',pet:'dog',airline:airline._id};
+  const input={origin:'Anguilla',destination:'Australia',pet:'dog',airline:airline._id,departureCity:'The Valley',departureConfirmed:true,departureDate:'2027-01-01',returnDate:'2027-01-03'};
   assert.equal((await post('/ai/journey',{...input,origin:'Invalid'})).status,400);
   assert.equal((await post('/ai/journey',input,{'sec-fetch-site':'cross-site'})).status,403);
   // Reproduce nginx HTTPS -> internal HTTP while NODE_ENV is not production.
@@ -36,7 +36,7 @@ let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.eq
   assert.equal((await post('/my-trips/itinerary',{resultId:generated.data.id})).status,401);
   assert.equal((await post('/my-trips/itinerary',{resultId:'forged'},{'x-test-auth':'yes'})).status,400);
   const save=await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(save.status,200);assert.match(save.data.url,/saved=/);assert.equal(user.researchPlans[0].generatedPlan.result.summary,payload.summary);
-  await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(saved,1);
+  await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(saved,1);assert.equal(user.researchPlans[0].generatedPlan.plan.departureCity,'The Valley');assert.equal(user.researchPlans[0].generatedPlan.plan.returnDate,'2027-01-03');assert.equal(user.researchPlans[0].generatedPlan.plan.departureSource,'manual');
   const unselected=await post('/ai/journey',{origin:'United States',destination:'Australia',pet:'dog'});assert.equal(unselected.status,200);assert.equal(unselected.data.transportDiscovery.state,'reviewed-enquiry');assert.equal(unselected.data.transportDiscovery.candidates[0].transportMode,'manifest cargo');
   const unknown=await post('/ai/journey',{origin:'Anguilla',destination:'Australia',pet:'dog'});assert.equal(unknown.status,200);assert.equal(unknown.data.transportDiscovery.state,'not-reviewed');assert.equal(unknown.data.transportDiscovery.candidates.length,0);
   session.journeyUsage={start:Date.now(),count:8};assert.equal((await post('/ai/journey',input)).status,429);

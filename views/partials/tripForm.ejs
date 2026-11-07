@@ -4,13 +4,16 @@
   <p>Get a tailored itinerary with country rules, airline guidance and your preparation steps.</p>
   <% const selected = typeof plan !== 'undefined' && plan ? plan : {}; %>
   <div class="pv-fields">
-    <label>Leaving from<select name="origin" required><option value="">Choose origin</option><% countries.forEach(c=>{ %><option <%= selected.origin===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
+    <label>Pet’s origin country<select name="origin" required><option value="">Choose origin</option><% countries.forEach(c=>{ %><option <%= selected.origin===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
     <label>Travelling to<select name="destination" required><option value="">Choose destination</option><% countries.forEach(c=>{ %><option <%= selected.destination===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
+    <label>Departure city<input name="departureCity" maxlength="100" value="<%= selected.departureCity || '' %>" placeholder="Where will you start?" required></label><label>Departure airport (optional)<input name="departureAirport" maxlength="3" pattern="[A-Za-z]{3}" value="<%= selected.departureAirport || '' %>" placeholder="e.g. LAX"></label>
     <label>Your companion<select name="pet" required><% [['dog','Dog'],['cat','Cat'],['bird','Bird'],['other','Other pet']].forEach(([v,n])=>{ %><option value="<%= v %>" <%= selected.petType===v?'selected':'' %>><%= n %></option><% }) %></select></label>
     <label>Departure (optional)<input name="departure" type="date" value="<%= selected.departureDate || '' %>"></label>
+    <label>Return date (optional)<input name="returnDate" type="date" value="<%= selected.returnDate || '' %>"></label>
     <label>Operating airline<select name="airline"><option value="">Not chosen yet</option><% (typeof airlines !== 'undefined' ? airlines : []).forEach(a=>{ %><option value="<%= a._id %>" <%= selected.airlineId===String(a._id)?'selected':'' %>><%= a.name %></option><% }) %></select></label>
     <label>Transit countries (optional)<input name="transit" maxlength="200" value="<%= selected.transit || '' %>" placeholder="e.g. Canada, or none"></label>
   </div>
+  <p class="pv-fine-print">Pet origin and residence/history are separate from your current location and departure airport. Check both; location tools do not change your selected pet origin.</p><label class="pv-manual-confirm"><input type="checkbox" name="departureConfirmed" value="true" <%= selected.departureConfirmed?'checked':'' %> required> I checked my departure country, city and airport. These are manually entered, not detected.</label><label class="pv-manual-confirm"><input type="checkbox" name="departureMismatchConfirmed" value="true" <%= selected.departureMismatchConfirmed?'checked':'' %>> My airport is intentionally in a different country from my origin, if applicable. I will check transit/export requirements.</label><p class="pv-fine-print"><a href="/flights/searchFlights?legacy=1">Use my location / find nearby airports →</a> Opens the map-based airport finder; if you allow location access, precise location can be sent to Google Maps. Manual entry is available.</p>
   <button class="pv-button" type="submit">Build my AI itinerary →</button>
   <p class="pv-fine-print">Scout uses PetVoyage’s policy records to organise your route. Confirm final eligibility and timing with the authorities and operating airline.</p>
 </form>

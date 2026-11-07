@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-<header class="pv-wrap pv-page-heading"><p class="pv-eyebrow">Find your route</p><h1>Search flights</h1><p>Explore flights, then confirm pet acceptance and availability directly with the operating airline.</p><%- include('../partials/petPhotoAccent',{photo:'babies.jpg',photoAlt:'A tan dog and a gray-and-white dog resting together on a sandy beach',photoWidth:1600,photoHeight:1273,message:'Plan the route. Keep the companions in mind.',photoNote:'An original photo from the PetVoyage family album.'}) %></header>
+<header class="pv-wrap pv-page-heading"><p class="pv-eyebrow">Find your route</p><h1>Find nearby airports</h1><p>Explore flights, then confirm pet acceptance and availability directly with the operating airline.</p><%- include('../partials/petPhotoAccent',{photo:'babies.jpg',photoAlt:'A tan dog and a gray-and-white dog resting together on a sandy beach',photoWidth:1600,photoHeight:1273,message:'Plan the route. Keep the companions in mind.',photoNote:'An original photo from the PetVoyage family album.'}) %></header>
 <!--Ads-->
 <%
   const headerAd = (typeof getAd === 'function') ? getAd('header') : null;
@@ -15,7 +15,7 @@
     <div class="col-lg-8">
       <div class="card bg-white shadow-lg mb-3 border">
         <div class="card-body">
-          <h2 class="text-center text-primary-emphasis mb-4"><strong>Search for Flights</strong></h2>
+          <h2 class="text-center text-primary-emphasis mb-4"><strong>Find nearby airports</strong></h2>
           <p>
             Still looking for the perfect airline to transport you and your pet? Locate flights available to your destination.
             Check out our <a href="/tips" target="_blank" rel="noopener noreferrer">Tips Section</a> for our suggestions
@@ -69,7 +69,7 @@
             <input type="hidden" id="selectedDestinationLng" name="selectedDestinationLng" value="">
 
             <div class="d-grid gap-2 mt-3">
-              <button id="searchBtn" type="submit" class="btn btn-outline-dark">Search Flights</button>
+              <a class="pv-button" href="/flights/searchFlights">Continue to passenger search →</a><p class="pv-fine-print">Note your selected airport and enter it on the passenger-search page. The paid route API is paused; this map only helps you locate airports. Location does not establish your pet’s origin/history.</p>
             </div>
 
             <!-- Inline loader -->

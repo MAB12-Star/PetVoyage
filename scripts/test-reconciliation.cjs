@@ -20,6 +20,7 @@ vm.runInNewContext(read('routes/airlines.js'), {
   module: { exports: {} }, console, process,
   require(name) {
     if (name === '../helpers/relatedStories') return async () => [];
+    if (name === '../helpers/departureDetails') return require('../helpers/departureDetails');
     if (name === 'express') return { Router: () => router };
     if (name === '../models/airline') return new Proxy({}, {
       get() { databaseCalls++; throw new Error('Unexpected database access'); }
@@ -42,13 +43,14 @@ const flightRoutes = [];
 const flightRouter = {
   get(routePath, ...handlers) { flightRoutes.push({ method: 'GET', routePath, handlers }); },
   head(routePath, ...handlers) { flightRoutes.push({ method: 'HEAD', routePath, handlers }); },
-  post() {}
+  post(routePath,...handlers) { flightRoutes.push({method:'POST',routePath,handlers}); }
 };
 vm.runInNewContext(read('routes/flights.js'), {
   module: { exports: {} }, console: { log() {} }, process: { env: {} },
   require(name) {
     if (name === 'express') return { Router: () => flightRouter };
     if (name === 'openai') return { default: class {} };
+    if (name === '../helpers/departureDetails') return require('../helpers/departureDetails');
     if (name === '../utils/catchAsync') return require(path.join(root, 'utils/catchAsync'));
     if (name === '../middleware') return { saveCurrentUrl() {} };
     if (name === '../helpers/airlineUtils') return { generateAirlineNamesMap() {} };
@@ -71,6 +73,7 @@ let headStatus;
 flightRoutes.find((route) => route.method === 'HEAD' && route.routePath === '/searchFlights')
   .handlers[0]({}, { sendStatus(status) { headStatus = status; } });
 assert.equal(headStatus, 200);
+let blockedFlightStatus;flightRoutes.find(r=>r.method==='POST'&&r.routePath==='/searchFlights').handlers[0]({}, {status(code){blockedFlightStatus=code;return this},send(body){assert.match(body,/No FlightLabs request was made/)}});assert.equal(blockedFlightStatus,503);
 
 const navigation = cheerio.load(ejs.render(read('views/partials/navigation.ejs')));
 assert.equal(navigation('a.square-icon').length, 6);

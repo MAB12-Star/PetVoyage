@@ -7,6 +7,7 @@ const Airline = require('../models/airline');
 const { randomUUID } = require('node:crypto');
 const journey = require('../helpers/journeyPlanner');
 const discoverTransport = require('../helpers/transportDiscovery');
+const departureDetails = require('../helpers/departureDetails');
 let aiDay = '', aiCount = 0, inFlight = 0;
 async function airlines() { return Airline.find({}, 'name airlineCode slug').sort({name:1}).lean(); }
 function allowedPlannerRequest(req) {
@@ -24,13 +25,15 @@ function planFrom(input, rows) {
   const origin = rows.find(c => c.destinationCountry === input.origin);
   const destination = rows.find(c => c.destinationCountry === input.destination);
   const petType = String(input.pet || input.petType || '');
-  const departureDate = String(input.departure || input.departureDate || '');
+  const checkedDeparture = departureDetails.check(input);
+  if(checkedDeparture.error) return null;
+  const {departureDate}=checkedDeparture.fields;
   if (!origin || !destination || !['dog','cat','bird','other'].includes(petType) || (departureDate && !/^\d{4}-\d{2}-\d{2}$/.test(departureDate))) return null;
   const keys = Object.keys(destination.regulationsByPetType || {});
   // Only exact species or the common combined dog/cat category can be chosen safely.
   // 'Other' and broad bird labels must not accidentally select a specialist rule set.
   const key = keys.find(k => k.toLowerCase() === petType) || (['dog','cat'].includes(petType) ? keys.find(k => ['dog-cat','dogs-cats','dog-and-cat','dogs-and-cats'].includes(slug(k))) : undefined);
-  return { petPathway: input.petPathway==='assistance' ? 'assistance' : 'ordinary-pet', origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
+  return { ...checkedDeparture.fields, petPathway: input.petPathway==='assistance' ? 'assistance' : 'ordinary-pet', origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
 }
 router.get('/', async (req,res,next) => { try {
   const [rows, stories] = await Promise.all([countries(), Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()]);
@@ -43,7 +46,7 @@ router.get('/plan', async (req,res,next) => { try {
     const saved=user?.researchPlans?.find(p=>String(p._id)===req.query.saved);
     if(saved?.generatedPlan){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
   }
-  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
+  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
 router.post('/ai/journey', async (req,res) => {
   res.set('Cache-Control','no-store');
@@ -51,7 +54,7 @@ router.post('/ai/journey', async (req,res) => {
   if(!allowedPlannerRequest(req)) return res.status(403).json({error:'Open the planner on PetVoyage to build your itinerary.'});
   try {
     const plan=planFrom(req.body,await countries());
-    if(!plan) return res.status(400).json({error:'Choose a listed origin, destination and pet type.'});
+    if(!plan) return res.status(400).json({error:'Check your departure location/confirmation and dates, and choose a listed origin, destination and pet type.'});
     if((req.body.airline || req.body.airlineId) && !plan.airlineId) return res.status(400).json({error:'Choose an airline from the list.'});
     const destination=await Country.findOne({destinationCountry:plan.destination}).lean();
     const airline=plan.airlineId ? await Airline.findById(plan.airlineId).lean() : null;
@@ -102,10 +105,10 @@ router.post('/my-trips', async (req,res,next) => { try {
   if (!req.user) return res.redirect('/auth/login');
   const plan=planFrom(req.body,await countries()); if (!plan) return res.status(400).send('Choose a listed origin, destination and pet type.');
   const user=await User.findById(req.user._id); if (!user) return res.sendStatus(401);
-  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate;
+  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate;
   if (!(user.researchPlans || []).some(same)) {
     if ((user.researchPlans || []).length>=100) return res.status(400).send('Your workspace has reached its 100 research-plan limit.');
-    user.researchPlans.push({origin:plan.origin,destination:plan.destination,petType:plan.petType,departureDate:plan.departureDate}); await user.save();
+    user.researchPlans.push({...plan}); await user.save();
   }
   res.redirect('/my-trips');
 } catch(e) { next(e); } });

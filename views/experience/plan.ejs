@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate') %>
-<div class="pv-wrap pv-journey-page">
+<div class="pv-wrap pv-journey-page"><% if(typeof validationError !== 'undefined' && validationError){ %><p role="alert" class="pv-note"><%= validationError %></p><% } %>
 <% if(plan){ %>
   <section class="pv-journey-heading">
     <div><p class="pv-eyebrow">Scout · Your AI travel companion</p><h1>Your journey, brought together.</h1><p class="pv-lead"><%= plan.origin %> <span aria-hidden="true">→</span> <%= plan.destination %></p><p><%= plan.petType %><% if(plan.departureDate){ %> · <%= plan.departureDate %><% } %></p></div>

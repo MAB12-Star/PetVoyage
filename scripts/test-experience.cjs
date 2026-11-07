@@ -4,7 +4,7 @@ const vm=require('node:vm');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const routes=[];
-const context={module:{exports:{}},require(name){if(name==='express')return {Router:()=>({get(p,...h){routes.push([p,h])},post(){}})};return {};}};
+const context={module:{exports:{}},require(name){if(name==='../helpers/departureDetails')return require('../helpers/departureDetails');if(name==='express')return {Router:()=>({get(p,...h){routes.push([p,h])},post(){}})};return {};}};
 vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(root,'routes/experience.js'),'utf8')+'\nthis.planFromTest=planFrom;',context);
 const rows=[{destinationCountry:'Origin',regulationsByPetType:{}},{destinationCountry:'Japan',regulationsByPetType:{'Poultry (birds requiring AQS quarantine)':{},'Pet birds (non-poultry)':{},'Dog & Cat':{}}},{destinationCountry:'Canada',regulationsByPetType:{'Reptiles other than turtles/tortoises':{},Dog:{}}}];
 const build=(destination,pet)=>context.planFromTest({origin:'Origin',destination,pet},rows);
