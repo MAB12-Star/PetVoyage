@@ -30,6 +30,7 @@
                      placeholder="Detecting your location... If you are flying from another city please type it">
             </div>
 
+<button type="button" id="request-location" class="btn btn-outline-primary">Use my location to find nearby airports</button><p class="pv-fine-print">Only clicking this button requests location. If you allow it, precise location is sent to Google Maps for airport lookup. We do not save it or change your pet origin. You can type a city instead.</p><p id="location-status" role="status"></p>
             <!-- Map -->
             <div id="map" class="border mt-3" style="height: 400px; width: 100%;"></div>
 
@@ -121,19 +122,18 @@
   let map;
   let marker;
 
-  // Initialize map with user's location (or gracefully no-geo)
-  navigator.geolocation.getCurrentPosition(
-    function (position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      bootMap(lat, lng);
-      fetchNearbyAirportsOrigin(lat, lng);
-    },
-    function () {
-      // Fallback: center USA roughly if blocked
-      bootMap(37.7749, -122.4194);
-    }
-  );
+  // Manual map starts at a generic centre, never the owner's current position.
+  bootMap(37.7749, -122.4194);
+  document.getElementById('request-location').addEventListener('click',function(){
+    const status=document.getElementById('location-status');
+    if(!navigator.geolocation){status.textContent='Location is unavailable. Enter your departure city manually.';return;}
+    status.textContent='Waiting for your location permission. Manual entry remains available.';
+    navigator.geolocation.getCurrentPosition(function(position){
+      const lat=position.coords.latitude,lng=position.coords.longitude;
+      bootMap(lat,lng);fetchNearbyAirportsOrigin(lat,lng);
+      status.textContent='Nearby-airport lookup requested. Confirm the airport manually; pet origin is unchanged.';
+    },function(){status.textContent='Location was denied or unavailable. Enter your departure city manually.';},{timeout:10000,maximumAge:0});
+  });
 
   function bootMap(lat, lng) {
     document.getElementById('currentLat').value = lat;
