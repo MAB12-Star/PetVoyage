@@ -116,7 +116,7 @@ router.post('/my-trips', async (req,res,next) => { try {
   if (!req.user) return res.redirect('/auth/login');
   const plan=planFrom(req.body,await countries()); if (!plan) return res.status(400).send('Choose a listed origin, destination and pet type.');
   const user=await User.findById(req.user._id); if (!user) return res.sendStatus(401);
-  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate && (p.destinationCity || '')===plan.destinationCity && (p.destinationAirport || '')===plan.destinationAirport;
+  const same=p=>p.origin===plan.origin && p.destination===plan.destination && p.petType===plan.petType && (p.departureDate || '')===plan.departureDate && (p.departureCity || '')===plan.departureCity && (p.departureAirport || '')===plan.departureAirport && (p.returnDate || '')===plan.returnDate && (p.destinationCity || '')===plan.destinationCity && (p.destinationAirport || '')===plan.destinationAirport && (p.flightNumber || '')===plan.flightNumber;
   if (!(user.researchPlans || []).some(same)) {
     if ((user.researchPlans || []).length>=100) return res.status(400).send('Your workspace has reached its 100 research-plan limit.');
     user.researchPlans.push({...plan}); await user.save();

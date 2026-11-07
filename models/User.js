@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
   displayName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
 
-  researchPlans: { type: [new Schema({ origin: String, destination: String, destinationCity: String, destinationAirport: String, petType: String, departureDate: String, returnDate: String, departureCity: String, departureAirport: String, departureConfirmed: Boolean, departureMismatchConfirmed: Boolean, departureSource: String, airlineId: String, transit: String, generatedPlan: {type: Schema.Types.Mixed}, createdAt: { type: Date, default: Date.now } })], default: [] },
+  researchPlans: { type: [new Schema({ origin: String, destination: String, destinationCity: String, destinationAirport: String, flightNumber: String, petType: String, departureDate: String, returnDate: String, departureCity: String, departureAirport: String, departureConfirmed: Boolean, departureMismatchConfirmed: Boolean, departureSource: String, airlineId: String, transit: String, generatedPlan: {type: Schema.Types.Mixed}, createdAt: { type: Date, default: Date.now } })], default: [] },
 
   savedItineraries: { type: [SavedItinerarySchema], default: [] },
 

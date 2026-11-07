@@ -1,0 +1,1 @@
+(()=>{const selects=document.querySelectorAll('.pv-known-airline');if(!selects.length)return;fetch('/airlines').then(r=>r.json()).then(rows=>{if(!Array.isArray(rows))return;for(const select of selects)for(const row of rows){if(!row._id||!row.name)continue;const o=document.createElement('option');o.value=row._id;o.textContent=row.name;select.append(o);}}).catch(()=>{});})();
