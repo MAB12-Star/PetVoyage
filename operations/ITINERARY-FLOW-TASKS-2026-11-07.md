@@ -10,3 +10,5 @@ Validation: JS syntax, task preservation, escaping, dedupe and independent colum
 Baseline b0bd92e98e39f635786c088f130b5a0e3ce9f992. Rollback via prior release. Publication to be verified after deployment. Duffel and actual dated flight inventory remain Phase 2.
 
 Published a0953b25b902ff11f343c1b577c2d3d261203b31 to GitHub master and AWS PM2. Live HTTP checks: CSS, planner JS and /findAVet all 200; independent-column, save CTA, vet card and existing map/filter markers verified. Actual save handler passed isolated mocked atomic-write/session/preservation/repeat-save checks. Authenticated production save and map provider results remain unexercised. Rollback branch rollback-20261107-before-flow-tasks retained.
+
+Owner-requested followup: Save & open My To-Do now opens /toDoList after the successful itinerary+task save; duplicate saves return same board destination. Existing saved itineraries have Open My To-Do primary action. Existing itinerary URL retained in response/My trips. No customer data writes or paid calls during validation. JS syntax checked. Baseline b2246b740e95dedb6366f8d414ceeb996bf499fa; rollback-20261107-before-todo-redirect.

@@ -104,14 +104,14 @@ router.post('/my-trips/itinerary', async (req,res,next)=>{try{
   const user=await User.findById(req.user._id);
   if(!user) return res.sendStatus(401);
   const existing=user.researchPlans.find(p=>p.generatedPlan?.id===value.id);
-  if(existing) return res.json({url:'/plan?saved='+existing._id});
+  if(existing) return res.json({url:'/plan?saved='+existing._id,todoUrl:'/toDoList'});
   if(user.researchPlans.length>=100) return res.status(400).json({error:'Your workspace has reached its 100-plan limit.'});
   require('../helpers/itineraryTasks').addItineraryTasks(user,value);
   user.researchPlans.push({...value.plan,generatedPlan:value});
   const savedPlan=user.researchPlans[user.researchPlans.length-1];
   const write=await User.updateOne({_id:user._id,updatedAt:user.updatedAt,'researchPlans.generatedPlan.id':{$ne:value.id}},{$push:{researchPlans:savedPlan.toObject()},$set:{'toDoList.To-Do':user.toDoList.get('To-Do')}});
   if(!write.matchedCount)return res.status(409).json({error:'Your workspace changed while saving. Please try saving again; your existing tasks are safe.'});
-  res.json({url:'/plan?saved='+savedPlan._id});
+  res.json({url:'/plan?saved='+savedPlan._id,todoUrl:'/toDoList'});
 }catch(e){next(e)}});
 router.get('/my-trips', async (req,res,next) => { try {
   const user=req.user ? await User.findById(req.user._id).select('researchPlans savedItineraries').lean() : null;
