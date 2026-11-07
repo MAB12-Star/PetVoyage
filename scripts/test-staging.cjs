@@ -169,6 +169,7 @@ async function main() {
   assert.equal(reservations.filter(Boolean).length,5);
   const secondClient=await new MongoClient(uri).connect();assert.equal(await pilotReserve(secondClient.db(databaseName)),null);await secondClient.close();
   assert.equal((await database.collection('research_pilot_budgets').findOne({_id:'owner-airline-web-pilot-20261106'})).reservedUsd,5);
+  await database.collection('research_pilot_budgets').deleteOne({_id:'owner-airline-web-pilot-20261106'}); // Reset ONLY this disposable synthetic fixture after the atomic-cap test.
   console.log('PASS real Mongo atomic5-attempt research cap and persistence across client recreation; no research API calls');
   console.log('PASS isolated real MongoDB ping/read/write');
 
@@ -187,9 +188,12 @@ async function main() {
   }
   const discovery=await request('/flights/searchFlights?origin=United%20States&destination=Australia&petType=dog&departureAirport=LAX&departureCity=Los%20Angeles&departureConfirmed=true',{authenticated:false});assert.equal(discovery.status,200);assert.match(discovery.text,/Qantas Freight/);assert.ok(!discovery.text.includes('maps.googleapis.com'));
   assert.equal((await request('/flights/searchFlights?legacy=1',{authenticated:false})).status,200);
-  const noAir=await request('/plan?origin=United%20States&destination=Australia&pet=dog',{authenticated:false});assert.match(noAir.text,/Reviewed research/);assert.match(noAir.text,/Qantas Freight/);
+  const noAir=await request('/plan?origin=United%20States&destination=Australia&pet=dog',{authenticated:false});assert.match(noAir.text,/Flight options/);assert.match(noAir.text,/Qantas Freight/);
   const mockJourney=await request('/ai/journey',{method:'POST',form:{origin:'United States',destination:'Australia',pet:'dog'}});assert.equal(mockJourney.status,200);const mockData=JSON.parse(mockJourney.text);assert.equal(mockData.transportDiscovery.state,'reviewed-enquiry');assert.ok(mockData.result.destination.some(text=>text.includes('SYNTHETIC LOCAL PREVIEW')));
   console.log('PASS default zero-API discovery, explicit legacy entry and real planner HTTP with synthetic AI preload');
+  const flightStart=await request('/flights/discover',{method:'POST',form:{origin:'United States',destination:'Australia',petType:'dog',departureCity:'Los Angeles',departureDate:'2027-01-10'}});assert.equal(flightStart.status,303);const searchId=new URL(flightStart.location,base).searchParams.get('searchId');assert.ok(searchId);
+  const flightCards=await request('/ai/flight-options',{method:'POST',form:{searchId}});assert.equal(flightCards.status,200);assert.match(flightCards.text,/SYNTHETIC FLIGHT CARD/);const repeatCards=await request('/ai/flight-options',{method:'POST',form:{searchId}});assert.equal(repeatCards.text,flightCards.text);assert.equal((await database.collection('research_pilot_budgets').findOne({_id:'owner-airline-web-pilot-20261106'})).attempts,1);
+  console.log('PASS explicit search submit→mocked cards, session nonce/scope and refresh replay without another reservation');
   const oldLogin = await request('/login', { authenticated: false });
   assert.equal(oldLogin.location, '/auth/login');
   assert.match((await request('/',{authenticated:false})).text,/A synthetic staging journey/);

@@ -39,6 +39,7 @@ router.get('/', async (req,res,next) => { try {
   const [rows, stories] = await Promise.all([countries(), Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()]);
   res.render('index', { countries: rows, airlines:await airlines(), stories, title: 'PetVoyage | Plan a thoughtful journey with your pet', canonicalUrl: 'https://www.petvoyage.ai/' });
 } catch(e) { next(e); } });
+router.post('/plan/start',async(req,res,next)=>{try{if(!allowedPlannerRequest(req))return res.sendStatus(403);const plan=planFrom(req.body,await countries());if(!plan)return res.status(400).send('Please check your departure and dates. <a href="/">Return to the planner</a>');const params=new URLSearchParams(Object.entries(plan).filter(([,v])=>typeof v==='string'||typeof v==='boolean'));if(!plan.airlineId)params.set('searchId',require('../helpers/flightSearchIntent').start(req,plan));res.redirect(303,'/plan?'+params);}catch(e){next(e)}});
 router.get('/plan', async (req,res,next) => { try {
   const rows=await countries(); let plan=planFrom(req.query,rows); let savedJourney=null;
   if(req.query.saved && req.user && /^[a-f0-9]{24}$/i.test(req.query.saved)) {
@@ -46,7 +47,7 @@ router.get('/plan', async (req,res,next) => { try {
     const saved=user?.researchPlans?.find(p=>String(p._id)===req.query.saved);
     if(saved?.generatedPlan){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
   }
-  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
+  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, autoSearchId: plan ? require('../helpers/flightSearchIntent').match(req,plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
 router.post('/ai/journey', async (req,res) => {
   res.set('Cache-Control','no-store');
@@ -85,14 +86,14 @@ router.post('/ai/journey', async (req,res) => {
   } catch(error){console.warn('[journey] lookup failed',error.name);return res.status(500).json({error:'We could not load the policies for this route. Please try again.'});}
 });
 router.get('/ai/airline-research/cache',async(req,res)=>{res.set('Cache-Control','no-store');try{const cached=await require('../helpers/airlineWebResearch').readCache(require('mongoose').connection.db,req.query);if(cached){const {estimatedUsd,reservedUsd,attempt,...publicResult}=cached;return res.json(publicResult);}return res.json({cached:false});}catch{return res.json({cached:false});}});
-router.post('/ai/airline-research',async(req,res)=>{
- if(!allowedPlannerRequest(req)||req.body.confirmed!==true)return res.status(403).json({error:'Confirm one same-site research attempt first.'});
- if(researchInFlight)return res.status(429).json({error:'Research is already running. No reservation was made for this request.'});
- const now=Date.now();if(req.session.lastWebResearchAt && now-req.session.lastWebResearchAt<60000)return res.status(429).json({error:'Please wait one minute before another research request.'});
- req.session.lastWebResearchAt=now;researchInFlight=true;
- try{const key=process.env.OPENAI_API_KEY||process.env.openaiKey;if(!key)return res.status(503).json({error:'Research is unavailable. No reservation was made.'});
- const result=await require('../helpers/airlineWebResearch').run({db:require('mongoose').connection.db,client:new (require('openai'))({apiKey:key,maxRetries:0}),input:req.body});const {estimatedUsd,reservedUsd,attempt,...publicResult}=result;return res.status(result.status).json(publicResult);
- }catch(error){return res.status(400).json({error:'Research input or storage is unavailable. Do not retry until the pilot status is checked.'});}finally{researchInFlight=false;}
+router.post('/ai/flight-options',async(req,res)=>{
+ if(!allowedPlannerRequest(req))return res.sendStatus(403);const intent=req.session.flightOptionSearch;if(!intent||req.body.searchId!==intent.id)return res.status(403).json({error:'Submit your flight search first.'});
+ if(intent.result)return res.json(intent.result);if(intent.attempted||researchInFlight)return res.status(202).json({pending:true});
+ const now=Date.now();if(req.session.lastWebResearchAt&&now-req.session.lastWebResearchAt<60000){intent.attempted=true;intent.result={status:429,cards:[],error:'More options are not available right now.'};return res.status(429).json(intent.result);}
+ req.session.lastWebResearchAt=now;intent.attempted=true;researchInFlight=true;
+ try{if(typeof req.session.save==='function')await new Promise((resolve,reject)=>req.session.save(e=>e?reject(e):resolve()));const key=process.env.OPENAI_API_KEY||process.env.openaiKey;if(!key)throw Error('Unavailable');
+ const result=await require('../helpers/airlineWebResearch').run({db:require('mongoose').connection.db,client:new(require('openai'))({apiKey:key,maxRetries:0}),input:intent.scope});const {estimatedUsd,reservedUsd,attempt,...publicResult}=result;intent.result=publicResult;return res.status(result.status).json(publicResult);
+ }catch{intent.result={status:503,cards:[],error:'More options are unavailable right now.'};return res.status(503).json(intent.result);}finally{researchInFlight=false;}
 });
 router.post('/my-trips/itinerary', async (req,res,next)=>{try{
   if(!req.user) return res.status(401).json({error:'Sign in to save this itinerary.'});

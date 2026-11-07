@@ -22,15 +22,16 @@ let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.eq
  const users={findById:()=>Object.assign(Promise.resolve(user),{select:()=>chain(user)})};
  const app=express();app.use(express.json());app.use((req,res,next)=>{req.session=session;if(req.get('x-test-auth'))req.user={_id:'333333333333333333333333',role:req.get('x-test-admin')?'admin':'user'};next()});
  const mod={exports:{}};const source=fs.readFileSync(require.resolve('../routes/experience'),'utf8');
- vm.runInNewContext(source,{module:mod,console,URL,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?{...journey,generate:async()=>payload}:n==='../helpers/airlineWebResearch'?{run:async()=>{researchCalls++;return {status:200,text:'mocked pilot'}}}:n==='mongoose'?{connection:{db:{}}}:n==='openai'?class{}:require(n)});
+ vm.runInNewContext(source,{module:mod,console,URL,URLSearchParams,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?{...journey,generate:async()=>payload}:n==='../helpers/airlineWebResearch'?{run:async()=>{researchCalls++;return {status:200,cards:[{airline:'Mock airline'}]}}}:n==='mongoose'?{connection:{db:{}}}:n==='openai'?class{}:require(n)});
  app.use(mod.exports);const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base='http://127.0.0.1:'+server.address().port;
  const post=async(path,body,headers={})=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(body)});return {status:r.status,data:await r.json().catch(()=>null)}};
  try{
-  assert.equal((await fetch(base+'/ai/airline-research')).status,404);assert.equal(researchCalls,0);
-  assert.equal((await post('/ai/airline-research',{})).status,403);
-  assert.equal((await post('/ai/airline-research',{}, {'x-test-auth':'yes'})).status,403);
-  assert.equal((await post('/ai/airline-research',{}, {'x-test-auth':'yes','x-test-admin':'yes'})).status,403);
-  assert.equal((await post('/ai/airline-research',{confirmed:true}, {'x-test-auth':'yes','x-test-admin':'yes'})).status,200);assert.equal(researchCalls,1);
+  assert.equal((await fetch(base+'/ai/flight-options')).status,404);assert.equal(researchCalls,0);
+  assert.equal((await post('/ai/flight-options',{searchId:'forged'})).status,403);
+  const startResponse=await fetch(base+'/plan/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({origin:'Anguilla',destination:'Australia',pet:'dog',departureCity:'The Valley'}),redirect:'manual'});assert.equal(startResponse.status,303);const intentId=session.flightOptionSearch.id;
+  assert.equal((await post('/ai/flight-options',{searchId:intentId})).status,200);assert.equal(researchCalls,1);
+  assert.equal((await post('/ai/flight-options',{searchId:intentId})).status,200);assert.equal(researchCalls,1);
+  const repeatedStart=await fetch(base+'/plan/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({origin:'Anguilla',destination:'Australia',pet:'dog',departureCity:'The Valley'}),redirect:'manual'});assert.equal(session.flightOptionSearch.id,intentId);assert.equal(researchCalls,1);
   const input={origin:'Anguilla',destination:'Australia',pet:'dog',airline:airline._id,departureCity:'The Valley',departureConfirmed:true,departureDate:'2027-01-01',returnDate:'2027-01-03'};
   assert.equal((await post('/ai/journey',{...input,origin:'Invalid'})).status,400);
   assert.equal((await post('/ai/journey',input,{'sec-fetch-site':'cross-site'})).status,403);

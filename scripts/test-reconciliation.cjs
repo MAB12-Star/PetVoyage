@@ -20,6 +20,7 @@ vm.runInNewContext(read('routes/airlines.js'), {
   module: { exports: {} }, console, process,
   require(name) {
     if (name === '../helpers/relatedStories') return async () => [];
+    if (name === '../helpers/flightSearchIntent') return require('../helpers/flightSearchIntent');
     if (name === '../helpers/departureDetails') return require('../helpers/departureDetails');
     if (name === 'express') return { Router: () => router };
     if (name === '../models/airline') return new Proxy({}, {
@@ -51,6 +52,7 @@ vm.runInNewContext(read('routes/flights.js'), {
     if (name === 'express') return { Router: () => flightRouter };
     if (name === 'openai') return { default: class {} };
     if (name === '../helpers/departureDetails') return require('../helpers/departureDetails');
+    if (name === '../helpers/flightSearchIntent') return require('../helpers/flightSearchIntent');
     if (name === '../utils/catchAsync') return require(path.join(root, 'utils/catchAsync'));
     if (name === '../middleware') return { saveCurrentUrl() {} };
     if (name === '../helpers/airlineUtils') return { generateAirlineNamesMap() {} };
