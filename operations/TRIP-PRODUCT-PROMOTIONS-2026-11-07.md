@@ -1,0 +1,10 @@
+# Trip product promotion release — November 7, 2026
+Owner requested newest products and cute inexpensive AirTag collar promotions, organic Facebook only (no spending), and website placements.
+Verified canonical store petsvoyage.myshopify.com; permanent myshopifyDomain i7uk6k-mc.myshopify.com is the same shop.
+Reviewed new items: BAGLHER organizer9652860944556 and Pecute purple backpack9652863795372; AutoDS supplier links and current in-stock/no-hold flags observed. Supplier prohibits returns; public descriptions and promotion copy disclose this. Collar8415160074412 purplevariant45040965615788 is $5.80 and Shopifyquantity10; AutoDS exactvariant shows IN STOCK (stock monitoring off, so no future availability guarantee). AirTagnotincluded. Silicone8326840778924 is caseonly and was not promoted as a collar. No active outfits found in bounded title search; no clothing invented or imported.
+Website: allowlist3 public product lookups with 4second timeout/two-minute sharedcache; unavailable/wrongidentity/untrustedimage hidden. Dogtrips showorganizer, cattrips showpurplecollar/backpack, otherpets show none. Exactpurplevariant photo and preselectedlinks. Homepage prependsnewfeatures and dedupes oldcollar. Prices remain on currentShopifylisting. Existing itinerary layout,spinner,save/tasks unchanged.
+QA: independentreview of initial2products passed; finalsyntax/publicfeed exactpurpleimage/link and mocked soldout-variant suppression passed. No paidAI calls/customerDBwrites/orderchanges. Production account save not part of scope.
+OrganicFacebook organizerpublished https://www.facebook.com/permalink.php?story_fbid=pfbid02FSrPAsw3LJQnMsAMYHLsjHGeTXWfZF1nzukVvPQAdkvyFb96qtY4bAVUUPFegwf2l&id=61584208561367
+OrganicFacebook backpackpublished https://www.facebook.com/permalink.php?story_fbid=pfbid028GS9yLmVJRcTV26LdovbYxQqcfkvDhzYZwX9uSKR83a7mvc5VKEaAJV3MBxzsQuwl&id=61584208561367
+CollarFacebook publication pending at deployment. No boosts or paid ads enabled.
+Baseline7edbbd06ad4f1d56229477da13efd59f7bcda3a5. Rollbackbranch rollback-20261107-before-trip-products.

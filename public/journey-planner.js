@@ -31,7 +31,17 @@
     const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));const photo=el('img',null,'pv-journey-pet-photo');photo.src='/images/'+({dog:'emma.jpg',cat:'backpack_cat.jpg',bird:'Bird.png'}[plan.petType]||'family.jpg');photo.alt='A companion from the PetVoyage photo and illustration collection';photo.loading='lazy';intro.append(photo);root.append(intro);
     const grid=el('div',null,'pv-itinerary-layout pv-itinerary-columns'),main=el('div',null,'pv-itinerary-column'),aside=el('div',null,'pv-itinerary-column');
     main.append(card('Destination requirements',data.result.destination,'pv-destination-requirements'));
-    if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}main.append(card('Prepare your bag',data.result.packing,'pv-packing-section')); // Move the existing node; retain async results/listeners without refetching.
+    if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
+    const selection=el('div',null,'pv-trip-products');packing.append(selection);
+    fetch('/trip-essentials?petType='+encodeURIComponent(data.plan.petType)).then(r=>r.ok?r.json():{products:[]}).then(({products})=>{
+      if(!selection.isConnected||!Array.isArray(products)||!products.length)return;
+      selection.append(el('h3','From our store · for your packing list'));
+      products.slice(0,2).forEach(product=>{if(!/^[a-z0-9-]+$/.test(product.handle)||!/^https:\/\/cdn\.shopify\.com\//.test(product.image))return;
+        const item=el('article',null,'pv-trip-product'),image=el('img');image.src=product.image;image.alt=product.title;image.loading='lazy';image.width=150;image.height=150;
+        const copy=el('div');copy.append(el('h4',product.title),el('p',product.note),link('View current price & details →','https://petsvoyage.myshopify.com/products/'+product.handle+'?'+(Number.isSafeInteger(product.variantId)?'variant='+product.variantId+'&':'')+'utm_source=petvoyage&utm_medium=itinerary&utm_campaign=trip_essentials','pv-text-link'));item.append(image,copy);selection.append(item);
+      });
+      selection.append(el('p','Optional store suggestions. Check fit, delivery and your airline’s rules before purchase.','pv-fine-print'));
+    }).catch(()=>{}); // Move the existing node; retain async results/listeners without refetching.
     if(data.plan.airlineName) main.append(card('Flying with '+data.plan.airlineName,data.result.airline,'pv-airline-section'));
     const timeline=el('section',null,'pv-itinerary-card pv-timeline-section');timeline.append(el('p','FROM NOW TO DEPARTURE','pv-eyebrow'),el('h2','Your preparation timeline'));
     const ol=el('ol',null,'pv-journey-timeline');data.result.timeline.forEach(t=>{const li=el('li');li.append(el('h3',t.when),el('p',t.action));ol.append(li)});timeline.append(ol);main.append(timeline);
