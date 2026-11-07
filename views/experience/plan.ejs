@@ -5,7 +5,7 @@
     <div><p class="pv-eyebrow">Scout · Your AI travel companion</p><h1>Your journey, brought together.</h1><p class="pv-lead"><%= plan.origin %> <span aria-hidden="true">→</span> <%= plan.destinationCity || plan.destinationAirport || plan.destination %><% if(plan.destinationCity || plan.destinationAirport){ %>, <%= plan.destination %><% } %></p><p><%= plan.petType %><% if(plan.departureDate){ %> · <%= plan.departureDate %><% } %></p></div>
     <a class="pv-text-link" href="#edit-journey">Edit trip details ↓</a>
   </section>
-  <div id="journey-status" class="pv-scout-status" role="status" aria-live="polite"><span class="pv-scout-orb" aria-hidden="true">✦</span><div><strong>Scout is putting your itinerary together</strong><p>Bringing destination requirements, airline guidance and preparation into one plan.</p></div></div>
+  <div id="journey-status" class="pv-scout-status" role="status" aria-live="polite" aria-busy="true"><span class="pv-ai-spinner" aria-hidden="true"></span><div><strong>Scout is putting your itinerary together</strong><p>Bringing destination requirements, airline guidance and preparation into one plan.</p></div></div>
   <div id="journey-result" hidden aria-busy="true"></div>
   <p class="pv-fine-print">AI organises the available policy information; it does not grant entry or confirm a booking. Official sources and any missing details are included with your plan.</p>
   <div id="journey-flight-options" class="pv-journey-flights" data-country-url="<%= /^\/country\/[^?#]+\?petType=[a-z0-9-]+$/.test(plan.countryUrl || '') ? plan.countryUrl : '/getCountryRegulationList' %>">

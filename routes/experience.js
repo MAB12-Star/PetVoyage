@@ -88,7 +88,7 @@ router.post('/ai/journey', async (req,res) => {
 router.get('/ai/airline-research/cache',async(req,res)=>{res.set('Cache-Control','no-store');try{const cached=await require('../helpers/airlineWebResearch').readCache(require('mongoose').connection.db,req.query);if(cached){const {estimatedUsd,reservedUsd,attempt,...publicResult}=cached;return res.json(publicResult);}return res.json({cached:false});}catch{return res.json({cached:false});}});
 router.post('/ai/flight-options',async(req,res)=>{
  if(!allowedPlannerRequest(req))return res.sendStatus(403);const intent=req.session.flightOptionSearch;if(!intent||req.body.searchId!==intent.id)return res.status(403).json({error:'Submit your flight search first.'});
- if(intent.result)return res.json(intent.result);if(intent.attempted||researchInFlight)return res.status(202).json({pending:true});
+ if(intent.result)return res.json(require('../helpers/airlineWebResearch').filterCached(intent.result,intent.scope));if(intent.attempted||researchInFlight)return res.status(202).json({pending:true});
  const now=Date.now();if(req.session.lastWebResearchAt&&now-req.session.lastWebResearchAt<60000){intent.attempted=true;intent.result={status:429,cards:[],error:'More options are not available right now.'};return res.status(429).json(intent.result);}
  req.session.lastWebResearchAt=now;intent.attempted=true;researchInFlight=true;
  try{if(typeof req.session.save==='function')await new Promise((resolve,reject)=>req.session.save(e=>e?reject(e):resolve()));const key=process.env.OPENAI_API_KEY||process.env.openaiKey;if(!key)throw Error('Unavailable');
