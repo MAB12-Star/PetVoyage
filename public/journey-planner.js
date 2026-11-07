@@ -29,7 +29,7 @@
     if(!data.result){status.replaceChildren(el('strong','Your policy details are available'),el('p',data.error||'Scout is temporarily unavailable.'));root.append(evidence(data));if(flightOptions)root.append(flightOptions);const retry=el('button','Try Scout again','pv-button');retry.type='button';retry.onclick=()=>location.reload();root.append(retry);return;}
     status.replaceChildren(el('span','✦','pv-scout-orb'),el('div',(saved?'Saved itinerary · ':'AI itinerary ready · ')+(data.plan.airlineName||'Airline not chosen')));
     const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));const photo=el('img',null,'pv-journey-pet-photo');photo.src='/images/'+({dog:'emma.jpg',cat:'backpack_cat.jpg',bird:'Bird.png'}[plan.petType]||'family.jpg');photo.alt='A companion from the PetVoyage photo and illustration collection';photo.loading='lazy';intro.append(photo);root.append(intro);
-    const grid=el('div',null,'pv-itinerary-layout pv-itinerary-columns'),main=el('div',null,'pv-itinerary-column'),aside=el('div',null,'pv-itinerary-column');
+    const grid=el('div',null,'pv-itinerary-layout pv-itinerary-columns'+(data.plan.airlineName?' pv-itinerary-has-airline':'')),main=el('div',null,'pv-itinerary-column'),aside=el('div',null,'pv-itinerary-column');
     main.append(card('Destination requirements',data.result.destination,'pv-destination-requirements'));
     if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
     const selection=el('div',null,'pv-trip-products');packing.append(selection);
@@ -42,7 +42,7 @@
       });
       selection.append(el('p','Optional store suggestions. Check fit, delivery and your airline’s rules before purchase.','pv-fine-print'));
     }).catch(()=>{}); // Move the existing node; retain async results/listeners without refetching.
-    if(data.plan.airlineName) main.append(card('Flying with '+data.plan.airlineName,data.result.airline,'pv-airline-section'));
+    if(data.plan.airlineName) aside.append(card('Flying with '+data.plan.airlineName,data.result.airline,'pv-airline-section'));
     const timeline=el('section',null,'pv-itinerary-card pv-timeline-section');timeline.append(el('p','FROM NOW TO DEPARTURE','pv-eyebrow'),el('h2','Your preparation timeline'));
     const ol=el('ol',null,'pv-journey-timeline');data.result.timeline.forEach(t=>{const li=el('li');li.append(el('h3',t.when),el('p',t.action));ol.append(li)});timeline.append(ol);main.append(timeline);
     aside.append(card('Details still to confirm',data.result.questions,'pv-open-questions'));

@@ -8,10 +8,12 @@
   <div id="journey-status" class="pv-scout-status" role="status" aria-live="polite" aria-busy="true"><span class="pv-ai-spinner" aria-hidden="true"></span><div><strong>Scout is putting your itinerary together</strong><p>Bringing destination requirements, airline guidance and preparation into one plan.</p></div></div>
   <div id="journey-result" hidden aria-busy="true"></div>
   <p class="pv-fine-print">AI organises the available policy information; it does not grant entry or confirm a booking. Official sources and any missing details are included with your plan.</p>
+  <% if(!plan.airlineId){ %>
   <div id="journey-flight-options" class="pv-journey-flights" data-country-url="<%= /^\/country\/[^?#]+\?petType=[a-z0-9-]+$/.test(plan.countryUrl || '') ? plan.countryUrl : '/getCountryRegulationList' %>">
   <% if(typeof transportDiscovery !== 'undefined' && transportDiscovery){ %><%- include('../partials/transportDiscovery',{discovery:transportDiscovery}) %><% } %>
   <%- include('../partials/airlineResearch',{researchScope:plan,autoSearchId:typeof autoSearchId!=='undefined'?autoSearchId:null}) %>
   </div>
+  <% } %>
   <details id="edit-journey" class="pv-edit-journey"><summary>Edit your trip details</summary><%- include('../partials/tripForm',{countries,airlines,plan}) %></details>
   <script id="journey-input" type="application/json"><%- JSON.stringify({plan,saved:savedJourney || null,signedIn:!!currentUser}).replace(/</g,'\\u003c') %></script>
   <script src="/journey-planner.js" defer></script>
