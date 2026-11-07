@@ -12,3 +12,5 @@ Verified primary-source published itinerary: https://www.klm.com/en-us/flights-f
 Knownairline: no researchwrapper rendered when airlineIdselected; selectedairline AIguidance in rightcolumn beside destination, above questions. Packing remains belowdestination. Savedtasks/productfeatures preserved.
 
 Independent QA passed radius,exactroute,selectedairline flow and raised normalization issue; corrected and separatelytested. No realGPS,paidAI or customerDBwrites. Prior baseline d7d0081 preserved via rollback-20261107-before-airport-flow. Publication/liveverification recorded after deployment.
+
+PUBLISHED 31706ebad0f495881d8ba14f1399a9b420c809af plus b48e7fe country-label refinement. Live HTTP200 verified homepage50/100/200selector, nearbyJS,4008coordinatecatalog; OAK→EDI explicit SFOalternative; SFO→EDI KLMroute; selectedKLM noflightresearchwrapper; airlinecard right-column JS served. Smoke tests used actual Scotland (Great Britain) label. No paid requests/GPS/customerwrites.
