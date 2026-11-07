@@ -13,4 +13,5 @@ function check(input={}){
  // Only LAX has reviewed country metadata in this small registry. Other codes remain manually supplied.
  return {error:null,fields};
 }
-module.exports={check,validDate};
+function matches(from,input={}){const raw=String(from||'').split(/→|->/)[0].split(/\bvia\b/i)[0].trim(),normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\([A-Z]{3}\)/gi,'').toLowerCase().replace(/[^a-z0-9]/g,'').replace(/internationalairport|international|airport|intl/g,'');const code=String(input.departureAirport||'').trim().toUpperCase(),requested=normalize(input.departureCity),candidate=normalize(raw);if(!code&&!requested)return true;if(!candidate)return false;const hasCode=c=>raw.toUpperCase()===c||Array.from(raw.matchAll(/\(([A-Z]{3})\)/gi)).some(m=>m[1].toUpperCase()===c)||raw.toUpperCase().split(/[,\s]+/).at(-1)===c;if(code){if(hasCode(code))return true;if(code==='LAX')return candidate==='losangeles';return false;}if(requested==='losangeles'||requested==='lax')return candidate==='losangeles'||hasCode('LAX');return requested===candidate;}
+module.exports={check,validDate,matches};

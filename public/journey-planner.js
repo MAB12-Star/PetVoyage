@@ -2,7 +2,7 @@
   const input=document.getElementById('journey-input');
   if(!input) return;
   const {plan,saved,signedIn}=JSON.parse(input.textContent);
-  const status=document.getElementById('journey-status'),root=document.getElementById('journey-result');
+  const status=document.getElementById('journey-status'),root=document.getElementById('journey-result'),flightOptions=document.getElementById('journey-flight-options');
   function el(tag,text,cls){const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;}
   function list(items){const ul=el('ul');(items||[]).forEach(t=>ul.append(el('li',t)));return ul;}
   function card(title,items,cls=''){const s=el('section',null,'pv-itinerary-card '+cls);s.append(el('h2',title),list(items));return s;}
@@ -25,11 +25,12 @@
   }
   function show(data){
     root.replaceChildren();root.hidden=false;root.setAttribute('aria-busy','false');
-    if(!data.result){status.replaceChildren(el('strong','Your policy details are available'),el('p',data.error||'Scout is temporarily unavailable.'));root.append(evidence(data));const retry=el('button','Try Scout again','pv-button');retry.type='button';retry.onclick=()=>location.reload();root.append(retry);return;}
+    if(!data.result){status.replaceChildren(el('strong','Your policy details are available'),el('p',data.error||'Scout is temporarily unavailable.'));root.append(evidence(data));if(flightOptions)root.append(flightOptions);const retry=el('button','Try Scout again','pv-button');retry.type='button';retry.onclick=()=>location.reload();root.append(retry);return;}
     status.replaceChildren(el('span','✦','pv-scout-orb'),el('div',(saved?'Saved itinerary · ':'AI itinerary ready · ')+(data.plan.airlineName||'Airline not chosen')));
     const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));root.append(intro);
     const grid=el('div',null,'pv-itinerary-layout'),main=el('div',null,'pv-itinerary-main'),aside=el('aside',null,'pv-itinerary-aside');
     main.append(card('Destination requirements',data.result.destination));
+    if(flightOptions)main.append(flightOptions); // Move the existing node; retain async results/listeners without refetching.
     if(data.plan.airlineName) main.append(card('Flying with '+data.plan.airlineName,data.result.airline));
     const timeline=el('section',null,'pv-itinerary-card');timeline.append(el('p','FROM NOW TO DEPARTURE','pv-eyebrow'),el('h2','Your preparation timeline'));
     const ol=el('ol',null,'pv-journey-timeline');data.result.timeline.forEach(t=>{const li=el('li');li.append(el('h3',t.when),el('p',t.action));ol.append(li)});timeline.append(ol);main.append(timeline);
