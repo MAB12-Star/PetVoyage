@@ -1,6 +1,6 @@
 # Destination airport dropdown — November 6, 2026
 
-Status: QA-reviewed candidate; live verification pending.
+Status: PUBLISHED application release 491a3f8acfb319c2e34c3f7c1730f8b49f026d28. Independent live HTTP QA passed: homepage and flights each have one optional native destinationAirport select, script200, catalog4008/PVR-MEX distinct, and existing Oakland–Mexico City Volaris card retained. No paid calls or GPS were used.
 
 Main planner and flight search have one optional destination-airport select. Choices are filtered by country and ranked by entered city; choosing an airport fills its municipality and submits its IATA code. Country-only planning remains available. Saved selections are retained, while manual clears/city edits/country changes win over late loads. Airport-country and exact explicit-code matching are validated server-side. This is airport metadata, not live routes, schedules, fares or pet-space inventory.
 
