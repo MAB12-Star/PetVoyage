@@ -29,10 +29,7 @@ function planFrom(input, rows) {
   if(checkedDeparture.error) return null;
   const {departureDate}=checkedDeparture.fields;
   if (!origin || !destination || !['dog','cat','dog-and-cat','bird','other'].includes(petType) || (departureDate && !/^\d{4}-\d{2}-\d{2}$/.test(departureDate))) return null;
-  const keys = Object.keys(destination.regulationsByPetType || {});
-  // Only exact species or the common combined dog/cat category can be chosen safely.
-  // 'Other' and broad bird labels must not accidentally select a specialist rule set.
-  const key = keys.find(k => k.toLowerCase() === petType) || (['dog','cat'].includes(petType) ? keys.find(k => ['dog-cat','dogs-cats','dog-and-cat','dogs-and-cats'].includes(slug(k))) : undefined);
+  const key = journey.speciesKey(destination, petType);
   return { ...checkedDeparture.fields, petPathway: input.petPathway==='assistance' ? 'assistance' : 'ordinary-pet', origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
 }
 router.get('/', async (req,res,next) => { try {

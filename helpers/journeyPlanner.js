@@ -12,7 +12,13 @@ function plain(value) {
 }
 function speciesKey(doc, pet) {
   const keys = Object.keys(doc?.regulationsByPetType || {});
-  return keys.find(k=>k.toLowerCase()===pet.toLowerCase()) || (['dog','cat'].includes(pet) ? keys.find(k=>['dog-cat','dogs-cats','dog-and-cat','dogs-and-cats'].includes(slug(k))) : undefined);
+  // Canada's catalog uses descriptive labels; the separate hybrid category is excluded.
+  const canadaKey = doc?.destinationCountry === 'Canada' && {
+    dog: 'Dog (personal, assistance dog, commercial)',
+    cat: 'Cat (domestic, non-domestic)'
+  }[pet];
+  return keys.find(k=>k.toLowerCase()===pet.toLowerCase()) ||
+    (canadaKey && keys.find(k=>k === canadaKey)) || (['dog','cat'].includes(pet) ? keys.find(k=>['dog-cat','dogs-cats','dog-and-cat','dogs-and-cats'].includes(slug(k))) : undefined);
 }
 function safeLinks(links) {
   return (links || []).filter(l=>{try{return ['https:','http:'].includes(new URL(l.url).protocol)}catch{return false}}).slice(0,12).map(l=>({name:text(l.name),url:l.url}));
