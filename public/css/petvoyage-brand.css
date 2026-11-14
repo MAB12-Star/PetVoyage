@@ -88,3 +88,23 @@ body.pv-site { background: linear-gradient(155deg, #e8f7f4, #f7fcfb 450px, #fff)
 .pv-country-content .pet-regulation-section>.row{row-gap:12px}
 .pv-country-content .card{overflow-wrap:anywhere}
 .pv-country-detail .pet-type-btn{white-space:normal}
+
+.pv-country-toolbar,.pv-country-picker,.pv-country-dates{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.pv-country-toolbar{margin:12px 0 16px}
+.pv-country-toolbar form{margin:0;min-width:0}
+.pv-country-picker label,.pv-country-species{font-weight:700;margin:0}
+.pv-country-picker select{width:min(100%,420px);min-width:0}
+.pv-site .pv-country-save{background:white;color:var(--pv-teal);border:1px solid var(--pv-field);min-height:44px}
+.pv-site .pv-country-save:hover{background:var(--pv-mint);color:var(--pv-ink)}
+.pv-country-dates{font-size:13px;color:var(--pv-muted);margin:0}
+.pv-country-content .row>*{min-width:0}
+.pv-country-service-ad{min-width:0;overflow-wrap:anywhere}
+.pv-country-service-ad :is(img,iframe){max-width:100%}
+.pv-country-service-ad .row{margin-inline:0}
+@media(max-width:600px){
+  .pv-country-picker{display:grid;grid-template-columns:minmax(0,1fr) auto;width:100%}
+  .pv-country-picker label{grid-column:1/-1}
+  .pv-country-picker select{width:100%}
+  .pv-country-toolbar{align-items:start}
+  .pv-country-detail .pv-airline-actions a{white-space:normal}
+}

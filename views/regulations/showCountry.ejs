@@ -31,7 +31,24 @@
   <a href="/getCountryRegulationList">← Browse country requirements</a>
   <header class="pv-country-heading">
     <h1>Pet travel requirements for <%= regulations.destinationCountry %></h1>
-    <p><%= selectedPetType %></p>
+    <div class="pv-country-toolbar">
+      <% if (petTypes && petTypes.length > 1) { %>
+        <form method="get" action="/country/<%= encodeURIComponent(regulations.destinationCountry) %>" class="pv-country-picker">
+          <label for="policyPetType">Pet type</label>
+          <select id="policyPetType" name="petType" class="form-select">
+            <% petTypes.forEach(p=>{ %><option value="<%= p.slug %>" <%= p.key===selectedPetType?'selected':'' %>><%= p.key %></option><% }) %>
+          </select>
+          <button class="btn pv-country-save" type="submit">View rules</button>
+        </form>
+      <% } else { %><p class="pv-country-species"><%= selectedPetType %></p><% } %>
+      <form method="POST" action="/favorites/saveToProfile" class="m-0">
+          <input type="hidden" name="regulationId" value="<%= regulationId %>">
+          <button type="submit"
+                  class="btn pv-country-save">
+            <i class="fas fa-heart" aria-hidden="true"></i> Save requirements
+          </button>
+        </form>
+    </div>
     <nav aria-label="Trip resources" class="pv-airline-actions">
       <a class="pv-button" href="/findAVet">Find a vet</a>
       <a href="/regulations/airlineList">Airline policies</a>
@@ -39,99 +56,15 @@
       <a href="#airline-reviews">Traveler reviews</a>
     </nav>
   </header>
- <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
-      <% const headerAd = (typeof getAd === 'function') ? getAd('header') : null; %>
-      <% if (headerAd) { %>
-        <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
-      <% } %>
-  </div>
- 
-
-  <!-- Country Header -->
- <% if (regulations?.destinationCountry?.trim()) { %>
-
-<%
-  const created = regulations.createdAt || regulations.timestamp || null;
-  const updated = regulations.updatedAt || null;
-
-  const hasTrueUpdate =
-    created && updated && (new Date(updated).getTime() > new Date(created).getTime());
-
-  const dbUpdated = hasTrueUpdate ? fmtDate(updated) : null;
-  const sourceUpdated = regulations.sourceLastModified ? fmtDate(regulations.sourceLastModified) : null;
-%>
-
-<div class="container mt-2 mb-3">
-
- <!-- HEADER ROW -->
-<div class="container-fluid px-0">
-
- <div class="row align-items-start gy-2 gy-lg-3">
-
-
-    <div class="col-12 col-lg-3">
-      <% if (dbUpdated || sourceUpdated) { %>
-        <div class="small text-muted mt-1">
-          <% if (dbUpdated) { %>
-            <span class="me-3"><strong>PetVoyage record updated:</strong> <%= dbUpdated %></span>
-          <% } %>
-          <% if (sourceUpdated) { %>
-            <span><strong>Source updated:</strong> <%= sourceUpdated %></span>
-          <% } %>
-        </div>
-      <% } %>
-    </div>
-
-    <!-- CENTER (Title + Heart) -->
-    <div class="col-12 col-lg-4 text-center">
-      <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
-        <form method="POST" action="/favorites/saveToProfile" class="m-0">
-          <input type="hidden" name="regulationId" value="<%= regulationId %>">
-          <button type="submit"
-                  class="btn btn-sm btn-outline-danger rounded-pill">
-            <i class="fas fa-heart" aria-hidden="true"></i> Save requirements
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- RIGHT (Pet Pills) -->
-    <div class="col-12 col-lg-5 text-lg-end text-center">
-
-      <% if (petTypes && petTypes.length) { %>
-
-        <div class="small text-muted mb-2">
-          Select the animal regulations you want to view:
-        </div>
-
-        <div class="d-flex flex-wrap justify-content-lg-end justify-content-center gap-2 mb-2">
-
-          <% petTypes.forEach((p) => { %> 
-            <a
-              href="/country/<%= encodeURIComponent(regulations.destinationCountry) %>?petType=<%= encodeURIComponent(p.slug) %>"
-              class="btn rounded-pill px-3 py-1 text-capitalize pet-type-btn
-              <%= p.key === selectedPetType ? 'btn-primary text-white' : 'btn-outline-secondary' %>"
-              aria-current="<%= p.key === selectedPetType ? 'page' : 'false' %>"
-              data-pet="<%= p.key %>"
-              data-pet-slug="<%= p.slug %>">
-              <%= p.key %>
-            </a>
-          <% }) %>
-
-        </div>
-
-      <% } %>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<% } %>
-
-
+  <% const headerAd = safeGetAd('header'); %>
+  <% const recordUpdated = fmtDate(regulations.updatedAt); %>
+  <% const sourceUpdated = fmtDate(regulations.sourceLastModified); %>
+  <% if (recordUpdated || sourceUpdated) { %>
+    <p class="pv-country-dates">
+      <% if (recordUpdated) { %><span>PetVoyage record updated <%= recordUpdated %></span><% } %>
+      <% if (sourceUpdated) { %><span>Source updated <%= sourceUpdated %></span><% } %>
+    </p>
+  <% } %>
   <div class="pv-directory-columns pv-country-content">
   <div>
   <!-- Per-Pet Regulation Details -->
@@ -437,6 +370,7 @@
   <%- include('../partials/directoryShop',{placement:'country_policy'}) %>
   </div>
   <aside class="pv-directory-rail" aria-label="PetVoyage stories, reviews and travel tips">
+    <% if (headerAd) { %><div class="pv-country-service-ad"><%- include('../partials/ads/ad-image',{ad:headerAd}) %></div><% } %>
     <%- include('../partials/petPhotoAccent',{photo:'eva.jpg',photoAlt:'Eva looking toward the city',photoWidth:1600,photoHeight:1200,message:'The dogs behind PetVoyage',photoNote:'Eva, from our family album.'}) %>
     <%- include('../partials/favBlog') %>
     <%- include('../partials/favReview') %>
