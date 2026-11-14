@@ -557,4 +557,10 @@
   });
 </script>
 
+<section class="pv-wrap mt-4" id="airline-reviews">
+  <h2>Airline reviews for trips to <%= regulations.destinationCountry %></h2>
+  <p>Firsthand travel experiences. Check current pet policies with your airline before booking.</p>
+  <a class="btn btn-success mb-3" href="/airlines/review/new?destination=<%= encodeURIComponent(regulations.destinationCountry) %>">Write an airline review</a>
+  <%- include('../partials/airlineReviewList', {items: airlineReviews, deleteSlug: null}) %>
+</section>
 <div class="pv-wrap"><%- include('../partials/relatedStories',{stories:typeof relatedStories !== 'undefined' ? relatedStories : []}) %></div>

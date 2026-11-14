@@ -1,0 +1,26 @@
+<% if (!items.length) { %>
+  <p class="text-muted">No reviews yet.</p>
+<% } %>
+<% items.forEach(review => { %>
+  <article class="card mb-3">
+    <div class="card-body">
+      <p class="mb-2">
+        <span aria-hidden="true" style="color:#936000"><%= '★'.repeat(Math.min(5, Math.max(0, Number(review.rating) || 0))) %></span>
+        <span class="visually-hidden"><%= review.rating %> out of 5 stars</span>
+        <% if (review.airline?.slug) { %>
+          <a href="/airlines/<%= encodeURIComponent(review.airline.slug) %>#reviews"><%= review.airline.name %></a>
+        <% } %>
+      </p>
+      <% if (review.destinationCountry) { %>
+        <p class="text-muted mb-2"><%= review.originCountry %> → <%= review.destinationCountry %> · <%= review.petType %> · <%= review.travelMode %></p>
+      <% } %>
+      <p><strong><%= review.author?.username || review.author?.name || 'PetVoyage traveler' %></strong></p>
+      <p><%= review.body %></p>
+      <% if (deleteSlug && currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
+        <form method="POST" action="/airlines/slug/<%= encodeURIComponent(deleteSlug) %>/reviews/<%= review._id %>?_method=DELETE">
+          <button class="btn btn-sm btn-outline-danger">Delete review</button>
+        </form>
+      <% } %>
+    </div>
+  </article>
+<% }) %>

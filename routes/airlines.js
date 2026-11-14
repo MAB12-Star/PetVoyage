@@ -25,7 +25,7 @@ router.get('/airlines/list', (req, res) => {
 router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
   try {
     const slug = req.params.slug;
-    const airline = await Airline.findOne({ slug }).populate('reviews').exec();
+    const airline = await Airline.findOne({ slug }).exec();
 
     if (!airline) return res.status(404).send("Airline not found.");
 
@@ -78,6 +78,9 @@ router.get('/airlines/:slug', redirectOldAirlineLinks, async (req, res) => {
     res.render('regulations/showAirline', {
       relatedStories: await require('../helpers/relatedStories')({airlineSlug:airline.slug,airlineName:airline.name}).catch(() => []),
       airline,
+      reviews: await require('../models/review').find({$or: [
+        {airline: airline._id}, {_id: {$in: airline.reviews || []}}
+      ]}).sort({createdAt: -1}).limit(50).populate('author', 'username name').lean(),
       slug,
       link,
 

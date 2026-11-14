@@ -191,43 +191,9 @@
       <div class="card-body">
         <h2>Reviews</h2>
 
-        <!-- Review Form -->
-        <form class="validated-form mb-3" method="POST" action="/airlines/<%= airline.slug %>/reviews">
-          <fieldset class="starability-basic">
-            <% for (let i = 1; i <= 5; i++) { %>
-              <input type="radio" id="rate<%= i %>" name="review[rating]" value="<%= i %>" />
-              <label for="rate<%= i %>"><%= i %> star</label>
-            <% } %>
-          </fieldset>
-          <textarea class="form-control mt-2" name="review[body]" placeholder="Write your review..." required></textarea>
-          <button class="btn btn-success mt-2">Submit Review</button>
-        </form>
-
-        <% const reviews = airline.reviews || []; %>
-        <% if (reviews.length) { %>
-          <% reviews.forEach(review => { %>
-            <div class="card mb-3">
-              <div class="card-body">
-                <p class="text-muted mb-2">
-                  <% for (let i = 1; i <= 5; i++) { %>
-                    <i class="<%= i <= review.rating ? 'fas' : 'far' %> fa-star" style="color:#ffae00;"></i>
-                  <% } %>
-                </p>
-                <p class="mb-2">
-                  <strong><%= review.author?.name || review.author?.username || '' %></strong>: 
-                  <%= review.body %>
-                </p>
-                <% if (currentUser && review.author && String(review.author._id) === String(currentUser._id)) { %>
-                  <form method="POST" action="/airlines/slug/<%= airline.slug %>/reviews/<%= review._id %>?_method=DELETE">
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                  </form>
-                <% } %>
-              </div>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
-        <% } %>
+        <p>Read firsthand experiences travelling with pets.</p>
+        <a class="btn btn-success mb-3" href="/airlines/review/new?airline=<%= encodeURIComponent(airline.slug) %>">Write an airline review</a>
+        <%- include('../partials/airlineReviewList', {items: reviews, deleteSlug: airline.slug}) %>
       </div>
     </div>
   </section>

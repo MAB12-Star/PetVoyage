@@ -228,6 +228,8 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     }
 
     const seoData = {
+      airlineReviews: await require('../models/review').find({destinationCountry:safeCountry})
+        .sort({createdAt:-1}).limit(20).populate('airline', 'name slug').populate('author', 'username name').lean(),
       relatedStories: await require('../helpers/relatedStories')({country:safeCountry}).catch(() => []),
       regulations,
 

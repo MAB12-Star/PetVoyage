@@ -1,0 +1,61 @@
+<% layout('layouts/boilerplate') %>
+<div class="pv-wrap">
+  <section class="pv-section">
+    <h1>Review pet travel with an airline</h1>
+    <p>Share what happened when you flew with your pet, from check-in to arrival.</p>
+    <% if (!currentUser) { %>
+      <p><a class="pv-button" href="/auth/login">Sign in to write a review</a></p>
+      <p>After signing in, return to this page to share your experience.</p>
+    <% } else { %>
+      <form class="pv-note" method="POST" action="/airlines/review/new">
+        <div class="pv-fields">
+          <label>Operating airline
+            <select name="review[airline]" required>
+              <option value="">Choose an airline</option>
+              <% airlines.forEach(airline => { %>
+                <option value="<%= airline.slug %>" <%= selectedAirline === airline.slug ? 'selected' : '' %>><%= airline.name %></option>
+              <% }) %>
+            </select>
+          </label>
+          <label>From country
+            <select name="review[originCountry]" required>
+              <option value="">Choose a country</option>
+              <% countries.forEach(country => { %><option><%= country %></option><% }) %>
+            </select>
+          </label>
+          <label>Destination country
+            <select name="review[destinationCountry]" required>
+              <option value="">Choose a country</option>
+              <% countries.forEach(country => { %>
+                <option <%= selectedCountry === country ? 'selected' : '' %>><%= country %></option>
+              <% }) %>
+            </select>
+          </label>
+          <label>Pet
+            <select name="review[petType]" required>
+              <option value="">Choose a pet</option>
+              <% pets.forEach(pet => { %><option><%= pet %></option><% }) %>
+            </select>
+          </label>
+          <label>How your pet traveled
+            <select name="review[travelMode]" required>
+              <option value="">Choose a travel mode</option>
+              <% modes.forEach(mode => { %><option><%= mode %></option><% }) %>
+            </select>
+          </label>
+        </div>
+        <fieldset class="mt-3">
+          <legend>Star rating</legend>
+          <% for (let i = 1; i <= 5; i++) { %>
+            <label class="me-3"><input type="radio" name="review[rating]" value="<%= i %>" required> <%= i %> ★</label>
+          <% } %>
+        </fieldset>
+        <label class="d-block mt-3">Your experience
+          <textarea class="form-control" name="review[body]" rows="5" maxlength="3000" required></textarea>
+        </label>
+        <p class="pv-fine-print">Your review appears publicly. Leave out booking references and contact information.</p>
+        <button class="pv-button" type="submit">Post review</button>
+      </form>
+    <% } %>
+  </section>
+</div>
