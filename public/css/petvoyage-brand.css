@@ -80,3 +80,11 @@ body.pv-site { background: linear-gradient(155deg, #e8f7f4, #f7fcfb 450px, #fff)
 .pv-airline-panel p:last-child{margin-bottom:0}
 .pv-airline-details{margin-top:5px}
 .pv-airline-detail [id]{scroll-margin-top:18px}
+
+.pv-country-heading{margin-top:14px}
+.pv-country-heading h1{margin-bottom:8px}
+.pv-country-heading>p{font-weight:700;color:var(--pv-muted)}
+.pv-country-content{margin-top:18px}
+.pv-country-content .pet-regulation-section>.row{row-gap:12px}
+.pv-country-content .card{overflow-wrap:anywhere}
+.pv-country-detail .pet-type-btn{white-space:normal}
