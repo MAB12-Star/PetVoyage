@@ -28,7 +28,7 @@ function planFrom(input, rows) {
   const checkedDeparture = departureDetails.check(input);
   if(checkedDeparture.error) return null;
   const {departureDate}=checkedDeparture.fields;
-  if (!origin || !destination || !['dog','cat','bird','other'].includes(petType) || (departureDate && !/^\d{4}-\d{2}-\d{2}$/.test(departureDate))) return null;
+  if (!origin || !destination || !['dog','cat','dog-and-cat','bird','other'].includes(petType) || (departureDate && !/^\d{4}-\d{2}-\d{2}$/.test(departureDate))) return null;
   const keys = Object.keys(destination.regulationsByPetType || {});
   // Only exact species or the common combined dog/cat category can be chosen safely.
   // 'Other' and broad bird labels must not accidentally select a specialist rule set.
@@ -61,9 +61,15 @@ router.post('/ai/journey', async (req,res) => {
     const destination=await Country.findOne({destinationCountry:plan.destination}).lean();
     const airline=plan.airlineId ? await Airline.findById(plan.airlineId).lean() : null;
     if(plan.airlineId && !airline) return res.status(400).json({error:'That airline is unavailable. Please choose again.'});
-    const context=journey.contextFor(plan,destination,airline);
-    const sources=[...context.destination.sources,...(context.airline?.sources || [])];
-    const evidence={country:context.destination,airline:context.airline};
+    const contexts=journey.contextsFor(plan,destination,airline);
+    const sources=[...new Map(contexts.flatMap(context=>[
+      ...context.destination.sources,...(context.airline?.sources || [])
+    ]).map(source=>[source.url,source])).values()];
+    const evidence=contexts.length===1
+      ? {country:contexts[0].destination,airline:contexts[0].airline}
+      : {species:contexts.map(context=>({
+        petType:context.route.petType,country:context.destination,airline:context.airline
+      }))};
     const transportDiscovery=discoverTransport(plan);
     const key=process.env.OPENAI_API_KEY || process.env.openaiKey;
     if(!key) return res.status(503).json({error:'Scout cannot generate an itinerary right now. Your available policy details are below; try again shortly.',evidence,sources,transportDiscovery});
@@ -76,7 +82,7 @@ router.post('/ai/journey', async (req,res) => {
     let result;
     try {
       const OpenAI=require('openai');
-      result=await journey.generate(context,new OpenAI({apiKey:key}));
+      result=await journey.generateItinerary(contexts,new OpenAI({apiKey:key}));
     } catch(error) {
       console.warn('[journey] AI generation unavailable',error.status || error.name);
       return res.status(503).json({error:'Scout could not finish your itinerary. Your policy details are available below. Try building it again shortly.',evidence,sources,transportDiscovery});

@@ -15,10 +15,15 @@
   function evidence(data){
     const d=el('details',null,'pv-evidence');d.append(el('summary','Policy details & sources used'));
     d.append(el('p','These are the policy records supplied to Scout, not a new live source check. Review any origin, transit or species gaps before booking.','pv-fine-print'));
-    for(const [key,label] of [['country','Destination record'],['airline','Airline record']]){
-      const info=data.evidence?.[key];if(!info)continue;
-      d.append(el('h3',label));details(info,d);
-      if(info.recordUpdatedAt)d.append(el('p','Record updated: '+new Date(info.recordUpdatedAt).toLocaleDateString()));
+    for (const record of data.evidence?.species || [data.evidence]) {
+      for (const [key, label] of [['country', 'Destination record'], ['airline', 'Airline record']]) {
+        const info = record?.[key];
+        if (!info) continue;
+        const prefix = record.petType ? (record.petType === 'dog' ? 'Dog · ' : 'Cat · ') : '';
+        d.append(el('h3', prefix + label));
+        details(info,d);
+        if(info.recordUpdatedAt)d.append(el('p','Record updated: '+new Date(info.recordUpdatedAt).toLocaleDateString()));
+      }
     }
     const sources=el('ul');(data.sources||[]).forEach(s=>{if(!/^https?:\/\//i.test(s.url))return;const li=el('li'),a=link(s.name||'Official reference',s.url);a.target='_blank';a.rel='noopener noreferrer';li.append(a);sources.append(li);});
     d.append(sources);return d;
@@ -30,7 +35,16 @@
     status.replaceChildren(el('span','✦','pv-scout-orb'),el('div',(saved?'Saved itinerary · ':'AI itinerary ready · ')+(data.plan.airlineName||'Airline not chosen')));
     const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));const photo=el('img',null,'pv-journey-pet-photo');photo.src='/images/'+({dog:'emma.jpg',cat:'backpack_cat.jpg',bird:'Bird.png'}[plan.petType]||'family.jpg');photo.alt='A companion from the PetVoyage photo and illustration collection';photo.loading='lazy';intro.append(photo);root.append(intro);
     const grid=el('div',null,'pv-itinerary-layout pv-itinerary-columns'+(data.plan.airlineName?' pv-itinerary-has-airline':'')),main=el('div',null,'pv-itinerary-column'),aside=el('div',null,'pv-itinerary-column');
-    main.append(card('Destination requirements',data.result.destination,'pv-destination-requirements'));
+    function policyCard(title, field, cls) {
+      if (!data.result.species) return card(title, data.result[field], cls);
+      const section = el('section', null, 'pv-itinerary-card ' + cls);
+      section.append(el('h2', title));
+      data.result.species.forEach(pet => {
+        section.append(el('h3', pet.petType === 'dog' ? 'Dog' : 'Cat'), list(pet[field]));
+      });
+      return section;
+    }
+    main.append(policyCard('Destination requirements','destination','pv-destination-requirements'));
     if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
     const selection=el('div',null,'pv-trip-products');packing.append(selection);
     fetch('/trip-essentials?petType='+encodeURIComponent(data.plan.petType)).then(r=>r.ok?r.json():{products:[]}).then(({products})=>{
@@ -42,7 +56,7 @@
       });
       selection.append(el('p','Optional store suggestions. Check fit, delivery and your airline’s rules before purchase.','pv-fine-print'));
     }).catch(()=>{}); // Move the existing node; retain async results/listeners without refetching.
-    if(data.plan.airlineName) aside.append(card('Flying with '+data.plan.airlineName,data.result.airline,'pv-airline-section'));
+    if(data.plan.airlineName) aside.append(policyCard('Flying with '+data.plan.airlineName,'airline','pv-airline-section'));
     const timeline=el('section',null,'pv-itinerary-card pv-timeline-section');timeline.append(el('p','FROM NOW TO DEPARTURE','pv-eyebrow'),el('h2','Your preparation timeline'));
     const ol=el('ol',null,'pv-journey-timeline');data.result.timeline.forEach(t=>{const li=el('li');li.append(el('h3',t.when),el('p',t.action));ol.append(li)});timeline.append(ol);main.append(timeline);
     aside.append(card('Details still to confirm',data.result.questions,'pv-open-questions'));

@@ -19,10 +19,14 @@ let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.eq
  const user={researchPlans:[],async save(){saved++;this.researchPlans.forEach((p,i)=>p._id='22222222222222222222222'+i)}};
  const chain=value=>({sort(){return this},select(){return this},limit(){return this},lean:async()=>value});
  const db={find:()=>chain([origin,destination,{destinationCountry:'United States',regulationsByPetType:{dog:{}}}]),findOne:()=>chain(destination)};
- const users={findById:()=>Object.assign(Promise.resolve(user),{select:()=>chain(user)})};
+ user.toDoList=new Map([['Completed',['Existing task']]]);
+ user.markModified=()=>{};
+ const append=user.researchPlans.push.bind(user.researchPlans);
+ user.researchPlans.push=plan=>{plan._id='22222222222222222222222'+user.researchPlans.length;plan.toObject=()=>({...plan});return append(plan);};
+ const users={findById:()=>Object.assign(Promise.resolve(user),{select:()=>chain(user)}),updateOne:async()=>{saved++;return {matchedCount:1};}};
  const app=express();app.use(express.json());app.use((req,res,next)=>{req.session=session;if(req.get('x-test-auth'))req.user={_id:'333333333333333333333333',role:req.get('x-test-admin')?'admin':'user'};next()});
  const mod={exports:{}};const source=fs.readFileSync(require.resolve('../routes/experience'),'utf8');
- vm.runInNewContext(source,{module:mod,console,URL,URLSearchParams,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?{...journey,generate:async()=>payload}:n==='../helpers/airlineWebResearch'?{run:async()=>{researchCalls++;return {status:200,cards:[{airline:'Mock airline'}]}}}:n==='mongoose'?{connection:{db:{}}}:n==='openai'?class{}:require(n)});
+ vm.runInNewContext(source,{module:mod,console,URL,URLSearchParams,process:{env:{OPENAI_API_KEY:'synthetic'}},Date,require:n=>n==='express'?express:n==='../models/countryPetRegulationList'?db:n==='../models/airline'?{find:()=>chain([airline]),findById:()=>chain(airline)}:n==='../models/User'?users:n==='../models/story'?{}:n==='../helpers/journeyPlanner'?journey:n==='../helpers/airlineWebResearch'?{filterCached:result=>result,run:async()=>{researchCalls++;return {status:200,cards:[{airline:'Mock airline'}]}}}:n==='mongoose'?{connection:{db:{}}}:n==='openai'?class{constructor(){return fake;}}:require(n)});
  app.use(mod.exports);const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base='http://127.0.0.1:'+server.address().port;
  const post=async(path,body,headers={})=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(body)});return {status:r.status,data:await r.json().catch(()=>null)}};
  try{
@@ -41,10 +45,21 @@ let calls=0;const fake={chat:{completions:{create:async args=>{calls++;assert.eq
   const generated=await post('/ai/journey',input);assert.equal(generated.status,200);assert.equal(generated.data.plan.airlineName,'Test Air');assert.equal(generated.data.transportDiscovery,null);assert.equal(generated.data.evidence.country.speciesCategory,'Dog & Cat');
   assert.equal((await post('/my-trips/itinerary',{resultId:generated.data.id})).status,401);
   assert.equal((await post('/my-trips/itinerary',{resultId:'forged'},{'x-test-auth':'yes'})).status,400);
-  const save=await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(save.status,200);assert.match(save.data.url,/saved=/);assert.equal(user.researchPlans[0].generatedPlan.result.summary,payload.summary);
+  const save=await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(save.status,200);assert.match(save.data.url,/saved=/);assert.equal(user.researchPlans[0].generatedPlan.result.summary,generated.data.result.summary);
   await post('/my-trips/itinerary',{resultId:generated.data.id},{'x-test-auth':'yes'});assert.equal(saved,1);assert.equal(user.researchPlans[0].generatedPlan.plan.departureCity,'The Valley');assert.equal(user.researchPlans[0].generatedPlan.plan.returnDate,'2027-01-03');assert.equal(user.researchPlans[0].generatedPlan.plan.departureSource,'manual');
   const unselected=await post('/ai/journey',{origin:'United States',destination:'Australia',pet:'dog'});assert.equal(unselected.status,200);assert.equal(unselected.data.transportDiscovery.state,'reviewed-enquiry');assert.equal(unselected.data.transportDiscovery.candidates[0].transportMode,'manifest cargo');
   const unknown=await post('/ai/journey',{origin:'Anguilla',destination:'Australia',pet:'dog'});assert.equal(unknown.status,200);assert.equal(unknown.data.transportDiscovery.state,'not-reviewed');assert.equal(unknown.data.transportDiscovery.candidates.length,0);
+  const mixed=await post('/ai/journey',{...input,pet:'dog-and-cat'});
+  assert.equal(mixed.status,200);
+  assert.deepEqual(mixed.data.result.species.map(p=>p.petType),['dog','cat']);
+  assert.deepEqual(mixed.data.evidence.species.map(p=>p.country.speciesCategory),['Dog & Cat','Dog & Cat']);
+  const mixedSave=await post('/my-trips/itinerary',{resultId:mixed.data.id},{'x-test-auth':'yes'});
+  assert.equal(mixedSave.status,200);assert.equal(mixedSave.data.todoUrl,'/toDoList');
+  assert(user.toDoList.get('To-Do').some(task=>task.includes('Dog — Confirm approved origin.')));
+  assert(user.toDoList.get('To-Do').some(task=>task.includes('Cat — Confirm approved origin.')));
+  assert.deepEqual(user.toDoList.get('Completed'),['Existing task']);
+  await post('/my-trips/itinerary',{resultId:mixed.data.id},{'x-test-auth':'yes'});
+  assert.equal(saved,2);
   session.journeyUsage={start:Date.now(),count:8};assert.equal((await post('/ai/journey',input)).status,429);
   console.log('PASS grounded species/origin context, safe sources, schema, cache/in-flight deduplication, incomplete AI rejection, HTTP validation, cross-site protection, authenticated server-owned save, deduplication and generation limits. No external API calls.');
  }finally{await new Promise(r=>server.close(r));}

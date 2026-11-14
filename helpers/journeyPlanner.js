@@ -68,4 +68,37 @@ async function generate(context, client) {
   pending.set(key,work);
   try{return await work}finally{pending.delete(key)}
 }
-module.exports={contextFor,speciesKey,safeLinks,generate,outputSchema};
+function contextsFor(plan, destination, airline) {
+  const pets = plan.petType === 'dog-and-cat' ? ['dog', 'cat'] : [plan.petType];
+  return pets.map(petType => contextFor({...plan, petType}, destination, airline));
+}
+
+async function generateItinerary(contexts, client) {
+  if (contexts.length === 1) return generate(contexts[0], client);
+
+  const species = [];
+  for (const context of contexts) {
+    species.push({petType: context.route.petType, ...await generate(context, client)});
+  }
+  const {origin, destination, destinationCity, destinationAirport} = contexts[0].route;
+  const arrival = destinationCity || destinationAirport;
+  const label = pet => pet.petType === 'dog' ? 'Dog' : 'Cat';
+  const combine = field => species.flatMap(pet => pet[field].map(item => label(pet) + ' — ' + item));
+  const phases = ['Before booking', 'Veterinary preparation', 'Before departure', 'Travel day'];
+  return {
+    summary: `Your trip with your dog and cat from ${origin} to ${arrival ? arrival + ', ' : ''}${destination}. Confirm entry eligibility and airline acceptance for both pets before booking.`,
+    species: species.map(({petType, destination, airline}) => ({petType, destination, airline})),
+    packing: combine('packing'),
+    questions: [
+      'Confirm that the operating airline allows both pets on your itinerary, including its limits per traveler and carrier.',
+      ...combine('questions')
+    ],
+    timeline: phases.flatMap(when => species.flatMap(pet =>
+      pet.timeline.filter(step => step.when === when).map(step => ({
+        ...step, action: label(pet) + ' — ' + step.action
+      }))
+    ))
+  };
+}
+
+module.exports={contextFor,contextsFor,speciesKey,safeLinks,generate,generateItinerary,outputSchema};
