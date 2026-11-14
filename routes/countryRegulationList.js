@@ -77,7 +77,8 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     const rawParam = req.params.country || '';
     const countryParam = decodeURIComponent(rawParam).trim();
 
-    const selectedPetTypeRaw = (req.query.petType || '').trim();
+    const selectedPetTypeRaw = typeof req.query.petType === 'string' ? req.query.petType.trim() : '';
+    const allPets = !selectedPetTypeRaw || selectedPetTypeRaw === 'all';
 
     // ✅ case-insensitive exact match
     const regulations = await CountryRegulation.findOne({
@@ -110,26 +111,16 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     const requestedSlug = slugKey(selectedPetTypeRaw) || slugKey(defaultPetKey);
     const petKey = petSlugToKey[requestedSlug] || defaultPetKey;
 
-    const petLabel = String(petKey || '').trim();
+    const petLabel = allPets ? 'All pet types' : String(petKey || '').trim();
 
     // ✅ Canonical URL should always use the slug version (lowercase, hyphenated)
     const canonicalPetType = slugKey(petKey);
 
-    // ✅ If petType is missing, redirect to canonical default
-    if (!selectedPetTypeRaw) {
+    if ((!allPets && selectedPetTypeRaw !== canonicalPetType) || countryParam !== regulations.destinationCountry) {
       const safeCountryRedirect = regulations.destinationCountry;
       return res.redirect(
         301,
-        `/country/${encodeURIComponent(safeCountryRedirect)}?petType=${encodeURIComponent(canonicalPetType)}`
-      );
-    }
-
-    // ✅ If user requested a non-canonical petType redirect to canonical
-    if (selectedPetTypeRaw !== canonicalPetType || countryParam !== regulations.destinationCountry) {
-      const safeCountryRedirect = regulations.destinationCountry;
-      return res.redirect(
-        301,
-        `/country/${encodeURIComponent(safeCountryRedirect)}?petType=${encodeURIComponent(canonicalPetType)}`
+        `/country/${encodeURIComponent(safeCountryRedirect)}${allPets ? '' : '?petType=' + encodeURIComponent(canonicalPetType)}`
       );
     }
 
@@ -156,7 +147,7 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
     const baseUrl = (process.env.BASE_URL || 'https://www.petvoyage.ai').replace(/\/+$/, '');
 
     // ✅ Canonical/OG URL for this exact country+petType canonical combo
-    const pageUrl = `${baseUrl}/country/${encodeURIComponent(safeCountry)}?petType=${encodeURIComponent(canonicalPetType)}`;
+    const pageUrl = `${baseUrl}/country/${encodeURIComponent(safeCountry)}${allPets ? '' : '?petType=' + encodeURIComponent(canonicalPetType)}`;
 
     // ✅ Make OG/Twitter images absolute
     const ogImage = `${baseUrl}/images/catanddog.jpg`;
@@ -238,7 +229,8 @@ router.get('/country/:country', mw.attachAds, async (req, res) => {
 
       // for UI controls (tabs/dropdowns)
       petTypes: petEntries.map(([k]) => ({ key: k, slug: slugKey(k) })),
-      selectedPetType: petKey,
+      selectedPetType: allPets ? null : petKey,
+      allPets,
 
       // what your EJS cards need
       details,

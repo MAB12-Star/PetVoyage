@@ -1,13 +1,13 @@
 <% layout('layouts/boilerplate') %>
 <div class="pv-wrap pv-directory">
   <h1>Pet travel requirements by country</h1>
-  <p>Choose a destination and pet to find entry rules and travel documents.</p><p><a href="/regulations/airlineList">Check airline rules →</a> · <a href="/findAVet">Find a vet →</a></p>
+  <p>Choose a destination to explore entry rules and travel documents. Select a pet type to go straight to its rules.</p><p><a href="/regulations/airlineList">Check airline rules →</a> · <a href="/findAVet">Find a vet →</a></p>
   <form id="countryForm" class="pv-directory-lookup">
     <div class="pv-directory-fields">
       <label>Destination country<select id="countrySelect" class="form-select" required><option value="">Choose a country</option>
         <% countryLinks.forEach(entry=>{ %><option><%= entry.country %></option><% }) %>
       </select></label>
-      <label>Pet type<select id="countryPet" class="form-select" required disabled><option value="">Choose a pet</option></select></label>
+      <label>Pet type (optional)<select id="countryPet" class="form-select" disabled><option value="">All pet types</option></select></label>
       <button class="pv-button">View requirements →</button>
     </div>
   </form>
@@ -17,7 +17,7 @@
       <div class="pv-directory-results" id="countryResults">
         <% countryLinks.forEach(entry=>{ %>
           <article class="pv-note pv-directory-card" data-country="<%= entry.country %>">
-            <h3><%= entry.country %></h3>
+            <h3><a href="/country/<%= encodeURIComponent(entry.country) %>"><%= entry.country %></a></h3>
             <div class="pv-directory-pets">
               <% entry.pets.forEach(pet=>{ %><a href="/country/<%= encodeURIComponent(entry.country) %>?petType=<%= encodeURIComponent(pet.slug) %>"><%= pet.label %></a><% }) %>
             </div>

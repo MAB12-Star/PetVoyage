@@ -32,10 +32,11 @@
   <header class="pv-country-heading">
     <h1>Pet travel requirements for <%= regulations.destinationCountry %></h1>
     <div class="pv-country-toolbar">
-      <% if (petTypes && petTypes.length > 1) { %>
+      <% if (petTypes && (petTypes.length > 1 || allPets)) { %>
         <form method="get" action="/country/<%= encodeURIComponent(regulations.destinationCountry) %>" class="pv-country-picker">
           <label for="policyPetType">Pet type</label>
           <select id="policyPetType" name="petType" class="form-select">
+            <option value="all" <%= allPets ? 'selected' : '' %>>All pet types</option>
             <% petTypes.forEach(p=>{ %><option value="<%= p.slug %>" <%= p.key===selectedPetType?'selected':'' %>><%= p.key %></option><% }) %>
           </select>
           <button class="btn pv-country-save" type="submit">View rules</button>
@@ -67,6 +68,20 @@
   <% } %>
   <div class="pv-directory-columns pv-country-content">
   <div>
+  <p class="pv-note">Entry rules can depend on where your pet is departing from, where it has lived or traveled, and any countries you transit. Check the scope and official sources before booking.</p>
+  <% if (allPets) { %>
+    <section aria-labelledby="all-pets-heading">
+      <h2 id="all-pets-heading">All pet types</h2>
+      <div class="pv-directory-results">
+        <% for (const pet of petTypes) { %>
+          <article class="pv-note pv-directory-card">
+            <h3><%= pet.key %></h3>
+            <a href="/country/<%= encodeURIComponent(regulations.destinationCountry) %>?petType=<%= encodeURIComponent(pet.slug) %>">View requirements →</a>
+          </article>
+        <% } %>
+      </div>
+    </section>
+  <% } %>
   <!-- Per-Pet Regulation Details -->
   <% Object.entries(regulations.regulationsByPetType || {}).filter(([pet]) => pet === selectedPetType).forEach(([pet, details]) => { %>
     <% if (!details || !Object.keys(details).length) return; %>

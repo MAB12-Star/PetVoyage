@@ -7,10 +7,10 @@
   const updatePets = () => {
     const card = cards.get(country.value);
     const links = card ? [...card.querySelectorAll('a')] : [];
-    pet.replaceChildren(new Option('Choose a pet',''), ...links.map(link => new Option(link.textContent,link.getAttribute('href'))));
+    pet.replaceChildren(new Option('All pet types',''), ...links.map(link => new Option(link.textContent,link.getAttribute('href'))));
     pet.disabled = links.length === 0;
   };
   country.addEventListener('change',updatePets);
-  form.addEventListener('submit',event => {event.preventDefault(); if (pet.value) location.assign(pet.value);});
+  form.addEventListener('submit',event => {event.preventDefault(); if (country.value) location.assign(pet.value || '/country/' + encodeURIComponent(country.value));});
   updatePets();
 })();
