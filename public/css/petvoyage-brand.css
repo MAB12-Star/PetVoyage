@@ -108,3 +108,11 @@ body.pv-site { background: linear-gradient(155deg, #e8f7f4, #f7fcfb 450px, #fff)
   .pv-country-toolbar{align-items:start}
   .pv-country-detail .pv-airline-actions a{white-space:normal}
 }
+
+@media(max-width:760px){
+  .pv-directory-columns,.pv-directory-fields{grid-template-columns:minmax(0,1fr)}
+  .pv-directory-columns>*,.pv-directory-fields>*{min-width:0}
+  .pv-directory-fields select,.pv-directory-rail iframe{width:100%;max-width:100%}
+  .pv-directory-rail{overflow-wrap:anywhere;overflow:clip}
+  .pv-directory-pets a{max-width:100%;overflow-wrap:anywhere}
+}
