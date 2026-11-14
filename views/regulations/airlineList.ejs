@@ -1,483 +1,55 @@
 <% layout('layouts/boilerplate') %>
-
-<!-- Hero Header -->
-<div class="bg-light py-2 border-bottom">
-  <div class="container text-center">
-    <div class="bg-light py-lg-2 text-center border-bottom mt-1">
-
-      <h1 class="fw-bold display-5">Browse Airlines</h1>
-      <p class="fs-5 text-muted">Filter airlines based on pet travel policies and select one to view details.</p>
-
-      <%- include('../partials/petPhotoAccent',{photo:'backpack_cat.jpg',photoAlt:'A tabby-and-white cat looking out from a transparent backpack carrier',photoWidth:1200,photoHeight:1600,message:'Every companion belongs in the planning.',photoNote:'A personal travel photo, not evidence of airline acceptance or carrier suitability.'}) %>
-      <!-- Navigation Strip -->
-      <div>
-        <%- include('../partials/navigation') %>
-      </div>
+<div class="pv-wrap pv-directory">
+  <h1>Airline pet policies</h1>
+  <p>Find your operating airline’s rules for flying with a pet.</p>
+  <form class="pv-directory-lookup" method="get">
+    <div class="pv-directory-fields">
+      <label>Airline name<input name="q" type="search" value="<%= query %>" placeholder="e.g. Air Canada" class="form-control"></label>
+      <label>Breed policy<select name="breed" class="form-select">
+        <% for (const [value,label] of [['','All breed policies'],['all','All breeds explicitly allowed'],['restricted','Breed restrictions stated'],['unknown','Needs confirmation']]) { %>
+          <option value="<%= value %>" <%= breed===value?'selected':'' %>><%= label %></option>
+        <% } %>
+      </select></label>
+      <label>Results per page<select name="perPage" class="form-select">
+        <% for (const size of [6,12,24,48]) { %><option <%= perPage===size?'selected':'' %>><%= size %></option><% } %>
+      </select></label>
     </div>
-  </div>
-
-
-  <!-- Filter Controls -->
-  <div class="container mt-4">
-    <h4>Filters</h4>
-
-    <!-- Desktop Filters -->
-    <div class="row mb-4 d-none d-md-block">
-      <div class="col-md-12 text-center">
-        <div class="btn-group flex-wrap" role="group">
-          <button class="btn btn-outline-secondary filter-btn" data-filter="all" data-bs-toggle="tooltip" title="View all airlines">Show All</button>
-          <button class="btn btn-outline-secondary filter-btn" data-filter="incompartment" data-bs-toggle="tooltip" title="Animals allowed in cabin">In Compartment</button>
-          <button class="btn btn-outline-secondary filter-btn" data-filter="incargo" data-bs-toggle="tooltip" title="Animals allowed in cargo">In Cargo</button>
-          <button class="btn btn-outline-secondary filter-btn" data-filter="serviceanimals" data-bs-toggle="tooltip" title="Support animals recognized">Service Animals</button>
-          <button class="btn btn-outline-secondary filter-btn" data-filter="esanimals" data-bs-toggle="tooltip" title="Emotional support animals recognized">ESA Allowed</button>
-          <button class="btn btn-outline-secondary filter-btn" data-filter="petshipping" data-bs-toggle="tooltip" title="Provides pet shipping">Ships Pets</button>
-          <button class="btn btn-outline-secondary filter-btn" data-filter="dangerous" data-bs-toggle="tooltip" title="Allows considered dangerous breeds">Dangerous Breeds Allowed</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile Filters -->
-  <div class="row mb-4 d-md-none justify-content-center">
-    <div class="col-12 text-center">
-      <div class="d-flex flex-wrap justify-content-center gap-2" id="filter-icons">
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="all" title="View all airlines">
-          <i class="bi bi-ui-checks-grid fs-5 mb-1"></i>
-          <small>All</small>
-        </button>
-
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="incompartment" title="Animals allowed in cabin">
-          <span class="fs-4 mb-1">🪑</span>
-          <small>Cabin</small>
-        </button>
-
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="incargo" title="Animals allowed in cargo">
-          <span class="fs-4 mb-1">✈️</span>
-          <small>Cargo</small>
-        </button>
-
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="serviceanimals" title="Support animals recognized">
-          <span class="fs-4 mb-1">🐕</span>
-          <small>Support Animal</small>
-        </button>
-
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="esanimals" title="Emotional support animals recognized">
-          <span class="fs-4 mb-1">❤️</span>
-          <small>ESA</small>
-        </button>
-
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="petshipping" title="Provides pet shipping">
-          <i class="bi bi-send-check fs-5 mb-1"></i>
-          <small>Shipping</small>
-        </button>
-
-        <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-2" 
-                data-filter="dangerous" title="Allows considered dangerous breeds">
-          <i class="bi bi-exclamation-diamond fs-5 mb-1"></i>
-          <small>Dangerous Breeds</small>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Airline Autocomplete UI -->
-  <div class="d-flex justify-content-center align-items-center mt-3 mb-4 flex-column">
-    <div class="input-group w-50 mb-2 position-relative">
-      <input type="text" id="airlineSearchInput" class="form-control" placeholder="Start typing an airline..." autocomplete="off">
-      <button class="btn btn-outline-primary" type="button" id="airlineSearchBtn">
-        <i class="bi bi-search"></i>
-      </button>
-      <ul id="suggestionList" class="list-group position-absolute w-100 shadow" style="z-index: 1000; top: 100%;"></ul>
-    </div>
-
-    <!-- Hidden select and form -->
-    <form id="airlineSearchForm" class="d-none">
-      <select id="airlineSelect">
-        <% airlines.forEach(airline => { %>
-          <option value="/airlines/<%= airline.slug %>"><%= airline.name %></option>
-        <% }); %>
-      </select>
-      <button type="submit" id="goButton">Go</button>
-    </form>
-  </div>
-
-  <script>
-    const input = document.getElementById("airlineSearchInput");
-    const select = document.getElementById("airlineSelect");
-    const suggestionList = document.getElementById("suggestionList");
-    const searchBtn = document.getElementById("airlineSearchBtn");
-
-    function filterCards(query) {
-      let visibleCount = 0;
-      document.querySelectorAll(".airline-card").forEach(col => {
-        const title = col.querySelector(".card-title");
-        if (!title) return;
-
-        const airlineName = title.innerText.toLowerCase();
-        const match = airlineName.includes(query);
-
-        col.style.display = match ? "" : "none";
-        if (match) visibleCount++;
-      });
-
-      const countEl = document.getElementById("filter-count");
-      if (countEl) {
-        countEl.innerText = visibleCount === 1 ? "Showing 1 airline" : `Showing ${visibleCount} airlines`;
-      }
-    }
-
-    function renderSuggestions(query) {
-      suggestionList.innerHTML = "";
-      if (!query) return;
-
-      Array.from(select.options).forEach(option => {
-        const name = option.text.toLowerCase();
-        if (name.includes(query)) {
-          const li = document.createElement("li");
-          li.className = "list-group-item list-group-item-action";
-          li.textContent = option.text;
-
-          li.addEventListener("click", () => {
-            input.value = option.text;
-            suggestionList.innerHTML = "";
-
-            const slug = option.value.replace('/airlines/', '');
-            window.location.href = `/airlines/${slug}&Pet&Policy`;
-          });
-
-          suggestionList.appendChild(li);
-        }
-      });
-    }
-
-    input.addEventListener("input", function () {
-      const query = this.value.toLowerCase();
-      renderSuggestions(query);
-    });
-
-    searchBtn.addEventListener("click", function () {
-      const query = input.value.toLowerCase();
-      renderSuggestions(query);
-      filterCards(query);
-    });
-
-    input.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const query = this.value.toLowerCase();
-
-        const match = Array.from(select.options).find(opt =>
-          opt.text.toLowerCase() === query
-        );
-
-        if (match) {
-          const slug = match.value.replace('/airlines/', '');
-          window.location.href = `/airlines/${slug}&Pet&Policy`;
-        } else {
-          filterCards(query);
-        }
-      }
-    });
-
-    document.addEventListener("click", function (e) {
-      if (!e.target.closest(".input-group")) {
-        suggestionList.innerHTML = "";
-      }
-    });
-  </script>
-
-  <%
-    let startIndex = 0;
-    let endIndex = airlines.length;
-    if (typeof totalAirlines !== 'undefined' && typeof currentPage !== 'undefined' && typeof perPage !== 'undefined') {
-      if (totalAirlines > 0) {
-        startIndex = ((currentPage - 1) * perPage) + 1;
-        endIndex = Math.min(currentPage * perPage, totalAirlines);
-      } else {
-        startIndex = 0;
-        endIndex = 0;
-      }
-    }
-  %>
-
-  <div class="container mb-2">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-      <% if (typeof perPage !== 'undefined' && typeof currentPage !== 'undefined') { %>
-        <form id="perPageForm" method="get" class="d-flex align-items-center gap-2">
-          <label for="perPageSelect" class="mb-0 small">
-            Show
-          </label>
-          <select 
-            name="perPage" 
-            id="perPageSelect" 
-            class="form-select form-select-sm w-auto"
-            onchange="document.getElementById('perPageForm').submit()">
-            <option value="6"  <%= perPage === 6  ? 'selected' : '' %>>6</option>
-            <option value="12" <%= perPage === 12 ? 'selected' : '' %>>12</option>
-            <option value="24" <%= perPage === 24 ? 'selected' : '' %>>24</option>
-            <option value="48" <%= perPage === 48 ? 'selected' : '' %>>48</option>
-          </select>
-          <span class="small">per page</span>
-          <input type="hidden" name="page" value="1">
-        </form>
+    <fieldset class="pv-directory-filters"><legend>Travel options</legend>
+      <% for (const [value,label] of [['cabin','In cabin'],['hold','In hold / cargo'],['shipping','Separate pet shipping'],['service','Service animals'],['esa','Emotional support animals']]) { %>
+        <label><input type="checkbox" name="mode" value="<%= value %>" <%= modes.includes(value)?'checked':'' %>> <%= label %></label>
       <% } %>
-
-      <% if (typeof totalAirlines !== 'undefined' && typeof currentPage !== 'undefined' && typeof perPage !== 'undefined') { %>
-        <p class="mb-0 small text-muted">
-          <% if (totalAirlines > 0) { %>
-            Showing <%= startIndex %>–<%= endIndex %> of <%= totalAirlines %> airlines
-          <% } else { %>
-            No airlines found
-          <% } %>
-        </p>
-      <% } %>
-    </div>
-  </div>
-
-  <div class="text-center mb-3">
-    
-    <strong id="filter-count">Showing <%= airlines.length %> airlines</strong>
-  </div>
-</div> <!-- closes bg-light header wrapper -->
-
-<!-- Airline Cards -->
-<div class="container mt-3">
-  <!--Ads-->
-<%
-  const headerAd = (typeof getAd === 'function') ? getAd('header') : null;
-%>
-<% if (headerAd) { %>
-  <%- include('../partials/ads/ad-image', { ad: headerAd }) %>
-<% } %>
-  <% let uniqueAirlineIndex = 0; %>
-  <div class="row g-3" id="airlineList">
-    <% airlines.forEach(airline => { %>
-      <div 
-        class="col-12 col-sm-6 col-lg-4 col-xl-3 airline-card"
-        data-incompartment="<%= typeof airline.inCompartment === 'string' && airline.inCompartment.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-incargo="<%= typeof airline.inCargo === 'string' && airline.inCargo.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-petshipping="<%= typeof airline.petShipping === 'string' && airline.petShipping.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-serviceanimals="<%= typeof airline.serviceAnimals === 'string' && airline.serviceAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-esanimals="<%= typeof airline.esAnimals === 'string' && airline.esAnimals.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-brachycephalic="<%= typeof airline.brachycephalic === 'string' && airline.brachycephalic.toLowerCase() === 'yes' ? 'true' : 'false' %>"
-        data-dangerous="<%= typeof airline.dangerousBreeds === 'string' && airline.dangerousBreeds.toLowerCase() === 'no' ? 'true' : 'false' %>"
-      >
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <div class="airline-card-header">
-              <% if (airline.logo) { %>
-                <img src="<%= airline.logo %>" 
-                     alt="<%= airline.name %> Logo" 
-                     class="airline-logo">
-              <% } else { %>
-                <i class="fa fa-plane fa-2x" aria-hidden="true"></i>
-              <% } %>
-
-              <div>
-                <h5 class="card-title"><%= airline.name %></h5>
-                <div class="card-subtitle text-muted">Pet Travel Policy</div>
-              </div>
-            </div>
-
-            <p class="card-text">
-              <%= airline.name %> allows pets to travel 
-              <%= airline.inCompartment === 'Yes' ? 'in the cabin' : '' %>
-              <%= airline.inCompartment === 'Yes' && airline.inCargo === 'Yes' ? ' and ' : '' %>
-              <%= airline.inCargo === 'Yes' ? 'in the cargo hold' : '' %>.
-              <%= airline.petShipping === 'Yes' ? ' They also offer pet shipping services.' : '' %>
-              <%= airline.serviceAnimals === 'Yes' ? ' Service animals are permitted.' : '' %>
-              <%= airline.esAnimals === 'Yes' ? ' ESA animals may be accepted under certain conditions.' : '' %>
-            </p>
-
-            <% if (airline.inCompartmentAnimals && airline.inCompartmentAnimals.length > 0) { %>
-              <p class="card-text mb-1">
-                <strong>In Cabin:</strong> <%= airline.inCompartmentAnimals.join(", ") %>
-              </p>
-            <% } %>
-            
-            <% if (airline.inCargoAnimals && airline.inCargoAnimals.length > 0) { %>
-              <p class="card-text mb-1">
-                <strong>In Cargo:</strong> <%= airline.inCargoAnimals.join(", ") %>
-              </p>
-            <% } %>
-
-            <% if (airline.petShipping !== undefined) { %>
-              <p class="card-text mb-1">
-                <strong>Pet Shipping:</strong> <%= airline.petShipping %>
-              </p>
-            <% } %>
-
-            <p class="card-text mb-1">
-              <strong>Microchip Required:</strong> <%= airline.microchip %>
-            </p>
-
-            <p class="card-text mb-1">
-              <strong>Health Certificate:</strong> <%= airline.healthCertificate %>
-            </p>
-
-            <%
-              let vaccinationsList = [];
-              if (Array.isArray(airline.healthVaccinations)) {
-                vaccinationsList = airline.healthVaccinations;
-              } else if (typeof airline.healthVaccinations === 'string' && airline.healthVaccinations.trim() !== '') {
-                vaccinationsList = airline.healthVaccinations
-                  .split(',')
-                  .map(v => v.trim())
-                  .filter(v => v.length > 0);
-              }
-            %>
-            <% if (vaccinationsList.length > 0) { %>
-              <p class="card-text mb-1">
-                <strong>Vaccinations:</strong> <%= vaccinationsList.join(", ") %>
-              </p>
-            <% } %>
-
-            <a href="/airlines/<%= airline.slug %>&Pet&Policy" class="btn btn-primary btn-sm">
-              View Policy
-            </a>
-          </div>
-        </div>
+    </fieldset>
+    <button class="pv-button">Search airlines</button> <a href="/regulations/airlineList">Clear filters</a>
+  </form>
+  <div class="pv-directory-columns">
+    <section>
+      <h2>Browse airlines</h2><p><%= totalAirlines %> results</p>
+      <% if (!airlines.length) { %><p><%= breed==='all' ? 'No airline in this directory has an explicitly verified all-breeds policy. Check the operating airline for your breed, route and travel mode.' : 'No airlines match these filters.' %></p><% } %>
+      <div class="pv-directory-results">
+        <% for (const airline of airlines) { %>
+          <article class="pv-note pv-directory-card">
+            <% if (airline.logo) { %><img class="pv-directory-logo" src="<%= airline.logo %>" alt="" width="96" height="52" loading="lazy"><% } %>
+            <h3><%= airline.name %></h3>
+            <p><%= /^yes$/i.test(airline.dangerousBreeds) ? 'Breed restrictions stated' : 'Confirm breed policy with the airline' %></p>
+            <a href="/airlines/<%= encodeURIComponent(airline.slug) %>">View pet policy →</a>
+          </article>
+        <% } %>
       </div>
-
-      <% uniqueAirlineIndex++; %>
-
-      <!-- Inline Grid Ad Placement (Mobile - after every 2 cards) -->
-      <% if (uniqueAirlineIndex % 2 === 0) { %>
-  <% const ad2 = (typeof getAd === 'function') ? getAd('inline-grid-2') : null; %>
-  <% if (ad2) { %>
-    <div class="col-12 mb-4 d-md-none ad-tile">
-      <%- include('../partials/ads/ad-image', { ad: ad2 }) %>
-    </div>
-  <% } %>
-<% } %>
-
-
-      <!-- Inline Grid Ad Placement (Desktop - after every 6 cards) -->
-     <% if (uniqueAirlineIndex % 6 === 0) { %>
-  <% const ad6 = (typeof getAd === 'function') ? getAd('inline-grid-6') : null; %>
-  <% if (ad6) { %>
-    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-none d-md-block ad-tile">
-      <%- include('../partials/ads/ad-image', { ad: ad6 }) %>
-    </div>
-  <% } %>
-<% } %>
-
-
-    <% }); // closes airlines.forEach %>
-  </div>
-   <!--Ads-->
-<%
-  const footer = (typeof getAd === 'function') ? getAd('footer') : null;
-%>
-<% if (footer) { %>
-  <%- include('../partials/ads/ad-image', { ad: footer }) %>
-<% } %>
-</div> <!-- end container for airline grid -->
-
-<!-- Pagination controls -->
-<% if (typeof totalPages !== 'undefined' && totalPages > 1 && typeof currentPage !== 'undefined' && typeof perPage !== 'undefined') { %>
-  <nav aria-label="Airline pagination">
-    <ul class="pagination justify-content-center mt-4">
-      <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-        <a class="page-link" href="?page=<%= currentPage - 1 %>&perPage=<%= perPage %>">Previous</a>
-      </li>
-
-      <% for (let i = 1; i <= totalPages; i++) { %>
-        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-          <a class="page-link" href="?page=<%= i %>&perPage=<%= perPage %>"><%= i %></a>
-        </li>
-      <% } %>
-
-      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-        <a class="page-link" href="?page=<%= currentPage + 1 %>&perPage=<%= perPage %>">Next</a>
-      </li>
-    </ul>
-  </nav>
-<% } %>
-
-<div class="row mb-4 justify-content-center">
-  <div class="col-md-12 text-center">
-    <div class="d-flex flex-wrap justify-content-center gap-3" id="filter-icons-bottom">
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="all" data-bs-toggle="tooltip" title="View all airlines">
-        <i class="bi bi-grid-3x3-gap fs-4 mb-1"></i>
-        <small>Show All</small>
-      </button>
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="incompartment" data-bs-toggle="tooltip" title="Animals allowed in cabin">
-        <i class="bi bi-box fs-4 mb-1"></i>
-        <small>In Compartment</small>
-      </button>
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="incargo" data-bs-toggle="tooltip" title="Animals allowed in cargo">
-        <i class="bi bi-truck fs-4 mb-1"></i>
-        <small>In Cargo</small>
-      </button>
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="serviceanimals" data-bs-toggle="tooltip" title="Support animals recognized">
-        <i class="bi bi-shield-check fs-4 mb-1"></i>
-        <small>Service Animals</small>
-      </button>
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="esanimals" data-bs-toggle="tooltip" title="Emotional support animals recognized">
-        <i class="bi bi-heart fs-4 mb-1"></i>
-        <small>ESA Allowed</small>
-      </button>
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="petshipping" data-bs-toggle="tooltip" title="Provides pet shipping">
-        <i class="bi bi-send fs-4 mb-1"></i>
-        <small>Ships Pets</small>
-      </button>
-      <button class="filter-btn btn btn-light d-flex flex-column align-items-center justify-content-center p-3"
-              data-filter="dangerous" data-bs-toggle="tooltip" title="Allows considered dangerous breeds">
-        <i class="bi bi-exclamation-triangle fs-4 mb-1"></i>
-        <small>Dangerous Breeds</small>
-      </button>
-    </div>
+      <% if (totalPages > 1) { %><nav aria-label="Airline results pages" class="pv-directory-pages">
+        <% if (currentPage>1) { %><a href="<%= pageUrl(currentPage-1) %>">Previous</a><% } %>
+        <span>Page <%= currentPage %> of <%= totalPages %></span>
+        <% if (currentPage<totalPages) { %><a href="<%= pageUrl(currentPage+1) %>">Next</a><% } %>
+      </nav><% } %>
+      <%- include('../partials/ads/ad-image',{ad:typeof getAd==='function'?getAd('footer'):null}) %>
+      <%- include('../partials/directoryShop',{placement:'airline_directory'}) %>
+    </section>
+    <aside class="pv-directory-rail" aria-label="Stories, reviews and services">
+      <%- include('../partials/petPhotoAccent',{photo:'babies.jpg',photoAlt:'The two PetVoyage dogs on a palm-lined beach',photoWidth:1600,photoHeight:1273,message:'The dogs behind PetVoyage',photoNote:'Together at the beach.'}) %>
+      <%- include('../partials/favBlog') %>
+      <%- include('../partials/favReview') %>
+      <%- include('../partials/ads/conciergeAd',{placement:'right-rail'}) %>
+      <%- include('../partials/ads/taxiAd',{placement:'right-rail'}) %>
+      <%- include('../partials/ads/ad-image',{ad:typeof getAd==='function'?getAd('header'):null}) %>
+    </aside>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-      new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
-    document.querySelectorAll('.filter-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const filter = button.dataset.filter;
-        const cards = document.querySelectorAll('.airline-card');
-        let visibleCount = 0;
-
-        if (filter === 'all') {
-          cards.forEach(card => {
-            card.style.display = 'block';
-            visibleCount++;
-          });
-        } else {
-          cards.forEach(card => {
-            const match = card.dataset[filter] === 'true';
-            card.style.display = match ? 'block' : 'none';
-            if (match) visibleCount++;
-          });
-        }
-
-        const countText = visibleCount === 1 
-          ? 'Showing 1 airline' 
-          : `Showing ${visibleCount} airlines`;
-        const countEl = document.getElementById('filter-count');
-        if (countEl) countEl.innerText = countText;
-
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-dark'));
-        button.classList.add('btn-dark');
-      });
-    });
-  });
-</script>

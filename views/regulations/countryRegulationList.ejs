@@ -1,281 +1,39 @@
 <% layout('layouts/boilerplate') %>
-
-<!-- Hero + Side Panels Row -->
-<section class="bg-light py-5 border-bottom">
-  <div class="container-fluid px-lg-5">
-    <div class="row g-4 align-items-start">
-
-      <!-- LEFT (DESKTOP): Blog + Tips -->
-      <aside class="col-lg-3 d-none d-lg-block">
-        <!-- Blog Card -->
-      
-      
-           <%- include('../partials/favBlog') %>
-
-    
-
-        <!-- Tips Card -->
-        <a href="/tips" class="text-decoration-none">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
-            <div class="card-body">
-              <h6 class="text-muted mb-2">Featured Tip</h6>
-              <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
-              <p class="card-text small text-muted mb-3">
-                Quick and effective tips to make flying with your furry friend easier than ever…
-              </p>
-              <span class="btn btn-outline-secondary btn-sm">Read tips</span>
-            </div>
-          </div>
-        </a>
-      </aside>
-
-      <!-- CENTER -->
-      <div class="col-lg-6 text-center">
-
-        <h1 class="fw-bold display-5">Pet Travel Requirements by Country</h1><%- include('../partials/petPhotoAccent',{photo:'eva.jpg',photoAlt:'A gray-and-white dog resting outdoors and looking towards the city',photoWidth:1600,photoHeight:1200,message:'Different destinations. The same companions.',photoNote:'Our own photo; always check the rules for your destination and species.'}) %>
-        <p class="fs-5 text-muted">Instantly explore pet policies by airline and country. Fly with peace of mind.</p>
-
-        <!-- Main Navigation -->
-        <div class="mb-4">
-          <%- include('../partials/navigation') %>
-          <!-- If you want the shop icon in your nav:
-               <i class="bi bi-shop fs-3"></i> or <i class="bi bi-shop-window fs-3"></i>
-          -->
-        </div>
-
-        <!-- Country Selection -->
-        <div class="mt-2">
-          <form id="countryForm" class="row justify-content-center">
-            <div class="col-12 col-md-8">
-              <label for="countrySelect" class="form-label fs-5 fw-semibold">Select a Destination Country</label>
-              <div class="input-group input-group-lg shadow-sm">
-                <select id="countrySelect" name="country" class="form-select" onchange="submitCountry()">
-                  <option disabled selected value="">-- Choose a Country --</option>
-                  <% countries.forEach(country => { %>
-                    <option value="<%= country %>"><%= country %></option>
-                  <% }) %>
-                </select>
-                <button class="btn btn-primary" type="button" onclick="submitCountry()">
-                  <i class="bi bi-search"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <section class="mt-4 text-start" aria-labelledby="country-directory-heading">
-          <h2 id="country-directory-heading" class="h4">Browse country requirements by pet type</h2>
-          <p class="text-muted">Choose a destination and pet type to read its entry requirements. Rules can also depend on where your pet is traveling from.</p>
-          <ul class="list-unstyled">
-            <% countryLinks.forEach(entry => { %>
-              <li class="mb-3">
-                <strong><%= entry.country %></strong>
-                <ul class="list-inline mb-0">
-                  <% entry.pets.forEach(pet => { %>
-                    <li class="list-inline-item"><a href="/country/<%= encodeURIComponent(entry.country) %>?petType=<%= encodeURIComponent(pet.slug) %>"><%= entry.country %>: <%= pet.label %> requirements</a></li>
-                  <% }) %>
-                </ul>
-              </li>
-            <% }) %>
-          </ul>
-        </section>
-
-        <!-- MOBILE-ONLY: Blog (stacked) -->
-        <div class="d-lg-none">
-          <div class="row g-3 mt-4">
-            <div class="col-12">
-              <a href="/blog" class="text-decoration-none">
-                <div class="card border-0 shadow-sm">
-                  <img src="/images/movetocdmx.jpg" class="card-img-top" alt="PetVoyage Blog preview" loading="lazy">
-                  <div class="card-body">
-                    <h6 class="text-muted mb-2">Featured on the Blog</h6>
-                    <h5 class="card-title mb-2">How We Moved to Mexico City With Our Pets</h5>
-                    <p class="card-text small text-muted mb-3">
-                      Flight prep, airline choice, vet visits, and what actually worked the day we flew…
-                    </p>
-                    <span class="btn btn-outline-secondary btn-sm">Read the story</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- SHOP CAROUSEL (visible on ALL sizes) -->
-      <div class="card h-100 mt-3 border-0 shadow-sm">
-      <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
-      <% const footerAd = (typeof getAd === 'function') ? getAd('footer') : null; %>
-      <% if (footerAd) { %>
-        <%- include('../partials/ads/ad-image', { ad: footerAd }) %>
-      <% } %>
-      </div>
-      </div>
- 
-
-        <!-- MOBILE-ONLY: Tips + To-Do (stacked) -->
-
-
-
-        <div class="d-lg-none">
-          <div class="row g-3 mt-4">
-            <div class="col-12">
-              <a href="/tips" class="text-decoration-none">
-                <div class="card border-0 shadow-sm">
-                  <img src="/images/Bird2.png" class="card-img-top" alt="PetVoyage Tips preview" loading="lazy">
-                  <div class="card-body">
-                    <h6 class="text-muted mb-2">Featured Tip</h6>
-                    <h5 class="card-title mb-2">Top 5 Tricks for Stress-Free Pet Travel</h5>
-                    <p class="card-text small text-muted mb-3">
-                      Quick and effective tips to make flying with your furry friend easier than ever…
-                    </p>
-                    <span class="btn btn-outline-secondary btn-sm">Read tips</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <div class="card border-0 shadow-sm mt-4">
-            
-            <div class="card-body p-3">
-              <%- include('../partials/toDoList') %>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-      
-      <!-- /CENTER -->
-
-      <!-- RIGHT (DESKTOP): To-Do -->
-       
-      <aside class="col-lg-3 d-none d-lg-block">
-                <%- include('../partials/favReview') %>
-                <br>
-        <div class="sticky-lg-top" style="top:1.5rem">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body p-3">
-              <%- include('../partials/toDoList') %>
-            </div>
-          </div>
-        </div>
-      </aside>
-
+<div class="pv-wrap pv-directory">
+  <h1>Pet travel requirements by country</h1>
+  <p>Choose a destination and pet to find entry rules and travel documents.</p>
+  <form id="countryForm" class="pv-directory-lookup">
+    <div class="pv-directory-fields">
+      <label>Destination country<select id="countrySelect" class="form-select" required><option value="">Choose a country</option>
+        <% countryLinks.forEach(entry=>{ %><option><%= entry.country %></option><% }) %>
+      </select></label>
+      <label>Pet type<select id="countryPet" class="form-select" required disabled><option value="">Choose a pet</option></select></label>
+      <button class="pv-button">View requirements →</button>
     </div>
+  </form>
+  <div class="pv-directory-columns">
+    <section>
+      <h2>Browse by country</h2>
+      <div class="pv-directory-results" id="countryResults">
+        <% countryLinks.forEach(entry=>{ %>
+          <article class="pv-note pv-directory-card" data-country="<%= entry.country %>">
+            <h3><%= entry.country %></h3>
+            <div class="pv-directory-pets">
+              <% entry.pets.forEach(pet=>{ %><a href="/country/<%= encodeURIComponent(entry.country) %>?petType=<%= encodeURIComponent(pet.slug) %>"><%= pet.label %></a><% }) %>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+      <%- include('../partials/directoryShop',{placement:'country_directory'}) %>
+      <%- include('../partials/ads/ad-image',{ad:typeof getAd==='function'?getAd('footer'):null}) %>
+    </section>
+    <aside class="pv-directory-rail" aria-label="PetVoyage stories, reviews and tips">
+      <%- include('../partials/petPhotoAccent',{photo:'eva.jpg',photoAlt:'Eva looking toward the city',photoWidth:1600,photoHeight:1200,message:'The dogs behind PetVoyage',photoNote:'Eva, from our family album.'}) %>
+      <%- include('../partials/favBlog') %>
+      <%- include('../partials/favReview') %>
+      <article class="card"><img src="/images/Bird2.png" alt="Pets in a travel suitcase" loading="lazy"><div class="card-body"><h2>Featured tip</h2><p>Top 5 Tricks for Stress-Free Pet Travel</p><a href="/tips">Read tips →</a></div></article>
+      <%- include('../partials/toDoList') %>
+    </aside>
   </div>
-</section>
-
-<!-- Scripts (no ChatGPT code here) -->
-<script>
-  function submitCountry() {
-    const select = document.getElementById('countrySelect');
-    const selectedCountry = select?.value;
-    if (selectedCountry) {
-      window.location.href = '/country/' + encodeURIComponent(selectedCountry);
-    }
-  }
-
-  // Bootstrap tooltips
-  document.addEventListener('DOMContentLoaded', () => {
-    if (window.$) { $('[data-bs-toggle="tooltip"]').tooltip(); }
-  });
-</script>
-
-<!-- SHOP CAROUSEL JS (robust flattening) -->
-<script>
-  (function () {
-    function findProductCards(container) {
-      let cards = container.querySelectorAll(
-        '[data-product-id], [data-product], [class*="product-card"], [class*="ProductCard"], a[href*="/products/"]'
-      );
-      if (cards.length) return Array.from(cards);
-
-      cards = Array.from(container.querySelectorAll('*')).filter(el => {
-        const hasImg = el.querySelector('img');
-        const hasBtn = el.querySelector('button, .btn, a[href*="cart"], a[href*="/products/"]');
-        return hasImg && hasBtn && el.children.length > 0;
-      });
-      return cards;
-    }
-
-    function hoistToTrack(track) {
-      const direct = findProductCards(track);
-      if (direct.length >= 2) return;
-
-      if (track.children.length === 1) {
-        const only = track.firstElementChild;
-        const found = findProductCards(only);
-        if (found.length) {
-          track.replaceChildren(...found);
-          return;
-        }
-      }
-
-      const wrappers = Array.from(track.querySelectorAll('*')).filter(n => n.children && n.children.length);
-      for (const w of wrappers) {
-        const found = findProductCards(w);
-        if (found.length >= 2) {
-          track.replaceChildren(...found);
-          return;
-        }
-      }
-    }
-
-    function initShopCarousel(root) {
-      const track = root.querySelector('.shop-track');
-      const prev  = root.querySelector('.shop-nav.prev');
-      const next  = root.querySelector('.shop-nav.next');
-      if (!track) return;
-
-      const finalize = () => {
-        hoistToTrack(track);
-        Array.from(track.children).forEach(el => el.classList.add('shop-slide'));
-
-        const updateArrows = () => {
-          const canLeft  = track.scrollLeft > 5;
-          const canRight = track.scrollWidth - track.clientWidth - track.scrollLeft > 5;
-          if (prev) prev.style.visibility = canLeft  ? 'visible' : 'hidden';
-          if (next) next.style.visibility = canRight ? 'visible' : 'hidden';
-        };
-
-        const scrollByAmt = dir => {
-          const amt = Math.round(track.clientWidth * 0.9);
-          track.scrollBy({ left: dir * amt, behavior: 'smooth' });
-          setTimeout(updateArrows, 250);
-        };
-
-        prev && prev.addEventListener('click', () => scrollByAmt(-1));
-        next && next.addEventListener('click', () => scrollByAmt(1));
-        track.addEventListener('scroll', updateArrows);
-        new ResizeObserver(updateArrows).observe(track);
-
-        track.tabIndex = 0;
-        track.addEventListener('keydown', e => {
-          if (e.key === 'ArrowLeft')  scrollByAmt(-1);
-          if (e.key === 'ArrowRight') scrollByAmt(1);
-        });
-
-        updateArrows();
-      };
-
-      const needObserve = track.querySelectorAll('*').length < 3;
-      if (needObserve) {
-        const mo = new MutationObserver((muts, obs) => {
-          if (track.querySelectorAll('img').length) {
-            obs.disconnect();
-            finalize();
-          }
-        });
-        mo.observe(track, { childList: true, subtree: true });
-        setTimeout(finalize, 1200);
-      } else {
-        finalize();
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.shop-carousel').forEach(initShopCarousel);
-    });
-  })();
-</script>
+</div>
+<script src="/country-directory.js" defer></script>

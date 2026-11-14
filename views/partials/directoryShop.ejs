@@ -1,0 +1,13 @@
+<section class="pv-note pv-directory-shop" aria-label="Shop pet travel essentials">
+  <h2>Shop pet travel essentials</h2>
+  <div class="pv-directory-results">
+    <% for (const [handle,title,photo,variant] of [
+      ['reflective-breakaway-cat-collar-with-airtag-holder','Purple AirTag collar','b54f453c29b81d44cd08daf9cb586b6b','45040965615788'],
+      ['travel-pet-organizer-bag-with-bowls','Travel organizer bag','8ccecec10039e0c2fec5271055d4dbf9','']
+    ]) { %>
+      <a class="pv-directory-product" href="https://petsvoyage.myshopify.com/products/<%= handle %>?<%= new URLSearchParams({...(variant?{variant}:{}),utm_source:'petvoyage',utm_medium:'referral',utm_campaign:placement}) %>">
+        <img src="https://cdn.shopify.com/s/files/1/0711/2654/8652/files/<%= photo %>.jpg" width="60" height="60" alt="" loading="lazy"><%= title %> →
+      </a>
+    <% } %>
+  </div>
+</section>
