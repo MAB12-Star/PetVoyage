@@ -1,0 +1,40 @@
+:root {
+  --pv-ink: #102f3b;
+  --pv-teal: #24616a;
+  --pv-mint: #ddf2ee;
+  --pv-cream: #f7fcfb;
+  --pv-muted: #3c6068;
+  --pv-line: #bddbd7;
+  --pv-field: #648682;
+  --bs-primary-rgb: 36, 97, 106;
+}
+body.pv-site { background: linear-gradient(155deg, #e8f7f4, #f7fcfb 450px, #fff); font-family: Inter, "Segoe UI", Arial, sans-serif; }
+.pv-site :is(h1,h2,h3,h4,h5,h6), .pv-site .navbar-brand {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+.pv-site .pv-header { background: white; }
+.pv-site .pv-header .navbar-brand { color: var(--pv-ink); }
+.pv-site .pv-hero h1, .pv-site .pv-hero h1 em { font-weight: 800; }
+.pv-site .pv-hero h1 em { font-style: normal; }
+.pv-site :is(.form-control,.form-select,.pv-planner input,.pv-planner select) { border-color: var(--pv-field); }
+.pv-site .pv-planner label { font-size: 14px; font-weight: 700; }
+.pv-site .pv-journey-page :is(.pv-journey-actions,.pv-itinerary-card) h2 { font-weight: 800; }
+.pv-site .pv-open-questions { background: #fff5df; border-left: 4px solid #e6b65d !important; }
+.pv-site :focus-visible { outline-color: #a94728; }
+.pv-brand-hero { gap: 44px; padding: 36px 0 18px; align-items: center !important; }
+.pv-site .pv-brand-hero h1 { font-size: clamp(42px, 5.7vw, 82px); line-height: 1; margin: 0 0 16px; }
+.pv-brand-photo { margin: 0; position: relative; border-radius: 18px; overflow: hidden; }
+.pv-brand-photo img { width: 100%; height: clamp(170px, 29vw, 350px); object-fit: cover; object-position: center 42%; display: block; }
+.pv-brand-photo figcaption { position: absolute; bottom: 12px; left: 12px; background: #fff; border-radius: 6px; padding: 4px 9px; font-size: 13px; }
+.pv-quick-links { display: flex; flex-wrap: wrap; gap: 9px; margin: 10px 0 16px; }
+.pv-quick-links a { background: #fff; border: 1px solid var(--pv-line); border-radius: 8px; padding: 8px 12px; text-decoration: none; font-weight: 700; }
+.pv-quick-links a:hover { background: var(--pv-mint); }
+.pv-home-planner { margin-bottom: 24px; }
+.pv-trip-departure { margin: 14px 0 !important; padding: 14px 0 !important; border-block: 1px solid var(--pv-line) !important; }
+.pv-trip-departure legend { font-size: 16px; font-weight: 800; }
+@media(max-width: 640px) {
+  .pv-brand-hero { grid-template-columns: 1fr; gap: 16px; padding-top: 22px; }
+  .pv-quick-links a { font-size: 13px; }
+}
