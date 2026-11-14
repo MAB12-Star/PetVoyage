@@ -52,6 +52,18 @@ for (const {path,code} of languageVersions) {
       canonicalUrl:'https://www.petvoyage.ai'+path});
   });
 }
+const plannerLabels = require('../content/planner-labels.json');
+for (const code of Object.keys(plannerLabels)) {
+  router.get('/'+code+'/plan',async (req,res,next)=>{
+    try {
+      const translatePlanner = key=>plannerLabels[code][key] || key;
+      res.set('Content-Language',code);
+      res.render('experience/localPlanner',{countries:await countries(),airlines:await airlines(),
+        pageLanguage:code,translatePlanner,title:translatePlanner('Plan your pet’s trip')+' | PetVoyage',
+        outputNote:code==='es' ? 'El itinerario generado y las normas detalladas están en inglés.' : 'L’itinéraire généré et les règles détaillées sont en anglais.'});
+    } catch(error){next(error)}
+  });
+}
 router.get('/trip-essentials',async(req,res)=>{res.set('Cache-Control','public, max-age=60');try{res.json({products:await require('../helpers/tripProducts').available(String(req.query.petType||''))});}catch{res.json({products:[]});}});
 router.post('/plan/start',async(req,res,next)=>{try{if(!allowedPlannerRequest(req))return res.sendStatus(403);const plan=planFrom(req.body,await countries());if(!plan)return res.status(400).send((departureDetails.check(req.body).error||'Please check your trip details.')+' <a href="/">Return to the planner</a>');const params=new URLSearchParams(Object.entries(plan).filter(([,v])=>typeof v==='string'||typeof v==='boolean'));if(!plan.airlineId)params.set('searchId',require('../helpers/flightSearchIntent').start(req,plan));res.redirect(303,'/plan?'+params);}catch(e){next(e)}});
 router.get('/plan', async (req,res,next) => { try {

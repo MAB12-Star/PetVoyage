@@ -1,0 +1,6 @@
+<% layout('layouts/boilerplate') %>
+<div class="pv-wrap pv-directory">
+  <h1><%= translatePlanner('Plan your pet’s trip') %></h1>
+  <p><%= outputNote %></p>
+  <%- include('../partials/tripForm',{countries,airlines,translatePlanner}) %>
+</div>
