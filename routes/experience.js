@@ -24,13 +24,14 @@ async function countries() { return Country.find({}, 'destinationCountry regulat
 function planFrom(input, rows) {
   const origin = rows.find(c => c.destinationCountry === input.origin);
   const destination = rows.find(c => c.destinationCountry === input.destination);
+  const language = ['es','fr'].includes(input.language) ? input.language : '';
   const petType = String(input.pet || input.petType || '');
   const checkedDeparture = departureDetails.check(input);
   if(checkedDeparture.error) return null;
   const {departureDate}=checkedDeparture.fields;
   if (!origin || !destination || !['dog','cat','dog-and-cat','bird','other'].includes(petType) || (departureDate && !/^\d{4}-\d{2}-\d{2}$/.test(departureDate))) return null;
   const key = journey.speciesKey(destination, petType);
-  return { ...checkedDeparture.fields, petPathway: input.petPathway==='assistance' ? 'assistance' : 'ordinary-pet', origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
+  return { ...checkedDeparture.fields, ...(language ? {language} : {}), petPathway: input.petPathway==='assistance' ? 'assistance' : 'ordinary-pet', origin: origin.destinationCountry, destination: destination.destinationCountry, petType, departureDate, airlineId: /^[a-f0-9]{24}$/i.test(String(input.airline || input.airlineId || '')) ? String(input.airline || input.airlineId) : '', transit: String(input.transit || '').slice(0,200), countryUrl: key ? `/country/${encodeURIComponent(destination.destinationCountry)}?petType=${encodeURIComponent(slug(key))}` : '/getCountryRegulationList' };
 }
 router.get('/', async (req,res,next) => { try {
   const [rows, stories] = await Promise.all([countries(), Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()]);
@@ -60,7 +61,7 @@ for (const code of Object.keys(plannerLabels)) {
       res.set('Content-Language',code);
       res.render('experience/localPlanner',{countries:await countries(),airlines:await airlines(),
         pageLanguage:code,translatePlanner,title:translatePlanner('Plan your pet’s trip')+' | PetVoyage',
-        outputNote:code==='es' ? 'El itinerario generado y las normas detalladas están en inglés.' : 'L’itinéraire généré et les règles détaillées sont en anglais.'});
+        outputNote:code==='es' ? 'El itinerario se genera en español. Algunas herramientas y fuentes oficiales pueden estar en otro idioma.' : 'L’itinéraire est généré en français. Certains outils et certaines sources officielles peuvent être dans une autre langue.'});
     } catch(error){next(error)}
   });
 }
@@ -73,7 +74,9 @@ router.get('/plan', async (req,res,next) => { try {
     const saved=user?.researchPlans?.find(p=>String(p._id)===req.query.saved);
     if(saved?.generatedPlan && !saved.deletedAt){savedJourney=saved.generatedPlan;plan=savedJourney.plan;}
   }
-  res.render('experience/plan',{ countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, autoSearchId: plan ? require('../helpers/flightSearchIntent').match(req,plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
+  const pageLanguage = plan?.language || 'en';
+  const translatePlanner = key=>plannerLabels[pageLanguage]?.[key] || key;
+  res.render('experience/plan',{ pageLanguage, translatePlanner, countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, autoSearchId: plan ? require('../helpers/flightSearchIntent').match(req,plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
 router.post('/ai/journey', async (req,res) => {
   res.set('Cache-Control','no-store');

@@ -2,8 +2,14 @@
   const input=document.getElementById('journey-input');
   if(!input) return;
   const {plan,saved,signedIn}=JSON.parse(input.textContent);
+  const translations = {
+    es:{'Destination requirements':'Requisitos de entrada','Prepare your bag':'Prepara el equipaje','Your preparation timeline':'Calendario de preparación','Details still to confirm':'Datos por confirmar','Before booking':'Antes de reservar','Veterinary preparation':'Preparación veterinaria','Before departure':'Antes de salir','Travel day':'Día del viaje','Dog':'Perro','Cat':'Gato','Your next steps':'Próximos pasos','Save & open My To-Do':'Guardar y abrir mis tareas','Plan your vet visit':'Planifica la visita al veterinario','Find nearby vets & health certificates':'Buscar veterinarios y certificados sanitarios'},
+    fr:{'Destination requirements':'Conditions d’entrée','Prepare your bag':'Préparez vos bagages','Your preparation timeline':'Calendrier de préparation','Details still to confirm':'Points à confirmer','Before booking':'Avant de réserver','Veterinary preparation':'Préparation vétérinaire','Before departure':'Avant le départ','Travel day':'Jour du voyage','Dog':'Chien','Cat':'Chat','Your next steps':'Prochaines étapes','Save & open My To-Do':'Enregistrer et ouvrir mes tâches','Plan your vet visit':'Planifiez la visite vétérinaire','Find nearby vets & health certificates':'Chercher un vétérinaire et des certificats sanitaires'}
+  };
+  const t = value => translations[plan.language]?.[value] || value;
+
   const status=document.getElementById('journey-status'),root=document.getElementById('journey-result'),flightOptions=document.getElementById('journey-flight-options');
-  function el(tag,text,cls){const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;}
+  function el(tag,text,cls){const n=document.createElement(tag);if(text)n.textContent=t(text);if(cls)n.className=cls;return n;}
   function list(items){const ul=el('ul');(items||[]).forEach(t=>ul.append(el('li',t)));return ul;}
   function card(title,items,cls=''){const s=el('section',null,'pv-itinerary-card '+cls);if(title==='Prepare your bag'){const art=el('img',null,'pv-packing-art');art.src='/images/'+({cat:'Cat.png',bird:'Bird.png'}[plan.petType]||'Dog.png');art.alt='';art.loading='lazy';s.append(art);}s.append(el('h2',title),list(items));return s;}
   function link(label,url,cls){const a=el('a',label,cls);a.href=url;return a;}
