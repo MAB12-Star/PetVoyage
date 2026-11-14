@@ -1,28 +1,14 @@
 <% layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/styleSheets/stars.css">
 
-<!-- ===== HERO ===== -->
-<div class="airline-hero py-5 text-center border-bottom">
-  <h1 class="fw-bold display-5"><%= airline.name %> Pet Travel Policy</h1>
-  <p class="fs-5 text-muted">Select airline, view summary, explore sections, shop travel supplies.</p>
-  <div class="mt-4">
-    <%- include('../partials/navigation') %>
-  </div>
-</div>
-
-<div class="container my-5">
-
-  <!-- ===== AIRLINE HEADER ===== -->
-  <div class="card shadow-sm mb-3 p-4">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <div class="d-flex align-items-center gap-3">
-        <% if (airline.logo) { %>
-          <img src="<%= airline.logo %>" alt="<%= airline.name %> Logo" style="max-height:60px;object-fit:contain;">
-        <% } %>
-        <h2 class="h4 m-0"><strong><%= airline.name %></strong></h2>
-      </div>
-
-       <!-- Save Button -->
+<main class="pv-wrap pv-airline-detail">
+  <a href="/regulations/airlineList">← Browse airline pet policies</a>
+  <header class="pv-airline-heading">
+    <div>
+      <% if (airline.logo) { %><img class="pv-directory-logo" src="<%= airline.logo %>" alt="" width="96" height="52"><% } %>
+      <h1><%= airline.name %> pet travel policy</h1>
+    </div>
+<!-- Save Button -->
 <form method="POST" action="/favorites/saveAirlineToFavorites">
   <input type="hidden" name="airlineId" value="<%= airline._id %>">
   <input type="hidden" name="slug" value="<%= airline.slug %>">
@@ -38,41 +24,19 @@
   </button>
 </form>
 
-      </div>
-
-    <!-- Quick Stats Badges -->
-    <div class="mt-3 d-flex flex-wrap gap-2">
-      <% if (airline.inCompartmentAnimals?.length) { %>
-        <span class="badge text-bg-secondary">In Compartment: <strong><%= airline.inCompartmentAnimals.join(', ') %></strong></span>
-      <% } %>
-      <% if (airline.inCargoAnimals?.length) { %>
-        <span class="badge text-bg-secondary">In Cargo: <strong><%= airline.inCargoAnimals.join(', ') %></strong></span>
-      <% } %>
-      <% if (airline.petShipping !== undefined) { %>
-        <span class="badge text-bg-secondary">Pet Shipping: <strong><%= airline.petShipping %></strong></span>
-      <% } %>
-      <% if (airline.microchip !== undefined) { %>
-        <span class="badge text-bg-light border">Microchip: <strong><%= airline.microchip %></strong></span>
-      <% } %>
-      <% if (airline.healthCertificate !== undefined) { %>
-        <span class="badge text-bg-light border">Health Certificate: <strong><%= airline.healthCertificate %></strong></span>
-      <% } %>
-      <% if (airline.healthVaccinations?.length) { %>
-        <span class="badge text-bg-light border">Vaccinations: <strong><%= airline.healthVaccinations.join(', ') %></strong></span>
-      <% } %>
-      <% if (airline.petPolicyURL?.trim()) { %>
-    <a
-      href="<%= airline.petPolicyURL %>"
-      target="_blank"
-      rel="noopener"
-      class="badge text-bg-primary text-decoration-none fw-semibold"
-    >
-      Airline Pet Policy Link  </a>
-  <% } else { %>
-      <span class="small text-muted">Airline policy link unavailable. Confirm requirements directly with the airline before booking.</span>
-  <% } %>
-    </div>
+  </header>
+  <div class="pv-airline-actions">
+    <% if (airline.petPolicyURL?.trim()) { %>
+      <a class="pv-button" href="<%= airline.petPolicyURL %>" target="_blank" rel="noopener noreferrer">Official airline policy ↗</a>
+    <% } else { %>
+      <p>Confirm requirements directly with the operating airline.</p>
+    <% } %>
+    <a href="/plan">Plan a trip</a>
   </div>
+  <nav class="pv-airline-sections" aria-label="On this page">
+    <a href="#summary">Summary</a><a href="#health">Health documents</a><a href="#restrictions">Breed restrictions</a>
+    <a href="#support">Service and support animals</a><a href="#carrier">Carriers</a><a href="#reviews">Reviews</a>
+  </nav>
 
   <!-- ===== TOP DOG SHOPIFY AD ===== -->
 
@@ -84,58 +48,29 @@
 
 
 
-  <!-- ===== SECTION NAV BUTTONS ===== -->
-  <div class="row text-center g-3 mb-4">
-    <div class="col-2"><a href="#summary"><div class="card shadow-sm p-3"><i class="bi bi-info-circle"></i><h6>Summary</h6></div></a></div>
-    <div class="col-2"><a href="#health"><div class="card shadow-sm p-3"><i class="bi bi-heart-pulse"></i><h6>Health</h6></div></a></div>
-    <div class="col-2"><a href="#restrictions"><div class="card shadow-sm p-3"><i class="bi bi-exclamation-triangle"></i><h6>Restrictions</h6></div></a></div>
-    <div class="col-2"><a href="#support"><div class="card shadow-sm p-3"><i class="bi bi-paw-fill"></i><h6>Support</h6></div></a></div>
-    <div class="col-2"><a href="#carrier"><div class="card shadow-sm p-3"><i class="bi bi-truck"></i><h6>Carrier</h6></div></a></div>
-    <div class="col-2"><a href="#reviews"><div class="card shadow-sm p-3"><i class="bi bi-chat-dots"></i><h6>Reviews</h6></div></a></div>
-  </div>
-
-  <!-- ===== SUMMARY (2 Column Layout) ===== -->
-  <div id="summary" class="row my-5">
-    <div class="col-lg-8 col-md-7">
-      <div class="card p-4 shadow-sm h-100">
-        <h3 class="mb-3">
-          <i class="bi bi-info-circle-fill me-2 text-primary"></i>Pet Policy Summary
-        </h3>
-        <div>
-          <%- airline.ImprovedPetPolicySummary || 'Pet policy summary not available.' %>
-        </div>
-      </div>
+  <div class="pv-directory-columns">
+    <div>
+      <section id="summary" class="card pv-airline-panel">
+        <h2>Policy summary</h2>
+        <div><%- airline.ImprovedPetPolicySummary || 'Pet policy summary not available.' %></div>
+      </section>
     </div>
-
-   <!-- 🔁 Randomized Square Ad Spot -->
-<div class="col-lg-4 col-md-5 mt-4 mt-md-0">
-  <% 
-    const adPartials = [
-      '../partials/ads/taxiAd',
-      '../partials/ads/conciergeAd',
-   
-    ];
-    const randomAd = adPartials[Math.floor(Math.random() * adPartials.length)];
-  %>
-  <div class="card p-3 shadow-sm h-100 text-center">
-    <%- include(randomAd) %>
+    <aside class="pv-airline-services" aria-label="Sponsored pet travel services">
+      <% const serviceAds = ['../partials/ads/taxiAd','../partials/ads/conciergeAd']; %>
+      <%- include(serviceAds[Math.floor(Math.random() * serviceAds.length)]) %>
+    </aside>
   </div>
-</div>
-
-
-
 
   <!-- ===== 2x2 SECTIONS ===== -->
-  <div class="row gy-4">
+  <div class="row g-3 pv-airline-details">
     <section id="health" class="col-md-6">
-      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
-        <h5><i class="bi bi-heart-pulse me-2"></i>Health Requirements</h5>
+      <div class="card pv-airline-panel h-100">
+        <h2><i class="bi bi-heart-pulse me-2"></i>Health Requirements</h2>
         <p><strong>Microchip:</strong> <%- airline.microchip || "Not specified." %></p>
         <p><strong>Health Certificate:</strong> <%- airline.healthCertificate || "Not specified." %></p>
-        <p><strong>Vaccinations:</strong> <%- airline.healthVaccinations?.join(', ') || "Not specified." %></p>
+        <p><strong>Vaccinations:</strong> <%- (Array.isArray(airline.healthVaccinations) ? airline.healthVaccinations.join(', ') : airline.healthVaccinations) || "Not specified." %></p>
      
 
-</p>
 
   <!-- ✅ AD FROM YOUR ADMIN ADS MODULE (ONLY IF AVAILABLE) -->
       <%
@@ -160,25 +95,25 @@
     </section>
 
     <section id="restrictions" class="col-md-6">
-      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
-        <h5><i class="bi bi-exclamation-triangle me-2"></i>Restrictions</h5>
+      <div class="card pv-airline-panel h-100">
+        <h2><i class="bi bi-exclamation-triangle me-2"></i>Restrictions</h2>
         <p><strong>Brachycephalic Breeds:</strong> <%- airline.brachycephalicBreedList || "Not specified." %></p>
-        <p><strong>Dangerous Breeds:</strong> <%- airline.dangerousBreedList || "Not specified." %></p>
+        <p><strong>Breed restrictions:</strong> <%- airline.dangerousBreedList || "Not specified." %></p>
       </div>
     </section>
 
     <section id="support" class="col-md-6">
-      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
-        <h5><i class="bi bi-paw me-2"></i>Support Animals</h5>
+      <div class="card pv-airline-panel h-100">
+        <h2><i class="bi bi-paw me-2"></i>Support Animals</h2>
         <p><strong>Service Animals:</strong> <%- airline.serviceAnimalDetails || "Not specified." %></p>
         <p><strong>Emotional Support:</strong> <%- airline.esaDetails || "Not specified." %></p>
       </div>
     </section>
 
     <section id="carrier" class="col-md-6">
-      <div class="card border-start border-dark border-4 shadow-sm h-100 p-3">
-        <h5><i class="bi bi-truck me-2"></i>Carrier Details</h5>
-        <p><strong>Compartment:</strong> <%- airline.carrierCompartmentDetails || "Not specified." %></p>
+      <div class="card pv-airline-panel h-100">
+        <h2><i class="bi bi-truck me-2"></i>Carrier Details</h2>
+        <p><strong>In cabin:</strong> <%- airline.carrierCompartmentDetails || "Not specified." %></p>
         <p><strong>Cargo:</strong> <%- airline.carrierCargoDetails || "Not specified." %></p>
       </div>
     </section>
@@ -189,7 +124,7 @@
   <section id="reviews" class="mt-5">
     <div class="card shadow-sm mb-4">
       <div class="card-body">
-        <h2>Reviews</h2>
+        <h2>Traveler reviews</h2>
 
         <p>Read firsthand experiences travelling with pets.</p>
         <a class="btn btn-success mb-3" href="/airlines/review/new?airline=<%= encodeURIComponent(airline.slug) %>">Write an airline review</a>
@@ -207,10 +142,5 @@
   <%- include('../partials/ads/ad-image', { ad: footer }) %>
 <% } %>
 
-<script>
-function validateReviewForm() {
-  return !!document.querySelector('input[name="review[rating]"]:checked');
-}
-</script>
-
-<div class="pv-wrap"><%- include('../partials/relatedStories',{stories:typeof relatedStories !== 'undefined' ? relatedStories : []}) %></div>
+<%- include('../partials/relatedStories',{stories:typeof relatedStories !== 'undefined' ? relatedStories : []}) %>
+</main>
