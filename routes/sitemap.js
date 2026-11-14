@@ -83,6 +83,7 @@ async function buildSitemapData(req) {
 
   // ✅ STATIC URLs
   const staticUrls = [
+    ...['/travel-start', '/es/', '/fr/'].map(path => ({loc: origin + path})),
     { loc: `${origin}/guides`, changefreq: 'monthly', priority: '0.8' },
     ...planningGuides.map(guide => ({loc: `${origin}/guides/${guide.slug}`, lastmod: guide.published, changefreq: 'monthly', priority: '0.7'})),
     { loc: `${origin}/`, changefreq: 'daily', priority: '1.0' },

@@ -37,6 +37,21 @@ router.get('/', async (req,res,next) => { try {
   const featuredAirlines=await Airline.find({slug:{$in:['air-canada','aeromexico','volaris','viva-aerobus','american-airlines','british-airways']},logo:{$type:'string',$ne:''}},'name slug logo').sort({name:1}).lean();
   res.render('index', { featuredAirlines, storeSelections:[...await require('../helpers/tripProducts').available('all'),...res.locals.storeSelections.filter(p=>p.handle!=='reflective-breakaway-cat-collar-with-airtag-holder')], countries: rows, airlines:await airlines(), stories, title: 'PetVoyage | Plan a thoughtful journey with your pet', canonicalUrl: 'https://www.petvoyage.ai/' });
 } catch(e) { next(e); } });
+const travelStart = require('../content/travel-start.json');
+const languageVersions = ['/travel-start', '/es/', '/fr/'].map((path,index)=>{
+  const code = ['en','es','fr'][index];
+  return {path,code,label:travelStart[code].language};
+});
+for (const {path,code} of languageVersions) {
+  router.get(path,(req,res)=>{
+    if (req.path !== path) return res.redirect(301,path);
+    const guide = travelStart[code];
+    res.set('Content-Language',code);
+    res.render('experience/travelStart',{guide,pageLanguage:code,languageVersions,
+      title:guide.title+' | PetVoyage',metaDescription:guide.intro,
+      canonicalUrl:'https://www.petvoyage.ai'+path});
+  });
+}
 router.get('/trip-essentials',async(req,res)=>{res.set('Cache-Control','public, max-age=60');try{res.json({products:await require('../helpers/tripProducts').available(String(req.query.petType||''))});}catch{res.json({products:[]});}});
 router.post('/plan/start',async(req,res,next)=>{try{if(!allowedPlannerRequest(req))return res.sendStatus(403);const plan=planFrom(req.body,await countries());if(!plan)return res.status(400).send((departureDetails.check(req.body).error||'Please check your trip details.')+' <a href="/">Return to the planner</a>');const params=new URLSearchParams(Object.entries(plan).filter(([,v])=>typeof v==='string'||typeof v==='boolean'));if(!plan.airlineId)params.set('searchId',require('../helpers/flightSearchIntent').start(req,plan));res.redirect(303,'/plan?'+params);}catch(e){next(e)}});
 router.get('/plan', async (req,res,next) => { try {

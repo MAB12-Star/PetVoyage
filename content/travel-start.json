@@ -1,0 +1,35 @@
+{
+  "en": {
+    "language": "English",
+    "title": "Plan international travel with your pet",
+    "intro": "Start with your destination, your pet’s species, and the country you’re leaving from. Rules can also depend on transit stops and your pet’s recent travel history.",
+    "steps": [
+      ["Check entry requirements", "Review the destination’s rules for your pet and confirm documents and deadlines with the official authority.", "/getCountryRegulationList"],
+      ["Check the operating airline", "Ask about pet reservations, carrier dimensions, and restrictions for each leg before buying a ticket.", "/regulations/airlineList"],
+      ["Find a vet", "Ask whether the clinic can prepare the travel documents your destination requires.", "/findAVet"]
+    ],
+    "note": "The detailed tools and policy pages linked here are currently in English."
+  },
+  "es": {
+    "language": "Español",
+    "title": "Planifica un viaje internacional con tu mascota",
+    "intro": "Empieza por el destino, la especie de tu mascota y el país de salida. Las normas también pueden depender de las escalas y de los viajes recientes de tu mascota.",
+    "steps": [
+      ["Consulta los requisitos de entrada", "Revisa las normas del destino para tu mascota y confirma los documentos y plazos con la autoridad oficial.", "/getCountryRegulationList"],
+      ["Consulta a la aerolínea que opera el vuelo", "Pregunta por la reserva para tu mascota, las medidas del transportín y las restricciones de cada tramo antes de comprar el billete.", "/regulations/airlineList"],
+      ["Busca un veterinario", "Pregunta si la clínica puede preparar los documentos de viaje que exige tu destino.", "/findAVet"]
+    ],
+    "note": "Las herramientas y las páginas detalladas enlazadas aquí están actualmente en inglés."
+  },
+  "fr": {
+    "language": "Français",
+    "title": "Préparez un voyage international avec votre animal",
+    "intro": "Commencez par la destination, l’espèce de votre animal et le pays de départ. Les règles peuvent aussi dépendre des escales et des voyages récents de votre animal.",
+    "steps": [
+      ["Vérifiez les conditions d’entrée", "Consultez les règles de la destination pour votre animal et confirmez les documents et les délais auprès de l’autorité officielle.", "/getCountryRegulationList"],
+      ["Consultez la compagnie qui assure le vol", "Avant d’acheter votre billet, renseignez-vous sur la réservation pour l’animal, les dimensions du contenant et les restrictions de chaque trajet.", "/regulations/airlineList"],
+      ["Trouvez un vétérinaire", "Demandez si la clinique peut préparer les documents de voyage exigés par votre destination.", "/findAVet"]
+    ],
+    "note": "Les outils et les pages détaillées accessibles depuis ce guide sont actuellement en anglais."
+  }
+}

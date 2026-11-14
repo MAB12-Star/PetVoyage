@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= typeof pageLanguage === 'string' ? pageLanguage : 'en' %>">
     <%
     const siteBaseUrl = ((typeof baseUrl !== 'undefined' && baseUrl) ? baseUrl : (process.env.BASE_URL || 'https://www.petvoyage.ai')).replace(/\/+$/, '');
     const currentPath = (typeof req !== 'undefined' && req && req.originalUrl) ? req.originalUrl : '/';
@@ -47,6 +47,12 @@
   <meta name="robots" content="<%= safeRobots %>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="<%= computedCanonicalUrl %>">
+  <% if (typeof languageVersions !== 'undefined') { %>
+    <% for (const entry of languageVersions) { %>
+      <link rel="alternate" hreflang="<%= entry.code %>" href="<%= siteBaseUrl + entry.path %>">
+    <% } %>
+    <link rel="alternate" hreflang="x-default" href="<%= siteBaseUrl %>/travel-start">
+  <% } %>
 
   <!-- Open Graph -->
   <meta property="og:title" content="<%= safeOgTitle %>">

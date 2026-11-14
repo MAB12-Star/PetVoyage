@@ -1,0 +1,16 @@
+<% layout('layouts/boilerplate') %>
+<main class="pv-wrap pv-directory">
+  <nav class="pv-quick-links" aria-label="Language">
+    <% for (const entry of languageVersions) { %>
+      <a href="<%= entry.path %>" lang="<%= entry.code %>" hreflang="<%= entry.code %>" <% if (entry.code === pageLanguage) { %>aria-current="page"<% } %>><%= entry.label %></a>
+    <% } %>
+  </nav>
+  <h1><%= guide.title %></h1>
+  <p><%= guide.intro %></p>
+  <div class="pv-resource-grid">
+    <% for (const [heading, description, path] of guide.steps) { %>
+      <article class="pv-resource"><h2 class="h4"><a href="<%= path %>"><%= heading %></a></h2><p><%= description %></p></article>
+    <% } %>
+  </div>
+  <% if (pageLanguage !== 'en') { %><p class="mt-3"><%= guide.note %></p><% } %>
+</main>
