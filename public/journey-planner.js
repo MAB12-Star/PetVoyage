@@ -37,7 +37,10 @@
   function show(data){
     status.setAttribute('aria-busy','false');
     root.replaceChildren();root.hidden=false;root.setAttribute('aria-busy','false');
-    if(!data.result){showEditorAfterError();status.replaceChildren(el('strong','Your policy details are available'),el('p',data.error||'Scout is temporarily unavailable.'));root.append(evidence(data));if(flightOptions)root.append(flightOptions);const retry=el('button','Try Scout again','pv-button');retry.type='button';retry.onclick=()=>location.reload();root.append(retry);return;}
+    if (!data.result) {
+      showFallback('Your policy details are available', data.error || 'Scout is temporarily unavailable.', data);
+      return;
+    }
     status.replaceChildren(el('span','✦','pv-scout-orb'),el('div',(saved?'Saved itinerary · ':'AI itinerary ready · ')+(data.plan.airlineName||'Airline not chosen')));
     const intro=el('section',null,'pv-journey-intro');intro.append(el('p','YOUR TRIP AT A GLANCE','pv-eyebrow'),el('p',data.result.summary,'pv-lead'));const photo=el('img',null,'pv-journey-pet-photo');photo.src='/images/'+({dog:'emma.jpg',cat:'backpack_cat.jpg',bird:'Bird.png'}[plan.petType]||'family.jpg');photo.alt='A companion from the PetVoyage photo and illustration collection';photo.loading='lazy';intro.append(photo);root.append(intro);
     const grid=el('div',null,'pv-itinerary-layout pv-itinerary-columns'+(data.plan.airlineName?' pv-itinerary-has-airline':'')),main=el('div',null,'pv-itinerary-column'),aside=el('div',null,'pv-itinerary-column');
@@ -87,10 +90,35 @@
     root.append(el('p','Generated '+new Date(data.generatedAt).toLocaleString()+'. Saved plans retain this version; rebuild when your route or policies change.','pv-fine-print'));
   }
   const edit=document.getElementById('edit-journey');
-  function showEditorAfterError() {
-    if (!edit) return;
-    edit.open = false;
-    edit.hidden = false;
+  function showFallback(title, message, data) {
+    status.setAttribute('aria-busy', 'false');
+    status.replaceChildren(el('strong', title), el('p', message));
+    root.hidden = false;
+    root.setAttribute('aria-busy', 'false');
+    const grid = el('div', null, 'pv-itinerary-columns');
+    const main = el('div', null, 'pv-itinerary-column pv-destination-requirements');
+    const aside = el('div', null, 'pv-itinerary-column');
+    if (data) {
+      const policies = evidence(data);
+      policies.open = true;
+      main.append(policies);
+    }
+    const retry = el('button', 'Try Scout again', 'pv-button');
+    retry.type = 'button';
+    retry.onclick = () => location.reload();
+    main.append(retry);
+    if (flightOptions) {
+      flightOptions.classList.add('pv-flight-sidebar');
+      aside.append(flightOptions);
+    }
+    if (edit) {
+      edit.classList.add('pv-flight-sidebar');
+      edit.open = false;
+      edit.hidden = false;
+      aside.append(edit);
+    }
+    grid.append(main, aside);
+    root.replaceChildren(grid);
   }
   document.querySelectorAll('a[href="#edit-journey"]').forEach(anchor => {
     anchor.addEventListener('click', () => { if (edit) edit.open = true; });
@@ -99,5 +127,5 @@
   if(saved){show(saved);return;}
   fetch('/ai/journey',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(plan)})
     .then(async r=>{const data=await r.json();if(!r.ok&&!data.evidence)throw Error(data.error||'Unable to build itinerary');show(data)})
-    .catch(e=>{showEditorAfterError();status.setAttribute('aria-busy','false');root.hidden=false;root.setAttribute('aria-busy','false');status.replaceChildren(el('strong','Scout could not finish this plan'),el('p',e.message));root.append(link('Edit trip details','#edit-journey','pv-button'));});
+    .catch(e=>showFallback('Scout could not finish this plan', e.message));
 })();
