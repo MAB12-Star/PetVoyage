@@ -127,3 +127,11 @@ body.pv-site { background: linear-gradient(155deg, #e8f7f4, #f7fcfb 450px, #fff)
   .pv-planner .pv-planner-basics{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pv-planner-basics>label:last-child{grid-column:1/-1}
 }
+
+.pv-edit-journey.pv-itinerary-editor{border:1px solid var(--pv-line);padding:14px 16px;margin:14px 0 18px;background:white;min-width:0}
+.pv-itinerary-editor>summary{color:var(--pv-teal);font-weight:800;padding:5px 0;cursor:pointer}
+.pv-itinerary-editor>p{margin:8px 0}
+.pv-edit-journey.pv-itinerary-editor .pv-planner{padding:12px;margin:10px 0 0;box-shadow:none}
+.pv-itinerary-editor .pv-planner .pv-fields{grid-template-columns:minmax(0,1fr)}
+.pv-itinerary-editor .pv-planner-basics>label:last-child{grid-column:auto}
+.pv-itinerary-editor .pv-planner select{width:100%;min-width:0}
