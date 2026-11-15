@@ -1,7 +1,19 @@
-<% const tr = typeof translatePlanner === 'function' ? translatePlanner : value => value; %><form class="pv-planner" action="/plan/start" method="post"><% if (typeof pageLanguage !== 'undefined' && ['es','fr'].includes(pageLanguage)) { %><input type="hidden" name="language" value="<%= pageLanguage %>"><% } %><p class="pv-eyebrow">Plan with Scout · PetVoyage AI</p><h2>One trip.<br>Everything brought together.</h2><p>Find the route and prepare for travelling with your pet.</p><% const selected=typeof plan!=='undefined'&&plan?plan:{}; %><div class="pv-fields pv-planner-basics"><label><%= (typeof pageLanguage !== 'undefined' && ({es:'Desde',fr:'Départ'})[pageLanguage]) || 'From' %><select name="origin" required><option value=""><%= tr("Choose country") %></option><% countries.forEach(c=>{ %><option <%= selected.origin===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
+<% const tr = typeof translatePlanner === 'function' ? translatePlanner : value => value; %><% const refine = typeof refineTrip !== 'undefined' && refineTrip; %><form class="pv-planner" action="/plan/start" method="post"><% if (typeof pageLanguage !== 'undefined' && ['es','fr'].includes(pageLanguage)) { %><input type="hidden" name="language" value="<%= pageLanguage %>"><% } %><% const selected=typeof plan!=='undefined'&&plan?plan:{}; %>
+<% if (refine) { %>
+<input type="hidden" name="origin" value="<%= selected.origin %>">
+<input type="hidden" name="destination" value="<%= selected.destination %>">
+<input type="hidden" name="pet" value="<%= selected.petType %>">
+<% } else { %>
+<p class="pv-eyebrow">Plan with Scout · PetVoyage AI</p><h2>One trip.<br>Everything brought together.</h2><p>Find the route and prepare for travelling with your pet.</p><div class="pv-fields pv-planner-basics"><label><%= (typeof pageLanguage !== 'undefined' && ({es:'Desde',fr:'Départ'})[pageLanguage]) || 'From' %><select name="origin" required><option value=""><%= tr("Choose country") %></option><% countries.forEach(c=>{ %><option <%= selected.origin===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
 <label><%= (typeof pageLanguage !== 'undefined' && ({es:'Destino',fr:'Destination'})[pageLanguage]) || 'To' %><select name="destination" required><option value=""><%= tr("Choose destination") %></option><% countries.forEach(c=>{ %><option <%= selected.destination===c.destinationCountry?'selected':'' %>><%= c.destinationCountry %></option><% }) %></select></label>
 <label><%= (typeof pageLanguage !== 'undefined' && ({es:'Mascotas',fr:'Animaux'})[pageLanguage]) || 'Pets' %><select name="pet" required><% [['dog','Dog'],['cat','Cat'],['dog-and-cat','Dog and cat'],['bird','Bird'],['other','Other pet']].forEach(([v,n])=>{ %><option value="<%= v %>" <%= selected.petType===v?'selected':'' %>><%= tr(n) %></option><% }) %></select></label></div>
+<% } %>
 <input type="hidden" name="departureSource" value="<%= selected.departureSource==='location-suggested'?'location':'manual' %>">
+<% if (refine) { %>
+<div class="pv-fields">
+<label>Departure airport <small>(optional)</small><input name="departureAirport" maxlength="3" pattern="[A-Za-z]{3}" value="<%= selected.departureAirport || '' %>" placeholder="e.g. SFO"></label>
+</div>
+<% } else { %>
 <details class="pv-planner-details" <%= selected.origin ? 'open' : '' %>>
 <summary><%= (typeof pageLanguage !== 'undefined' && ({es:'¿Ya conoces los detalles de tu vuelo?',fr:'Vous connaissez les détails de votre vol ?'})[pageLanguage]) || 'Know your flight details?' %></summary>
 <fieldset class="pv-trip-departure">
@@ -9,15 +21,25 @@
 <div class="pv-fields"><label><%= tr("Departure airport or city (optional)") %><input name="departureCity" maxlength="100" value="<%= selected.departureCity || '' %>" placeholder="<%= tr('Your departure') %>"></label></div>
 <%- include('departureLocation') %>
 </fieldset>
+<% } %>
 <div class="pv-fields"><label><%= tr("Destination city (optional)") %><select class="pv-destination-city" name="destinationCity"><option value=""><%= selected.destination ? 'Any city (country-wide search)' : 'Choose a destination country first' %></option><% if (selected.destinationCity) { %><option selected><%= selected.destinationCity %></option><% } %></select></label>
 <label><%= tr("Destination airport (optional)") %><select name="destinationAirport" class="pv-destination-airport" data-selected="<%= selected.destinationAirport || '' %>"><option value="<%= selected.destinationAirport || '' %>"><%= selected.destinationAirport || 'Choose an airport (optional)' %></option></select><small class="pv-airport-list-status"><%= tr("Choose a destination country to see its airports.") %></small></label>
 <label><%= tr("Departure date (optional)") %><input name="departure" type="date" value="<%= selected.departureDate || '' %>"></label>
 <label><%= tr("Return date (optional)") %><input name="returnDate" type="date" value="<%= selected.returnDate || '' %>"></label>
+<% if (refine) { %>
+</div>
+<details class="pv-planner-details">
+<summary>Airline, flight number and transit</summary>
+<div class="pv-fields">
+<label><%= tr("Departure airport or city (optional)") %><input name="departureCity" maxlength="100" value="<%= selected.departureCity || '' %>"></label>
+</div>
+<div class="pv-fields">
+<% } %>
 <label><%= tr("Airline (if known)") %><select name="airline"><option value=""><%= tr("Not chosen yet") %></option><% (typeof airlines!=='undefined'?airlines:[]).forEach(a=>{ %><option value="<%= a._id %>" <%= selected.airlineId===String(a._id)?'selected':'' %>><%= a.name %></option><% }) %></select></label>
 <label><%= tr("Flight number (optional)") %><input name="flightNumber" maxlength="16" value="<%= selected.flightNumber || '' %>" placeholder="e.g. Y4771"><small><%= tr("Select the airline above for its pet policy.") %></small></label>
-<label><%= tr("Airport code (optional)") %><input name="departureAirport" maxlength="3" pattern="[A-Za-z]{3}" value="<%= selected.departureAirport || '' %>" placeholder="e.g. LAX"></label>
+<% if (!refine) { %><label><%= tr("Airport code (optional)") %><input name="departureAirport" maxlength="3" pattern="[A-Za-z]{3}" value="<%= selected.departureAirport || '' %>" placeholder="e.g. LAX"></label><% } %>
 <label><%= tr("Transit countries (optional)") %><input name="transit" maxlength="200" value="<%= selected.transit || '' %>"></label></div>
 </details>
-<button class="pv-button" type="submit"><% if (selected.origin) { %><%= (typeof pageLanguage !== 'undefined' && ({es:'Actualizar mi itinerario',fr:'Mettre à jour mon itinéraire'})[pageLanguage]) || 'Update my itinerary' %><% } else { %><%= (typeof pageLanguage !== 'undefined' && ({es:'Crear mi plan de viaje',fr:'Créer mon plan de voyage'})[pageLanguage]) || 'Build my trip plan' %><% } %> →</button><p class="pv-fine-print"><%= tr("Confirm final travel requirements and pet acceptance with official authorities and the airline.") %></p></form><script src="/airport-handoff.js" defer></script>
+<button class="pv-button" type="submit"><% if (selected.origin) { %><%= (typeof pageLanguage !== 'undefined' && ({es:'Actualizar mi itinerario',fr:'Mettre à jour mon itinéraire'})[pageLanguage]) || 'Update my itinerary' %><% } else { %><%= (typeof pageLanguage !== 'undefined' && ({es:'Crear mi plan de viaje',fr:'Créer mon plan de voyage'})[pageLanguage]) || 'Build my trip plan' %><% } %> →</button><% if (!refine) { %><p class="pv-fine-print"><%= tr("Confirm final travel requirements and pet acceptance with official authorities and the airline.") %></p><% } %></form><script src="/airport-handoff.js" defer></script>
 
 <script src="/destination-airports.js" defer></script><script src="/destination-city-suggestions.js" defer></script>

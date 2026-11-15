@@ -51,7 +51,7 @@
       return section;
     }
     main.append(policyCard('Destination requirements','destination','pv-destination-requirements'));
-    if (edit) aside.append(edit);
+    if (edit) main.prepend(edit);
     if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
     const selection=el('div',null,'pv-trip-products');packing.append(selection);
     fetch('/trip-essentials?petType='+encodeURIComponent(data.plan.petType)).then(r=>r.ok?r.json():{products:[]}).then(({products})=>{
@@ -80,9 +80,6 @@
     root.append(el('p','Generated '+new Date(data.generatedAt).toLocaleString()+'. Saved plans retain this version; rebuild when your route or policies change.','pv-fine-print'));
   }
   const edit=document.getElementById('edit-journey');
-  const openEdit=()=>{if(location.hash==='#edit-journey')edit.open=true;};
-  window.addEventListener('hashchange',openEdit);openEdit();
-  document.querySelectorAll('a[href="#edit-journey"]').forEach(a=>a.addEventListener('click',()=>{edit.open=true}));
   if(saved){show(saved);return;}
   fetch('/ai/journey',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(plan)})
     .then(async r=>{const data=await r.json();if(!r.ok&&!data.evidence)throw Error(data.error||'Unable to build itinerary');show(data)})

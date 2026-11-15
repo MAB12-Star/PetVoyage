@@ -61,3 +61,14 @@ body.pv-site{margin:0;background:var(--pv-cream);color:var(--pv-ink);font-family
 
 @media(max-width:760px){.pv-itinerary-has-airline .pv-airline-section{order:2}}
 .pv-radius-label{display:block;margin-top:10px}.pv-radius-label select{max-width:180px}
+
+.pv-itinerary-editor { box-sizing: border-box; min-width: 0; padding: 20px; }
+.pv-itinerary-editor h2 { margin: 0 0 6px; }
+.pv-itinerary-editor .pv-planner { background: transparent; border: 0; box-shadow: none; margin: 0; padding: 0; }
+.pv-itinerary-editor .pv-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.pv-itinerary-editor label { min-width: 0; }
+.pv-itinerary-editor select, .pv-itinerary-editor input { width: 100%; min-width: 0; }
+.pv-itinerary-editor .pv-airport-list-status { display: none; }
+@media (max-width: 480px) {
+  .pv-itinerary-editor .pv-fields { grid-template-columns: minmax(0, 1fr); }
+}
