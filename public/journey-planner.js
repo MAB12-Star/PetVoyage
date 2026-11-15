@@ -51,8 +51,9 @@
       return section;
     }
     main.append(policyCard('Destination requirements','destination','pv-destination-requirements'));
-    if (edit) main.prepend(edit);
-    if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
+    if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}
+    if (edit) aside.append(edit);
+    const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
     const selection=el('div',null,'pv-trip-products');packing.append(selection);
     fetch('/trip-essentials?petType='+encodeURIComponent(data.plan.petType)).then(r=>r.ok?r.json():{products:[]}).then(({products})=>{
       if(!selection.isConnected||!Array.isArray(products)||!products.length)return;
