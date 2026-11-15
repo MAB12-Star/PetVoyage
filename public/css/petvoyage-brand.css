@@ -116,3 +116,14 @@ body.pv-site { background: linear-gradient(155deg, #e8f7f4, #f7fcfb 450px, #fff)
   .pv-directory-rail{overflow-wrap:anywhere;overflow:clip}
   .pv-directory-pets a{max-width:100%;overflow-wrap:anywhere}
 }
+
+.pv-planner .pv-planner-basics{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pv-planner .pv-fields>*{min-width:0}
+.pv-planner .pv-fields :is(input,select){max-width:100%}
+.pv-planner-details{margin:12px 0 16px}
+.pv-planner-details summary{font-weight:700;color:var(--pv-teal);padding:10px 0;cursor:pointer}
+.pv-edit-journey{scroll-margin-top:16px}
+@media(max-width:600px){
+  .pv-planner .pv-planner-basics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pv-planner-basics>label:last-child{grid-column:1/-1}
+}
