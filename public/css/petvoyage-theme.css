@@ -72,3 +72,16 @@ body.pv-site{margin:0;background:var(--pv-cream);color:var(--pv-ink);font-family
 @media (max-width: 760px) {
   .pv-itinerary-columns .pv-itinerary-editor { order: 2; }
 }
+
+.pv-itinerary-editor > summary, #journey-flight-comparison > summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.pv-itinerary-editor[open] > summary, #journey-flight-comparison[open] > summary {
+  margin-bottom: 10px;
+}
+.pv-use-flight-airline { margin: 10px 0 0; }
+@media (max-width: 760px) {
+  .pv-itinerary-has-airline .pv-flight-sidebar,
+  .pv-itinerary-has-airline .pv-itinerary-editor { order: 3; }
+}

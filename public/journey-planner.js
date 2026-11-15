@@ -8,7 +8,7 @@
   };
   const t = value => translations[plan.language]?.[value] || value;
 
-  const status=document.getElementById('journey-status'),root=document.getElementById('journey-result'),flightOptions=document.getElementById('journey-flight-options');
+  const status=document.getElementById('journey-status'),root=document.getElementById('journey-result'),flightOptions=document.getElementById('journey-flight-comparison') || document.getElementById('journey-flight-options');
   function el(tag,text,cls){const n=document.createElement(tag);if(text)n.textContent=t(text);if(cls)n.className=cls;return n;}
   function list(items){const ul=el('ul');(items||[]).forEach(t=>ul.append(el('li',t)));return ul;}
   function card(title,items,cls=''){const s=el('section',null,'pv-itinerary-card '+cls);if(title==='Prepare your bag'){const art=el('img',null,'pv-packing-art');art.src='/images/'+({cat:'Cat.png',bird:'Bird.png'}[plan.petType]||'Dog.png');art.alt='';art.loading='lazy';s.append(art);}s.append(el('h2',title),list(items));return s;}
@@ -51,7 +51,11 @@
       return section;
     }
     main.append(policyCard('Destination requirements','destination','pv-destination-requirements'));
-    if(flightOptions){flightOptions.className+=' pv-flight-sidebar';aside.append(flightOptions);}
+    if (data.plan.airlineName) aside.append(policyCard(data.plan.airlineName + ' pet policy', 'airline', 'pv-airline-section'));
+    if (flightOptions) {
+      flightOptions.classList.add('pv-flight-sidebar');
+      aside.append(flightOptions);
+    }
     if (edit) aside.append(edit);
     const packing=card('Prepare your bag',data.result.packing,'pv-packing-section');main.append(packing);
     const selection=el('div',null,'pv-trip-products');packing.append(selection);
@@ -64,7 +68,6 @@
       });
       selection.append(el('p','Optional store suggestions. Check fit, delivery and your airline’s rules before purchase.','pv-fine-print'));
     }).catch(()=>{}); // Move the existing node; retain async results/listeners without refetching.
-    if(data.plan.airlineName) aside.append(policyCard('Flying with '+data.plan.airlineName,'airline','pv-airline-section'));
     const timeline=el('section',null,'pv-itinerary-card pv-timeline-section');timeline.append(el('p','FROM NOW TO DEPARTURE','pv-eyebrow'),el('h2','Your preparation timeline'));
     const ol=el('ol',null,'pv-journey-timeline');data.result.timeline.forEach(t=>{const li=el('li');li.append(el('h3',t.when),el('p',t.action));ol.append(li)});timeline.append(ol);main.append(timeline);
     aside.append(card('Details still to confirm',data.result.questions,'pv-open-questions'));
@@ -81,6 +84,10 @@
     root.append(el('p','Generated '+new Date(data.generatedAt).toLocaleString()+'. Saved plans retain this version; rebuild when your route or policies change.','pv-fine-print'));
   }
   const edit=document.getElementById('edit-journey');
+  document.querySelectorAll('a[href="#edit-journey"]').forEach(anchor => {
+    anchor.addEventListener('click', () => { if (edit) edit.open = true; });
+  });
+  if (edit && location.hash === '#edit-journey') edit.open = true;
   if(saved){show(saved);return;}
   fetch('/ai/journey',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(plan)})
     .then(async r=>{const data=await r.json();if(!r.ok&&!data.evidence)throw Error(data.error||'Unable to build itinerary');show(data)})
