@@ -76,7 +76,12 @@ router.get('/plan', async (req,res,next) => { try {
   }
   const pageLanguage = plan?.language || 'en';
   const translatePlanner = key=>plannerLabels[pageLanguage]?.[key] || key;
-  res.render('experience/plan',{ pageLanguage, translatePlanner, countries:rows, airlines:await airlines(), plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, autoSearchId: plan ? require('../helpers/flightSearchIntent').match(req,plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
+  const [plannerAirlines, plannerStories] = await Promise.all([
+    airlines(),
+    Story.find({}).select('title slug summary photos authorName country createdAt').sort({createdAt:-1}).limit(3).lean()
+      .catch(error => { console.warn('Planner stories unavailable', error.name); return []; })
+  ]);
+  res.render('experience/plan',{ pageLanguage, translatePlanner, countries:rows, airlines:plannerAirlines, plannerStories, plan, savedJourney, transportDiscovery: plan ? discoverTransport(plan) : null, validationError: departureDetails.check(req.query).error, autoSearchId: plan ? require('../helpers/flightSearchIntent').match(req,plan) : null, title:'Your AI pet travel itinerary | PetVoyage', robots:'noindex, follow' });
 } catch(e) { next(e); } });
 router.post('/ai/journey', async (req,res) => {
   res.set('Cache-Control','no-store');

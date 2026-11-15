@@ -25,7 +25,25 @@
   <script id="journey-input" type="application/json"><%- JSON.stringify({plan,saved:savedJourney || null,signedIn:!!currentUser}).replace(/</g,'\\u003c') %></script>
   <script src="/journey-planner.js" defer></script>
 <% }else{ %>
-  <section class="pv-section"><p class="pv-eyebrow">Scout · PetVoyage AI</p><h1>Let’s plan your pet’s journey.</h1><p>Tell Scout where you’re going. Your requirements, airline guidance and preparation will appear together.</p></section>
-  <%- include('../partials/tripForm',{countries,airlines}) %>
+  <section class="pv-hero pv-plan-hero" aria-labelledby="plan-title">
+    <div>
+      <h1 id="plan-title">Plan your pet’s trip</h1>
+      <p class="pv-lead">Get a trip plan from Scout with destination requirements, airline guidance and a preparation checklist.</p>
+      <figure class="pv-family-hero">
+        <img src="/images/emma.jpg" alt="Emma, a tan-and-white dog on the waterfront at sunset" width="1600" height="1200" decoding="async" fetchpriority="high">
+        <figcaption>Emma, one of the dogs behind <a href="/aboutUs">PetVoyage</a>.</figcaption>
+      </figure>
+    </div>
+    <%- include('../partials/tripForm',{countries,airlines}) %>
+  </section>
 <% } %>
+<%- include('../partials/relatedStories',{stories: typeof plannerStories === 'undefined' ? [] : plannerStories}) %>
+<%- include('../partials/storeSelections',{productLimit:3}) %>
+<section class="pv-band" aria-labelledby="plan-more-title">
+  <div>
+    <h2 id="plan-more-title">Get ready for your trip</h2>
+    <p><a href="/guides">Read our travel guides</a> · <a href="/findAVet">Find a vet</a> · <a href="https://petsvoyage.myshopify.com/collections">Shop by pet</a></p>
+  </div>
+  <a class="pv-button" href="/blog/new">Share your travel story →</a>
+</section>
 </div>
