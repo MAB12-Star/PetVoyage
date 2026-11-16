@@ -31,6 +31,14 @@
   <a href="/getCountryRegulationList">← Browse country requirements</a>
   <header class="pv-country-heading">
     <h1>Pet travel requirements for <%= regulations.destinationCountry %></h1>
+<% if (regulations.destinationCountry === 'United States' && /^(dog|cat)$/i.test(String(selectedPetType).trim())) { %>
+  <aside class="pv-note my-3" aria-labelledby="minnesota-screwworm-notice">
+    <h2 id="minnesota-screwworm-notice" class="h5">Traveling from Mexico to Minnesota with a dog or cat?</h2>
+    <p>Minnesota requires additional veterinary and rabies documents, screwworm inspection and treatment, and at least five days of supervised quarantine after arrival. Contact the Minnesota Board of Animal Health before travel to confirm which documents to send and when.</p>
+    <a href="https://www.bah.state.mn.us/Board-Issues-New-Import-Requirements-for-Dogs-Cats-Coming-from-Mexico">Minnesota Board of Animal Health requirements</a>
+  </aside>
+<% } %>
+
     <div class="pv-country-toolbar">
       <% if (petTypes && (petTypes.length > 1 || allPets)) { %>
         <form method="get" action="/country/<%= encodeURIComponent(regulations.destinationCountry) %>" class="pv-country-picker">
